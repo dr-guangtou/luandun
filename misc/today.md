@@ -1,4 +1,15 @@
-### 2021-02-04 [GA CO IM]
+### 2021-02-04 [GA CO IM HE]
+
+##### [Magnetically Modified Spherical Accretion in GRMHD: Reconnection-Driven Convection and Jet Propagation](http://arxiv.org/abs/2102.01694) [(PDF)](http://arxiv.org/pdf/2102.01694.pdf)
+
+- We present 3D general relativistic magnetohydrodynamic(GRMHD) simulations of zero angular momentum accretion around a rapidly rotating black hole, modified by the presence of initially uniform magnetic fields.
+- We consider serveral angles between the magnetic field direction and the black hole spin.
+- In the resulting flows, the midplane dynamics are governed by magnetic reconnection-driven turbulence in a magnetically arrested (or a nearly arrested) state.
+- Electromagnetic jets with outflow efficiencies ~10-200% occupy the polar regions, reaching several hundred gravitational radii before they dissipate due to the kink instability.
+- The jet directions fluctuate in time and can be tilted by as much as ~30 degrees with respect to black hole spin, but this tilt does not depend strongly on the tilt of the initial magnetic field.
+- A jet forms even when there is no initial net vertical magnetic flux since turbulent, horizon-scale fluctuations can generate a net vertical field locally.
+- Peak jet power is obtained for an initial magnetic field tilted by 40-80 degrees with respect to the black hole spin because this maximizes the amount of magnetic flux that can reach the black hole.
+- These simulations may be a reasonable model for low luminosity black hole accretion flows such as Sgr A* or M87.
 
 ##### [Information Content of Higher-Order Galaxy Correlation Functions](http://arxiv.org/abs/2102.01696) [(PDF)](http://arxiv.org/pdf/2102.01696.pdf)
 
@@ -167,6 +178,17 @@
 - This, combined with 288 MHz of instantaneous bandwidth and a unique third axis of rotation on each antenna, gives ASKAP the capability to create high dynamic range images of large sky areas very quickly.
 - It is an excellent telescope for surveys between 700 MHz and 1800 MHz and is expected to facilitate great advances in our understanding of galaxy formation, cosmology and radio transients while opening new parameter space for discovery of the unknown.
 
+##### [A search for radio afterglows from gamma-ray bursts with the Australian Square Kilometre Array Pathfinder](http://arxiv.org/abs/2102.01948) [(PDF)](http://arxiv.org/pdf/2102.01948.pdf)
+
+- We present a search for radio afterglows from long gamma-ray bursts using the Australian Square Kilometre Array Pathfinder (ASKAP).
+- Our search used the Rapid ASKAP Continuum Survey, covering the entire celestial sphere south of declination $+41^\circ$, and three epochs of the Variables and Slow Transients Pilot Survey (Phase 1), covering $\sim 5,000$ square degrees per epoch.
+- The observations we used from these surveys spanned a nine-month period from 2019 April 21 to 2020 January 11.
+- We crossmatched radio sources found in these surveys with 779 well-localised (to $\leq 15''$) long gamma-ray bursts occurring after 2004 and determined whether the associations were more likely afterglow- or host-related through the analysis of optical images.
+- In our search, we detected one radio afterglow candidate associated with GRB 171205A, a local low-luminosity gamma-ray burst with a supernova counterpart SN 2017iuk, in an ASKAP observation 511 days post-burst.
+- We confirmed this detection with further observations of the radio afterglow using the Australia Telescope Compact Array at 859 days and 884 days post-burst.
+- Combining this data with archival data from early-time radio observations, we showed the evolution of the radio spectral energy distribution alone could reveal clear signatures of a wind-like circumburst medium for the burst.
+- Finally, we derived semi-analytical estimates for the microphysical shock parameters of the burst: electron power-law index $p = 2.84$, normalised wind-density parameter $A_* = 3$, fractional energy in electrons $\epsilon_{e} = 0.3$, and fractional energy in magnetic fields $\epsilon_{B} = 0.0002$.
+
 ##### [The AMBRE Project: Origin and evolution of sulfur in the Milky Way](http://arxiv.org/abs/2102.01961) [(PDF)](http://arxiv.org/pdf/2102.01961.pdf)
 
 - Sulfur is a volatile chemical element that plays an important role in tracing the chemical evolution of galaxies.
@@ -203,6 +225,31 @@
 - The values of Hubble constant between the direct measurements from various independent local observations and that inferred from the cosmic microwave background with $\Lambda$-cold-dark-matter model are in tension with persistent significance.
 - In this Letter, we propose a late-time inhomogeneous resolution that a chameleon field coupled to a local overdensity of matter could be trapped at a higher potential energy density as an effective cosmological constant driving the local expansion rate faster than that of the background with lower matter density.
 - We illustrate this mechanism in a toy model that a region with only $20\%$ overdensity of matter is sufficient to resolve the Hubble tension, and the Hubble constant measured with the local distance ladders is enhanced by the chameleon coupled to the Great-Wall overdensities discovered in the large scale structure surveys.
+
+##### [Relation Between Quiescence and Outbursting Properties of GX 339-4](http://arxiv.org/abs/2102.02030) [(PDF)](http://arxiv.org/pdf/2102.02030.pdf)
+
+- Galactic black hole candidate (BHC) GX~339-4 underwent several outbursting phases in the past two and a half decades at irregular intervals of $2-3$ years.
+- Nature of these outbursts in terms of the duration, number of peaks, maximum peak intensity, etc.
+- varies.
+- We present a possible physical reason behind the variation of outbursts.
+- From a physical point of view, if the supply of matter from the companion is roughly constant, the total energy release in an outburst is expected to be proportional to the quiescence period prior to the outburst when the matter is accumulated.
+- We use archival data of RXTE/ASM from January 1996 to June 2011, and MAXI/GSC from August 2009 to July 2020 data.
+- Initial five outbursts of GX~339-4 between 1997 and 2011 were observed by ASM and showed a good linear relation between the accumulation period and the amount of energy released in each outburst, but the outbursts after 2013 behaved quite differently.
+- The 2013, $2017-18$, and $2018-19$ outbursts were of short duration, and incomplete or `failed' in nature.
+- We suggest that the matter accumulated during the quiescence periods prior to these outbursts were not cleared through accretion due to lack of viscosity.
+- The leftover matter was cleared in the immediate next outbursts.
+- Our study thus sheds light on long term accretion dynamics in outbursting sources.
+
+##### [A new panchromatic classification of unclassified Burst Alert Telescope active galactic nuclei](http://arxiv.org/abs/2102.02044) [(PDF)](http://arxiv.org/pdf/2102.02044.pdf)
+
+- We collect data at all frequencies for the new sources classified as unknown active galactic nuclei (AGNs) in the latest Burst Alert Telescope (BAT) all-sky hard X-ray catalog.
+- Focusing on the 36 sources with measured redshift, we compute their spectral energy distribution (SED) from radio to $\gamma$-rays with the aim to classify these objects.
+- We apply emission models that attempt to reproduce the obtained SEDs, including: i) a standard thin accretion disk together with an obscuring torus and a X-ray corona; ii) a two temperature thick advection-dominated flow; iii) an obscured AGN model, accounting for absorption along the line of sight at kiloelectronvolt energies and in the optical band; and iv) a phenomenological model to describe the jet emission in blazar-like objects.
+- We integrate the models with the SWIRE template libraries to account for the emission of the host galaxy.
+- For every source we found a good agreement between data and our model.
+- Considering that the sources were selected in the hard X-ray band, which is rather unaffected by absorption, we expected and found a large fraction of absorbed radio-quiet AGNs (31 out of 36) and some additional rare radio-loud sources (5 out of 36), since the jet emission in hard X-rays is important for aligned jets owing to the boost produced by the beaming effect.
+- With our work we can confirm the hypothesis that a number of galaxies, whose optical spectra lack AGN emission features, host an obscured active nucleus.
+- The approach we used proved to be efficient in rapidly identifying objects, which commonly used methods were not able to classify.
 
 ##### [Radial structure and formation of the Milky Way disc](http://arxiv.org/abs/2102.02082) [(PDF)](http://arxiv.org/pdf/2102.02082.pdf)
 
@@ -257,3 +304,15 @@
 - This is different in the Virgo cluster, where low gas-to-dust ratios inside the virial radius are driven by low HI-to-dust ratios, while H$_2$-to-dust ratios are increased.
 - Resolved observations of NGC1436 show a radial increase in H$_2$-to-dust ratio, and show that low ratios are present throughout the disc.
 - We propose various explanations for the low H$_2$-to-dust ratios in the Fornax cluster, including the more efficient stripping of H$_2$ compared to dust, more efficient enrichment of dust in the star formation process, and altered ISM physics in the cluster environment.
+
+##### [A DG-IMEX method for two-moment neutrino transport: Nonlinear solvers for neutrino-matter coupling](http://arxiv.org/abs/2102.02186) [(PDF)](http://arxiv.org/pdf/2102.02186.pdf)
+
+- Neutrino-matter interactions play an important role in core-collapse supernova (CCSN) explosions as they contribute to both lepton number and/or four-momentum exchange between neutrinos and matter, and thus act as the agent for neutrino-driven explosions.
+- Due to the multiscale nature of neutrino transport in CCSN simulations, an implicit treatment of neutrino-matter interactions is desired, which requires solutions of coupled nonlinear systems in each step of the time integration scheme.
+- In this paper we design and compare nonlinear iterative solvers for implicit systems with energy coupling neutrino-matter interactions commonly used in CCSN simulations.
+- Specifically, we consider electron neutrinos and antineutrinos, which interact with static matter configurations through the Bruenn~85 opacity set.
+- The implicit systems arise from the discretization of a non-relativistic two-moment model for neutrino transport, which employs the discontinuous Galerkin (DG) method for phase-space discretization and an implicit-explicit (IMEX) time integration scheme.
+- In the context of this DG-IMEX scheme, we propose two approaches to formulate the nonlinear systems -- a coupled approach and a nested approach.
+- For each approach, the resulting systems are solved with Anderson-accelerated fixed-point iteration and Newton's method.
+- The performance of these four iterative solvers has been compared on relaxation problems with various degree of collisionality, as well as proto-neutron star deleptonization problems with several matter profiles adopted from spherically symmetric CCSN simulations.
+- Numerical results suggest that the nested Anderson-accelerated fixed-point solver is more efficient than other tested solvers for solving implicit nonlinear systems with energy coupling neutrino-matter interactions.
