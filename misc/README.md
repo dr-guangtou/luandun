@@ -23,7 +23,7 @@
     - `python3 astroph_abstract.py -h`
 
 - Get today's astro-ph pre-prints and output to a Markdown file named `today.md`:
-    - `python3 astroph_abstract.py -t today -o output.md`
+    - `python3 astroph_abstract.py -t today -o today.md`
 
 - Get yesterday's list and only keeps the astroph.GA (Galaxy and Extragalactic) ones in the default `output.md` file:
     - `python3 astroph_abstract.py -t yesterday -s GA`
