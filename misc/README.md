@@ -22,6 +22,10 @@
 - Show help message:
     - `python3 astroph_abstract.py -h`
 
+- Show the search URL and check whether it is working:
+    - `python3 astroph_abstract.py -p`
+    - The arXiv OAI service sometimes is unavailable due to maintenance. If you notice your search is unsuccessful, you can print out the URL and check it using your web browser. 
+
 - Get today's astro-ph pre-prints and output to a Markdown file named `today.md`:
     - `python3 astroph_abstract.py -t today -o today.md`
 
@@ -40,6 +44,14 @@
 - You can access the same function by using 
     - `from astroph_abstract import astroph_abstract`
     - The function also returns an `astropy.table` object that includes all the records from the search.
+
+### Render the Markdown file
+
+- Many software like `Obsidian`, `MWeb`, or `VSCode` Markdown plugin can handle the render of Markdown file with `LaTeX` components.
+- When converting the Markdown file to PDF using `pandoc`, I often encountered some sorts of `LaTeX` error....Still working on it. 
+- If you want to quickly print the file out, you can try the [`grip`](https://github.com/joeyespo/grip) tool:
+    - Just `pip install --upgrade grip`.
+    - Then `grip output.md`, and open the local address in your browser.
 
 ### Problems:
 

@@ -137,7 +137,8 @@ def scrape(url, sleep_time=30, timeout=300, verbose=True):
         except HTTPError as e:
             if e.code == 503:
                 _ = int(e.hdrs.get('retry-after', sleep_time))
-                print('Got 503. Retrying after {0:d} seconds.'.format(sleep_time))
+                if verbose:
+                    print('Got 503. Retrying after {0:d} seconds.'.format(sleep_time))
                 time.sleep(sleep_time)
                 continue
             else:
@@ -180,7 +181,7 @@ def scrape(url, sleep_time=30, timeout=300, verbose=True):
     return results
 
 def astroph_abstract(output='output.md', search_type='user', date_cushion=2.5,
-                     date_from=None, date_until=None, sub_cat=None,
+                     date_from=None, date_until=None, sub_cat=None, print_url=False,
                      verbose=False, sleep_time=30, timeout=300, no_crosslist=True):
     """
     Gather the abstracts of the astro-ph within a period of time, and output a summary
@@ -195,6 +196,10 @@ def astroph_abstract(output='output.md', search_type='user', date_cushion=2.5,
     search_url = BASE + 'from={:s}&until={:s}&metadataPrefix=arXiv&set={:s}'.format(
         _date_str(date_f).strip(), _date_str(date_u).strip(), CAT)
 
+    if print_url:
+        print("\n", search_url, "\n")
+        return
+
     metadata = scrape(search_url, sleep_time=sleep_time, timeout=timeout, verbose=verbose)
 
     paper_records = [organize_meta(meta) for meta in metadata]
@@ -205,7 +210,7 @@ def astroph_abstract(output='output.md', search_type='user', date_cushion=2.5,
     papers = Table(
         [p for p in paper_records if p['created'] >= (
             date_f - datetime.timedelta(days=date_cushion))])
-    
+
     if sub_cat is not None:
         sub_str = " ".join(sub_cat)
         if verbose:
@@ -215,7 +220,7 @@ def astroph_abstract(output='output.md', search_type='user', date_cushion=2.5,
             else:
                 print("Will include cross-listed items")
     else:
-        sub_str = ""
+        sub_str = "All"
     # Filter the search results through sub-categories
     if isinstance(sub_cat, str):
         papers_keep = papers[_filter_sub_class(papers, sub_cat, no_crosslist=no_crosslist)]
@@ -224,13 +229,12 @@ def astroph_abstract(output='output.md', search_type='user', date_cushion=2.5,
             [_filter_sub_class(papers, s, no_crosslist=no_crosslist) for s in sub_cat])]
     else:
         papers_keep = papers
-    
+
     if verbose:
         print("Keep {:d} preprints".format(len(papers_keep)))
 
     # Organize the results into markdown format (line-by-line)
     markdown_list = []
-
 
     if date_f == date_u:
         markdown_list.append("### {:s} [{:s}]".format(_date_str(date_f), sub_str))
@@ -290,12 +294,15 @@ if __name__ == '__main__':
         help="The preprint can be created these days before the `date_from` date.",
         default=2.5)
     parser.add_argument(
-        '-c', '--crosslist', action="store_false", dest='no_crosslist', 
+        '-c', '--crosslist', action="store_false", dest='no_crosslist',
         help="Including cross-list items.",
         default=True)
     parser.add_argument(
-        '-v', '--verbose', action="store_true", dest='verbose', 
+        '-v', '--verbose', action="store_true", dest='verbose',
         help="Print the progress.", default=False)
+    parser.add_argument(
+        '-p', '--print_url', action="store_true", dest='print_url',
+        help="Print the search URL to check.", default=False)
 
     args = parser.parse_args()
 
@@ -303,4 +310,4 @@ if __name__ == '__main__':
         output=args.output, search_type=args.search_type,
         date_cushion=args.date_cushion, date_from=args.date_from, date_until=args.date_until,
         sub_cat=args.sub_cat, verbose=args.verbose, sleep_time=30, timeout=300,
-        no_crosslist=args.no_crosslist)
+        no_crosslist=args.no_crosslist, print_url=args.print_url)
