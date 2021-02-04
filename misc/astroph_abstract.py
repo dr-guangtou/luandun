@@ -31,10 +31,11 @@ PDF_URL = "http://arxiv.org/pdf/{:s}.pdf"
 CAT = "physics:astro-ph"
 SUBCAT = ['GA', 'CO', 'EP', 'HE', 'IM', 'SR']
 
-SEARCH_TYPE = ['today', 'yesterday', 'from_yesterday', 'past_seven', 'user']
+SEARCH_TYPE = ['today', 'tomorrow', 'yesterday', 'from_yesterday', 'past_seven', 'user']
 
 TODAY = datetime.datetime.today().replace(hour=0, minute=0, second=0)
 YESTERDAY = (TODAY - datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0)
+TOMORROW = (TODAY + datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0)
 
 
 def _filter_sub_class(papers, sub_cat, no_crosslist=True):
@@ -78,6 +79,9 @@ def gather_dates(search_type, date_from=None, date_until=None):
     if search_type == 'today':
         date_from = TODAY
         date_until = TODAY
+    elif search_type == 'tomorrow':
+        date_from = TOMORROW
+        date_until = TOMORROW
     elif search_type == 'yesterday':
         date_from = YESTERDAY
         date_until = YESTERDAY
@@ -275,7 +279,7 @@ if __name__ == '__main__':
         default='output.md')
     parser.add_argument(
         '-t', '--type', dest='search_type',
-        help="Type of the search: ['today', 'yesterday', 'from_yesterday', 'past_seven', 'user']",
+        help="Type of the search: ['today', 'tomorrow', 'yesterday', 'from_yesterday', 'past_seven', 'user']",
         default='user')
     parser.add_argument(
         '-f', '--from', dest='date_from',
