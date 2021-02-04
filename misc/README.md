@@ -28,6 +28,7 @@
 
 - Get today's astro-ph pre-prints and output to a Markdown file named `today.md`:
     - `python3 astroph_abstract.py -t today -o today.md`
+    - We also have a `tomorrow` mode. Because sometimes due to timezone difference, you need to search tomorrow to get the most updated list.
 
 - Get yesterday's list and only keeps the astroph.GA (Galaxy and Extragalactic) ones in the default `output.md` file:
     - `python3 astroph_abstract.py -t yesterday -s GA`
@@ -49,6 +50,7 @@
 
 - Many software like `Obsidian`, `MWeb`, or `VSCode` Markdown plugin can handle the render of Markdown file with `LaTeX` components.
 - When converting the Markdown file to PDF using `pandoc`, I often encountered some sorts of `LaTeX` error....Still working on it. 
+    - Try you luck with something like: `pandoc today.md --pdf-engine=xelatex -o today.pdf`
 - If you want to quickly print the file out, you can try the [`grip`](https://github.com/joeyespo/grip) tool:
     - Just `pip install --upgrade grip`.
     - Then `grip output.md`, and open the local address in your browser.
