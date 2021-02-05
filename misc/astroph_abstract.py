@@ -254,8 +254,13 @@ def astroph_abstract(output='output.md', search_type='user', date_cushion=2.5,
                 ' '.join(p['title'].split()), abs_url, pdf_url))
 
         abstract = p['abstract'].replace('\\,', ' ')
-        abstract.replace('et al.', 'et al')
-        abstract.replace('`', '\'')
+        abstract = abstract.replace('et al.', 'et al')
+        abstract = abstract.replace('i.e.', 'i.e')
+        abstract = abstract.replace('etc.', 'etc')
+        abstract = abstract.replace('`', '\'')
+        abstract = abstract.replace('$ ', '$')
+        p['abstract'] = abstract
+
         if not use_nltk:
             markdown_list.append("- {:s}".format(' '.join(abstract.split())))
         else:
