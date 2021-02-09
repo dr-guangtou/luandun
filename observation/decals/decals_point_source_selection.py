@@ -19,7 +19,6 @@ G_MAG_CUT = 23.5 # mag
 
 warnings.simplefilter('ignore', RuntimeWarning)
 warnings.simplefilter('ignore', category=AstropyWarning)
-#from joblib import Parallel, delayed
 
 COL_USE = [
     'BRICKNAME', 'OBJID', 'TYPE', 'RA', 'DEC', 'DCHISQ',
@@ -55,11 +54,17 @@ def select_point_sources(sweep_file, verbose=False):
         print("# There are {:d} objects in the catalog".format(len(sweep)))
 
     # Flag for point sources with detections in all GRZ bands
+    # ALLMASK_G/R = 2:     Saturated pixels
+    # ALLMASK_G/R = 64:    Bleeding trails
     use_mask = (
         np.isfinite(sweep['FLUX_G']) & np.isfinite(sweep['FLUX_R']) &
         np.isfinite(sweep['FLUX_Z']) &
         np.isfinite(sweep['FLUX_IVAR_G']) & np.isfinite(sweep['FLUX_IVAR_R']) &
         np.isfinite(sweep['FLUX_IVAR_Z']) &
+        ((sweep['ALLMASK_G'] & 2) != 2) & ((sweep['ALLMASK_R'] & 2) != 2) &
+        ((sweep['ALLMASK_G'] & 64) != 64) & ((sweep['ALLMASK_R'] & 64) != 64) &
+        (sweep['PSFDEPTH_G'] > 0) & (sweep['PSFDEPTH_R'] > 0) & 
+        (sweep['NOBS_G'] > 1) & (sweep['NOBS_R'] > 1) &
         (sweep['FLUX_G'] > 0) & (sweep['FLUX_R'] > 0) & (sweep['FLUX_Z'] > 0))
     if verbose:
         print("# There are {:d} objects with useful flux in GRZ bands".format(use_mask.sum()))
@@ -69,18 +74,19 @@ def select_point_sources(sweep_file, verbose=False):
     gmag = sweep_flux_to_mag(sweep_use, 'G')
 
     # 5-sigma PSF magnitude limits
-    sweep_use.add_column(Column(data=psf_depth_to_mag(sweep_use, 'G'), name='PSF_MAGLIM_G'))
-    sweep_use.add_column(Column(data=psf_depth_to_mag(sweep_use, 'R'), name='PSF_MAGLIM_R'))
-    sweep_use.add_column(Column(data=psf_depth_to_mag(sweep_use, 'Z'), name='PSF_MAGLIM_Z'))
+    sweep_use.add_column(
+        Column(data=psf_depth_to_mag(sweep_use, 'G'), name='PSF_MAGLIM_G', unit='mag'))
+    sweep_use.add_column(
+        Column(data=psf_depth_to_mag(sweep_use, 'R'), name='PSF_MAGLIM_R', unit='mag'))
+    # sweep_use.add_column(Column(data=psf_depth_to_mag(sweep_use, 'Z'), name='PSF_MAGLIM_Z'))
     # Designed depth for DECaLS:
     #   Required 5σ depths of g=24.0, r=23.4 and z=22.5 for an ELG galaxy with
     #   half-light radius of 0.45 arcsec.
 
     # Flag for point sources with S/N > 5 detections in all GRZ bands
-    good_mask = ((sweep_use['FLUX_G'] * np.sqrt(sweep_use['FLUX_IVAR_G']) > 5.) &
-                 (sweep_use['FLUX_R'] * np.sqrt(sweep_use['FLUX_IVAR_R']) > 5.) &
-                 (sweep_use['PSF_MAGLIM_G'] >= 24.0) & (sweep_use['NOBS_G'] > 1) &
-                 (sweep_use['PSF_MAGLIM_R'] >= 23.4) & (sweep_use['NOBS_R'] > 1) &
+    good_mask = ((sweep_use['FLUX_G'] * np.sqrt(sweep_use['FLUX_IVAR_G']) > 3.) &
+                 (sweep_use['FLUX_R'] * np.sqrt(sweep_use['FLUX_IVAR_R']) > 3.) &
+                 (sweep_use['PSF_MAGLIM_G'] >= 24.0) & (sweep_use['PSF_MAGLIM_R'] >= 23.4) &
                  (gmag <= G_MAG_CUT))
     if verbose:
         print("# There are {:d} objects with S/N>5 detections in GRZ bands".format(good_mask.sum()))
