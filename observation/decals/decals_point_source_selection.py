@@ -25,8 +25,8 @@ COL_USE = [
     'BRICKNAME', 'OBJID', 'TYPE', 'RA', 'DEC', 'DCHISQ',
     'NOBS_G', 'NOBS_R', 'NOBS_Z', 'ANYMASK_G', 'ANYMASK_R',
     'ALLMASK_G', 'ALLMASK_R', 'PSFSIZE_G', 'PSFSIZE_R',
-    'PSF_MAGLIM_G', 'PSF_MAGLIM_R', 'SHAPE_R', 
-    'FLAG', 'MAG_G_DERED', 'MAG_R_DERED', 'MAG_Z_DERED', 
+    'PSF_MAGLIM_G', 'PSF_MAGLIM_R', 'SHAPE_R',
+    'FLAG', 'MAG_G_DERED', 'MAG_R_DERED', 'MAG_Z_DERED',
     'MASKBITS', 'FITBITS'
 ]
 
@@ -55,60 +55,55 @@ def select_point_sources(sweep_file, verbose=False):
         print("# There are {:d} objects in the catalog".format(len(sweep)))
 
     # Flag for point sources with detections in all GRZ bands
-    use_mask = ((sweep['FLUX_G'] > 0) & (sweep['FLUX_R'] > 0) & (sweep['FLUX_Z'] > 0))
+    use_mask = (
+        np.isfinite(sweep['FLUX_G']) & np.isfinite(sweep['FLUX_R']) &
+        np.isfinite(sweep['FLUX_Z']) &
+        np.isfinite(sweep['FLUX_IVAR_G']) & np.isfinite(sweep['FLUX_IVAR_R']) &
+        np.isfinite(sweep['FLUX_IVAR_Z']) &
+        (sweep['FLUX_G'] > 0) & (sweep['FLUX_R'] > 0) & (sweep['FLUX_Z'] > 0))
     if verbose:
         print("# There are {:d} objects with useful flux in GRZ bands".format(use_mask.sum()))
+    sweep_use = sweep[use_mask]
 
     # g-band magnitude
-    gmag = sweep_flux_to_mag(sweep, 'G')
+    gmag = sweep_flux_to_mag(sweep_use, 'G')
 
     # 5-sigma PSF magnitude limits
-    sweep.add_column(Column(data=psf_depth_to_mag(sweep, 'G'), name='PSF_MAGLIM_G'))
-    sweep.add_column(Column(data=psf_depth_to_mag(sweep, 'R'), name='PSF_MAGLIM_R'))
-    sweep.add_column(Column(data=psf_depth_to_mag(sweep, 'Z'), name='PSF_MAGLIM_Z'))
+    sweep_use.add_column(Column(data=psf_depth_to_mag(sweep_use, 'G'), name='PSF_MAGLIM_G'))
+    sweep_use.add_column(Column(data=psf_depth_to_mag(sweep_use, 'R'), name='PSF_MAGLIM_R'))
+    sweep_use.add_column(Column(data=psf_depth_to_mag(sweep_use, 'Z'), name='PSF_MAGLIM_Z'))
     # Designed depth for DECaLS:
-    # Required 5σ depths of g=24.0, r=23.4 and z=22.5 for an ELG galaxy with half-light radius of 0.45 arcsec.
+    #   Required 5σ depths of g=24.0, r=23.4 and z=22.5 for an ELG galaxy with
+    #   half-light radius of 0.45 arcsec.
 
     # Flag for point sources with S/N > 5 detections in all GRZ bands
-    good_mask = ((sweep['FLUX_G'] * np.sqrt(sweep['FLUX_IVAR_G']) > 5.) &
-                 (sweep['FLUX_R'] * np.sqrt(sweep['FLUX_IVAR_R']) > 5.) &
-                 (sweep['PSF_MAGLIM_G'] >= 24.0) & (sweep['NOBS_G'] > 1) &
-                 (sweep['PSF_MAGLIM_R'] >= 23.4) & (sweep['NOBS_R'] > 1) &
+    good_mask = ((sweep_use['FLUX_G'] * np.sqrt(sweep_use['FLUX_IVAR_G']) > 5.) &
+                 (sweep_use['FLUX_R'] * np.sqrt(sweep_use['FLUX_IVAR_R']) > 5.) &
+                 (sweep_use['PSF_MAGLIM_G'] >= 24.0) & (sweep_use['NOBS_G'] > 1) &
+                 (sweep_use['PSF_MAGLIM_R'] >= 23.4) & (sweep_use['NOBS_R'] > 1) &
                  (gmag <= G_MAG_CUT))
     if verbose:
         print("# There are {:d} objects with S/N>5 detections in GRZ bands".format(good_mask.sum()))
-        print("# There are {:d} useful objects".format((use_mask & good_mask).sum()))
-
-    sweep_use = sweep[use_mask & good_mask]
+    sweep_good = sweep_use[good_mask]
 
     # In DR9, the issue is fixed, so just 'PSF' and 'DUP'
-    psf_mask = sweep_use['TYPE'] == u'PSF'
-    dup_mask = sweep_use['TYPE'] == u'DUP'
+    psf_mask = sweep_good['TYPE'] == u'PSF'
+    dup_mask = sweep_good['TYPE'] == u'DUP'
     # Convert FWHM into half-light radius
-    psf_r50 = (sweep_use['PSFSIZE_R'] / 2.35482) * 1.17741
+    psf_r50 = (sweep_good['PSFSIZE_R'] / 2.35482) * 1.17741
     # Round exponential model
-    rex_mask = (sweep_use['TYPE'] == u'REX') & (sweep_use['SHAPE_R'] <= psf_r50)
-    # Exponential model:
-    #exp_mask = (sweep_use['TYPE'] == u'EXP') & (sweep_use['SHAPE_R'] <= psf_r50)
-    # Sersic model
-    #ser_mask = (sweep_use['TYPE'] == u'SER') & (sweep_use['SHAPE_R'] <= psf_r50)
+    rex_mask = (sweep_good['TYPE'] == u'REX') & (sweep_good['SHAPE_R'] <= psf_r50)
     if verbose:
         print("# There are {:d} PSF objects".format(psf_mask.sum()))
         print("# There are {:d} DUP objects".format(dup_mask.sum()))
         print("# There are {:d} Small REX objects".format(rex_mask.sum()))
-        #print("# There are {:d} Small EXP objects".format(exp_mask.sum()))
-        #print("# There are {:d} Small SER objects".format(ser_mask.sum()))
 
-    sweep_use.add_column(Column(data=np.full(len(sweep_use), 0, dtype=np.int), name='FLAG'))
-    sweep_use['FLAG'][psf_mask | dup_mask] = 1
-    sweep_use['FLAG'][rex_mask] = 2
-    #sweep_use['FLAG'][exp_mask] = 3
-    #sweep_use['FLAG'][ser_mask] = 4
+    sweep_good.add_column(Column(data=np.full(len(sweep_good), 0, dtype=np.int), name='FLAG'))
+    sweep_good['FLAG'][psf_mask | dup_mask] = 1
+    sweep_good['FLAG'][rex_mask] = 2
 
-    #psrc = copy.deepcopy(
-    #    sweep_use[psf_mask | dup_mask | rex_mask | exp_mask | ser_mask])
     psrc = copy.deepcopy(
-        sweep_use[psf_mask | dup_mask | rex_mask])
+        sweep_good[psf_mask | dup_mask | rex_mask])
 
     if len(psrc) < 1 and verbose:
         print("# No useful point source in {:s}".format(sweep_file))
@@ -118,19 +113,11 @@ def select_point_sources(sweep_file, verbose=False):
     psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'G'), name='MAG_G_DERED'))
     psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'R'), name='MAG_R_DERED'))
     psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'Z'), name='MAG_Z_DERED'))
-    #psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'W1'), name='MAG_W1_DERED'))
-    #psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'W2'), name='MAG_W2_DERED'))
-    #psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'W3'), name='MAG_W3_DERED'))
-    #psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'W4'), name='MAG_W4_DERED'))
 
     # Convert flux invar into magnitude error
     psrc.add_column(Column(data=sweep_mag_err(psrc, 'G'), name='MAG_G_ERR'))
     psrc.add_column(Column(data=sweep_mag_err(psrc, 'R'), name='MAG_R_ERR'))
     psrc.add_column(Column(data=sweep_mag_err(psrc, 'Z'), name='MAG_Z_ERR'))
-    #psrc.add_column(Column(data=sweep_mag_err(psrc, 'W1'), name='MAG_W1_ERR'))
-    #psrc.add_column(Column(data=sweep_mag_err(psrc, 'W2'), name='MAG_W2_ERR'))
-    #psrc.add_column(Column(data=sweep_mag_err(psrc, 'W3'), name='MAG_W3_ERR'))
-    #psrc.add_column(Column(data=sweep_mag_err(psrc, 'W4'), name='MAG_W4_ERR'))
 
     # Only keep the useful columns
     psrc_use = psrc[COL_USE]
@@ -156,6 +143,7 @@ def run(args):
     # Test
     if args.test:
         _ = select_point_sources(sweep_left[0], verbose=True)
+        return
 
     if args.njobs == 1:
         for sweep in sweep_left:
