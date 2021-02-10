@@ -116,14 +116,14 @@ def select_point_sources(sweep_file, verbose=False):
         return
 
     # Convert flux into magnitude after MW extinction correction
-    psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'G'), name='MAG_G_DERED'))
-    psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'R'), name='MAG_R_DERED'))
-    psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'Z'), name='MAG_Z_DERED'))
+    psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'G'), name='MAG_G_DERED', unit='mag'))
+    psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'R'), name='MAG_R_DERED', unit='mag'))
+    psrc.add_column(Column(data=sweep_flux_to_mag(psrc, 'Z'), name='MAG_Z_DERED', unit='mag'))
 
     # Convert flux invar into magnitude error
-    psrc.add_column(Column(data=sweep_mag_err(psrc, 'G'), name='MAG_G_ERR'))
-    psrc.add_column(Column(data=sweep_mag_err(psrc, 'R'), name='MAG_R_ERR'))
-    psrc.add_column(Column(data=sweep_mag_err(psrc, 'Z'), name='MAG_Z_ERR'))
+    psrc.add_column(Column(data=sweep_mag_err(psrc, 'G'), name='MAG_G_ERR', unit='mag'))
+    psrc.add_column(Column(data=sweep_mag_err(psrc, 'R'), name='MAG_R_ERR', unit='mag'))
+    psrc.add_column(Column(data=sweep_mag_err(psrc, 'Z'), name='MAG_Z_ERR', unit='mag'))
 
     # Only keep the useful columns
     psrc_use = psrc[COL_USE]
