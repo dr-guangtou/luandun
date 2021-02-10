@@ -95,23 +95,23 @@ def check_psrc_cat(cat_name):
 
     psf = ax1.imshow(
         psf_hist, origin='lower', extent=radec_extent, aspect='auto', interpolation=None)
-    fig.colorbar(psf, ax=ax1, orientation="horizontal", pad=0.1)
+    fig.colorbar(psf.T, ax=ax1, orientation="horizontal", pad=0.1)
 
     ax2 = plt.subplot(gs[1])
     ax2.set_title('REX', fontsize=25)
 
     rex = ax2.imshow(
         rex_hist, origin='lower', extent=radec_extent, aspect='auto', interpolation=None)
-    fig.colorbar(rex, ax=ax2, orientation="horizontal", pad=0.1)
+    fig.colorbar(rex.T, ax=ax2, orientation="horizontal", pad=0.1)
 
     ax3 = plt.subplot(gs[2])
     ax3.set_title('Ratio', fontsize=25)
 
     ratio = ax3.imshow(
-        rex_hist / psf_hist, origin='lower', extent=radec_extent, aspect='auto',
+        (rex_hist / psf_hist).T, origin='lower', extent=radec_extent, aspect='auto',
         interpolation=None)
     fig.colorbar(ratio, ax=ax3, orientation="horizontal", pad=0.1)
-    fig.save(cat_name.replace('.fits', '.png'), dpi=150)
+    fig.savefig(cat_name.replace('.fits', '.png'), dpi=150)
     plt.close(fig)
 
     return {
