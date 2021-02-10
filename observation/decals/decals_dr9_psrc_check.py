@@ -94,15 +94,15 @@ def check_psrc_cat(cat_name):
     ax1.set_title('PSF', fontsize=25)
 
     psf = ax1.imshow(
-        psf_hist, origin='lower', extent=radec_extent, aspect='auto', interpolation=None)
-    fig.colorbar(psf.T, ax=ax1, orientation="horizontal", pad=0.1)
+        psf_hist.T, origin='lower', extent=radec_extent, aspect='auto', interpolation=None)
+    fig.colorbar(psf, ax=ax1, orientation="horizontal", pad=0.1)
 
     ax2 = plt.subplot(gs[1])
     ax2.set_title('REX', fontsize=25)
 
     rex = ax2.imshow(
-        rex_hist, origin='lower', extent=radec_extent, aspect='auto', interpolation=None)
-    fig.colorbar(rex.T, ax=ax2, orientation="horizontal", pad=0.1)
+        rex_hist.T, origin='lower', extent=radec_extent, aspect='auto', interpolation=None)
+    fig.colorbar(rex, ax=ax2, orientation="horizontal", pad=0.1)
 
     ax3 = plt.subplot(gs[2])
     ax3.set_title('Ratio', fontsize=25)
