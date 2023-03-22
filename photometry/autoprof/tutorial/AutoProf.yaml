@@ -1,0 +1,57 @@
+model_type: sersic galaxy model
+name: model with target
+parameters:
+  Ie:
+    name: Ie
+    uncertainty: 0.1227574869049998
+    units: log10(flux/arcsec^2)
+    value: 0.12114503451194084
+  PA:
+    cyclic: true
+    limits: !!python/tuple
+    - 0
+    - 3.141592653589793
+    name: PA
+    uncertainty: 0.19192554240755721
+    units: radians
+    value: 1.7096962229848938
+  Re:
+    limits: !!python/tuple
+    - 0
+    - null
+    name: Re
+    uncertainty: 3.178048287131556
+    units: arcsec
+    value: 17.270411694409677
+  center:
+    name: center
+    uncertainty:
+    - 0.19463782391737522
+    - 0.2698382823511597
+    units: arcsec
+    value:
+    - 92.75355088720687
+    - 95.230126766753
+  n:
+    limits: !!python/tuple
+    - 0.36
+    - 8
+    name: n
+    uncertainty: 0.26548222826853124
+    units: none
+    value: 1.8389426743785622
+  q:
+    limits: !!python/tuple
+    - 0
+    - 1
+    name: q
+    uncertainty: 0.08641708083482062
+    units: b/a
+    value: 0.7414627346698237
+window:
+  origin: !!python/tuple
+  - 0.0
+  - 0.0
+  shape: !!python/tuple
+  - 183.4
+  - 183.4
