@@ -1,212 +1,112 @@
-### 2021-02-19 [GA CO IM HE]
+##### [Spatial and orbital planes of the Milky Way satellites: unusual but consistent with $\Lambda$CDM](http://arxiv.org/abs/2209.02714) [(PDF)](http://arxiv.org/pdf/2209.02714.pdf)
 
-##### [Dust temperature in ALMA $\hbox{[C $\scriptstyle\rm II $]}$-detected high-$z$ galaxies](http://arxiv.org/abs/2102.08950) [(PDF)](http://arxiv.org/pdf/2102.08950.pdf)
+- We examine the spatial distribution and orbital pole correlations of satellites in a suite of zoom-in high-resolution dissipationless simulations of Miky Way (MW) sized haloes.
+- We use the measured distribution to estimate the incidence of satellite configurations as flattened and as correlated in their orbital pole distribution as satellite system of the Milky Way.
+- We confirm that this incidence is sensitive to the radial distribution of subhaloes and thereby to the processes that affect it, such as artificial disruption due to numerical effects and disruption due to the central disk.
+- Controlling for the resolution effects and bracketing the effects of the disk, we find that the MW satellite system is somewhat unusual (at the $\approx 2-3\sigma$level) but is statistically consistent with the $\Lambda$CDM model, in general agreement with results and conclusions of other recent studies.
 
-- At redshift $z>5$the far-infrared (FIR) continuum spectra of main-sequence galaxies are sparsely sampled, often with a single data point.
-- The dust temperature $T_{\rm d, SED}$thus has to be assumed in the FIR continuum fitting.
-- This introduces large uncertainties regarding the derived dust mass ($M_{\rm d}$), FIR luminosity, and obscured fraction of the star formation rate.
-- These are crucial quantities to quantify the effect of dust obscuration in high-$z$galaxies.
-- To overcome observations limitations, we introduce a new method that combines dust continuum information with the overlying $\hbox{[C $\scriptstyle\rm II $]} 158\mu$m line emission.
-- By breaking the $M_{\rm d} - T_{\rm d, SED}$degeneracy, with our method, we can reliably constrain the dust temperature with a single observation at $158\mu$m.
-- This method can be applied to all ALMA and NOEMA $\hbox{[C $\scriptstyle\rm II $]}$observations and exploited in ALMA Large Programs such as ALPINE and REBELS targeting $\hbox{[C $\scriptstyle\rm II $]}$emitters at high-$z$.
-- We also provide a physical interpretation of the empirical relation recently found between $molecular$gas mass and $\hbox{[C $\scriptstyle\rm II $]}$luminosity.
-- We derive an analogous relation linking the $total$gas surface density and $\hbox{[C $\scriptstyle\rm II $]}$surface brightness.
-- By combining the two, we predict the cosmic evolution of the surface density ratio $\Sigma_{\rm H_2} / \Sigma_{\rm gas}$.
-- We find that $\Sigma_{\rm H_2} / \Sigma_{\rm gas}$slowly increases with redshift, which is compatible with current observations at $0 < z < 4$.
+##### [A MUSE view of the massive merging galaxy cluster ACT-CL J0102-4915 (El Gordo) at z = 0.87: robust strong lensing model and data release](http://arxiv.org/abs/2209.02718) [(PDF)](http://arxiv.org/pdf/2209.02718.pdf)
 
-##### [The jet collimation profile at high resolution in BL Lacertae](http://arxiv.org/abs/2102.08952) [(PDF)](http://arxiv.org/pdf/2102.08952.pdf)
+- We present a detailed strong lensing analysis of the massive and distant ($z=0.870$) galaxy cluster ACT-CL J0102$-$4915 (ACT0102, also known as El Gordo), taking advantage of new spectroscopic data from the Multi Unit Spectroscopic Explorer (MUSE) on the Very Large Telescope, and archival imaging from the Hubble Space Telescope.
+- Thanks to the MUSE data, we measure secure redshifts for 374 single objects, including 23 multiply lensed galaxies, and 167 cluster members of ACT0102.
+- The observed positions of 56 multiple images, along with their new spectroscopic redshift measurements, are used as constraints for our strong lensing model.
+- Remarkably, some multiple images are detected out to a large projected distance of $\approx 1$Mpc from the brightest cluster galaxy, allowing us to estimate a projected total mass value of $1.84_{-0.04}^{+0.03} \times 10^{15} \rm M_{\odot}$within that radius.
+- We find that we need two extended cluster mass components, the mass contributions from the cluster members and the additional lensing effect of a foreground ($z=0.633$) group of galaxies, to predict the positions of all multiple images with a root mean square offset of $0.75"$.
+- The main cluster-scale mass component is centered very closely to the brightest cluster galaxy and the other extended mass component is located in the north-west region of the cluster.
+- These two mass components have very similar values of mass projected within 300 kpc from their centers, namely $2.29_{-0.10}^{+0.09}\times10^{14} \rm M_{\odot}$and $2.10_{-0.09}^{+0.08}\times10^{14} \rm M_{\odot}$, in agreement with the major merging scenario of ACT0102.
+- We make publicly available the lens model, including the magnification maps and posterior distributions of the model parameter values, as well as the full spectroscopic catalogue containing all redshift measurements obtained with MUSE.
 
-- Controversial studies on the jet collimation profile of BL Lacertae (BL Lac), the eponymous blazar of BL Lac objects class, complicate the scenario in this already puzzling class of objects.
-- Understanding the jet geometry, in connection with the jet kinematics and the physical conditions in the surrounding medium, is fundamental to better constrain the formation, acceleration and collimation mechanisms in extragalactic jets.
-- With the aim of investigating the jet geometry in the innermost regions of the jet of BL Lac, and solving the controversy, we explore the radio jet in this source, using high resolution millimeter-wave VLBI data.
-- We collect 86GHz GMVA and 43GHz VLBA data to obtain stacked images that we use to infer the jet collimation profile by means of two comparable methods.
-- We analyze the kinematics at 86GHz, and we discuss it in the context of the jet expansion.
-- Finally we consider a possible implication of the Bondi sphere in shaping the different expanding region observed along the jet.
-- We found that the jet in BL Lac expands with an overall conical geometry.
-- A higher expanding rate region is observed between ~5 and 10 pc (de-projected) from the black hole.
-- Such a region is associated with the decrease in brightness usually observed in high-frequency VLBI images of BL Lac.
-- The jet retrieves the original jet expansion around 17 pc, where the presence of a recollimation shock is supported by both the jet profile and the 15GHz kinematics (MOJAVE survey).
-- The change in the jet expansion profile occurring at ~5 pc could be associated with a change in the external pressure profile in correspondence of the Bondi radius (~3.3X10$^5$$R_s$).
+##### [The Poor Old Heart of the Milky Way](http://arxiv.org/abs/2209.02722) [(PDF)](http://arxiv.org/pdf/2209.02722.pdf)
 
-##### [Weighing the Galactic disk using phase-space spirals I: Tests on one-dimensional simulations](http://arxiv.org/abs/2102.08955) [(PDF)](http://arxiv.org/pdf/2102.08955.pdf)
+- Massive disk galaxies like our Milky Way should host an ancient, metal-poor, and centrally concentrated stellar population.
+- This population reflects the star formation and enrichment in the few most massive progenitor components that coalesced at high redshift to form the proto-Galaxy.
+- While metal-poor stars are known to reside in the inner few kiloparsecs of our Galaxy, current data do not yet provide a comprehensive picture of such a metal-poor "heart" of the Milky Way.
+- We use information from Gaia DR3, especially the XP spectra, to construct a sample of 2 million bright (BP $<15.5$mag) giant stars within $30^\circ$of the Galactic Center with robust [M/H] estimates, $\delta$[M/H] $\lesssim 0.1$.
+- For most sample members we can calculate orbits based on Gaia RVS velocities and astrometry.
+- This sample reveals an extensive, ancient, and metal-poor population that includes $\sim 18,000$stars with $-2.7<$[M/H] $<-1.5$, representing a stellar mass of $\gtrsim 5\times 10^7$M$_\odot$.
+- The spatial distribution of these [M/H] $<-1.5$stars has a Gaussian extent of only $\sigma_{\mathrm{R_{GC}}} \sim 2.7$kpc around the Galactic center, with most of these orbits being confined to the inner Galaxy.
+- At high orbital eccentricities, there is clear evidence for accreted halo stars in their pericentral orbit phase.
+- Stars with [M/H] $< -2$show no net rotation, whereas those with [M/H] $\sim -1$are rotation dominated.
+- Most of the tightly bound stars show $[\alpha/\text{Fe}]$-enhancement and [Al/Fe]-[Mn/Fe] abundance patterns expected for an origin in the more massive portions of the proto-Galaxy.
+- These central, metal-poor stars most likely predate the oldest part of the disk ($\tau_{\text{age}}\approx 12.5$Gyrs), which implies that they formed at $z\gtrsim 5$, forging the proto-Milky Way.
 
-- We present a new method for inferring the gravitational potential of the Galactic disk, using the time-varying structure of a phase-space spiral in the $(z,w)$-plane (where $z$and $w$represent vertical position and vertical velocity).
-- Our method of inference extracts information from the shape of the spiral, and disregards the bulk density distribution that is usually used to perform dynamical mass measurements.
-- In this manner, it is complementary to traditional methods that are based on the assumption of a steady state.
-- Our method consists of fitting an analytical model for the phase-space spiral to data, where the spiral is seen as a perturbation of the stellar number density in the $(z,w)$-plane.
-- We tested our method on one-dimensional simulations, which were initiated in a steady state and then perturbed by an external force similar to that of a passing satellite.
-- We were able to retrieve the true gravitational potentials of the simulations with high accuracy.
-- The gravitational potential at 400-500 parsec distance from the disk mid-plane was inferred with an error of only a few percent.
-- This is a first paper of a series in which we plan to test and refine our method on more complex simulations, as well as apply our method to Gaia data.
+##### [A Generative Model for Quasar Spectra](http://arxiv.org/abs/2209.02725) [(PDF)](http://arxiv.org/pdf/2209.02725.pdf)
 
-##### [Infrared emission of $z \sim 6$ galaxies: AGN imprints](http://arxiv.org/abs/2102.08956) [(PDF)](http://arxiv.org/pdf/2102.08956.pdf)
+- We build a multi-output generative model for quasar spectra and the properties of their black hole engines, based on a Gaussian process latent-variable model.
+- This model treats every quasar as a vector of latent properties such that the spectrum and all physical properties of the quasar are associated with non-linear functions of those latent parameters; the Gaussian process kernel functions define priors on the function space.
+- Our generative model is trained with a justifiable likelihood function that allows us to treat heteroscedastic noise and missing data correctly, which is crucial for all astrophysical applications.
+- It can predict simultaneously unobserved spectral regions, as well as the physical properties of quasars in held-out test data.
+- We apply the model to rest-frame ultraviolet and optical quasar spectra for which precise black hole masses (based on reverberation mapping measurements) are available.
+- Unlike reverberation-mapping studies, which require multi-epoch data, our model predicts black hole masses from single-epoch spectra, even with limited spectral coverage.
+- We demonstrate the capabilities of the model by predicting black hole masses and unobserved spectral regions.
+- We find that we predict black hole masses at close to the best possible accuracy.
 
-- We investigate the infrared (IR) emission of high-redshift ($z\sim 6$), highly star-forming (${ {\rm SFR} > 100}$$M_{\rm \odot} {\rm yr}^{-1}$) galaxies, with/without Active Galactic Nuclei (AGN), using a suite of cosmological simulations featuring dust radiative transfer.
-- Synthetic Spectral Energy Distributions (SEDs) are used to quantify the relative contribution of stars/AGN to dust heating.
-- In dusty (${M_{\rm d}\gtrsim 3\times 10^7 M_{\rm \odot}}$) galaxies, $\gtrsim 50-90 \%$of the UV radiation is obscured by dust inhomogeneities on scales ${\gtrsim 100}$pc.
-- In runs with AGN, a clumpy, warm ($\approx 250$K) dust component co-exists with a colder ($\approx 60$K) and more diffuse one, heated by stars.
-- Warm dust provides up to ${50 \%}$of the total IR luminosity, but only $\lesssim 0.1 \%$of the total mass content.
-- The AGN boosts the MIR flux by ${10-100 \times}$with respect to star forming galaxies, without significantly affecting the FIR.
-- Our simulations successfully reproduce the observed SED of bright (${M_{\rm UV}\sim -26}$) ${z\sim 6}$quasars, and show that these objects are part of complex, dust-rich merging systems, containing multiple sources (accreting BHs and/or star forming galaxies) in agreement with recent HST and ALMA observations.
-- Our results show that the proposed ORIGINS missions will be able to investigate the MIR properties of dusty star forming galaxies and to obtain good quality spectra of bright quasars at $z\sim 6$.
-- Finally, the MIR-to-FIR flux ratio of faint (${M_{\rm UV}\sim -24}$) AGN is ${>10\times}$higher than for normal star forming galaxies.
-- This implies that combined JWST/ORIGINS/ALMA observations will be crucial to identify faint and/or dust-obscured AGN in the distant Universe.
+##### [Shaken, not blown: the gentle baryonic feedback of nearby starburst dwarf galaxies](http://arxiv.org/abs/2209.02726) [(PDF)](http://arxiv.org/pdf/2209.02726.pdf)
 
-##### [Non-universality of the mass function: dependence on the growth rate and power spectrum shape](http://arxiv.org/abs/2102.08958) [(PDF)](http://arxiv.org/pdf/2102.08958.pdf)
+- Baryonic feedback is expected to play a key role in regulating the star formation of low-mass galaxies by producing galaxy-scale winds associated with mass-loading factors $\beta\!\sim\!1\!-\!50$.
+- We have tested this prediction using a sample of 19 nearby systems with stellar masses $10^7\!<\!M_\star/{\rm M}_{\odot}\!<\!10^{10}$, mostly lying above the main sequence of star-forming galaxies.
+- We used MUSE@VLT optical integral field spectroscopy to study the warm ionised gas kinematics of these galaxies via a detailed modelling of their H$\alpha$emission line.
+- The ionised gas is characterised by irregular velocity fields, indicating the presence of non-circular motions of a few tens of km/s within galaxy discs, but with intrinsic velocity dispersion of $40$-$60$km/s that are only marginally larger than those measured in main-sequence galaxies.
+- Galactic winds, defined as gas at velocities larger than the galaxy escape speed, encompass only a few percent of the observed fluxes.
+- Mass outflow rates and loading factors are strongly dependent on $M_\star$, star formation rate (SFR), SFR surface density and specific SFR.
+- For $M_\star$of $10^8$M$_\odot$we find $\beta\simeq0.02$, which is more than two orders of magnitude smaller than the values predicted by theoretical models of galaxy evolution.
+- In our galaxy sample, baryonic feedback stimulates a gentle gas cycle rather than causing a large-scale blow out.
 
-- The abundance of dark matter haloes is one of the key probes of the growth of structure and expansion history of the Universe.
-- Theoretical predictions for this quantity usually assume that, when expressed in a certain form, it depends only on the mass variance of the linear density field.
-- However, cosmological simulations have revealed that this assumption breaks, leading to 10-20% systematic effects.
-- In this paper we employ a specially-designed suite of simulations to further investigate this problem.
-- Specifically, we carry out cosmological N-body simulations where we systematically vary growth history at a fixed linear density field, or vary the power spectrum shape at a fixed growth history.
-- We show that the halo mass function generically depends on these quantities, thus showing a clear signal of non-universality.
-- Most of this effect can be traced back to the way in which the same linear fluctuation grows differently into the nonlinear regime depending on details of its assembly history.
-- With these results, we propose a parameterization with explicit dependence on the linear growth rate and power spectrum shape.
-- Using an independent suite of simulations, we show that this fitting function accurately captures the mass function of haloes over cosmologies spanning a vast parameter space, including massive neutrinos and dynamical dark energy.
-- Finally, we employ this tool to improve the accuracy of so-called cosmology-rescaling methods and show they can deliver 2% accurate predictions for the halo mass function over the whole range of currently viable cosmologies.
+##### [BASS XXXVI: Constraining the Local Supermassive Black Hole - Halo Connection with BASS DR2 AGN](http://arxiv.org/abs/2209.02728) [(PDF)](http://arxiv.org/pdf/2209.02728.pdf)
 
-##### [X-raying the galaxy pair Arp 41: no collision in NGC 1232 and three ultraluminous sources in NGC 1232A](http://arxiv.org/abs/2102.08961) [(PDF)](http://arxiv.org/pdf/2102.08961.pdf)
+- We investigate the connection between supermassive black holes (SMBHs) and their host dark matter halos in the local universe using the clustering statistics and luminosity function of AGN from the Swift/BAT AGN Spectroscopic survey (BASS DR2).
+- By forward-modeling AGN activity into snapshot halo catalogs from N-body simulations, we test a scenario in which SMBH mass correlates with dark matter (sub)halo mass for fixed stellar mass.
+- We compare this to a model absent of this correlation, where stellar mass alone determines the SMBH mass.
+- We find that while both simple models are able to largely reproduce the abundance and overall clustering of AGN, the model in which black hole mass is tightly correlated with halo mass is preferred by the data by $1.8\sigma$.
+- When including an independent measurement on the black hole mass-halo mass correlation, this model is preferred by $4.6\sigma$.
+- We show that the clustering trends with black hole mass can further break the degeneracies between the two scenarios, and that our preferred model reproduces the measured clustering differences on 1-halo scales between large and small black hole masses.
+- These results indicate that the halo binding energy is fundamentally connected to the growth of supermassive black holes.
 
-- We studied the apparent galaxy pair NGC 1232 / NGC 1232A with Chandra, looking for evidence of interactions and collisions.
-- We report that there is no cloud of diffuse emission in NGC 1232, contrary to previous claims in the literature.
-- Instead, we find that the small "companion" galaxy NGC 1232A contains three ultraluminous X-ray sources (ULXs) with peak 0.3-10 keV luminosities above 10^{40} erg/s (assuming a cosmological distance of 93 Mpc for this galaxy).
-- For its mass, morphology, metal abundance and bright ULX population, NGC 1232A is analogous to the more nearby late-type spiral NGC 1313.
+##### [HubPUG: Proper Motions for Local Group Dwarfs observed with HST utilizing Gaia as a Reference Frame](http://arxiv.org/abs/2209.02751) [(PDF)](http://arxiv.org/pdf/2209.02751.pdf)
 
-##### [Good and Proper: Self-similarity of N-body Simulations with Proper Force Softening](http://arxiv.org/abs/2102.08972) [(PDF)](http://arxiv.org/pdf/2102.08972.pdf)
+- We present the method behind HubPUG, a software tool built for recovering systemic proper motions (PMs) of Hubble Space Telescope (HST) fields with two epochs of observations by utilizing stars observed by Gaia as a foreground frame of reference.
+- HST PM experiments have typically relied on the use of distant background galaxies or quasi-stellar objects (QSOs) as stationary sources against which to measure PMs.
+- Without consistent profiles, background galaxies are more difficult to centroid, but benefit on-aggregate from their large numbers.
+- QSOs, though they can be fit with stellar point-spread functions, are sparse, with most fields containing none.
+- Historically, the use of stars as references against which to measure PMs would have been difficult because they have individual PMs of their own.
+- However, Gaia has now provided positions and PMs for over 1.4 billion stars, which are much more likely to be well-imaged in the fields around targets versus background sources, have predictable stellar profiles, and require less observing time per-image for good signal-to-noise.
+- This technique allows us to utilize the power of Gaia to measure the PM of targets too faint for Gaia to observe itself.
+- We have recovered PMs for the Milky Way satellites Sculptor and Draco with comparable uncertainties over HST-only and Gaia-only measurements, limited primarily by the current capabilities of the Gaia data.
+- We also show the promise of this method for satellites of M31 with a new PM measurement for Andromeda VII.
 
-- Analysis of self-similarity in scale-free $N$-body simulations reveals the spatial and temporal scales for which statistics measured in cosmological simulations are converged to the physical continuum limit.
-- We examine how the range of scales in which the two-point correlation function is converged depends on the force softening length and whether it is held constant in comoving or proper coordinates.
-- We find that a proper softening that reaches roughly 1/30th of the inter-particle spacing by the end of the simulation resolves the same spatial and temporal scales as a comoving softening of the same length while using a third fewer time steps, for a range of scale factors typical to $\Lambda$CDM simulations.
-- We additionally infer an inherent resolution limit, set by the particle mass and scaling as $a^{-1/2}$, beyond which reducing the softening does not improve the resolution.
-- We postulate a mapping of these results with spectral index $n=-2$to $\Lambda$CDM simulations.
+##### [Classifying Transients Using Host Galaxy Photometry](http://arxiv.org/abs/2209.02784) [(PDF)](http://arxiv.org/pdf/2209.02784.pdf)
 
-##### [Statistical strong lensing. I. Constraints on the inner structure of galaxies from samples of a thousand lenses](http://arxiv.org/abs/2102.08973) [(PDF)](http://arxiv.org/pdf/2102.08973.pdf)
+- The Legacy Survey of Space and Time (LSST) at the Vera C. Rubin Observatory will discover tens of thousands of extragalactic transients each night.
+- The high volume of alerts demands immediate classification of transient types in order to prioritize observational follow-ups before events fade away.
+- We use host galaxy features to classify transients, thereby providing classification upon discovery.
+- In contrast to past work that focused on distinguishing Type Ia and core-collapse supernovae (SNe) using host galaxy features that are not always accessible (e.g., morphology), we determine the relative likelihood across $12$transient classes based on only 19 host apparent magnitudes and colors from $10$optical and IR photometric bands.
+- We develop both binary and multiclass classifiers, using kernel density estimation to estimate the underlying distribution of host galaxy properties for each transient class.
+- Even in this pilot study, and ignoring relative differences in transient class frequencies, we distinguish eight transient classes at purities significantly above the 8.3% baseline (based on a classifier that assigns labels uniformly and at random): tidal disruption events ($48\%\pm27\%$, where $\pm$indicates the 95% confidence limit), SNe Ia-91bg ($32\%\pm18\%$), SNe Ia-91T ($23\%\pm11\%$), SNe Ib ($23\%\pm13\%$), SNe II ($17\%\pm2\%$), SNe IIn ($17\%\pm6\%$), SNe II P ($16\%\pm4\%$), and SNe Ia ($10\%\pm1\%$).
+- We demonstrate that our model is applicable to LSST and estimate that our approach may accurately classify 59% of LSST alerts expected each year for SNe Ia, Ia-91bg, II, Ibc, SLSN-I, and tidal disruption events.
+- Our code and dataset are publically available.
 
-- Context: The number of known strong gravitational lenses is expected to grow substantially in the next few years.
-- The statistical combination of large samples of lenses has the potential of providing strong constraints on the inner structure of galaxies.
-- Aims: We investigate to what extent we can calibrate stellar mass measurements and constrain the average dark matter density profile of galaxies by statistically combining strong lensing data from thousands of lenses.
-- Methods: We generate mock samples of axisymmetric lenses.
-- We assume that, for each lens, we have measurements of two image positions of a strongly lensed background source, as well as magnification information from full surface brightness modelling, and a stellar population synthesis-based estimate of the lens stellar mass.
-- We then fit models describing the distribution of the stellar population synthesis mismatch parameter $\alpha_{sps}$(the ratio between the true stellar mass and the stellar population synthesis-based estimate) and dark matter density profile of the population of lenses to an ensemble of 1000 mock lenses.
-- Results: The average $\alpha_{sps}$, projected dark matter mass and dark matter density slope can be obtained with great precision and accuracy, compared with current constraints.
-- A flexible model and the knowledge of the lens detection efficiency as a function of image configuration are required in order to avoid a biased inference.
-- Conclusions: Statistical strong lensing inferences from upcoming surveys have the potential to calibrate stellar mass measurements and to constrain the inner dark matter density profile of massive galaxies.
+##### [PHANGS: Constraining Star Formation Timescales Using the Spatial Correlations of Star Clusters and Giant Molecular Clouds](http://arxiv.org/abs/2209.02872) [(PDF)](http://arxiv.org/pdf/2209.02872.pdf)
 
-##### [Type Ia Host Bias is Robust Across Different Observation Methods and Fitting Techniques](http://arxiv.org/abs/2102.08980) [(PDF)](http://arxiv.org/pdf/2102.08980.pdf)
+- In the hierarchical view of star formation, giant molecular gas clouds (GMCs) undergo fragmentation to form small-scale structures made up of stars and star clusters.
+- Here we study the connection between young star clusters and cold gas across a range of extragalactic environments by combining the high resolution (1") PHANGS-ALMA catalogue of GMCs with the star cluster catalogues from PHANGS-HST.
+- The star clusters are spatially matched with the GMCs across a sample of 11 nearby star-forming galaxies with a range of galactic environments (centres, bars, spiral arms, etc).
+- We find that after 4-6 Myr the star clusters are no longer associated with any gas clouds.
+- Additionally, we measure the autocorrelation of the star clusters and GMCs as well as their cross-correlation to quantify the fractal nature of hierarchical star formation.
+- Young ($\leq$10 Myr) star clusters are more strongly autocorrelated on kpc and smaller spatial scales than the >10 Myr stellar populations, indicating that the hierarchical structure dissolves over time.
 
-- Brighter Type Ia supernovae (SNe Ia) prefer less massive host galaxies and regions of higher star formation, but the dependence on host property measurement technique on this bias is not known.
-- Using the PISCO IFS sample of SN host galaxies alongside SDSS, GALEX, and 2MASS photometry, we compared host galaxy stellar mass and star formation rate (SFR) estimates using different observation methods and fitting techniques.
-- Mass estimates were consistent regardless of fitting technique.
-- For optical wavelengths, the magnitude correction size ("magnitude step") for mass estimates varied from -0.04 mag for FAST++ and STARLIGHT to -0.02 mag for ZPEG.
-- Including UV information for mass estimates results in a mass-dependent shift in estimates of the individual galaxies but had no effect on measured mass step size or location.
-- Regardless of technique, the measured magnitude step for global specific SFR (sSFR) was ~0.1 mag; UV-calibrated SFR estimates were consistent with those from H{\alpha}.
-- Only 49 hosts were used to measure the sSFR step as opposed to 76 FAST++ mass estimates or 97 STARLIGHT mass estimates to measure the mass step.
-- Local sSFR step model fits were inconclusive due to a diminished sample size of 38 SNe Ia.
-- Stronger correlation between GALEX UV photometry global and local sSFR estimates relative H{\alpha}estimates due to a large GALEX PSF inhibits its use to measure local UV 1 kpc flux.
-- Overall, observation method and fitting technique had little influence on host bias detection.
-- Instead, of importance is the property used to measure the host bias.
+##### [TDCOSMO XI. Automated Modeling of 9 Strongly Lensed Quasars and Comparison Between Lens Modeling Software](http://arxiv.org/abs/2209.03094) [(PDF)](http://arxiv.org/pdf/2209.03094.pdf)
 
-##### [Reconstructing features in the primordial power spectrum](http://arxiv.org/abs/2102.09007) [(PDF)](http://arxiv.org/pdf/2102.09007.pdf)
-
-- Potential features in the primordial power spectrum, such as oscillatory patterns, have been searched for in galaxy surveys in recent years, since these features can assist in understanding the nature of inflation and distinguishing between different scenarios of inflation.
-- The null detection to date suggests that any such features should be fairly weak, and next-generation galaxy surveys, with their unprecedented sizes and precisions, are in a position to place stronger constraints than before.
-- However, even if such primordial features once existed in the early Universe, they would have been significantly weakened or even wiped out on small scales in the late Universe due to nonlinear structure formation, which makes them difficult to be directly detected in real observations.
-- A potential way to tackle this challenge for probing the features is to undo the cosmological evolution, i.e, using reconstruction to obtain an approximate linear density field.
-- By employing a suite of large N-body simulations, we show that a recently-proposed nonlinear reconstruction algorithm can effectively retrieve lost oscillatory features from the mock galaxy catalogues and improve the accuracy of the measurement of feature parameters (assuming such primordial features do exist).
-- We do a Fisher analysis to forecast how reconstruction affects the constraining power, and find that it can lead to significantly more robust constraints on the oscillation amplitude for a DESI-like survey.
-- In particular, we compare the application of reconstruction with other ways of improving constraints, such as increasing the survey volume and range of scales, and show that it can achieve what the latter do, but at a much lower cost.
-
-##### [QSO photometric redshifts using machine learning and neural networks](http://arxiv.org/abs/2102.09177) [(PDF)](http://arxiv.org/pdf/2102.09177.pdf)
-
-- The scientific value of the next generation of large continuum surveys would be greatly increased if the redshifts of the newly detected sources could be rapidly and reliably estimated.
-- Given the observational expense of obtaining spectroscopic redshifts for the large number of new detections expected, there has been substantial recent work on using machine learning techniques to obtain photometric redshifts.
-- Here we compare the accuracy of the predicted photometric redshifts obtained from Deep Learning(DL) with the k-Nearest Neighbour (kNN) and the Decision Tree Regression (DTR) algorithms.
-- We find using a combination of near-infrared, visible and ultraviolet magnitudes, trained upon a sample of SDSS QSOs, that the kNN and DL algorithms produce the best self-validation result with a standard deviation of {\sigma} = 0.24.
-- Testing on various sub-samples, we find that the DL algorithm generally has lower values of {\sigma}, in addition to exhibiting a better performance in other measures.
-- Our DL method, which uses an easy to implement off-the-shelf algorithm with no filtering nor removal of outliers, performs similarly to other, more complex, algorithms, resulting in an accuracy of {\Delta}z < 0.1$up to z ~ 2.5.
-- Applying the DL algorithm trained on our 70,000 strong sample to other independent (radio-selected) datasets, we find {\sigma} < 0.36 over a wide range of radio flux densities.
-- This indicates much potential in using this method to determine photometric redshifts of quasars detected with the Square Kilometre Array.
-
-##### [The Diverse Morphology, Stellar Population, and Black Hole Scaling Relations of the Host Galaxies of Nearby Quasars](http://arxiv.org/abs/2102.09190) [(PDF)](http://arxiv.org/pdf/2102.09190.pdf)
-
-- We present rest-frame $B$and $I$imaging of 35 low-redshift ($z < 0.5$) Palomar-Green quasars using the Hubble Space Telescope Wide Field Camera 3.
-- We perform multi-component two-dimensional image decomposition to separate the host galaxy from its bright active nucleus, characterize its morphology, and measure its photometric properties.
-- Special care is devoted to quantifying the structural parameters of the galaxy bulge, determine its $B-I$color, and estimate its stellar mass.
-- Roughly half of the sample, comprising the less luminous ($L_{5100} \lesssim 10^{45} \mathrm{erg s^{-1}}$) but most high Eddington ratio quasars, reside in disk galaxies that are often barred and possess pseudo bulges.
-- The large stellar masses, large effective radii, and faint surface brightnesses suggest that the host galaxies of the most luminous quasars are mostly ellipticals.
-- Major mergers constitute only a minority ($\lesssim 20\%$) of our sample.
-- Our quasar sample roughly obeys the scaling relations between black hole mass and host galaxy (bulge, core, total) stellar mass.
-- Hosts with black holes more massive than $\sim 10^8 M_\odot$behave similarly to classical bulges and early-type galaxies, while those with less massive black holes, particular the narrow-line Seyfert 1s, are consistent with pseudo bulges in late-type galaxies.
-- The host galaxy bulges, irrespective of whether they are classical or pseudo, follow the relatively tight inverse relation between effective radius and mean effective surface brightness of inactive classical bulges and ellipticals.
-- We argue that pseudo bulges experience recent or ongoing nuclear star formation.
-
-##### [Dense and warm neutral gas in BR1202-0725 at z = 4.7 as traced by the [O I] 145 um line](http://arxiv.org/abs/2102.09219) [(PDF)](http://arxiv.org/pdf/2102.09219.pdf)
-
-- We report the detection of [O I]145.5um in the BR 1202-0725 system, a compact group at z=4.7 consisting of a quasar (QSO), a submillimeter-bright galaxy (SMG), and three faint Lya emitters.
-- By taking into account the previous detections and upper limits, the [O I]/[C II] line ratios of the now five known high-z galaxies are higher than or on the high-end of the observed values in local galaxies ([O I]/[C II]$\gtrsim$0.13).
-- The high [O I]/[C II] ratios and the joint analysis with the previous detection of [N II] lines for both the QSO and the SMG suggest the presence of warm and dense neutral gas in these highly star-forming galaxies.
-- This is further supported by new CO (12-11) line detections and a comparison with cosmological simulations.
-- There is a possible positive correlation between the [NII]122/205 line ratio and the [O I]/[C II] ratio when all local and high-z sources are taken into account, indicating that the denser the ionized gas, the denser and warmer the neutral gas (or vice versa).
-- The detection of the [O I] line in the BR1202-0725 system with a relatively short amount of integration with ALMA demonstrates the great potential of this line as a dense gas tracer for high-z galaxies.
-
-##### [The LOFAR LBA Sky Survey I. survey description and preliminary data release](http://arxiv.org/abs/2102.09238) [(PDF)](http://arxiv.org/pdf/2102.09238.pdf)
-
-- LOFAR is the only radio telescope that is presently capable of high-sensitivity, high-resolution (<1 mJy/b and <15") observations at ultra-low frequencies (<100 MHz).
-- To utilise these capabilities, the LOFAR Surveys Key Science Project is undertaking a large survey to cover the entire northern sky with Low Band Antenna (LBA) observations.
-- The LOFAR LBA Sky Survey (LoLSS) aims to cover the entire northern sky with 3170 pointings in the frequency range 42-66 MHz, at a resolution of 15 arcsec and at a sensitivity of 1 mJy/b.
-- Here we outline the survey strategy, the observational status, the current calibration techniques, and briefly describe several scientific motivations.
-- We also describe the preliminary public data release.
-- The preliminary images were produced using a fully automated pipeline that aims to correct all direction-independent effects in the data.
-- Whilst the direction-dependent effects, such as those from the ionosphere, are not yet corrected, the images presented in this work are still 10 times more sensitive than previous surveys available at these low frequencies.
-- The preliminary data release covers 740 sqdeg around the HETDEX spring field region at a resolution of 47" with a median noise level of 5 mJy/b.
-- The images and the catalogue with 25,247 sources are publicly released.
-- We demonstrate that the system is capable of reaching an rms noise of 1 mJy/b and the resolution of 15" once direction-dependent effects are corrected for.
-- LoLSS will provide the ultra-low-frequency information for hundreds of thousands of radio sources, providing critical spectral information and producing a unique dataset that can be used for a wide range of science topics such as: the search for high redshift galaxies and quasars, the study of the magnetosphere of exoplanets, and the detection of the oldest populations of cosmic-rays in galaxies, clusters of galaxies, and from AGN activity.
-
-
-##### [Towards a fully consistent Milky Way disk model -- IV. The impact of Gaia DR2 and APOGEE](http://arxiv.org/abs/2102.09311) [(PDF)](http://arxiv.org/pdf/2102.09311.pdf)
-
-- We present an updated version of the semi-analytic Just-Jahrei{\ss} (JJ) model of the Galactic disk and constrain its parameters in the Solar neighbourhood.
-- The new features of the JJ model include a simple two-component gaseous disk, a star-formation rate (SFR) function of the thick disk that has been extended in time, and a correlation between the kinematics of molecular gas and thin-disk populations.
-- Here, we study the vertical number density profiles and W-velocity distributions determined from ~2 million local stars of the Gaia DR2.
-- We also investigate an apparent Hess diagram of the Gaia stars selected in a conic volume towards the Galactic poles.
-- Using a stellar evolution library, we synthesise stellar populations with a four-slope broken power-law initial mass function (IMF), the SFR, and an age-metallicity relation (AMR).
-- The latter is consistently derived with the observed metallicity distribution of the local Red Clump (RC) giants from the APOGEE.
-- Working within a Bayesian approach, we sample the posterior probability distribution in a multidimensional parameter space using the MCMC method.
-- We find that the spatial distribution and motion of the Gaia stars imply two recent SF bursts centered at ages of ~0.5 Gyr and ~3 Gyr and characterised by a ~30% and ~55% SF enhancement, respectively, relative to a monotonously declining SFR continuum.
-- The stellar populations associated with this SF excess are found to be dynamically hot for their age: they have W-velocity dispersions of ~12.5 km/s and ~26 km/s.
-- The new JJ model is able to reproduce the local star counts with an accuracy of ~5 %.
-- Using Gaia DR2 data, we self-consistently constrained 22 parameters of the updated JJ model.
-- Our optimised model predicts two SF bursts within the last ~4 Gyr, which may point to recent episodes of gas infall.
-
-##### [Constraints on interacting dark energy model from lensed quasars: Relieving the $H_0$ tension from 5.3$\sigma$ to 1.7$\sigma$](http://arxiv.org/abs/2102.09331) [(PDF)](http://arxiv.org/pdf/2102.09331.pdf)
-
-- Measurements for strong gravitational lensing time delays between multiple images of background quasars can provide an independent probe to explore the expansion history of the late-time universe.
-- In this paper, we employ the new results of the time-delay (TD) measurements for six strong gravitational lens systems to constrain interacting dark energy (IDE) model.
-- We mainly focus on the model of vacuum energy (with $w=-1$) interacting with cold dark matter, and consider four typical cases of the interaction form.
-- Our main findings include: (i) the IDE models with $Q\propto \rho_{\rm de}$have an advantage in alleviating the $H_{0}$tension between the cosmic microwave background and TD observations; (ii) when the TD data are combined with the latest local distance-ladder result, the $H_0$tension can be alleviated from $5.3\sigma$(in the standard $\Lambda$CDM cosmology) to $1.7\sigma$in the IDE model with the interaction term $Q=\beta H\rho_{\rm de}$; (iii) the coupling parameter $\beta$in all the considered IDE models are preferred to be positive around 1$\sigma$range when the late-universe measurements (TD+SN) are used to perform constraint, implying a mild preference for the case of cold dark matter decaying into dark energy by the late-universe observations.
-
-##### [Jeans modeling of axisymmetric galaxies with multiple stellar populations](http://arxiv.org/abs/2102.09440) [(PDF)](http://arxiv.org/pdf/2102.09440.pdf)
-
-- We present the theoretical framework and the numerical setting of JASMINE2, a code designed to efficiently solve the Jeans equations for multi-component axisymmetric stellar systems.
-- The models may include an arbitrary number of stellar distributions, a dark matter halo, and a central supermassive black hole; each stellar distribution is implicitly described by a two-integral distribution function, and the stellar components can have different structural (density profile, flattening, mass,scale-length), dynamical (rotation, velocity dispersion anisotropy), and population (age, metallicity, initial mass function, mass-to-light ratio) properties.
-- In order to determine the ordered rotational velocity and the azimuthal velocity dispersion fields of each component, we introduce a decomposition that can be used when the commonly adopted Satoh decomposition cannot be applied.
-- The numerical implementation of JASMINE2, and of the post-processing procedures (including projection), are optimised to fully exploit the scalings allowed by the Poisson and the Jeans equations.
-- For illustrative purposes, we present three multi-component galaxy models with a central black hole and a dark matter halo; one of the models is also used to test JASMINE2 against available analytical solutions.
-
-##### [Cosmological Magnetogenesis: The Biermann Battery during the Epoch of Reionization](http://arxiv.org/abs/2102.09535) [(PDF)](http://arxiv.org/pdf/2102.09535.pdf)
-
-- We investigate the effect of the Biermann battery during the Epoch of Reionization (EoR) using cosmological Adaptive Mesh Refinement simulations within the framework of the SPHINX project.
-- We develop a novel numerical technique to solve for the Biermann battery term in the Constrained Transport method, preserving both the zero divergence of the magnetic field and the absence of Biermann battery for isothermal flows.
-- The structure-preserving nature of our numerical method turns out to be very important to minimise numerical errors during validation tests of the propagation of a Str\"omgren sphere and of a Sedov blast wave.
-- We then use this new method to model the evolution of a 2.5 and 5 co-moving Mpc cosmological box with a state-of-the-art galaxy formation model within the RAMSES code.
-- Contrary to previous findings, we show that three different Biermann battery channels emerge: the first one is associated with linear perturbations before the EoR, the second one is the classical Biermann battery associated with reionization fronts during the EoR, and the third one is associated with strong, supernova-driven outflows.
-- While the two former channels generate spontaneously volume-filling magnetic fields with a strength on the order or below $10^{-20}$G, the latter, owing to the higher plasma temperature and a marginally-resolved turbulent dynamo, reaches a field strength as high as $10^{-18}$G in the intergalactic medium around massive haloes.
-
-##### [When is tension just a fluctuation? How noisy data affects model comparison](http://arxiv.org/abs/2102.09547) [(PDF)](http://arxiv.org/pdf/2102.09547.pdf)
-
-- Summary statistics of the likelihood, such as the Bayesian evidence, offer a principled way of comparing models and assessing tension between, or within, the results of physical experiments.
-- Noisy realisations of the data induce scatter in these model comparison statistics.
-- For a realistic case of cosmological inference from large-scale structure we show that the logarithm of the Bayes factor attains scatter of order unity, increasing significantly with stronger tension between the models under comparison.
-- We develop an approximate procedure that quantifies the sampling distribution of the evidence at small additional computational cost and apply it to real data to demonstrate the impact of the scatter, which acts to reduce the significance of any model discrepancies.
-- Data compression is highlighted as a potential avenue to suppressing noise in the evidence to negligible levels, with a proof of concept on Planck cosmic microwave background data.
+- To use strong gravitational lenses as an astrophysical or cosmological probe, models of their mass distributions are often needed.
+- We present a new, time-efficient automation code for uniform modeling of strongly lensed quasars with GLEE, a lens modeling software, for high-resolution multi-band data.
+- By using the observed positions of the lensed quasars and the spatially extended surface brightness distribution of the lensed quasar host galaxy, we obtain a model of the mass distribution of the lens galaxy.
+- We apply this uniform modeling pipeline to a sample of nine strongly lensed quasars with HST WFC 3 images.
+- The models show in most cases well reconstructed light components and a good alignment between mass and light centroids.
+- We find that the automated modeling code significantly reduces the user input time during the modeling process.
+- The preparation time of required input files is reduced significantly.
+- This automated modeling pipeline can efficiently produce uniform models of extensive lens system samples which can be used for further cosmological analysis.
+- A blind test through a comparison with the results of an independent automated modeling pipeline based on the modeling software Lenstronomy reveals important lessons.
+- Quantities such as Einstein radius, astrometry, mass flattening and position angle are generally robustly determined.
+- Other quantities depend crucially on the quality of the data and the accuracy of the PSF reconstruction.
+- Better data and/or more detailed analysis will be necessary to elevate our automated models to cosmography grade.
+- Nevertheless, our pipeline enables the quick selection of lenses for follow-up monitoring and further modeling, significantly speeding up the construction of cosmography-grade models.
+- This is an important step forward to take advantage of the orders of magnitude increase in the number of lenses expected in the coming decade.
