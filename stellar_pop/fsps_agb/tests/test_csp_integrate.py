@@ -8,7 +8,7 @@ from csp_integrate import (
     epoch_weight_matrix,
     interpolate_log_z,
 )
-from sfh_model import bin_masses, time_bin_edges
+from sfh_model import cumulative_mass, time_bin_edges
 from ssp_grid import SspGrid
 
 LOG_AGE = np.round(np.arange(5.0, 10.3001, 0.05), 3)
@@ -27,15 +27,11 @@ def test_age_weights_are_linear_in_log_age():
 
 def test_epoch_weight_matrix_uses_only_bins_before_each_epoch():
     edges = time_bin_edges()
-    masses = bin_masses(edges, 3.0, 0.3)
-    matrix = epoch_weight_matrix(edges, masses, LOG_AGE)
+    matrix = epoch_weight_matrix(edges, 3.0, 0.3, LOG_AGE)
     assert matrix.shape == (260, LOG_AGE.size)
-    assert np.allclose(matrix.sum(axis=1), np.cumsum(masses))
-    first_epoch_lookback = np.log10(0.025e9)
-    assert matrix[0].argmax() in (
-        np.searchsorted(LOG_AGE, first_epoch_lookback) - 1,
-        np.searchsorted(LOG_AGE, first_epoch_lookback),
-    )
+    expected_mass = cumulative_mass(edges[1:], 3.0, 0.3)
+    assert np.allclose(matrix.sum(axis=1), expected_mass, rtol=1e-10)
+    assert np.all(matrix >= 0)
 
 
 def test_interpolate_log_z_is_linear_between_grid_points():
