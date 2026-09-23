@@ -76,8 +76,9 @@ def add_measurement_noise(features, sigmas, rng):
 def grouped_folds(groups, n_folds, rng):
     """Assign each sample to one of `n_folds` folds without splitting any group.
 
-    Unique group ids are shuffled and distributed round-robin (group i -> fold i mod
-    n_folds), then mapped back onto the samples.
+    `groups` are sample group ids (e.g. history ids): all samples sharing a group id
+    always land in the same fold. Unique group ids are shuffled and distributed
+    round-robin (group i -> fold i mod n_folds), then mapped back onto the samples.
     """
     groups = np.asarray(groups)
     unique_groups = np.unique(groups)
@@ -127,11 +128,15 @@ def completeness_purity(true, pred, positive_class):
     return completeness, purity
 
 
-def cross_validated_metrics(features, labels, groups, feature_scales, k, positive_class=1):
+def cross_validated_metrics(
+    features, labels, groups, feature_scales, k=25, n_folds=5, seed=0, positive_class=1
+):
     """Grouped k-fold cross-validation of `knn_predict`.
 
-    `groups` gives each sample's fold membership (e.g. produced by `grouped_folds`).
-    For each fold, train on the remaining folds and predict the held-out fold,
+    `groups` are sample group ids (e.g. history ids); samples sharing a group id are
+    never split between the train and test side of a fold. Folds are built internally
+    with `grouped_folds(groups, n_folds, np.random.default_rng(seed))`. For each of the
+    `n_folds` folds, train on the remaining folds and predict the held-out fold,
     accumulating a 4x4 confusion matrix `confusion[true, pred]` and per-fold
     completeness/purity of `positive_class`. Returns their means and standard
     deviations (`ddof=0`, NaN-aware since a fold without any `positive_class`
@@ -141,20 +146,20 @@ def cross_validated_metrics(features, labels, groups, feature_scales, k, positiv
     features = np.asarray(features, dtype=float)
     labels = np.asarray(labels)
     groups = np.asarray(groups)
+    folds = grouped_folds(groups, n_folds, np.random.default_rng(seed))
 
     confusion = np.zeros((len(CLASS_NAMES), len(CLASS_NAMES)), dtype=int)
     completeness_per_fold = []
     purity_per_fold = []
 
-    for fold in np.unique(groups):
-        test_mask = groups == fold
+    for fold in range(n_folds):
+        test_mask = folds == fold
         train_mask = ~test_mask
         predictions = knn_predict(
             features[train_mask], labels[train_mask], features[test_mask], k, feature_scales
         )
         true_fold = labels[test_mask]
-        for true_class, pred_class in zip(true_fold, predictions, strict=True):
-            confusion[true_class, pred_class] += 1
+        np.add.at(confusion, (true_fold, predictions), 1)
         completeness, purity = completeness_purity(true_fold, predictions, positive_class)
         completeness_per_fold.append(completeness)
         purity_per_fold.append(purity)
