@@ -17,6 +17,16 @@ To rebuild with the other C3K resolution, pass `-DC3K_LR=0 -DC3K_HR=1` (or the
 inverse) as Fortran compile definitions in `python-fsps`'s `CMakeLists.txt`;
 `pip install -U fsps` restores the PyPI `c3k_lr` wheel.
 
+## Phase 2 setup
+
+    uv sync                     # installs numpy/scipy/matplotlib and the local fsps wheel from wheels/
+    export SPS_HOME=/Users/shuang/code/fsps
+    uv run pytest               # fast tests; add `-m slow` for the FSPS-dependent ones
+    uv run pre-commit install
+
+The wheel in `wheels/` is built from python-fsps 7d202b8 with the FSPS submodule at bd187a0 plus
+`docs/patches/c3k_hr_nzinit_13.patch`, compiled with `-cpp -DC3K_LR=0 -DC3K_HR=1` (see docs/lessons.md).
+
 ## Files
 
 | File | Purpose |

@@ -1,0 +1,29 @@
+[project]
+name = "fsps-agb"
+version = "0.2.0"
+description = "TP-AGB sensitivity of D4000, HdeltaA and the 1.6 micron H-minus bump with FSPS"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.13",
+    "matplotlib>=3.9",
+    "fsps",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6", "pre-commit>=3"]
+
+[tool.uv.sources]
+fsps = { path = "wheels/fsps-0.5.1.dev0+g7d202b8e0.d20260923-cp312-cp312-macosx_15_0_arm64.whl" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: needs FSPS and takes more than a few seconds"]
+addopts = "-m 'not slow'"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B"]
