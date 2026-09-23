@@ -59,7 +59,7 @@ def test_hdelta_a_gaussian_absorption_has_positive_equivalent_width():
 
 def test_h_minus_bump_is_negative_for_a_bump():
     wave_a = np.linspace(14000.0, 19000.0, 5001)
-    flux_lambda = 1.0 + 0.1 * np.exp(-0.5 * ((wave_a - 16500.0) / 600.0) ** 2)
+    flux_lambda = 1.0 + 0.1 * np.exp(-0.5 * ((wave_a - 16500.0) / 200.0) ** 2)
     value = h_minus_bump(wave_a, flux_lambda * wave_a**2)
     assert value < 0
     expected = -2.5 * np.log10(band_mean(wave_a, flux_lambda, *H_MINUS_BANDS_A["feature"]))
