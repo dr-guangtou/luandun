@@ -26,6 +26,16 @@ def test_assign_classes_follows_manuscript_rules():
     assert is_post_starburst(recent, previous).tolist() == [False, True, False, False, False]
 
 
+def test_is_post_starburst_uses_absolute_recent_ssfr_not_ratio():
+    # previous = 5e-10 /yr, recent = 2e-11 /yr -> ratio R = 0.04 < 0.1, so assign_classes
+    # calls this rapid_quenching, but recent (2e-11) is not below the 1e-11 /yr quiescent
+    # threshold, so is_post_starburst must be False.
+    recent = np.array([2e-11]) * 1e9
+    previous = np.array([5e-10]) * 1e9
+    assert is_post_starburst(recent, previous).tolist() == [False]
+    assert CLASS_NAMES[assign_classes(recent, previous)[0]] == "rapid_quenching"
+
+
 def test_noise_has_requested_scale():
     rng = np.random.default_rng(1)
     features = np.zeros((20000, 2))
@@ -51,6 +61,18 @@ def test_knn_predict_recovers_separated_blobs():
     assert knn_predict(
         features, labels, test, k=5, feature_scales=np.array([1.0, 1.0])
     ).tolist() == [0, 1]
+
+
+def test_knn_predict_with_k_one_returns_one_prediction_per_query():
+    rng = np.random.default_rng(4)
+    a = rng.normal([0, 0], 0.05, size=(50, 2))
+    b = rng.normal([3, 3], 0.05, size=(50, 2))
+    features = np.vstack([a, b])
+    labels = np.r_[np.zeros(50, int), np.ones(50, int)]
+    test = np.array([[0.1, 0.1], [2.9, 2.9], [0.0, -0.05]])
+    predictions = knn_predict(features, labels, test, k=1, feature_scales=np.array([1.0, 1.0]))
+    assert predictions.shape == (3,)
+    assert predictions.tolist() == [0, 1, 0]
 
 
 def test_completeness_purity():

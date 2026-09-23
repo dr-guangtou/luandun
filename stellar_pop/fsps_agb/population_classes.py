@@ -28,16 +28,16 @@ def _ssp_ratio(recent_per_yr, previous_per_yr):
 
 
 def is_post_starburst(recent_ssfr_per_gyr, previous_ssfr_per_gyr):
-    """Rapid-quenching condition, in per-Gyr sSFR inputs.
+    """Post-starburst condition, in per-Gyr sSFR inputs.
 
-    True where the previous sSFR was actively star-forming and the recent sSFR
-    dropped to below 10% of it.
+    True where the previous sSFR was actively star-forming and the recent sSFR has
+    dropped below the absolute quiescent threshold (not merely below some fraction of
+    the previous sSFR, which is the separate rapid-quenching rule in `assign_classes`).
     """
     recent_per_yr = np.asarray(recent_ssfr_per_gyr, dtype=float) / 1e9
     previous_per_yr = np.asarray(previous_ssfr_per_gyr, dtype=float) / 1e9
-    ratio = _ssp_ratio(recent_per_yr, previous_per_yr)
     return (previous_per_yr > _PREVIOUS_RAPID_QUENCHING_THRESHOLD_PER_YR) & (
-        ratio < _RATIO_RAPID_QUENCHING_THRESHOLD
+        recent_per_yr < _RECENT_QUIESCENT_THRESHOLD_PER_YR
     )
 
 
@@ -91,21 +91,22 @@ def knn_predict(features, labels, query, k, feature_scales):
     """Predict labels for `query` by majority vote among the k nearest training points.
 
     Features are divided by `feature_scales` before distances are computed. Ties in
-    the vote are broken by the lowest class code (via `np.bincount`).
+    the vote are broken by the lowest class code (via `np.argmax`).
     """
     features = np.asarray(features, dtype=float) / feature_scales
     query = np.asarray(query, dtype=float) / feature_scales
     labels = np.asarray(labels)
+    n_query = query.shape[0]
 
     tree = cKDTree(features)
     _, neighbor_indices = tree.query(query, k=k)
-    neighbor_indices = np.atleast_2d(neighbor_indices)
+    # cKDTree.query returns 1-D indices when k == 1; reshape to (n_query, k) uniformly.
+    neighbor_indices = np.asarray(neighbor_indices).reshape(n_query, k)
     neighbor_labels = labels[neighbor_indices]
 
-    predictions = np.empty(neighbor_labels.shape[0], dtype=labels.dtype)
-    for i, row in enumerate(neighbor_labels):
-        predictions[i] = np.argmax(np.bincount(row))
-    return predictions
+    votes = np.zeros((n_query, len(CLASS_NAMES)), dtype=int)
+    np.add.at(votes, (np.repeat(np.arange(n_query), k), neighbor_labels.ravel()), 1)
+    return np.argmax(votes, axis=1)
 
 
 def completeness_purity(true, pred, positive_class):
