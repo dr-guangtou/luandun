@@ -128,3 +128,27 @@
     test code or logic; reported as a concern for the controller to rule on.
 - `uv run ruff format` reformatted both new files (long call signatures onto
   multiple lines); reformatting only, no logic or assertion changes.
+
+## 2026-09-24 (Task 10: Step 1 driver — fiducial CSP track)
+- Full run of `run_single_csp.py` (fiducial `t_q_gyr=3.0`, `tau_q_gyr=0.3`,
+  `log_z=0.0`, 260 epochs, sigma300 + r100, agb0 + agb2, tables + 4 figures)
+  took **7.9 s** wall time on this laptop (0.27 s for the index track itself;
+  the rest is writing four large spectra `.npz` files and the figures) using
+  the cached `output/ssp_grid/{sigma300,r100}.npz` grids.
+- Largest `agb2` vs `agb0` H-minus bump difference: **-0.0111 mag** (r100;
+  -0.0108 mag on sigma300) at epoch **3.45 Gyr**, i.e. 0.45 Gyr after the
+  `t_q=3.0 Gyr` quench — `agb2` is more negative (deeper bump) than `agb0`
+  there, as expected from post-quench TP-AGB light domination.
+- `new_plane_figure`'s `tight_layout()` runs before `_figure_index_planes`
+  adds per-row titles (`axes[row, 0].set_title(...)`); with the default
+  `loc="center"`, the long title text on the narrow first-column axis
+  overflowed past the left edge of the canvas and was silently clipped by
+  `savefig` (e.g. "agb0 (sigma300, bump at sigma300)" rendered as "b0
+  (...)"). Re-calling `figure.tight_layout()` after adding the titles makes
+  it worse and throws `UserWarning: ... Axes that are not compatible with
+  tight_layout`, because `plot_track`'s `figure.colorbar(..., ax=list(axes))`
+  already manually shrank the axes grid to make room for the colorbar, and a
+  second `tight_layout()` fights that. Fixed by setting the titles with
+  `loc="left"` (anchors the text at the axis's left edge instead of
+  centering it) and passing `bbox_inches="tight"` to the two
+  `index_planes*.png` `savefig` calls; no change to `index_planes.py`.
