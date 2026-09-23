@@ -36,7 +36,7 @@
 | `docs/ANALYSIS.md` | the written answers |
 | `tests/test_population_classes.py`, `tests/test_sfh_burst.py` | unit tests |
 
-Shared interfaces (defined in Task A, used by B and C):
+Shared interfaces (defined in Task 1, used by Tasks 3 and 4):
 
 ```python
 # population_classes.py
@@ -53,7 +53,7 @@ def cross_validated_metrics(features, labels, groups, feature_scales, k=25, n_fo
 
 ---
 
-### Task A: Population classes and classifier helpers
+### Task 1: Population classes and classifier helpers
 
 **Files:**
 - Create: `population_classes.py`
@@ -145,7 +145,7 @@ Algorithms (write the code from these):
 
 ---
 
-### Task B: Q1 — TP-AGB separability
+### Task 2: Q1 — TP-AGB separability
 
 **Files:**
 - Create: `analysis_agb_separability.py`
@@ -171,7 +171,7 @@ Algorithms (write the code from these):
 
 ---
 
-### Task C: Q2 — isolating fast quenching
+### Task 3: Q2 — isolating fast quenching
 
 **Files:**
 - Create: `analysis_fast_quenching.py`
@@ -191,7 +191,7 @@ Algorithms (write the code from these):
 
 ---
 
-### Task D: Alternative SFH families and the written answer
+### Task 4: Alternative SFH families and the written answer
 
 **Files:**
 - Modify: `sfh_model.py` (add `burst_cumulative_mass(time_gyr, t_burst_gyr, width_gyr, mass_fraction, base_cumulative)`), `csp_integrate.py` (add `epoch_weight_matrix_from_cumulative(edges_gyr, cumulative_mass_fn, log_age_grid_yr)` and make `epoch_weight_matrix` call it with `functools.partial(cumulative_mass, t_q_gyr=..., tau_q_gyr=...)`)
@@ -203,7 +203,7 @@ Algorithms (write the code from these):
 
 - [ ] **Step 2: Implement** the two functions; run the tests; run the existing suite (`uv run pytest -q`) to confirm nothing changed.
 
-- [ ] **Step 3: Alternative families.** Draw 300 histories each with seed 20260925: (a) bursty star-forming: delayed-tau with `t_q` from the prior but no quench (`tau_q = 1e6` Gyr) plus a burst at `t_burst` uniform in [2, 10] Gyr, width 0.1 Gyr, fraction 0.1; (b) slowly fading: delayed-tau with `tau_q` log-uniform in [3, 6] Gyr; log Z from the same truncated normal. Trace all 260 epochs with the agb2 and agb0 settings using the same code path as `run_population._history_indices` (import it; pass a cumulative-mass callable, which requires `_history_indices` to accept one — add an optional `cumulative_mass_fn` parameter there with the default behaviour unchanged). Assign classes with the same rules. Figure `q2_alternative_sfh.png`: the three planes (agb2) with the delayed-tau rapid-quenching points, the bursty family (colored by time since burst) and the slow-fading family; then the purity maps of Task C recomputed with the contaminants added. Record: how many contaminant epochs fall inside the cells that were > 0.5 pure before, and the new purity there.
+- [ ] **Step 3: Alternative families.** Draw 300 histories each with seed 20260925: (a) bursty star-forming: delayed-tau with `t_q` from the prior but no quench (`tau_q = 1e6` Gyr) plus a burst at `t_burst` uniform in [2, 10] Gyr, width 0.1 Gyr, fraction 0.1; (b) slowly fading: delayed-tau with `tau_q` log-uniform in [3, 6] Gyr; log Z from the same truncated normal. Trace all 260 epochs with the agb2 and agb0 settings using the same code path as `run_population._history_indices` (import it; pass a cumulative-mass callable, which requires `_history_indices` to accept one — add an optional `cumulative_mass_fn` parameter there with the default behaviour unchanged). Assign classes with the same rules. Figure `q2_alternative_sfh.png`: the three planes (agb2) with the delayed-tau rapid-quenching points, the bursty family (colored by time since burst) and the slow-fading family; then the purity maps of Task 3 recomputed with the contaminants added. Record: how many contaminant epochs fall inside the cells that were > 0.5 pure before, and the new purity there.
 
 - [ ] **Step 4: Write `docs/ANALYSIS.md`.** Two sections, "Q1" and "Q2", each with: the answer in one sentence (yes / no / conditional), the evidence as a list of measured numbers pulled from the three summary JSON files (quote the file and key), the figures that show it (file names), and the caveats from the spec (model physics: hydrostatic C3K spectra for O-rich TP-AGB stars, no C-rich stars in MIST, no nebular emission or dust, four metallicities, uniform time weighting). Do not soften a negative answer.
 
@@ -215,7 +215,7 @@ Algorithms (write the code from these):
 
 ## Self-review against the spec
 
-- Q1 items 1 (SSP deltas, spectral QA, broadband) and 2 (track and population offsets): Task B. The fiducial-track delta versus time since quenching is already in `output/single_csp/` (Task 10 figures); Task B's Step 6 covers the population part and its summary quotes the track maximum from `output/single_csp/indices.csv`.
-- Q2 items 1–3: Tasks C and D. Class rules, yardstick, epoch cut: Global Constraints.
-- Deliverables (figures, summary.json, ANALYSIS.md): Tasks B, C, D.
+- Q1 items 1 (SSP deltas, spectral QA, broadband) and 2 (track and population offsets): Task 2. The fiducial-track delta versus time since quenching is already in `output/single_csp/` (Task 10 figures); Task 2's Step 6 covers the population part and its summary quotes the track maximum from `output/single_csp/indices.csv`.
+- Q2 items 1–3: Tasks 3 and 4. Class rules, yardstick, epoch cut: Global Constraints.
+- Deliverables (figures, summary.json, ANALYSIS.md): Tasks 2, 3, 4.
 - Interfaces used across tasks (`assign_classes`, `cross_validated_metrics`, `build_ssp(extra_params=...)`, `epoch_weight_matrix_from_cumulative`, `_history_indices(cumulative_mass_fn=...)`) are named identically where defined and where used.
