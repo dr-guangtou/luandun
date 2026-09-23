@@ -1,0 +1,265 @@
+# FSPS TP-AGB spectral-index experiment — SPEC
+
+Source of truth for the architecture of this folder. Phase 1 (the finished SSP
+sandbox) is kept at the end for reference. Phase 2 is the current work.
+
+## Phase 2 — CSP index tracks and populations (2026-09-24)
+
+### Goal
+
+Quantify how the TP-AGB contribution changes the evolution of three spectral
+indices, D4000, HdeltaA and the 1.6 micron H-minus bump, for galaxies that
+form stars with a delayed-tau history and then quench exponentially. Two
+deliverables:
+
+1. **Step 1, single CSP:** one fiducial history traced in time from the start
+   of star formation to 13 Gyr, with the TP-AGB weight `agb` = 0 and 2.
+   Output: spectra, an index table, and the track drawn in the three 2-D index
+   planes.
+2. **Step 2, population:** 2000 histories drawn from prior distributions on
+   quenching time, quenching timescale and metallicity, each traced in time
+   the same way. Output: index tables and the resulting distributions in the
+   three 2-D index planes, one set per `agb` setting.
+
+The manuscript this feeds is `~/Dropbox/Apps/Overleaf/H-bump/main.tex`
+(paper I on the H-minus bump as a quenching tracer). Conventions below follow
+that paper unless stated.
+
+### Fixed stellar-population configuration
+
+| Setting | Value | Notes |
+| ------- | ----- | ----- |
+| Isochrones | MIST | compiled in, `zsol = 0.0185`, 107 ages, log(age/yr) 5.00–10.30 in 0.05 dex |
+| Spectral library | C3K high-res (`c3k_hr`) | 10992 vacuum wavelengths; R = 3000 (sigma 42.4 km/s) over 3000–10000 A, R = 500 (sigma 254.6 km/s) over 1–2.5 micron |
+| IMF | Chabrier (2003), `imf_type = 1` | |
+| TP-AGB weight | `agb` = 0 and `agb` = 1 built; `agb` = 2 derived | spectrum is exactly linear in `agb` (Phase 1 lesson), so S(2) = 2 S(1) - S(0) |
+| Other AGB knobs | defaults (`pagb` = 1, AGB circumstellar dust on, `use_lw_tpagb` = 0) | |
+| Nebular emission, dust attenuation, IGM | off (defaults) | pure stellar continuum |
+| Metallicity grid built | log(Z/Zsun) = -0.50, -0.25, 0.00, +0.25 | brackets the prior range [-0.5, +0.2] |
+
+**Required FSPS fix before building.** The C3K_HR loader reads only
+`nzinit = 11` metallicity files (`sps_vars.f90`, `c3k_hr` block), so the
+MIST +0.25 and +0.50 SSPs currently pair supersolar isochrones with solar
+[Fe/H] spectra. Change `nzinit` to 13 in the `c3k_hr` block of
+`$SPS_HOME/src/sps_vars.f90`, rebuild the python-fsps wheel with the
+`-cpp -DC3K_LR=0 -DC3K_HR=1` definitions (recipe in `docs/lessons.md`), and
+verify that the `logzsol = +0.25` spectrum changes relative to the old build.
+The patch is kept in `docs/patches/` so the change is reproducible.
+
+### Star formation history
+
+Time `t` is measured from the start of star formation. With `tau = t_q`:
+
+```
+SFR(t) = (t / t_q) exp(-t / t_q)                      t <  t_q
+SFR(t) = exp(-1) exp(-(t - t_q) / tau_q)              t >= t_q
+```
+
+- Time grid: bins of 0.05 Gyr from 0 to 13 Gyr (260 bins). Observation
+  epochs `t_obs` are the bin edges 0.05, 0.10, ..., 13.0 Gyr.
+- The mass formed in each bin is the analytic integral of SFR over the bin
+  (both branches have closed forms), not SFR at the bin center times width.
+- Absolute normalization is irrelevant for indices; stored spectra are per
+  solar mass formed by `t_obs`.
+- No metallicity evolution: each history has a single log(Z/Zsun).
+
+Fiducial history for Step 1: `t_q` = 3 Gyr, `tau_q` = 0.3 Gyr, log(Z/Zsun) = 0.
+
+Priors for Step 2 (seed fixed and recorded in the output):
+
+| Parameter | Distribution | Range |
+| --------- | ------------ | ----- |
+| `t_q` | uniform | [1, 5.9] Gyr |
+| `tau_q` | log-uniform | [0.1, 3] Gyr |
+| log(Z/Zsun) | normal, mean 0.0, sigma 0.2 dex, truncated | [-0.5, +0.2] |
+
+Note: the paper's mock table also draws a random `t_obs` per mock; here each
+history is traced over all 260 epochs instead, so the two populations are
+weighted differently in time.
+
+### CSP assembly (own integrator, FSPS only for SSPs)
+
+FSPS has no built-in SFH with an exponential decline after truncation
+(`sf_trunc` is a hard cut, `sf_slope` is linear), and every new metallicity
+or `agb` value costs 11–23 s of SSP regeneration. So:
+
+1. `ssp_grid.py` builds the SSPs once with python-fsps (`sfh = 0`,
+   `zcontinuous = 0`, `tage = 0` returns all 107 ages) for each of the 4
+   metallicities and `agb` in {0, 1}, keeps the 3400 A – 2.2 micron window,
+   and caches them with full provenance (library tuple, fsps version, git
+   hashes of fsps and python-fsps, every non-default parameter).
+2. `broadening.py` smooths the cached SSPs (see next section). Convolution
+   and SFH integration are both linear, so smoothing the SSPs once is
+   identical to smoothing every CSP.
+3. `csp_integrate.py`: for an epoch `t_obs`, each bin with center `t_i < t_obs`
+   contributes mass `m_i` at lookback age `t_obs - t_i`. The SSP at that age is
+   interpolated linearly in log age between the two bracketing grid ages
+   (ages below 10^5 yr use the youngest SSP), matching FSPS's kernel. The
+   metallicity is interpolated linearly in log Z between the two bracketing
+   grid SSPs, matching `zcontinuous = 1`. The CSP is one matrix product
+   (weights of shape epochs x ages, times SSP of shape ages x pixels).
+4. `agb` = 2 spectra are formed from the `agb` = 0 and 1 spectra by linearity.
+
+Cross-check (Step 1 only): the same fiducial history is run through FSPS's
+tabular SFH (`sfh = 3`, `set_tabular_sfh`, `tage` set to a table node) at a
+handful of epochs, and the maximum relative flux difference inside the index
+windows plus the index differences are reported in the results.
+
+### Spectral resolution products
+
+All smoothing is done on a uniform log-wavelength grid (30 km/s step) with a
+Gaussian in velocity, on lambda F_lambda as in the ProGeny study, after
+subtracting the native library resolution in quadrature. The native
+resolution is piecewise constant (sigma 42.4 km/s below 10000 A, 254.6 km/s
+above), so the two segments are convolved separately with padding; no index
+window is within 800 A of the 10000 A splice.
+
+| Product | Range | Added kernel |
+| ------- | ----- | ------------ |
+| `native` | 3400 A – 2.2 micron | none (reference only) |
+| `sigma300` | 3400 A – 2.2 micron | sqrt(300^2 - sigma_lib^2): 297 km/s optical, 159 km/s NIR |
+| `r100` | 1.25 – 2.1 micron | sqrt(sigma_R100^2 + 300^2 - 254.6^2), with sigma_R100 = c / (2.3548 x 100) = 1273 km/s (R = 100 defined as FWHM) |
+
+D4000 and HdeltaA are measured on `sigma300` only. The H-minus bump is
+measured on `sigma300` and `r100`. Note that in the NIR the `sigma300`
+product is close to the native spectrum: the native sigma is already 255
+km/s and the pixel is 16 A (300 km/s).
+
+### Index definitions
+
+Wavelengths in the FSPS grid are vacuum. Lick/IDS and D4000 bands are given
+in air and are converted with the same Morton (1991) formula FSPS uses
+(`vacairconv.f90`). The H-minus bands were defined on model grids and are
+used as vacuum values.
+
+| Index | Blue | Feature | Red | Form |
+| ----- | ---- | ------- | --- | ---- |
+| D4000 | 3750–3950 A (air) | — | 4050–4250 A (air) | ratio of mean F_nu, red over blue (Bruzual 1983 form) |
+| HdeltaA | 4041.60–4079.75 A (air) | 4083.50–4122.25 A (air) | 4128.50–4161.00 A (air) | equivalent width in A on F_lambda: integral of (1 - F/F_c) over the feature |
+| H-minus bump | 1.494–1.539 micron | 1.570–1.734 micron | 1.746–1.791 micron | magnitude on F_lambda: -2.5 log10 of the mean of F/F_c over the feature; negative for a bump |
+
+`F_c` is the straight line through the band-mean F_lambda of the blue and red
+windows, anchored at the band midpoints. Band means use exact band limits
+(interpolate at the edges) and Gauss-Legendre quadrature inside pixels, as
+in the ProGeny implementation. FSPS output is F_nu (Lsun/Hz); F_lambda is
+F_nu c / lambda^2.
+
+### Outputs
+
+- `output/ssp_grid/`: cached SSP grids, one file per (metallicity, agb,
+  product), plus a provenance JSON.
+- `output/single_csp/`: fiducial spectra at each epoch and product (both
+  `agb` settings), the index table, the FSPS cross-check summary, and figures:
+  SFH plus the three indices versus time; NIR zooms at selected epochs for
+  both products; the three 2-D index planes as time-colored curves.
+- `output/population/`: the drawn parameters, the index table (one row per
+  history and epoch and `agb` setting: `t_q`, `tau_q`, `log_z`, `t_obs`,
+  the four index values, SFR, sSFR over the last 100 Myr and 100–1000 Myr
+  for later classification), and figures: the three planes as density plus
+  scatter, fiducial track overlaid, one panel per `agb` setting. Spectra are
+  not stored for the population.
+
+### Validation (all measured, thresholds fixed before running)
+
+- Null tests: a spectrum that is linear in wavelength gives |HdeltaA| and
+  |H-minus| below 1e-10 and D4000 equal to its analytic value.
+- Broadening: a synthetic Gaussian line of sigma 40 km/s convolved with the
+  300 km/s kernel recovers sqrt(40^2 + 300^2) within 1 percent.
+- `agb` linearity: S(agb = 2) from FSPS equals 2 S(1) - S(0) to 1e-10
+  relative.
+- Integrator versus FSPS tabular CSP: relative flux difference inside the
+  index windows below 2 percent at every checked epoch; index differences
+  reported.
+- Scale: a pilot with one metallicity, ten epochs and ten histories is timed
+  before the full population; the full run is only launched when the
+  extrapolated time is acceptable.
+
+### Code layout
+
+| File | Purpose |
+| ---- | ------- |
+| `sfh_model.py` | delayed-tau plus exponential quench, bin masses, priors and seeded draws |
+| `ssp_grid.py` | build, cache and load FSPS SSP grids with provenance |
+| `broadening.py` | log-wavelength resampling and quadrature-corrected Gaussian smoothing |
+| `csp_integrate.py` | SSP interpolation in log age and log Z; CSP matrix product |
+| `spectral_indices.py` | D4000, HdeltaA, H-minus bump; air-to-vacuum helper |
+| `run_single_csp.py` | Step 1 driver and figures |
+| `run_population.py` | Step 2 driver and figures |
+| `tests/` | unit tests for the validation items above |
+
+Style: `snake_case`, English, no camelCase, uv-managed environment with the
+rebuilt python-fsps wheel, Ruff via pre-commit. The Phase 1 scripts are
+left untouched.
+
+---
+
+## Phase 1 — SSP sandbox (2026-08-31, complete)
+
+### Goal
+
+Use `python-fsps` (which wraps the Fortran `fsps` code) to generate **single
+stellar population (SSP)** spectra with different assumptions about the **AGB /
+TP-AGB** stellar population, and compare the resulting spectra, especially in
+the rest-frame near-infrared (NIR) around 1.6 micron (1.4–1.8 micron).
+
+### Fixed configuration (fiducial)
+
+| Setting            | Value                | Notes                                  |
+| ------------------ | -------------------- | -------------------------------------- |
+| Isochrones         | MIST                 | compiled in; `zsol = 0.0185`           |
+| Spectral library   | C3K (low-res, `c3k_lr`; later `c3k_hr`) | 1936 / 10992 wavelength points |
+| Dust emission      | Draine & Li 2007     | compiled in (`DL07`)                   |
+| IMF                | Kroupa (2001) / Chabrier (2003) | variable between the two        |
+| Metallicity        | Solar (`zmet=11`, Z = 0.0185) |                              |
+| Age                | 1 Gyr (`tage=1.0`)   |                                        |
+| SFH                | single burst (`sfh=0`) |                                     |
+
+### AGB / TP-AGB parameters (the tunable knobs)
+
+Identified from `fsps/src/sps_vars.f90`, `mod_gb.f90`, `getspec.f90` and the
+`python-fsps` docstrings. All are **SSP-level** parameters (regenerate SSPs when
+changed).
+
+| Parameter            | Default | Meaning                                                                                     |
+| -------------------- | ------- | ------------------------------------------------------------------------------------------- |
+| `agb`                | 1.0     | Multiplicative weight of TP-AGB stars (phase=5). `0` removes them.                          |
+| `pagb`               | 1.0     | Weight of the post-AGB phase (phase=6, Rauch 2003 spectra). `0` removes them.               |
+| `add_agb_dust_model` | True    | Turn on/off AGB circumstellar dust (Villaume et al. 2014).                                   |
+| `agb_dust`           | 1.0     | Scales the circumstellar AGB dust emission.                                                  |
+| `use_lw_tpagb`       | 0       | If 1, use Lancon & Mouhcine (2002) empirical O-rich TP-AGB spectra; else C3K main grid.      |
+| `tpagb_norm_type`    | 2       | TP-AGB normalization scheme. **Only affects Padova isochrones — inert for MIST.**            |
+| `fcstar`             | 1.0     | **Inert** — the dilution line is commented out in `ssp_gen.f90` (the FSPS manual says "Currently has no effect"). Historically a Padova-specific C-star fraction knob; MIST has no C-rich TP-AGB stars, so it would not matter anyway. |
+| `redgb`              | 1.0     | RGB weight (no effect for Padova; MIST has an explicit RGB phase).                           |
+| `dell`, `delt`       | 0.0     | log L / log T shifts of TP-AGB (applied for all isochrone sets in `mod_gb.f90`, contrary to the docstring). |
+
+### Mechanism (how AGB spectra enter)
+
+In `getspec.f90`, stars with `phase=5` (TP-AGB) and `logT < 3.6` are assigned
+dedicated templates instead of the C3K grid:
+
+- **O-rich** (`ffco <= 1`, `use_lw_tpagb=1`): Lancon & Mouhcine 2002 (`Orich.spec`).
+- **C-rich** (`ffco > 1`): Aringer et al. 2009 (`Crich_Aringer.spec`), since the
+  compile-time flag `cstar_aringer=1`; otherwise Lancon & Wood 2002 (`Crich.spec`).
+- **post-AGB** (`phase=6`, `logT >= 4.699`): Rauch 2003 non-LTE models.
+- **Circumstellar dust** (`add_agb_dust_model=1`): `add_agb_dust.f90` (Villaume 2014).
+
+The templates live in `$SPS_HOME/SPECTRA/AGB_spectra/` and are interpolated onto
+the FSPS output wavelength grid.
+
+### Experiment scenarios
+
+For each IMF (Kroupa, Chabrier), run:
+
+1. `fiducial` — all defaults.
+2. `no_tpagb` — `agb=0`.
+3. `no_pagb` — `pagb=0`.
+4. `no_agb_dust` — `add_agb_dust_model=False`.
+5. `lw02_o_rich` — `use_lw_tpagb=1`.
+6. `double_tpagb` — `agb=2`.
+7. `no_agb_all` — `agb=0`, `pagb=0`, `add_agb_dust_model=False`.
+
+### Outputs
+
+- Spectra (F_nu, Lsun/Hz, per solar mass formed) saved to `output/ssp_spectra.npz`
+  (low-res) and `output/ssp_spectra_hr.npz` (high-res).
+- Comparison plots in `output/`.
