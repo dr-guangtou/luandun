@@ -3,7 +3,16 @@ import json
 import numpy as np
 import pytest
 
-from ssp_grid import LOG_Z_GRID, ZMET_BY_LOG_Z, SspGrid, build_ssp, load_ssp_grid, save_ssp_grid
+from ssp_grid import (
+    LOG_Z_GRID,
+    PARAM_KEYS,
+    ZMET_BY_LOG_Z,
+    SspGrid,
+    _provenance_dict,
+    build_ssp,
+    load_ssp_grid,
+    save_ssp_grid,
+)
 
 
 def test_zmet_lookup_matches_mist_zlegend():
@@ -33,6 +42,17 @@ def test_agb_weight_is_exactly_linear():
     predicted = 2.0 * flux_1 - flux_0
     scale = np.max(flux_2)
     assert np.max(np.abs(flux_2 - predicted)) / scale < 1e-10
+
+
+def test_build_ssp_extra_params_recorded():
+    fake_params = dict.fromkeys(PARAM_KEYS, 0) | {"agb": 1.0, "use_lw_tpagb": 1}
+    provenance = _provenance_dict(
+        "1.0.0", ["mist", "c3k_hr", "DL07"], fake_params, None, {"use_lw_tpagb": 1}
+    )
+    assert provenance["extra_params"] == {"use_lw_tpagb": 1}
+    assert provenance["params"]["use_lw_tpagb"] == 1
+    assert provenance["params"]["agb"] == 1.0
+    assert provenance["sps_home"] == "unset"
 
 
 def test_save_and_load_round_trip(tmp_path):

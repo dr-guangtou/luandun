@@ -23,6 +23,19 @@ ZMET_BY_LOG_Z = {-0.5: 9, -0.25: 10, 0.0: 11, 0.25: 12}
 AGB_WEIGHTS = (0.0, 1.0)
 IMF_TYPE_CHABRIER = 1
 PRODUCTS = ("native", "sigma300", "r100")
+PARAM_KEYS = (
+    "imf_type",
+    "zmet",
+    "agb",
+    "pagb",
+    "add_agb_dust_model",
+    "agb_dust",
+    "use_lw_tpagb",
+    "add_neb_emission",
+    "dust1",
+    "dust2",
+    "sfh",
+)
 DEFAULT_GRID_DIR = Path(__file__).resolve().parent / "output" / "ssp_grid"
 PYTHON_FSPS_DIR = Path("/Users/shuang/code/python-fsps")
 WHEEL_DIR = Path(__file__).resolve().parent / "wheels"
@@ -87,43 +100,41 @@ def record_build_environment(sps_home=None, python_fsps_dir=PYTHON_FSPS_DIR, whe
     }
 
 
-def build_ssp(log_z, agb):
+def _provenance_dict(fsps_version, libraries, params, sps_home_env, extra_params):
+    sps_home_for_git = sps_home_env or "."
+    build_environment = record_build_environment(sps_home=sps_home_for_git)
+    return {
+        "fsps_version": fsps_version,
+        "libraries": libraries,
+        "sps_home": sps_home_env or "unset",
+        "sps_home_git_hash": _git_hash(sps_home_for_git),
+        "sps_home_git_describe": build_environment["sps_home_git_describe"],
+        "sps_home_diff_sha256": build_environment["sps_home_diff_sha256"],
+        "params": {key: params[key] for key in PARAM_KEYS},
+        "extra_params": dict(extra_params or {}),
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values",
+    }
+
+
+def build_ssp(log_z, agb, extra_params=None):
     import fsps
 
     population = fsps.StellarPopulation(
         zcontinuous=0, zmet=ZMET_BY_LOG_Z[log_z], imf_type=IMF_TYPE_CHABRIER, sfh=0
     )
     population.params["agb"] = agb
+    for key, value in (extra_params or {}).items():
+        population.params[key] = value
     wave_a, flux_nu = population.get_spectrum(tage=0.0, peraa=False)
     window = (wave_a >= WAVE_MIN_A) & (wave_a <= WAVE_MAX_A)
     resolutions = np.asarray(population.resolutions)
-    sps_home = os.environ.get("SPS_HOME", ".")
-    build_environment = record_build_environment(sps_home=sps_home)
-    provenance = {
-        "fsps_version": fsps.__version__,
-        "libraries": [item.decode() for item in population.libraries],
-        "sps_home": os.environ.get("SPS_HOME", "unset"),
-        "sps_home_git_hash": _git_hash(sps_home),
-        "sps_home_git_describe": build_environment["sps_home_git_describe"],
-        "sps_home_diff_sha256": build_environment["sps_home_diff_sha256"],
-        "params": {
-            key: population.params[key]
-            for key in (
-                "imf_type",
-                "zmet",
-                "agb",
-                "pagb",
-                "add_agb_dust_model",
-                "agb_dust",
-                "use_lw_tpagb",
-                "add_neb_emission",
-                "dust1",
-                "dust2",
-                "sfh",
-            )
-        },
-        "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values",
-    }
+    provenance = _provenance_dict(
+        fsps.__version__,
+        [item.decode() for item in population.libraries],
+        population.params,
+        os.environ.get("SPS_HOME"),
+        extra_params,
+    )
     return (
         wave_a[window],
         np.asarray(population.ssp_ages),
