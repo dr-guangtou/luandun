@@ -27,6 +27,7 @@ from analysis_fast_quenching import (
     BUMP_PRODUCT_FOR_PLANES,
     D4000_SIGMA,
     HDELTA_A_SIGMA,
+    PURITY_CLIPPED_PERCENTILES,
     PURITY_ISOLABLE_THRESHOLD,
     PURITY_MIN_COUNT,
     PURITY_PERCENTILES,
@@ -73,7 +74,6 @@ BURSTY, SLOW_FADING = range(2)
 CLASSIFIER_K = 25
 CLASSIFIER_SEED = 20260924
 CONTAMINANT_NOISE_SEED = SEED
-FULL_RANGE_PERCENTILES = (0.0, 100.0)
 TIME_SINCE_BURST_COLOR_RANGE_GYR = (-1.0, 3.0)
 
 
@@ -143,11 +143,20 @@ def trace_families(grids, draws, edges_gyr):
 
 
 def contaminant_class_summary(table, codes):
+    """Class counts per family, plus the lowest sSFR ratio R = sSFR(0-100 Myr) /
+    sSFR(100-1000 Myr) the family reaches (rapid quenching needs R < 0.1)."""
+    ratio = np.divide(
+        table["ssfr_0_100_myr"],
+        table["ssfr_100_1000_myr"],
+        out=np.full(table["ssfr_0_100_myr"].shape, np.nan),
+        where=table["ssfr_100_1000_myr"] > 0,
+    )
     summary = {}
     for family, name in enumerate(FAMILY_NAMES):
         mask = table["family"] == family
         summary[name] = {
             "n_epochs": int(mask.sum()),
+            "min_ssfr_ratio_recent_over_previous": float(np.nanmin(ratio[mask])),
             "counts": {
                 class_name: int(np.sum(codes[mask] == code))
                 for code, class_name in enumerate(CLASS_NAMES)
@@ -282,10 +291,11 @@ def _balanced_training_indices(labels, rng):
 
 def classifier_tests(base_table, base_codes, extra_table, extra_codes, q2_summary):
     """Train on the whole delayed-tau population, noised exactly as in
-    `analysis_fast_quenching.build_feature_sets`, and label every contaminant epoch
-    (noised independently). The pooled rapid-quenching purity combines the
-    cross-validated delayed-tau confusion matrix of `q2_summary` with the contaminant
-    predictions."""
+    `analysis_fast_quenching.build_feature_sets` for noise seed `CLASSIFIER_SEED`, and label
+    every contaminant epoch (noised independently). The pooled rapid-quenching purity
+    combines the cross-validated delayed-tau confusion matrix of that seed in `q2_summary`
+    (the delayed-tau true and false positives) with the contaminant predictions of this
+    full-sample model (the contaminant false positives)."""
     feature_sets = {"no_bump": None} | {
         f"bump_{BUMP_PRODUCT_FOR_PLANES}_{precision:.3f}": precision
         for precision in BUMP_PRECISIONS
@@ -294,7 +304,7 @@ def classifier_tests(base_table, base_codes, extra_table, extra_codes, q2_summar
     results = {}
     for agb in AGB_SETTINGS:
         results[agb] = {}
-        training_sets = build_feature_sets(base_table, agb)
+        training_sets = build_feature_sets(base_table, agb, seed=CLASSIFIER_SEED)
         for key, precision in feature_sets.items():
             train = training_sets[key]["features"]
             scales = training_sets[key]["scales"]
@@ -311,9 +321,8 @@ def classifier_tests(base_table, base_codes, extra_table, extra_codes, q2_summar
                     knn_predict(train[keep], base_codes[keep], test, CLASSIFIER_K, scales)
                     == RAPID_QUENCHING
                 )
-                confusion = np.array(
-                    q2_summary["classifier"]["results"][agb][key][balance]["confusion"]
-                )
+                seed_results = q2_summary["classifier"]["results_by_seed"][str(CLASSIFIER_SEED)]
+                confusion = np.array(seed_results[agb][key][balance]["confusion"])
                 true_positive = confusion[RAPID_QUENCHING, RAPID_QUENCHING]
                 predicted_positive = confusion[:, RAPID_QUENCHING].sum()
                 false_alarms = predicted_rq & ~extra_rq
@@ -430,7 +439,9 @@ def figure_alternative(base_table, base_codes, extra_table, purity_grids, out_pa
                     colors="red",
                     linewidths=0.9,
                 )
-        axes[row, 0].set_title(f"{agb}: purity, with contaminants", loc="left")
+        axes[row, 0].set_title(
+            f"{agb}: purity with contaminants (noise-free upper bound)", loc="left"
+        )
     figure.colorbar(mesh, ax=list(axes[1:].ravel()), label="rapid-quenching purity", pad=0.02)
     figure.suptitle("red outline: purity $>$ 0.5 before adding contaminants", fontsize=11)
     figure.savefig(out_path, dpi=150)
@@ -500,8 +511,8 @@ def main():
     purity_results, purity_grids = purity_tests(
         base_table, base_codes, extra_table, extra_codes, PURITY_PERCENTILES
     )
-    full_range_results, _ = purity_tests(
-        base_table, base_codes, extra_table, extra_codes, FULL_RANGE_PERCENTILES
+    clipped_results, _ = purity_tests(
+        base_table, base_codes, extra_table, extra_codes, PURITY_CLIPPED_PERCENTILES
     )
     t_purity = time.perf_counter() - t0
     if args.pilot:
@@ -541,10 +552,14 @@ def main():
             "slow_fading": {"tau_q_range_gyr_log_uniform": SLOW_TAU_Q_RANGE_GYR},
         },
         "contaminant_classes": classes,
+        "purity_grid_definition": "`purity_maps`: full-range grid (min to max of each axis "
+        "over the delayed-tau population); `purity_maps_percentile_clipped`: 0.5-99.5 "
+        "percentile grid. Noise-free upper bounds.",
         "purity_maps": purity_results,
-        "purity_maps_full_range": full_range_results,
+        "purity_maps_percentile_clipped": clipped_results,
         "classifier": {
             "k": CLASSIFIER_K,
+            "noise_seed": CLASSIFIER_SEED,
             "bump_product": BUMP_PRODUCT_FOR_PLANES,
             "results": classifier_results,
         },

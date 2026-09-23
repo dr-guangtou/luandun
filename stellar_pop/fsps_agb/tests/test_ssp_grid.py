@@ -35,10 +35,12 @@ def test_build_ssp_returns_window_and_provenance():
 
 
 @pytest.mark.slow
-def test_agb_weight_is_exactly_linear():
-    wave_a, _, flux_0, _ = build_ssp(log_z=0.0, agb=0.0)
-    _, _, flux_1, _ = build_ssp(log_z=0.0, agb=1.0)
-    _, _, flux_2, _ = build_ssp(log_z=0.0, agb=2.0)
+@pytest.mark.parametrize("use_lw_tpagb", [0, 1])
+def test_agb_weight_is_exactly_linear(use_lw_tpagb):
+    extra_params = {"use_lw_tpagb": use_lw_tpagb}
+    wave_a, _, flux_0, _ = build_ssp(log_z=0.0, agb=0.0, extra_params=extra_params)
+    _, _, flux_1, _ = build_ssp(log_z=0.0, agb=1.0, extra_params=extra_params)
+    _, _, flux_2, _ = build_ssp(log_z=0.0, agb=2.0, extra_params=extra_params)
     predicted = 2.0 * flux_1 - flux_0
     scale = np.max(flux_2)
     assert np.max(np.abs(flux_2 - predicted)) / scale < 1e-10

@@ -91,3 +91,5 @@ def test_cross_validated_metrics_on_separable_data():
     result = cross_validated_metrics(features, labels, groups, np.array([1.0, 1.0]), k=5)
     assert result["completeness_mean"] > 0.95 and result["purity_mean"] > 0.95
     assert np.asarray(result["confusion"]).shape == (4, 4)
+    assert len(result["completeness_per_fold"]) == 5 and len(result["purity_per_fold"]) == 5
+    assert np.isclose(np.mean(result["completeness_per_fold"]), result["completeness_mean"])

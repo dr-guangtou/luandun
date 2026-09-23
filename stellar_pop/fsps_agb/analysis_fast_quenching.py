@@ -51,8 +51,15 @@ CLASS_COLORS = {
     RAPID_QUENCHING: "deepskyblue",
 }
 PLOT_ORDER = (STAR_FORMING, TRANSITIONAL, QUIESCENT, RAPID_QUENCHING)
+NOISE_SEEDS = (SEED, SEED + 1, SEED + 2)
 PURITY_GRID_BINS = 40
-PURITY_PERCENTILES = (0.5, 99.5)
+PURITY_PERCENTILES = (0.0, 100.0)
+PURITY_CLIPPED_PERCENTILES = (0.5, 99.5)
+PURITY_GRID_DEFINITION = (
+    "40 x 40 cells spanning the full range (min to max over all classes) of each axis; "
+    "the `_percentile_clipped` keys use cells between the 0.5 and 99.5 percentiles instead. "
+    "Noise-free: a noise-free upper bound on isolability."
+)
 PURITY_MIN_COUNT = 20
 PURITY_ISOLABLE_THRESHOLD = 0.5
 CLASSIFIER_NON_RQ_SUBSAMPLE = 100_000
@@ -166,7 +173,21 @@ def isolable_fraction(x, y, rq_mask, purity, edges_x, edges_y, threshold=PURITY_
     return float(isolable.sum() / n_rq)
 
 
+def _purity_map_result(x, y, rq_mask, percentiles):
+    purity, edges_x, edges_y, rq_density = compute_purity_grid(
+        x, y, rq_mask, percentiles=percentiles
+    )
+    finite_purity = purity[np.isfinite(purity)]
+    result = {
+        "max_cell_purity": float(finite_purity.max()) if finite_purity.size else float("nan"),
+        "isolable_fraction": isolable_fraction(x, y, rq_mask, purity, edges_x, edges_y),
+    }
+    return result, purity, edges_x, edges_y, rq_density
+
+
 def figure_purity_maps(table, codes, out_path):
+    """Noise-free purity maps on the full-range grid (drawn and headline), with the
+    percentile-clipped grid's numbers recorded alongside as `..._percentile_clipped`."""
     figure, axes = new_plane_figure(n_rows=2)
     results = {}
     rq_mask = codes == RAPID_QUENCHING
@@ -176,7 +197,13 @@ def figure_purity_maps(table, codes, out_path):
         results[agb] = {}
         for axis, (x_key, y_key) in zip(axes[row], PLANES, strict=True):
             x, y = indices[x_key], indices[y_key]
-            purity, edges_x, edges_y, rq_density = compute_purity_grid(x, y, rq_mask)
+            result, purity, edges_x, edges_y, rq_density = _purity_map_result(
+                x, y, rq_mask, PURITY_PERCENTILES
+            )
+            clipped, _, _, _, _ = _purity_map_result(x, y, rq_mask, PURITY_CLIPPED_PERCENTILES)
+            result["max_cell_purity_percentile_clipped"] = clipped["max_cell_purity"]
+            result["isolable_fraction_percentile_clipped"] = clipped["isolable_fraction"]
+            results[agb][f"{x_key}_{y_key}"] = result
             mesh = axis.pcolormesh(
                 edges_x, edges_y, purity.T, cmap="viridis", vmin=0.0, vmax=1.0, shading="flat"
             )
@@ -186,15 +213,9 @@ def figure_purity_maps(table, codes, out_path):
                 axis.contour(
                     centers_x, centers_y, rq_density.T, levels=4, colors="white", linewidths=0.8
                 )
-            plane_key = f"{x_key}_{y_key}"
-            finite_purity = purity[np.isfinite(purity)]
-            results[agb][plane_key] = {
-                "max_cell_purity": float(finite_purity.max())
-                if finite_purity.size
-                else float("nan"),
-                "isolable_fraction": isolable_fraction(x, y, rq_mask, purity, edges_x, edges_y),
-            }
-        axes[row, 0].set_title(f"{agb}, bump at {BUMP_PRODUCT_FOR_PLANES}", loc="left")
+        axes[row, 0].set_title(
+            f"{agb}, bump at {BUMP_PRODUCT_FOR_PLANES}: noise-free upper bound", loc="left"
+        )
     figure.colorbar(mesh, ax=list(axes.ravel()), label="rapid-quenching purity", pad=0.02)
     figure.savefig(out_path, dpi=150)
     plt.close(figure)
@@ -255,20 +276,25 @@ def balanced_cross_validated_metrics(
         "completeness_std": float(np.nanstd(completeness_per_fold, ddof=0)),
         "purity_mean": float(np.nanmean(purity_per_fold)),
         "purity_std": float(np.nanstd(purity_per_fold, ddof=0)),
+        "completeness_per_fold": [float(value) for value in completeness_per_fold],
+        "purity_per_fold": [float(value) for value in purity_per_fold],
         "confusion": confusion.tolist(),
     }
 
 
-def build_feature_sets(table, agb):
+def build_feature_sets(table, agb, seed=SEED):
     """Build the 7 feature sets for one agb setting: a single (D4000, HdeltaA) baseline noised
     once, plus (D4000, HdeltaA, bump) for each bump product at each of the three precisions,
-    each reusing that same noisy (D4000, HdeltaA) draw and adding a freshly noised bump column."""
+    each reusing that same noisy (D4000, HdeltaA) draw and adding its own bump noise. The
+    optical pair and every bump product/precision draw from independent streams spawned from
+    `np.random.SeedSequence(seed)`."""
+    streams = np.random.SeedSequence(seed).spawn(1 + len(BUMP_PRODUCTS) * len(BUMP_PRECISIONS))
     d4000 = table[f"d4000_{agb}"]
     hdelta_a = table[f"hdelta_a_{agb}"]
     noisy_d4000_hdelta = add_measurement_noise(
         np.column_stack([d4000, hdelta_a]),
         np.array([D4000_SIGMA, HDELTA_A_SIGMA]),
-        np.random.default_rng(SEED),
+        np.random.default_rng(streams[0]),
     )
     feature_sets = {
         "no_bump": {
@@ -276,11 +302,12 @@ def build_feature_sets(table, agb):
             "scales": np.array([D4000_SIGMA, HDELTA_A_SIGMA]),
         }
     }
+    bump_streams = iter(streams[1:])
     for product in BUMP_PRODUCTS:
         bump = table[f"h_minus_bump_{product}_{agb}"]
         for precision in BUMP_PRECISIONS:
             noisy_bump = add_measurement_noise(
-                bump[:, None], np.array([precision]), np.random.default_rng(SEED)
+                bump[:, None], np.array([precision]), np.random.default_rng(next(bump_streams))
             )[:, 0]
             key = f"bump_{product}_{precision:.3f}"
             feature_sets[key] = {
@@ -290,9 +317,27 @@ def build_feature_sets(table, agb):
     return feature_sets
 
 
-def run_classifier(table, codes, agb, n_folds=5):
+def paired_difference(result, baseline, n_folds):
+    """Mean, standard error (ddof = 1 fold-to-fold std / sqrt(n_folds)) and their ratio of the
+    per-fold difference `result - baseline`; both were evaluated on the same folds."""
+    out = {}
+    for metric in ("completeness", "purity"):
+        diff = np.asarray(result[f"{metric}_per_fold"]) - np.asarray(baseline[f"{metric}_per_fold"])
+        mean = float(np.nanmean(diff))
+        standard_error = float(np.nanstd(diff, ddof=1) / np.sqrt(n_folds))
+        out[f"{metric}_gain_mean"] = mean
+        out[f"{metric}_gain_standard_error"] = standard_error
+        out[f"{metric}_gain_over_standard_error"] = (
+            mean / standard_error if standard_error > 0 else float("nan")
+        )
+    return out
+
+
+def run_classifier(table, codes, agb, n_folds=5, seed=SEED):
+    """One classifier sweep: `seed` sets both the measurement noise and the fold assignment,
+    so every feature set of one sweep shares the same folds and the gains are paired."""
     groups = table["history_id"]
-    feature_sets = build_feature_sets(table, agb)
+    feature_sets = build_feature_sets(table, agb, seed=seed)
     results = {}
     for key, spec in feature_sets.items():
         unbalanced = cross_validated_metrics(
@@ -302,7 +347,7 @@ def run_classifier(table, codes, agb, n_folds=5):
             spec["scales"],
             k=25,
             n_folds=n_folds,
-            seed=SEED,
+            seed=seed,
             positive_class=RAPID_QUENCHING,
         )
         balanced = balanced_cross_validated_metrics(
@@ -312,11 +357,70 @@ def run_classifier(table, codes, agb, n_folds=5):
             spec["scales"],
             k=25,
             n_folds=n_folds,
-            seed=SEED,
+            seed=seed,
             positive_class=RAPID_QUENCHING,
         )
         results[key] = {"unbalanced": unbalanced, "balanced": balanced}
+    for key in results:
+        if key == "no_bump":
+            continue
+        for balance in ("unbalanced", "balanced"):
+            results[key][balance]["paired_difference_vs_no_bump"] = paired_difference(
+                results[key][balance], results["no_bump"][balance], n_folds
+            )
     return results
+
+
+ACROSS_SEED_METRICS = ("completeness_mean", "completeness_std", "purity_mean", "purity_std")
+ACROSS_SEED_GAIN_METRICS = (
+    "completeness_gain_mean",
+    "completeness_gain_over_standard_error",
+    "purity_gain_mean",
+    "purity_gain_over_standard_error",
+)
+
+
+def across_seed_statistics(results_by_seed):
+    """Mean and standard deviation (ddof = 1) across noise seeds of the headline metrics."""
+    seeds = list(results_by_seed)
+    first = results_by_seed[seeds[0]]
+    out = {}
+    for agb, sets in first.items():
+        out[agb] = {}
+        for key, balances in sets.items():
+            out[agb][key] = {}
+            for balance, metrics in balances.items():
+                entry = {}
+                for metric in ACROSS_SEED_METRICS:
+                    values = [results_by_seed[seed][agb][key][balance][metric] for seed in seeds]
+                    entry[f"{metric}_mean_over_seeds"] = float(np.mean(values))
+                    entry[f"{metric}_std_over_seeds"] = float(np.std(values, ddof=1))
+                if "paired_difference_vs_no_bump" in metrics:
+                    for metric in ACROSS_SEED_GAIN_METRICS:
+                        values = [
+                            results_by_seed[seed][agb][key][balance][
+                                "paired_difference_vs_no_bump"
+                            ][metric]
+                            for seed in seeds
+                        ]
+                        entry[f"{metric}_mean_over_seeds"] = float(np.mean(values))
+                        entry[f"{metric}_std_over_seeds"] = float(np.std(values, ddof=1))
+                out[agb][key][balance] = entry
+    return out
+
+
+def bump_product_difference(table):
+    """How much the sigma300 and r100 bump differ epoch by epoch, per agb setting."""
+    out = {}
+    for agb in AGB_SETTINGS:
+        diff = table[f"h_minus_bump_sigma300_{agb}"] - table[f"h_minus_bump_r100_{agb}"]
+        out[agb] = {
+            "max_abs_difference_mag": float(np.max(np.abs(diff))),
+            "p99_abs_difference_mag": float(np.percentile(np.abs(diff), 99)),
+            "median_difference_mag": float(np.median(diff)),
+            "std_difference_mag": float(np.std(diff)),
+        }
+    return out
 
 
 def subsample_for_classifier(table, codes, target_non_rq=CLASSIFIER_NON_RQ_SUBSAMPLE, seed=SEED):
@@ -331,9 +435,14 @@ def subsample_for_classifier(table, codes, target_non_rq=CLASSIFIER_NON_RQ_SUBSA
     return subsampled_table, codes[keep], True
 
 
-def figure_classifier(results, out_path):
+def figure_classifier(across_seeds, out_path, n_seeds):
+    """Across-seed mean of each metric, with bars and band = across-seed mean of the
+    fold-to-fold std."""
     figure, axes = plt.subplots(4, 2, figsize=(11, 17), layout="constrained", sharex=True)
-    figure.suptitle("rapid-quenching classifier metrics vs bump measurement precision")
+    figure.suptitle(
+        "rapid-quenching classifier metrics vs bump measurement precision\n"
+        f"mean over {n_seeds} noise seeds; bars: fold-to-fold std"
+    )
     row_specs = [
         ("agb2", "unbalanced"),
         ("agb2", "balanced"),
@@ -347,27 +456,20 @@ def figure_classifier(results, out_path):
     colors = {"sigma300": "tab:blue", "r100": "tab:orange"}
     precisions = np.array(BUMP_PRECISIONS)
     for row, (agb, balance) in enumerate(row_specs):
-        agb_results = results[agb]
+        agb_results = across_seeds[agb]
         baseline = agb_results["no_bump"][balance]
         for col, (mean_key, std_key, label) in enumerate(metrics):
             axis = axes[row, col]
-            axis.axhline(
-                baseline[mean_key], color="black", linestyle="--", label="no bump", zorder=1
-            )
+            base_mean = baseline[f"{mean_key}_mean_over_seeds"]
+            base_std = baseline[f"{std_key}_mean_over_seeds"]
+            axis.axhline(base_mean, color="black", linestyle="--", label="no bump", zorder=1)
             axis.axhspan(
-                baseline[mean_key] - baseline[std_key],
-                baseline[mean_key] + baseline[std_key],
-                color="black",
-                alpha=0.1,
-                zorder=0,
+                base_mean - base_std, base_mean + base_std, color="black", alpha=0.1, zorder=0
             )
             for product in BUMP_PRODUCTS:
-                means = np.array(
-                    [agb_results[f"bump_{product}_{p:.3f}"][balance][mean_key] for p in precisions]
-                )
-                stds = np.array(
-                    [agb_results[f"bump_{product}_{p:.3f}"][balance][std_key] for p in precisions]
-                )
+                entries = [agb_results[f"bump_{product}_{p:.3f}"][balance] for p in precisions]
+                means = np.array([entry[f"{mean_key}_mean_over_seeds"] for entry in entries])
+                stds = np.array([entry[f"{std_key}_mean_over_seeds"] for entry in entries])
                 axis.errorbar(
                     precisions,
                     means,
@@ -434,7 +536,7 @@ def main():
         n_folds_full = 5
         n_feature_sets = 1 + len(BUMP_PRODUCTS) * len(BUMP_PRECISIONS)
         n_runs_pilot = len(AGB_SETTINGS) * n_feature_sets * 2 * 2
-        n_runs_full = len(AGB_SETTINGS) * n_feature_sets * 2 * n_folds_full
+        n_runs_full = len(NOISE_SEEDS) * len(AGB_SETTINGS) * n_feature_sets * 2 * n_folds_full
         per_run_fold = classifier_elapsed / n_runs_pilot
         projected_minutes = per_run_fold * n_runs_full / 60.0
         print(f"pilot classifier: {classifier_elapsed:.2f} s for {n_runs_pilot} fold-runs")
@@ -452,7 +554,7 @@ def main():
     t_purity_maps = time.perf_counter() - t0
 
     n_feature_sets = 1 + len(BUMP_PRODUCTS) * len(BUMP_PRECISIONS)
-    n_runs_full = len(AGB_SETTINGS) * n_feature_sets * 2
+    n_runs_full = len(NOISE_SEEDS) * len(AGB_SETTINGS) * n_feature_sets * 2
     probe_spec = build_feature_sets(table, "agb2")["no_bump"]
     t0 = time.perf_counter()
     cross_validated_metrics(
@@ -480,23 +582,38 @@ def main():
         classifier_table, classifier_codes = table, codes
 
     t0 = time.perf_counter()
-    classifier_results = {
-        agb: run_classifier(classifier_table, classifier_codes, agb, n_folds=5)
-        for agb in AGB_SETTINGS
+    results_by_seed = {
+        str(seed): {
+            agb: run_classifier(classifier_table, classifier_codes, agb, n_folds=5, seed=seed)
+            for agb in AGB_SETTINGS
+        }
+        for seed in NOISE_SEEDS
     }
     t_classifier = time.perf_counter() - t0
-    figure_classifier(classifier_results, out_dir / f"{prefix}q2_classifier.png")
+    across_seeds = across_seed_statistics(results_by_seed)
+    figure_classifier(across_seeds, out_dir / f"{prefix}q2_classifier.png", len(NOISE_SEEDS))
 
     elapsed_total = time.perf_counter() - start
     summary = {
         "class_summary": classes,
+        "purity_grid_definition": PURITY_GRID_DEFINITION,
         "purity_maps": purity_results,
+        "bump_product_difference_sigma300_minus_r100": bump_product_difference(table),
         "classifier": {
             "subsampled_non_rapid_quenching": subsampled,
             "n_rows_used": int(classifier_codes.size),
             "timing_probe_s_per_run": probe_elapsed,
             "projected_minutes_without_subsampling": projected_minutes,
-            "results": classifier_results,
+            "noise_seeds": list(NOISE_SEEDS),
+            "seed_definition": "each seed sets the measurement noise (independent SeedSequence "
+            "streams for the optical pair and every bump product/precision) and the grouped "
+            "fold assignment",
+            "paired_difference_definition": "per-fold (bump set - no_bump) on the same folds; "
+            "standard error = ddof 1 std over the 5 folds / sqrt(5)",
+            "across_seeds_definition": "mean and ddof 1 std over the noise seeds of each "
+            "seed's fold-mean metric or paired gain",
+            "across_seeds": across_seeds,
+            "results_by_seed": results_by_seed,
         },
         "timing_s": {
             "class_planes_figure": t_class_planes,

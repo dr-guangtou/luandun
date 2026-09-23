@@ -141,7 +141,8 @@ def cross_validated_metrics(
     accumulating a 4x4 confusion matrix `confusion[true, pred]` and per-fold
     completeness/purity of `positive_class`. Returns their means and standard
     deviations (`ddof=0`, NaN-aware since a fold without any `positive_class`
-    member yields `completeness_purity` = NaN) plus the summed confusion matrix
+    member yields `completeness_purity` = NaN), the per-fold values in fold order
+    (`completeness_per_fold`, `purity_per_fold`) and the summed confusion matrix
     as a nested list.
     """
     features = np.asarray(features, dtype=float)
@@ -170,5 +171,7 @@ def cross_validated_metrics(
         "completeness_std": float(np.nanstd(completeness_per_fold, ddof=0)),
         "purity_mean": float(np.nanmean(purity_per_fold)),
         "purity_std": float(np.nanstd(purity_per_fold, ddof=0)),
+        "completeness_per_fold": [float(value) for value in completeness_per_fold],
+        "purity_per_fold": [float(value) for value in purity_per_fold],
         "confusion": confusion.tolist(),
     }

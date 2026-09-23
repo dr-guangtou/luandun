@@ -480,15 +480,40 @@ def step5_lw02_variant(grid_dir, grids, out_dir, prefix=""):
 # ---------------------------------------------------------------------------
 
 
-def _pooled_half_width(agb0_values, agb2_values):
-    pooled = np.concatenate([agb0_values, agb2_values])
-    return (np.percentile(pooled, 84) - np.percentile(pooled, 16)) / 2.0
+SCATTER_DEFINITION = (
+    "per-model root-mean-square 16-84 half-width in the bin: "
+    "sqrt((hw_agb0^2 + hw_agb2^2) / 2), hw = (p84 - p16) / 2 of each model's own bump values"
+)
+HEADLINE_BINNING = (
+    "paired: both models binned on the agb0 D4000 / HdeltaA of the same epoch; the offset is "
+    "the median of the per-epoch difference agb2 - agb0"
+)
+OWN_BINNING = (
+    "unpaired: agb0 epochs binned on d4000_agb0 / hdelta_a_agb0 and agb2 epochs on "
+    "d4000_agb2 / hdelta_a_agb2 (same bin edges); the offset is median(agb2) - median(agb0)"
+)
+
+
+def _half_width(values):
+    return (np.percentile(values, 84) - np.percentile(values, 16)) / 2.0
+
+
+def _rms_half_width(agb0_values, agb2_values):
+    return float(np.sqrt((_half_width(agb0_values) ** 2 + _half_width(agb2_values) ** 2) / 2.0))
+
+
+def _bin_edges(bin_values, n_bins):
+    lo, hi = np.percentile(bin_values, [1.0, 99.0])
+    return np.linspace(lo, hi, n_bins + 1)
+
+
+def _bin_index(bin_values, edges):
+    return np.clip(np.digitize(bin_values, edges[1:-1]), 0, edges.size - 2)
 
 
 def _bin_offsets(bin_values, agb0, agb2, n_bins=12):
-    lo, hi = np.percentile(bin_values, [1.0, 99.0])
-    edges = np.linspace(lo, hi, n_bins + 1)
-    bin_index = np.clip(np.digitize(bin_values, edges[1:-1]), 0, n_bins - 1)
+    edges = _bin_edges(bin_values, n_bins)
+    bin_index = _bin_index(bin_values, edges)
     rows = []
     for b in range(n_bins):
         mask = bin_index == b
@@ -496,7 +521,7 @@ def _bin_offsets(bin_values, agb0, agb2, n_bins=12):
             continue
         a0 = agb0[mask]
         a2 = agb2[mask]
-        half_width = _pooled_half_width(a0, a2)
+        half_width = _rms_half_width(a0, a2)
         diff_value = float(np.median(a2 - a0))
         rows.append(
             {
@@ -509,7 +534,32 @@ def _bin_offsets(bin_values, agb0, agb2, n_bins=12):
                 "p16_agb2": float(np.percentile(a2, 16)),
                 "p84_agb2": float(np.percentile(a2, 84)),
                 "median_diff": diff_value,
-                "pooled_half_width": float(half_width),
+                "rms_half_width": half_width,
+                "offset_over_scatter": diff_value / half_width if half_width > 0 else float("nan"),
+            }
+        )
+    return {key: np.array([row[key] for row in rows]) for key in rows[0]}
+
+
+def _own_bin_offsets(bin_values_agb0, bin_values_agb2, agb0, agb2, n_bins=12):
+    """Offsets when each model is binned on its own optical index, on the agb0 bin edges."""
+    edges = _bin_edges(bin_values_agb0, n_bins)
+    index_agb0 = _bin_index(bin_values_agb0, edges)
+    index_agb2 = _bin_index(bin_values_agb2, edges)
+    rows = []
+    for b in range(n_bins):
+        a0 = agb0[index_agb0 == b]
+        a2 = agb2[index_agb2 == b]
+        if a0.size == 0 or a2.size == 0:
+            continue
+        half_width = _rms_half_width(a0, a2)
+        diff_value = float(np.median(a2) - np.median(a0))
+        rows.append(
+            {
+                "bin_center": float(0.5 * (edges[b] + edges[b + 1])),
+                "count_agb0": int(a0.size),
+                "count_agb2": int(a2.size),
+                "median_diff": diff_value,
                 "offset_over_scatter": diff_value / half_width if half_width > 0 else float("nan"),
             }
         )
@@ -527,9 +577,15 @@ def step6_population_offsets(population_path, out_dir, make_figure, pilot=False,
         table = {key: value[subset] for key, value in table.items()}
 
     results = {}
-    summary = {}
+    summary = {
+        "scatter_definition": SCATTER_DEFINITION,
+        "headline_binning": HEADLINE_BINNING,
+        "own_bins_binning": OWN_BINNING,
+    }
     max_offset, max_offset_source = 0.0, None
-    for bin_key in ("d4000_agb0", "hdelta_a_agb0"):
+    min_offset, min_offset_source = np.inf, None
+    for index_name in ("d4000", "hdelta_a"):
+        bin_key = f"{index_name}_agb0"
         for product in ("sigma300", "r100"):
             agb0 = table[f"h_minus_bump_{product}_agb0"]
             agb2 = table[f"h_minus_bump_{product}_agb2"]
@@ -540,14 +596,29 @@ def step6_population_offsets(population_path, out_dir, make_figure, pilot=False,
             summary[f"{key_prefix}_median_agb0_mag"] = binned["median_agb0"].tolist()
             summary[f"{key_prefix}_median_agb2_mag"] = binned["median_agb2"].tolist()
             summary[f"{key_prefix}_median_diff_mag"] = binned["median_diff"].tolist()
-            summary[f"{key_prefix}_pooled_half_width_mag"] = binned["pooled_half_width"].tolist()
+            summary[f"{key_prefix}_rms_half_width_mag"] = binned["rms_half_width"].tolist()
             summary[f"{key_prefix}_offset_over_scatter"] = binned["offset_over_scatter"].tolist()
-            finite = binned["offset_over_scatter"][np.isfinite(binned["offset_over_scatter"])]
-            if finite.size and np.max(np.abs(finite)) > max_offset:
-                max_offset = float(np.max(np.abs(finite)))
+            finite = np.abs(
+                binned["offset_over_scatter"][np.isfinite(binned["offset_over_scatter"])]
+            )
+            if finite.size and np.max(finite) > max_offset:
+                max_offset = float(np.max(finite))
                 max_offset_source = key_prefix
+            if finite.size and np.min(finite) < min_offset:
+                min_offset = float(np.min(finite))
+                min_offset_source = key_prefix
+
+            own = _own_bin_offsets(table[bin_key], table[f"{index_name}_agb2"], agb0, agb2)
+            own_prefix = f"bump_{product}_by_{index_name}"
+            summary[f"{own_prefix}_own_bins_bin_center"] = own["bin_center"].tolist()
+            summary[f"{own_prefix}_own_bins_median_diff_mag"] = own["median_diff"].tolist()
+            summary[f"{own_prefix}_own_bins_offset_over_scatter"] = own[
+                "offset_over_scatter"
+            ].tolist()
     summary["max_offset_over_scatter"] = max_offset
     summary["max_offset_over_scatter_source"] = max_offset_source
+    summary["min_offset_over_scatter"] = min_offset
+    summary["min_offset_over_scatter_source"] = min_offset_source
 
     if make_figure:
         _figure_step6(results, out_dir, prefix)
@@ -595,9 +666,9 @@ def _figure_step6(results, out_dir, prefix=""):
             )
             yardstick_over_scatter = np.divide(
                 0.01,
-                binned["pooled_half_width"],
-                out=np.full_like(binned["pooled_half_width"], np.nan),
-                where=binned["pooled_half_width"] > 0,
+                binned["rms_half_width"],
+                out=np.full_like(binned["rms_half_width"], np.nan),
+                where=binned["rms_half_width"] > 0,
             )
             twin.plot(
                 binned["bin_center"],
@@ -608,12 +679,19 @@ def _figure_step6(results, out_dir, prefix=""):
                 label="0.01 mag / scatter",
             )
             twin.axhline(0.0, color="0.7", lw=0.5)
-            twin.set_ylabel("offset / pooled scatter")
+            twin.set_ylabel("offset / RMS scatter")
             if first_twin is None:
                 first_twin = twin
-    axes[0, 0].legend(frameon=False, fontsize=7, loc="upper left")
-    handles, labels = first_twin.get_legend_handles_labels()
-    first_twin.legend(handles, labels, frameon=False, fontsize=7, loc="lower right")
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    twin_handles, twin_labels = first_twin.get_legend_handles_labels()
+    figure.legend(
+        handles + twin_handles,
+        labels + twin_labels,
+        loc="outside lower center",
+        ncol=4,
+        frameon=False,
+        fontsize=11,
+    )
     figure.savefig(_out_path(out_dir, prefix, "q1_population_offsets.png"), dpi=150)
     plt.close(figure)
 
@@ -627,11 +705,6 @@ def main():
     parser = argparse.ArgumentParser(description="Q1: TP-AGB separability analysis.")
     parser.add_argument("--grid-dir", default=str(DEFAULT_GRID_DIR))
     parser.add_argument("--population-dir", default=str(POPULATION_PATH.parent))
-    parser.add_argument(
-        "--single-csp-dir",
-        default=None,
-        help="unused by this script; accepted for interface consistency with the other steps",
-    )
     parser.add_argument("--out-prefix", default="")
     parser.add_argument(
         "--pilot", action="store_true", help="solar Z, 3 ages, skip step 5 and figures"
