@@ -189,3 +189,56 @@
   `axes[row, 0].legend(frameon=False, loc="upper right")` after
   `plot_population`, since the top-right corner of the D4000-HdeltaA panel is
   empty of data points; re-ran the full population after the fix.
+
+## 2026-09-24 (Task 5: LW02 empirical TP-AGB pipeline, use_lw_tpagb = 1)
+- Timings: `ssp_grid.py --out-dir output/ssp_grid_lw02 --use-lw-tpagb` (8
+  builds) **91.7 s**; `broadening.py --grid-dir output/ssp_grid_lw02`
+  **1.6 s** (sigma300 0.7 s + r100 0.9 s); `run_single_csp.py` on the LW02
+  grid **1.9 s**; `run_population.py` on the LW02 grid (2000 histories x 260
+  epochs, same seed 20260924) **307.0 s** table + **347.0 s** total (~5.8
+  min); `analysis_agb_separability.py --grid-dir output/ssp_grid_lw02
+  --population-dir output/population_lw02 --out-prefix lw02_` **3.8 s**
+  (step 5, the LW02-variant comparison, is correctly skipped since the
+  grid provenance's `extra_params.use_lw_tpagb == 1`, with a note written
+  into `lw02_q1_summary.json["step5"]` instead); `analysis_fast_quenching.py
+  --population-dir output/population_lw02 --out-prefix lw02_` **73.2 s**
+  (no subsampling needed, timing probe projected 1.1 min for the 28-run
+  sweep). All outputs verified against `uv run pytest -q` (45 passed, 3
+  deselected, no regressions) and `ruff check`/`format --check` (clean)
+  after adding the new CLI options.
+- Largest `agb2` vs `agb0` H-minus bump difference on the LW02 fiducial
+  track (`t_q=3.0 Gyr`): **-0.0736 mag** (sigma300; -0.0733 mag r100) at
+  epoch **3.65 Gyr**, i.e. 0.65 Gyr after quenching -- about **6.6x** the
+  default C3K grid's -0.0111 mag at the same epoch. At the SSP level, solar
+  Z, `analysis_agb_separability.py` step 1 measures the peak at
+  **-0.1113 mag at 0.79 Gyr** (`lw02_q1_summary.json`
+  `step1.max_abs_delta_h_minus_bump_sigma300_mag_by_log_z["+0.00"]`),
+  matching the brief's -0.11 mag at 0.8 Gyr expectation.
+- LW02 population H-minus bump range (full table, from
+  `output/population_lw02/indices.npz`): sigma300 agb0
+  **[-0.0239, +0.0197] mag** (same as the default C3K population, since
+  `agb=0` has no TP-AGB light and `use_lw_tpagb` only swaps the TP-AGB
+  template), sigma300 agb2 **[-0.0990, +0.0197] mag** (vs default
+  **[-0.0260, +0.0197] mag** -- about 3.8x deeper on the low end); r100 agb0
+  **[-0.0245, +0.0186] mag**, r100 agb2 **[-0.0991, +0.0186] mag** (vs
+  default **[-0.0266, +0.0186] mag**).
+- Q2 on the LW02 population: class counts are identical to the default
+  population (star_forming 102,100; rapid_quenching 4,727; transitional
+  110,874; quiescent 264,299 of 482,000 rows at `epoch_gyr >= 1.0`), since
+  `assign_classes` depends only on the SFH masses, not on the AGB spectral
+  template. Purity maps: agb2 D4000-bump isolable fraction rises to
+  **0.134** (vs 0.077 default C3K) though its max cell purity drops to
+  0.731 (vs 1.000 default, i.e. a larger but slightly less pure high-purity
+  island); agb0 D4000-HdeltaA remains the best plane overall at **0.810**
+  isolable (agb2 in the same plane drops slightly to 0.768, vs 0.807
+  default, because the LW02 template also perturbs D4000/HdeltaA a little
+  relative to the default C3K agb2 spectrum). Classifier (agb2, unbalanced,
+  bump_sigma300 @0.010 mag): completeness **0.460 +/- 0.025** vs the
+  no-bump baseline **0.413 +/- 0.017** (+2.8 baseline std) and purity
+  **0.650 +/- 0.025** vs **0.613 +/- 0.025**; balanced: completeness
+  **0.947 +/- 0.010** vs **0.925 +/- 0.007**, purity **0.238 +/- 0.012** vs
+  **0.211 +/- 0.012**. Unlike the default C3K grid (Task 3: bump never
+  helps beyond fold-to-fold scatter), the LW02 bump does measurably help
+  the agb2 classifier at every tested precision; agb0 shows no measurable
+  improvement, as expected, since `agb=0` has no TP-AGB light regardless of
+  `use_lw_tpagb`.

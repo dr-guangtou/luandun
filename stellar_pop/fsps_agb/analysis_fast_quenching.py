@@ -403,13 +403,23 @@ def _to_native(obj):
 def main():
     parser = argparse.ArgumentParser(description="Q2: isolating fast quenching.")
     parser.add_argument("--input", default=str(INPUT_PATH))
+    parser.add_argument(
+        "--population-dir",
+        default=None,
+        help="directory holding indices.npz; overrides --input when given",
+    )
     parser.add_argument("--out-dir", default=str(OUTPUT_DIR))
+    parser.add_argument("--out-prefix", default="")
     parser.add_argument("--pilot", action="store_true", help="1/50 rows, 2 folds, timing only")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
+    prefix = args.out_prefix
+    input_path = (
+        Path(args.population_dir) / "indices.npz" if args.population_dir else Path(args.input)
+    )
 
     start = time.perf_counter()
-    table = load_population(args.input, stride=50 if args.pilot else 1)
+    table = load_population(input_path, stride=50 if args.pilot else 1)
     codes = assign_classes(table["ssfr_0_100_myr"], table["ssfr_100_1000_myr"])
     post_starburst = is_post_starburst(table["ssfr_0_100_myr"], table["ssfr_100_1000_myr"])
     classes = class_summary(codes, post_starburst)
@@ -434,11 +444,11 @@ def main():
 
     out_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.perf_counter()
-    figure_class_planes(table, codes, out_dir / "q2_class_planes.png")
+    figure_class_planes(table, codes, out_dir / f"{prefix}q2_class_planes.png")
     t_class_planes = time.perf_counter() - t0
 
     t0 = time.perf_counter()
-    purity_results = figure_purity_maps(table, codes, out_dir / "q2_purity_maps.png")
+    purity_results = figure_purity_maps(table, codes, out_dir / f"{prefix}q2_purity_maps.png")
     t_purity_maps = time.perf_counter() - t0
 
     n_feature_sets = 1 + len(BUMP_PRODUCTS) * len(BUMP_PRECISIONS)
@@ -475,7 +485,7 @@ def main():
         for agb in AGB_SETTINGS
     }
     t_classifier = time.perf_counter() - t0
-    figure_classifier(classifier_results, out_dir / "q2_classifier.png")
+    figure_classifier(classifier_results, out_dir / f"{prefix}q2_classifier.png")
 
     elapsed_total = time.perf_counter() - start
     summary = {
@@ -495,7 +505,8 @@ def main():
             "total": elapsed_total,
         },
     }
-    (out_dir / "q2_summary.json").write_text(json.dumps(_to_native(summary), indent=2) + "\n")
+    summary_path = out_dir / f"{prefix}q2_summary.json"
+    summary_path.write_text(json.dumps(_to_native(summary), indent=2) + "\n")
     print(f"wrote {out_dir} in {elapsed_total:.1f} s")
 
 

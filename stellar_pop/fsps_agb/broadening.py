@@ -103,12 +103,17 @@ def make_resolution_product(grid, product):
 
 
 if __name__ == "__main__":
+    import argparse
     import time
 
     from ssp_grid import DEFAULT_GRID_DIR, load_ssp_grid, save_ssp_grid
 
-    native_grid = load_ssp_grid(DEFAULT_GRID_DIR, "native")
+    parser = argparse.ArgumentParser(description="Build resolution products from a cached grid.")
+    parser.add_argument("--grid-dir", default=str(DEFAULT_GRID_DIR))
+    args = parser.parse_args()
+
+    native_grid = load_ssp_grid(args.grid_dir, "native")
     for name in ("sigma300", "r100"):
         start = time.perf_counter()
-        path = save_ssp_grid(make_resolution_product(native_grid, name), DEFAULT_GRID_DIR)
+        path = save_ssp_grid(make_resolution_product(native_grid, name), args.grid_dir)
         print(f"wrote {path} in {time.perf_counter() - start:.1f} s")

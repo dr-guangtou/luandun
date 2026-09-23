@@ -143,14 +143,20 @@ def build_ssp(log_z, agb, extra_params=None):
     )
 
 
-def build_and_cache_grid(out_dir=DEFAULT_GRID_DIR):
+def build_and_cache_grid(out_dir=DEFAULT_GRID_DIR, extra_params=None):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     flux = None
-    provenance = {"per_ssp": {}, "build_environment": record_build_environment()}
+    provenance = {
+        "per_ssp": {},
+        "build_environment": record_build_environment(),
+        "extra_params": dict(extra_params or {}),
+    }
     for i_z, log_z in enumerate(LOG_Z_GRID):
         for i_agb, agb in enumerate(AGB_WEIGHTS):
-            wave_a, log_age_yr, flux_nu, ssp_provenance = build_ssp(log_z, agb)
+            wave_a, log_age_yr, flux_nu, ssp_provenance = build_ssp(
+                log_z, agb, extra_params=extra_params
+            )
             native_sigma = np.array(ssp_provenance.pop("native_sigma_km_s"))
             if flux is None:
                 flux = np.empty((len(LOG_Z_GRID), len(AGB_WEIGHTS)) + flux_nu.shape)
@@ -196,8 +202,20 @@ def load_ssp_grid(out_dir, product):
 
 
 if __name__ == "__main__":
+    import argparse
     import time
 
+    parser = argparse.ArgumentParser(description="Build and cache the native FSPS SSP grid.")
+    parser.add_argument("--out-dir", default=str(DEFAULT_GRID_DIR))
+    parser.add_argument(
+        "--use-lw-tpagb",
+        action="store_true",
+        help="use the Lancon & Mouhcine (2002) empirical O-rich TP-AGB spectra",
+    )
+    args = parser.parse_args()
+
     start = time.perf_counter()
-    written = build_and_cache_grid()
+    written = build_and_cache_grid(
+        args.out_dir, extra_params={"use_lw_tpagb": 1} if args.use_lw_tpagb else None
+    )
     print(f"wrote {written} in {time.perf_counter() - start:.1f} s")

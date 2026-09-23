@@ -86,6 +86,14 @@ def continuum_normalized_flux_lambda(wave_a, flux_lambda, bands):
     return flux_lambda / continuum
 
 
+def _out_path(out_dir, prefix, name):
+    return out_dir / f"{prefix}{name}"
+
+
+def _grid_uses_lw_tpagb(grids):
+    return grids["native"].provenance.get("extra_params", {}).get("use_lw_tpagb") == 1
+
+
 def _shade_bump_bands(axis):
     for name, color in (("blue", "tab:blue"), ("feature", "tab:green"), ("red", "tab:red")):
         axis.axvspan(
@@ -98,7 +106,7 @@ def _shade_bump_bands(axis):
 # ---------------------------------------------------------------------------
 
 
-def step1_ssp_delta_vs_age(grids, out_dir, make_figure):
+def step1_ssp_delta_vs_age(grids, out_dir, make_figure, prefix=""):
     grid_s300 = grids["sigma300"]
     grid_r100 = grids["r100"]
     age_gyr = _age_gyr(grid_s300)
@@ -157,11 +165,11 @@ def step1_ssp_delta_vs_age(grids, out_dir, make_figure):
         summary[f"max_agb0_metallicity_spread_{name}_age_gyr"] = float(age_gyr[spread_idx])
 
     if make_figure:
-        _figure_step1(grid_s300, age_gyr, deltas, agb0_values, out_dir)
+        _figure_step1(grid_s300, age_gyr, deltas, agb0_values, out_dir, prefix)
     return summary
 
 
-def _figure_step1(grid, age_gyr, deltas, agb0_values, out_dir):
+def _figure_step1(grid, age_gyr, deltas, agb0_values, out_dir, prefix=""):
     figure, axes = plt.subplots(4, 1, figsize=(8, 15), sharex=True, layout="constrained")
     figure.get_layout_engine().set(h_pad=0.08, hspace=0.04)
     row_names = ("d4000", "hdelta_a", "h_minus_bump_sigma300", "h_minus_bump_r100")
@@ -198,7 +206,7 @@ def _figure_step1(grid, age_gyr, deltas, agb0_values, out_dir):
     axes[0].set_xlim(0.01, 20.0)
     axes[0].legend(frameon=False, fontsize=7, ncol=2, loc="upper right")
     axes[-1].set_xlabel("age [Gyr]")
-    figure.savefig(out_dir / "q1_ssp_delta_vs_age.png", dpi=150)
+    figure.savefig(_out_path(out_dir, prefix, "q1_ssp_delta_vs_age.png"), dpi=150)
     plt.close(figure)
 
 
@@ -207,7 +215,7 @@ def _figure_step1(grid, age_gyr, deltas, agb0_values, out_dir):
 # ---------------------------------------------------------------------------
 
 
-def step2_component_spectrum(grids, out_dir, make_figure):
+def step2_component_spectrum(grids, out_dir, make_figure, prefix=""):
     grid = grids["sigma300"]
     z_idx = _solar_index(grid)
     age_gyr = _age_gyr(grid)
@@ -238,11 +246,11 @@ def step2_component_spectrum(grids, out_dir, make_figure):
     }
 
     if make_figure:
-        _figure_step2(grid, age_gyr, bump_component, fraction, component, out_dir)
+        _figure_step2(grid, age_gyr, bump_component, fraction, component, out_dir, prefix)
     return summary
 
 
-def _figure_step2(grid, age_gyr, bump_component, fraction, component, out_dir):
+def _figure_step2(grid, age_gyr, bump_component, fraction, component, out_dir, prefix=""):
     figure, axes = plt.subplots(1, 2, figsize=(12, 5), layout="constrained")
     left = axes[0]
     left.plot(age_gyr, bump_component, color="tab:red")
@@ -271,7 +279,7 @@ def _figure_step2(grid, age_gyr, bump_component, fraction, component, out_dir):
     right.set_xlabel(r"rest wavelength [$\mu$m]")
     right.set_ylabel(r"norm. $F_\lambda$, S(1)$-$S(0)", fontsize=10)
     right.legend(frameon=False, fontsize=8)
-    figure.savefig(out_dir / "q1_component_spectrum.png", dpi=150)
+    figure.savefig(_out_path(out_dir, prefix, "q1_component_spectrum.png"), dpi=150)
     plt.close(figure)
 
 
@@ -280,7 +288,7 @@ def _figure_step2(grid, age_gyr, bump_component, fraction, component, out_dir):
 # ---------------------------------------------------------------------------
 
 
-def step3_nir_spectra_qa(grids, out_dir):
+def step3_nir_spectra_qa(grids, out_dir, prefix=""):
     figure, axes = plt.subplots(2, 4, figsize=(16, 7.5), sharex=True, layout="constrained")
     for row, product in enumerate(("sigma300", "r100")):
         grid = grids[product]
@@ -322,7 +330,7 @@ def step3_nir_spectra_qa(grids, out_dir):
             if col == 0:
                 axis.set_ylabel(r"norm. $F_\lambda$")
     axes[0, 0].legend(frameon=False, fontsize=7, loc="upper left")
-    figure.savefig(out_dir / "q1_nir_spectra.png", dpi=150)
+    figure.savefig(_out_path(out_dir, prefix, "q1_nir_spectra.png"), dpi=150)
     plt.close(figure)
 
 
@@ -331,7 +339,7 @@ def step3_nir_spectra_qa(grids, out_dir):
 # ---------------------------------------------------------------------------
 
 
-def step4_broadband_contrast(grids, out_dir, make_figure):
+def step4_broadband_contrast(grids, out_dir, make_figure, prefix=""):
     grid = grids["native"]
     age_gyr = _age_gyr(grid)
     idx_blue = _nearest_index(grid.wave_a, STEP4_BLUE_WAVE_A)
@@ -352,11 +360,11 @@ def step4_broadband_contrast(grids, out_dir, make_figure):
         )
 
     if make_figure:
-        _figure_step4(grid, age_gyr, ratio0, ratio2, relative_difference, out_dir)
+        _figure_step4(grid, age_gyr, ratio0, ratio2, relative_difference, out_dir, prefix)
     return summary
 
 
-def _figure_step4(grid, age_gyr, ratio0, ratio2, relative_difference, out_dir):
+def _figure_step4(grid, age_gyr, ratio0, ratio2, relative_difference, out_dir, prefix=""):
     figure, (left, right) = plt.subplots(1, 2, figsize=(11.5, 4.5), layout="constrained")
     for i_z, log_z in enumerate(grid.log_z_grid):
         color = Z_COLORS[i_z % len(Z_COLORS)]
@@ -376,7 +384,7 @@ def _figure_step4(grid, age_gyr, ratio0, ratio2, relative_difference, out_dir):
     right.set_title("relative difference in NIR/optical ratio", fontsize=9)
     right.axhline(0.0, color="black", lw=0.6)
     right.legend(frameon=False, fontsize=7)
-    figure.savefig(out_dir / "q1_broadband_ratio.png", dpi=150)
+    figure.savefig(_out_path(out_dir, prefix, "q1_broadband_ratio.png"), dpi=150)
     plt.close(figure)
 
 
@@ -410,7 +418,7 @@ def _build_or_load_lw02_variant(grid_dir):
     return wave_a, log_age_yr, flux_nu, native_sigma_km_s
 
 
-def step5_lw02_variant(grid_dir, grids, out_dir):
+def step5_lw02_variant(grid_dir, grids, out_dir, prefix=""):
     grid_s300 = grids["sigma300"]
     z_idx = _solar_index(grid_s300)
     c3k_age_gyr = _age_gyr(grid_s300)
@@ -462,7 +470,7 @@ def step5_lw02_variant(grid_dir, grids, out_dir):
     axis.set_xlabel("age [Gyr]")
     axis.set_ylabel(r"$\Delta$ bump, $\sigma$300 [mag]")
     axis.legend(frameon=False, fontsize=8)
-    figure.savefig(out_dir / "q1_lw02_variant.png", dpi=150)
+    figure.savefig(_out_path(out_dir, prefix, "q1_lw02_variant.png"), dpi=150)
     plt.close(figure)
     return summary
 
@@ -508,7 +516,7 @@ def _bin_offsets(bin_values, agb0, agb2, n_bins=12):
     return {key: np.array([row[key] for row in rows]) for key in rows[0]}
 
 
-def step6_population_offsets(population_path, out_dir, make_figure, pilot=False):
+def step6_population_offsets(population_path, out_dir, make_figure, pilot=False, prefix=""):
     with np.load(population_path) as data:
         keep = data["epoch_gyr"] >= 1.0
         table = {key: data[key][keep] for key in data.files}
@@ -542,11 +550,11 @@ def step6_population_offsets(population_path, out_dir, make_figure, pilot=False)
     summary["max_offset_over_scatter_source"] = max_offset_source
 
     if make_figure:
-        _figure_step6(results, out_dir)
+        _figure_step6(results, out_dir, prefix)
     return summary
 
 
-def _figure_step6(results, out_dir):
+def _figure_step6(results, out_dir, prefix=""):
     figure, axes = plt.subplots(2, 2, figsize=(12, 9), layout="constrained")
     row_keys = ("d4000_agb0", "hdelta_a_agb0")
     row_labels = ("D4000 (agb0) bin", r"H$\delta_A$ (agb0) bin [$\AA$]")
@@ -606,7 +614,7 @@ def _figure_step6(results, out_dir):
     axes[0, 0].legend(frameon=False, fontsize=7, loc="upper left")
     handles, labels = first_twin.get_legend_handles_labels()
     first_twin.legend(handles, labels, frameon=False, fontsize=7, loc="lower right")
-    figure.savefig(out_dir / "q1_population_offsets.png", dpi=150)
+    figure.savefig(_out_path(out_dir, prefix, "q1_population_offsets.png"), dpi=150)
     plt.close(figure)
 
 
@@ -618,6 +626,13 @@ def _figure_step6(results, out_dir):
 def main():
     parser = argparse.ArgumentParser(description="Q1: TP-AGB separability analysis.")
     parser.add_argument("--grid-dir", default=str(DEFAULT_GRID_DIR))
+    parser.add_argument("--population-dir", default=str(POPULATION_PATH.parent))
+    parser.add_argument(
+        "--single-csp-dir",
+        default=None,
+        help="unused by this script; accepted for interface consistency with the other steps",
+    )
+    parser.add_argument("--out-prefix", default="")
     parser.add_argument(
         "--pilot", action="store_true", help="solar Z, 3 ages, skip step 5 and figures"
     )
@@ -625,6 +640,8 @@ def main():
 
     start = time.perf_counter()
     grid_dir = Path(args.grid_dir)
+    population_path = Path(args.population_dir) / "indices.npz"
+    prefix = args.out_prefix
     grids = {
         product: load_ssp_grid(grid_dir, product) for product in ("native", "sigma300", "r100")
     }
@@ -637,22 +654,30 @@ def main():
         out_dir.mkdir(parents=True, exist_ok=True)
 
     summary = {
-        "step1": step1_ssp_delta_vs_age(grids, out_dir, make_figure),
-        "step2": step2_component_spectrum(grids, out_dir, make_figure),
-        "step4": step4_broadband_contrast(grids, out_dir, make_figure),
+        "step1": step1_ssp_delta_vs_age(grids, out_dir, make_figure, prefix),
+        "step2": step2_component_spectrum(grids, out_dir, make_figure, prefix),
+        "step4": step4_broadband_contrast(grids, out_dir, make_figure, prefix),
     }
     if make_figure:
-        step3_nir_spectra_qa(grids, out_dir)
-        summary["step5"] = step5_lw02_variant(grid_dir, grids, out_dir)
+        step3_nir_spectra_qa(grids, out_dir, prefix)
+        if _grid_uses_lw_tpagb(grids):
+            summary["step5"] = {
+                "skipped": True,
+                "note": "grid provenance already has use_lw_tpagb = 1 (this is the LW02 grid "
+                "itself); the LW02-variant comparison is meaningless here",
+            }
+        else:
+            summary["step5"] = step5_lw02_variant(grid_dir, grids, out_dir, prefix)
     summary["step6"] = step6_population_offsets(
-        POPULATION_PATH, out_dir, make_figure, pilot=args.pilot
+        population_path, out_dir, make_figure, pilot=args.pilot, prefix=prefix
     )
 
     elapsed = time.perf_counter() - start
     print(f"{'pilot ' if args.pilot else ''}run finished in {elapsed:.2f} s")
     if make_figure:
-        (out_dir / "q1_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-        print(f"wrote {out_dir / 'q1_summary.json'}")
+        summary_path = _out_path(out_dir, prefix, "q1_summary.json")
+        summary_path.write_text(json.dumps(summary, indent=2) + "\n")
+        print(f"wrote {summary_path}")
 
 
 if __name__ == "__main__":

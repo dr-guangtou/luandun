@@ -7,3 +7,6 @@ wheels/
 output/ssp_grid/*.npz
 output/single_csp/spectra_*.npz
 output/population/indices.*
+output/ssp_grid_lw02/*.npz
+output/single_csp_lw02/spectra_*.npz
+output/population_lw02/indices.*
