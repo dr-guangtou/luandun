@@ -15,11 +15,42 @@
 - [x] Study Phase 1, FSPS/python-fsps source, and the ProGeny resolution study.
 - [x] Interview and design; spec written to docs/SPEC.md.
 - [x] Implementation plan: docs/superpowers/plans/2026-09-24-csp-index-tracks.md
-- [ ] Patch nzinit, rebuild wheel, uv project, pre-commit.
-- [ ] sfh_model, ssp_grid, broadening, csp_integrate, spectral_indices with tests.
-- [ ] Step 1 driver, cross-check against FSPS tabular CSP, figures.
-- [ ] Pilot timing, then Step 2 population and figures.
-- [ ] Review section, lessons.
+- [x] Patch nzinit, rebuild wheel, uv project, pre-commit.
+- [x] sfh_model, ssp_grid, broadening, csp_integrate, spectral_indices with tests.
+- [x] Step 1 driver, cross-check against FSPS tabular CSP, figures.
+- [x] Pilot timing, then Step 2 population and figures.
+- [x] Review section, lessons.
+
+### Review
+- The bump planes (D4000-vs-bump, HdeltaA-vs-bump) fan out into a visibly
+  wider, fan-shaped spread at fixed D4000/HdeltaA than the tight,
+  nearly one-dimensional D4000-vs-HdeltaA sequence does, i.e. the H-minus
+  bump carries star-formation-history / recent-SF information that D4000 and
+  HdeltaA alone do not capture (`output/population/index_planes_{sigma300,r100}.png`,
+  task-11-report.md).
+- TP-AGB sensitivity is concentrated in the bump, not in D4000/HdeltaA: at
+  0.5-2 Gyr after quenching, `agb2` gives a more negative bump than `agb0`
+  for 100% of the population (mean offset -0.0087 mag `sigma300`, -0.0089 mag
+  `r100`), matching the fiducial track's largest `agb2` vs `agb0` bump
+  difference of -0.0111 mag at 3.45 Gyr (0.45 Gyr post-quench); D4000 and
+  HdeltaA are unaffected by `agb` by construction (they are measured
+  outside the NIR window the TP-AGB weight touches).
+- Cross-check against FSPS's tabular SFH (after the log-spaced lookback
+  sub-grid fix, docs/lessons.md Task 8): maximum relative flux difference
+  inside any index window is 0.312% at 1.0 Gyr, decaying to 0.006% by
+  13.0 Gyr — comfortably under the 2% threshold at every checked epoch
+  (`output/single_csp/fsps_cross_check.json`).
+- Validation numbers all met their thresholds: `agb` linearity to 1e-10
+  relative (Task 5), broadening recovers sqrt(40^2+300^2) within 1%
+  (Task 6), and the population pilot (10 histories x 10 epochs, 0.2 s)
+  extrapolated to 15.4 min for the full 2000 x 260 run, well under the
+  60-minute threshold, so the Step 4 pixel-slicing optimization was not
+  needed.
+- No validation threshold was left unmet; the only numeric miss recorded
+  during implementation was the original 0.05 Gyr bin-center integrator
+  disagreeing with FSPS by up to 45% in D4000 at young epochs, root-caused
+  to coarse age discretization of the youngest stars and fixed by the
+  log-spaced lookback sub-grid (docs/SPEC.md, "CSP assembly" section).
 
 ## Phase 1 — SSP sandbox (complete)
 

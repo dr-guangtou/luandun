@@ -159,11 +159,13 @@ F_nu c / lambda^2.
   SFH plus the three indices versus time; NIR zooms at selected epochs for
   both products; the three 2-D index planes as time-colored curves.
 - `output/population/`: the drawn parameters, the index table (one row per
-  history and epoch and `agb` setting: `t_q`, `tau_q`, `log_z`, `t_obs`,
-  the four index values, SFR, sSFR over the last 100 Myr and 100–1000 Myr
-  for later classification), and figures: the three planes as density plus
-  scatter, fiducial track overlaid, one panel per `agb` setting. Spectra are
-  not stored for the population.
+  history and epoch, wide-format columns for both `agb` settings: `t_q`,
+  `tau_q`, `log_z`, `t_obs`, D4000 / HdeltaA / H-minus bump (`sigma300` and
+  `r100`) for `agb0` and `agb2`, SFR, sSFR over the last 100 Myr and
+  100–1000 Myr for later classification; git-ignored, ~163 MB as CSV), and
+  figures: the three planes as density plus scatter, fiducial track
+  overlaid, one panel per `agb` setting. Spectra are not stored for the
+  population.
 
 ### Validation (all measured, thresholds fixed before running)
 

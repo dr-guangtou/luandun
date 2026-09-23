@@ -126,3 +126,89 @@ the CO-band structure present in the native AGB templates. The high-res
 (`c3k_hr`) rebuild has R=500 at 1.6 µm (~16 Å/pixel, 251 vs 50 points across
 1.4–1.8 µm) and resolves the 1.6 µm bump peak better (norm₂ peak ≈ 1.08 vs
 ≈ 1.05 for the fiducial).
+
+## Phase 2 — CSP index tracks and populations
+
+Delayed-tau-plus-quench composite stellar population (CSP) spectra, integrated with an in-house
+numpy integrator from cached FSPS SSP grids (cross-checked against FSPS's own tabular SFH), and
+three spectral indices (D4000, HdeltaA, the 1.6 µm H-minus bump) tracked over cosmic time for a
+fiducial quenching history and a population of 2000 randomly drawn ones. See `docs/SPEC.md`
+("Phase 2" section) for the full spec and `docs/superpowers/plans/2026-09-24-csp-index-tracks.md`
+for the implementation plan.
+
+### Modules
+
+| File | Purpose |
+| ---- | ------- |
+| `sfh_model.py` | Delayed-tau plus exponential quench SFH, bin edges, analytic bin masses, prior draws. |
+| `ssp_grid.py` | Build SSPs with FSPS, cache to `output/ssp_grid/`, load as `SspGrid`. |
+| `broadening.py` | Log-wavelength grid, resampling, quadrature-corrected Gaussian smoothing, resolution products. |
+| `csp_integrate.py` | Age-interpolation weights (log-spaced lookback sub-grid), log-Z interpolation, CSP matrix product. |
+| `spectral_indices.py` | Air-to-vacuum conversion, band means, D4000, HdeltaA, H-minus bump. |
+| `cross_check_fsps_tabular.py` | Cross-check the integrator against FSPS's own tabular SFH (`sfh=3`) at a handful of epochs. |
+| `index_planes.py` | Shared figure helpers for the three 2-D index planes. |
+| `run_single_csp.py` | Step 1 driver: fiducial CSP track, index table, FSPS cross-check, figures. |
+| `run_population.py` | Step 2 driver: population of quenching histories, index table, figures. |
+| `tests/test_*.py` | Unit tests per module; FSPS-dependent tests marked `slow`. |
+
+### Running
+
+    uv sync
+    export SPS_HOME=/Users/shuang/code/fsps
+    uv run python ssp_grid.py
+    uv run python broadening.py
+    uv run python cross_check_fsps_tabular.py
+    uv run python run_single_csp.py --pilot
+    uv run python run_single_csp.py
+    uv run python run_population.py --pilot
+    uv run python run_population.py
+
+### Results
+
+FSPS tabular-SFH cross-check, maximum relative flux difference inside any of the three index
+windows, fiducial history (`t_q=3.0 Gyr`, `tau_q=0.3 Gyr`, solar Z), from
+`output/single_csp/fsps_cross_check.json`:
+
+| Epoch (Gyr) | Max relative flux difference |
+| ----------- | ----------------------------- |
+| 1.00  | 0.312% (D4000) |
+| 3.00  | 0.053% (D4000) |
+| 3.50  | 0.197% (D4000) |
+| 5.00  | 0.065% (D4000) |
+| 8.00  | 0.022% (D4000) |
+| 13.00 | 0.006% (D4000) |
+
+All values are well under the 2% validation threshold (docs/lessons.md, Task 8 fix report).
+
+Timings (this laptop, C3K_HR grid, from docs/lessons.md):
+
+| Step | Time |
+| ---- | ---- |
+| `ssp_grid.py` (8 SSP builds) | 96.9 s |
+| `broadening.py` (`sigma300` + `r100`) | 0.7 s + 1.0 s |
+| `cross_check_fsps_tabular.py` (5-epoch slow test, one shared FSPS population build) | 19.0 s |
+| `run_single_csp.py` (full, 260 epochs, both products, both `agb` settings, tables + 4 figures) | 7.9 s |
+| `run_population.py --pilot` (10 histories x 10 epochs) | 0.2 s, extrapolated to 15.4 min for the full run |
+| `run_population.py` (full, 2000 histories x 260 epochs, table computation) | 299-301 s (~5.0 min) |
+| `run_population.py` (full, including writing output and figures) | 322-334 s (~5.5 min) |
+
+Index ranges over the fiducial CSP track (260 epochs, `output/single_csp/indices.csv`):
+
+| Index | `agb0` range | `agb2` range |
+| ----- | ------------ | ------------ |
+| D4000 (`sigma300`) | 1.020 – 2.335 | 1.020 – 2.344 |
+| HdeltaA (`sigma300`, A) | -4.577 – 6.300 | -4.609 – 6.242 |
+| H-minus bump (`sigma300`, mag) | -0.0202 – 0.0112 | -0.0220 – 0.0112 |
+| H-minus bump (`r100`, mag) | -0.0209 – 0.0104 | -0.0228 – 0.0104 |
+
+H-minus bump range over the population (2000 histories x 260 epochs, docs/lessons.md, Task 11):
+
+| Product | `agb0` range | `agb2` range |
+| ------- | ------------ | ------------ |
+| `sigma300` | -0.0239 – +0.0197 mag | -0.0260 – +0.0197 mag |
+| `r100` | -0.0245 – +0.0186 mag | -0.0266 – +0.0186 mag |
+
+At 0.5-2 Gyr after quenching, `agb2` is more negative (deeper bump) than `agb0` for 100% of the
+population (mean offset -0.0087 mag `sigma300`, -0.0089 mag `r100`), consistent with the fiducial
+track's largest `agb2` vs `agb0` bump difference of -0.0111 mag at 3.45 Gyr (0.45 Gyr after the
+`t_q=3.0 Gyr` quench).
