@@ -110,7 +110,7 @@ Evidence, LW02 templates:
   times the per-model RMS half-width (`lw02_q1_summary.json`,
   `step6.bump_*_median_diff_mag`, `step6.bump_*_offset_over_scatter`;
   `step6.min_offset_over_scatter` = 6.07, `step6.max_offset_over_scatter` = 16.31).
-  Binning each model on its own optical index gives 0.032-0.058 mag
+  Binning each model on its own optical index gives 0.032-0.057 mag
   (`step6.bump_*_own_bins_median_diff_mag`). It passes the answer rule in 48 of 48 bins.
 
 Figures (`output/analysis/`):
@@ -198,15 +198,16 @@ per-fold values in `completeness_per_fold`, `purity_per_fold`):
   In units of the paired fold standard error the 0.005 and 0.010 mag gains are 4.8-10.3
   on average over seeds (`..._gain_over_standard_error_mean_over_seeds`); with only 5
   folds these ratios vary strongly between seeds (standard deviation 1.1-6.6), so the
-  seed-to-seed spread of the gain itself is the more robust yardstick, and it is 5-10
-  times smaller than the gain. Class-balanced training shows the same pattern: purity
+  seed-to-seed spread of the gain itself is the more robust yardstick, and it is 2-10
+  times smaller than the gain. All three seeds share the same population realization
+  (the same 2000 histories), so the seed spread excludes population sampling variance. Class-balanced training shows the same pattern: purity
   0.204 rises to 0.238 at 0.010 mag and 0.262 at 0.005 mag
   (`across_seeds.agb2.<set>.balanced.purity_mean_mean_over_seeds`).
 - Default, agb2: completeness changes by -0.011 to -0.002 and purity by +0.008 to +0.014
   across the three precisions (sigma300). The agb0 control, which has no TP-AGB light,
   shows changes of the same size (completeness -0.012 to +0.013, purity +0.003 to +0.026
-  over both products, `across_seeds.agb0`), so these reflect the metallicity and age
-  information that any bump carries, not TP-AGB light.
+  over both products, `across_seeds.agb0`), so these presumably reflect the metallicity and
+  age information that any bump carries, not TP-AGB light.
 - The two bump products (sigma300, r100) give nearly identical classifier results
   because their bumps differ by at most 0.0011 mag, almost all of it a constant offset
   (epoch-to-epoch standard deviation 0.0001 mag;
@@ -217,7 +218,7 @@ per-fold values in `completeness_per_fold`, `purity_per_fold`):
   in `results_by_seed`).
 
 Evidence, alternative SFH families as contaminants. Two families of 300 histories each
-(seed 20260925, all 260 epochs, same integrator and class rules;
+(seed 20260925, epochs at or after 1 Gyr, same integrator and class rules;
 `analysis_alternative_sfh.py`):
 
 - bursty star-forming: no quench, plus a 0.1 Gyr Gaussian burst at 2-10 Gyr that adds
