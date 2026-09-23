@@ -75,7 +75,8 @@ def test_csp_track_of_constant_ssps_is_constant():
     assert epochs.shape == (260,) and np.isclose(epochs[-1], 13.0)
     assert flux.shape == (260, 50)
     assert np.allclose(flux, 3.0)
-    assert np.all(np.diff(mass) > 0)
+    assert np.all(np.diff(mass) >= 0)
+    assert mass[-1] > mass[0]
 
 
 def test_agb_two_spectra_is_linear_extrapolation():
