@@ -152,3 +152,34 @@
   `loc="left"` (anchors the text at the axis's left edge instead of
   centering it) and passing `bbox_inches="tight"` to the two
   `index_planes*.png` `savefig` calls; no change to `index_planes.py`.
+
+## 2026-09-24 (Task 11: Step 2 driver — population)
+- Pilot (10 histories x 10 epochs, both products, both agb settings, indices on
+  the full 18,700-pixel sigma300 and 5,184-pixel r100 spectra) ran in **0.2 s**,
+  extrapolating to **15.4 min** for the full 2000-history x 260-epoch run; well
+  under the 60-minute threshold, so the Step 4 pixel-slicing optimization was
+  not needed.
+- Full run (`uv run python run_population.py`, seed 20260924): table
+  computation took **299-301 s** (~5.0 min) across two runs; wall time
+  including writing `draws.npz`/`indices.npz`/`indices.csv`/`summary.json` and
+  both figures was **322-334 s** (~5.5 min). Table size: 2000 histories x 260
+  epochs = **520,000 rows**; `indices.npz` is 70.7 MB, `indices.csv` is
+  163.0 MB (both git-ignored via `output/population/indices.*`).
+- H-minus bump range across the population: sigma300 agb0
+  **[-0.0239, +0.0197] mag**, sigma300 agb2 **[-0.0260, +0.0197] mag**, r100
+  agb0 **[-0.0245, +0.0186] mag**, r100 agb2 **[-0.0266, +0.0186] mag**. At
+  0.5-2 Gyr after quenching, `agb2` is more negative than `agb0` for 100% of
+  the population (mean offset -0.0087 mag sigma300, -0.0089 mag r100),
+  consistent with the Step 1 fiducial track.
+- `plot_population`'s default `loc="best"` legend on the D4000-HdeltaA panel
+  placed "fiducial track" at the panel's bottom/right edge, directly
+  overlapping the neighboring panel's rotated `H$^-$ bump [mag]` y-axis label
+  in the narrow inter-panel gap (both texts became unreadable where they
+  crossed). Root cause: the legend is added by `plot_population` after
+  `new_plane_figure`'s `tight_layout()` already ran, so the layout does not
+  account for it, and the colorbar's manual axes-shrinking (same issue as
+  Task 10) rules out re-calling `tight_layout()`. Fixed in `run_population.py`
+  only (`index_planes.py` untouched) by forcing
+  `axes[row, 0].legend(frameon=False, loc="upper right")` after
+  `plot_population`, since the top-right corner of the D4000-HdeltaA panel is
+  empty of data points; re-ran the full population after the fix.

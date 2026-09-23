@@ -6,3 +6,4 @@ wheels/
 .pytest_cache/
 output/ssp_grid/*.npz
 output/single_csp/spectra_*.npz
+output/population/indices.*

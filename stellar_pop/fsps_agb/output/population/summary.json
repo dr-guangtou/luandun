@@ -1,0 +1,202 @@
+{
+  "n_draws": 2000,
+  "seed": 20260924,
+  "n_epochs": 260,
+  "elapsed_s": 300.5640835840022,
+  "grid_provenance": {
+    "per_ssp": {
+      "log_z=-0.50,agb=0": {
+        "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+        "libraries": [
+          "mist",
+          "c3k_hr",
+          "DL07"
+        ],
+        "sps_home": "/Users/shuang/code/fsps",
+        "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "params": {
+          "imf_type": 1,
+          "zmet": 9,
+          "agb": 0.0,
+          "pagb": 1.0,
+          "add_agb_dust_model": true,
+          "agb_dust": 1.0,
+          "use_lw_tpagb": 0,
+          "add_neb_emission": false,
+          "dust1": 0.0,
+          "dust2": 0.0,
+          "sfh": 0
+        },
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; negative means approximate"
+      },
+      "log_z=-0.50,agb=1": {
+        "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+        "libraries": [
+          "mist",
+          "c3k_hr",
+          "DL07"
+        ],
+        "sps_home": "/Users/shuang/code/fsps",
+        "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "params": {
+          "imf_type": 1,
+          "zmet": 9,
+          "agb": 1.0,
+          "pagb": 1.0,
+          "add_agb_dust_model": true,
+          "agb_dust": 1.0,
+          "use_lw_tpagb": 0,
+          "add_neb_emission": false,
+          "dust1": 0.0,
+          "dust2": 0.0,
+          "sfh": 0
+        },
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; negative means approximate"
+      },
+      "log_z=-0.25,agb=0": {
+        "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+        "libraries": [
+          "mist",
+          "c3k_hr",
+          "DL07"
+        ],
+        "sps_home": "/Users/shuang/code/fsps",
+        "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "params": {
+          "imf_type": 1,
+          "zmet": 10,
+          "agb": 0.0,
+          "pagb": 1.0,
+          "add_agb_dust_model": true,
+          "agb_dust": 1.0,
+          "use_lw_tpagb": 0,
+          "add_neb_emission": false,
+          "dust1": 0.0,
+          "dust2": 0.0,
+          "sfh": 0
+        },
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; negative means approximate"
+      },
+      "log_z=-0.25,agb=1": {
+        "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+        "libraries": [
+          "mist",
+          "c3k_hr",
+          "DL07"
+        ],
+        "sps_home": "/Users/shuang/code/fsps",
+        "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "params": {
+          "imf_type": 1,
+          "zmet": 10,
+          "agb": 1.0,
+          "pagb": 1.0,
+          "add_agb_dust_model": true,
+          "agb_dust": 1.0,
+          "use_lw_tpagb": 0,
+          "add_neb_emission": false,
+          "dust1": 0.0,
+          "dust2": 0.0,
+          "sfh": 0
+        },
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; negative means approximate"
+      },
+      "log_z=+0.00,agb=0": {
+        "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+        "libraries": [
+          "mist",
+          "c3k_hr",
+          "DL07"
+        ],
+        "sps_home": "/Users/shuang/code/fsps",
+        "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "params": {
+          "imf_type": 1,
+          "zmet": 11,
+          "agb": 0.0,
+          "pagb": 1.0,
+          "add_agb_dust_model": true,
+          "agb_dust": 1.0,
+          "use_lw_tpagb": 0,
+          "add_neb_emission": false,
+          "dust1": 0.0,
+          "dust2": 0.0,
+          "sfh": 0
+        },
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; negative means approximate"
+      },
+      "log_z=+0.00,agb=1": {
+        "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+        "libraries": [
+          "mist",
+          "c3k_hr",
+          "DL07"
+        ],
+        "sps_home": "/Users/shuang/code/fsps",
+        "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "params": {
+          "imf_type": 1,
+          "zmet": 11,
+          "agb": 1.0,
+          "pagb": 1.0,
+          "add_agb_dust_model": true,
+          "agb_dust": 1.0,
+          "use_lw_tpagb": 0,
+          "add_neb_emission": false,
+          "dust1": 0.0,
+          "dust2": 0.0,
+          "sfh": 0
+        },
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; negative means approximate"
+      },
+      "log_z=+0.25,agb=0": {
+        "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+        "libraries": [
+          "mist",
+          "c3k_hr",
+          "DL07"
+        ],
+        "sps_home": "/Users/shuang/code/fsps",
+        "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "params": {
+          "imf_type": 1,
+          "zmet": 12,
+          "agb": 0.0,
+          "pagb": 1.0,
+          "add_agb_dust_model": true,
+          "agb_dust": 1.0,
+          "use_lw_tpagb": 0,
+          "add_neb_emission": false,
+          "dust1": 0.0,
+          "dust2": 0.0,
+          "sfh": 0
+        },
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; negative means approximate"
+      },
+      "log_z=+0.25,agb=1": {
+        "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+        "libraries": [
+          "mist",
+          "c3k_hr",
+          "DL07"
+        ],
+        "sps_home": "/Users/shuang/code/fsps",
+        "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "params": {
+          "imf_type": 1,
+          "zmet": 12,
+          "agb": 1.0,
+          "pagb": 1.0,
+          "add_agb_dust_model": true,
+          "agb_dust": 1.0,
+          "use_lw_tpagb": 0,
+          "add_neb_emission": false,
+          "dust1": 0.0,
+          "dust2": 0.0,
+          "sfh": 0
+        },
+        "native_sigma_km_s_note": "from StellarPopulation.resolutions; negative means approximate"
+      }
+    }
+  }
+}
