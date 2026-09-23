@@ -25,6 +25,7 @@
 - Index bands: D4000 blue 3750–3950 A, red 4050–4250 A (air), ratio of mean F_nu red/blue. HdeltaA blue 4041.60–4079.75, feature 4083.50–4122.25, red 4128.50–4161.00 A (air), EW in A on F_lambda. H-minus blue 14940–15390, feature 15700–17340, red 17460–17910 A (vacuum), magnitudes on F_lambda, negative for a bump. Air bands are converted to vacuum with the Morton (1991) formula used by FSPS.
 - Validation thresholds (fixed in advance): null indices below 1e-10; broadening sigma recovery within 1 percent; `agb` linearity within 1e-10 relative; integrator vs FSPS tabular flux within 2 percent inside the index windows.
 - Small scale first: every driver has a `--pilot` flag that runs a sub-minute subset and prints timings before any full run.
+- Ruff (rules E, F, I, N, UP, B) must pass. Where the plan shows `matplotlib.use("Agg")` between imports, place all imports first and call `matplotlib.use("Agg")` after them (valid as long as no figure exists yet); do not add `noqa` comments.
 
 ---
 
@@ -118,7 +119,7 @@ Create `docs/patches/c3k_hr_nzinit_13.patch`:
 ```diff
 --- a/src/sps_vars.f90
 +++ b/src/sps_vars.f90
-@@ -320,7 +320,7 @@
+@@ -320,5 +320,5 @@
    REAL(SP), PARAMETER :: zsol_spec = 0.0185
    CHARACTER(7), PARAMETER :: spec_type = 'c3k_hr'
    INTEGER, PARAMETER      :: ndim_logt=80, ndim_logg=14
@@ -807,6 +808,7 @@ solar mass formed, on the FSPS vacuum wavelength grid restricted to the
 """
 
 import json
+import os
 import subprocess
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -855,7 +857,8 @@ def build_ssp(log_z, agb):
     provenance = {
         "fsps_version": fsps.__version__,
         "libraries": [item.decode() for item in population.libraries],
-        "sps_home_git_hash": _git_hash(Path(fsps.__file__).resolve().parent),
+        "sps_home": os.environ.get("SPS_HOME", "unset"),
+        "sps_home_git_hash": _git_hash(os.environ.get("SPS_HOME", ".")),
         "params": {
             key: population.params[key]
             for key in ("imf_type", "zmet", "agb", "pagb", "add_agb_dust_model", "agb_dust",
