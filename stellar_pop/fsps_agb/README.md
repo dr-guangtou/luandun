@@ -224,3 +224,54 @@ At 0.5-2 Gyr after quenching, `agb2` is more negative (deeper bump) than `agb0` 
 population (mean offset -0.0087 mag `sigma300`, -0.0089 mag `r100`), consistent with the fiducial
 track's largest `agb2` vs `agb0` bump difference of -0.0111 mag at 3.45 Gyr (0.45 Gyr after the
 `t_q=3.0 Gyr` quench).
+
+## Phase 3 — Diagnostic analysis
+
+The written answers are in `docs/ANALYSIS.md`. Scripts (outputs in `output/analysis/`):
+
+| Script | Question | Outputs |
+| ------ | -------- | ------- |
+| `population_classes.py` | shared: manuscript sSFR classes, noise, grouped folds, kNN | (library) |
+| `analysis_agb_separability.py` | Q1: agb 0 vs 2 at SSP, track and population level | `q1_*.png`, `q1_summary.json` |
+| `analysis_fast_quenching.py` | Q2: purity maps and noise-aware kNN with and without the bump | `q2_*.png`, `q2_summary.json` |
+| `analysis_alternative_sfh.py` | Q2 robustness: bursty and slowly fading SFH families as contaminants | `q2_alternative_sfh.png`, `q2_alternative_summary.json` |
+
+Run order, default C3K TP-AGB templates (after the Phase 2 steps above):
+
+    uv run python analysis_agb_separability.py --pilot
+    uv run python analysis_agb_separability.py
+    uv run python analysis_fast_quenching.py --pilot
+    uv run python analysis_fast_quenching.py
+    uv run python analysis_alternative_sfh.py --pilot
+    uv run python analysis_alternative_sfh.py
+
+Run order, empirical Lancon & Mouhcine TP-AGB templates (`use_lw_tpagb = 1`), outputs
+prefixed `lw02_`:
+
+    uv run python ssp_grid.py --out-dir output/ssp_grid_lw02 --use-lw-tpagb
+    uv run python broadening.py --grid-dir output/ssp_grid_lw02
+    uv run python run_single_csp.py --grid-dir output/ssp_grid_lw02 --out-dir output/single_csp_lw02
+    uv run python run_population.py --grid-dir output/ssp_grid_lw02 --out-dir output/population_lw02
+    uv run python analysis_agb_separability.py --grid-dir output/ssp_grid_lw02 \
+        --population-dir output/population_lw02 --out-prefix lw02_
+    uv run python analysis_fast_quenching.py --population-dir output/population_lw02 --out-prefix lw02_
+    uv run python analysis_alternative_sfh.py --grid-dir output/ssp_grid_lw02 \
+        --population-dir output/population_lw02 --out-prefix lw02_
+
+`analysis_alternative_sfh.py` caches its traced table as
+`<population-dir>/alternative_sfh_indices.npz` (git-ignored); `--reuse` redraws from it in
+about 13 s instead of tracing again (about 95 s).
+
+Headline numbers (details and JSON keys in `docs/ANALYSIS.md`):
+
+| Quantity | Default (C3K) | LW02 |
+| -------- | ------------- | ---- |
+| Max SSP bump delta, agb2 - agb0, solar Z | 0.020 mag at 0.79 Gyr | 0.111 mag at 0.79 Gyr |
+| Fiducial-track bump delta (sigma300) | -0.011 mag at 3.45 Gyr | -0.074 mag at 3.65 Gyr |
+| Population bump offset at fixed D4000/HdeltaA | 0.003-0.009 mag | 0.032-0.059 mag |
+| Offset / pooled 16-84 half-width, max | 1.35 | 1.90 |
+| Rapid-quenching isolable fraction, D4000-HdeltaA (agb2) | 0.807 | 0.768 |
+| Best bump-plane isolable fraction (agb2, full-range grid) | 0.081 | 0.291 |
+| kNN completeness / purity, no bump (agb2) | 0.418 / 0.617 | 0.413 / 0.613 |
+| kNN completeness / purity, + bump at 0.01 mag | 0.406 / 0.628 | 0.460 / 0.650 |
+| Contaminant epochs in previously pure cells | 0 of 144,600 | 0 of 144,600 |

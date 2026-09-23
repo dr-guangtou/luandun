@@ -80,5 +80,21 @@
   rebuild is the main lever to improve the spectral comparison.
 
 ## Phase 3 — Diagnostic analysis (requested 2026-09-24)
-- [ ] Q1: Is a model with vs without TP-AGB contribution (agb = 0 vs 2) clearly distinguishable in the three indices, for SSPs and for the CSP tracks and population, given realistic index uncertainties? QA figures required.
-- [ ] Q2: Assuming strong TP-AGB (agb = 2), can fast-quenching epochs be isolated in the index planes from star-forming, slowly quenching and old quiescent epochs? Test alternative SFH families if the delayed-tau family is inconclusive. QA figures required.
+- [x] Q1: Is a model with vs without TP-AGB contribution (agb = 0 vs 2) clearly distinguishable in the three indices, for SSPs and for the CSP tracks and population, given realistic index uncertainties? QA figures required.
+- [x] Q2: Assuming strong TP-AGB (agb = 2), can fast-quenching epochs be isolated in the index planes from star-forming, slowly quenching and old quiescent epochs? Test alternative SFH families if the delayed-tau family is inconclusive. QA figures required.
+
+### Review (2026-09-24)
+- Answers, with every number traced to a summary JSON key, are in `docs/ANALYSIS.md`;
+  both TP-AGB template configurations (default C3K, empirical LW02) were run end to end.
+- Q1 is template-dependent: with C3K the population bump offset (agb2 - agb0) at fixed
+  D4000/HdeltaA is at most 0.009 mag (0 of 48 bins pass the "clearly" rule); with LW02 it
+  is 0.032-0.059 mag, 1.7-1.9 times the intrinsic scatter (48 of 48 bins pass).
+- Q2: fast-quenching epochs are isolable in D4000-HdeltaA alone (77-81 percent of them in
+  cells above 0.5 purity); the bump adds nothing with C3K and about +0.05 completeness,
+  +0.04 purity at 0.01 mag with LW02.
+- Alternative SFH families (300 bursty, 300 slowly fading histories): no contaminant epoch
+  lands in any previously pure cell in either configuration; unbalanced kNN mislabels at
+  most 13 of 144,600 contaminant epochs.
+- Methodology finding: the 0.5-99.5 percentile purity grid clips 29.6 percent of LW02 agb2
+  rapid-quenching epochs in the bump planes; the full-range grid raises the D4000-bump
+  isolable fraction from 0.134 to 0.291 (still far below the optical plane).

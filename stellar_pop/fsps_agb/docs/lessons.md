@@ -242,3 +242,29 @@
   the agb2 classifier at every tested precision; agb0 shows no measurable
   improvement, as expected, since `agb=0` has no TP-AGB light regardless of
   `use_lw_tpagb`.
+
+## 2026-09-24 (Phase 3 Task 4: alternative SFH families and ANALYSIS.md)
+- Tracing 600 alternative-SFH histories x 260 epochs through `_history_indices` takes
+  93-95 s per configuration (pilot of 6 histories extrapolated 98-99 s); the purity
+  recomputation takes 0.2 s and the contaminant classifier (16 kNN fits on 482,000 rows)
+  about 11 s. Caching the traced table cut figure iterations to 13 s.
+- `epoch_weight_matrix` is now a thin wrapper around
+  `epoch_weight_matrix_from_cumulative`; checked bitwise identical (`np.array_equal`)
+  to the previous implementation for three (t_q, tau_q) pairs before relying on it.
+- Neither contaminant family ever satisfies the rapid-quenching rule (R < 0.1): measured
+  over epochs >= 1 Gyr, R = sSFR(0-100)/sSFR(100-1000) never drops below 0.404 for the
+  bursty family and 0.844 for the slowly fading family. The "no quench" bursty base (tau_q = 1e6 Gyr) has constant
+  SFR after t_q, so R sits exactly at the star-forming/transitional boundary R = 1 and the
+  label is decided by rounding; harmless for rapid-quenching purity, but worth knowing.
+- Surprise: the 0.5-99.5 percentile purity grid of `analysis_fast_quenching.py` is fine for
+  the default templates but clips 29.6 percent of the LW02 agb2 rapid-quenching epochs in
+  the bump planes (they have the deepest bumps in the whole population, 58 percent of the
+  epochs beyond the grid edge are rapid-quenching). The isolable fraction of 0.134 reported
+  in Task 5 is an undercount; a full-range grid gives 0.291. Always check what a
+  percentile clip removes when the class of interest lives in the tail.
+- The answer to Q1 flips with the TP-AGB template: the same stellar-evolution weights give
+  a component bump of about -0.03 mag with C3K hydrostatic spectra and about -0.2 mag with
+  the LW02 empirical spectra. Any statement about the 1.6 micron bump must name the
+  template set.
+- The Write tool is blocked for .md files in subagent sessions; write required docs through
+  the shell instead.
