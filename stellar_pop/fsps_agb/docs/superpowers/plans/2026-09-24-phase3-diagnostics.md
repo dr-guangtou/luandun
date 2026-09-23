@@ -211,6 +211,25 @@ Algorithms (write the code from these):
 
 - [ ] **Step 6: Commit** — subject "Add alternative SFH robustness test and the Phase 3 answers".
 
+### Task 5: Strong-TP-AGB configuration with empirical TP-AGB templates
+
+Motivation (measured in Task 2, `output/analysis/q1_lw02_variant.png`): with
+`use_lw_tpagb = 1` (Lancon & Mouhcine 2002 empirical O-rich TP-AGB spectra
+instead of the hydrostatic C3K grid) the agb 0 to 2 bump delta reaches
+-0.11 mag at 0.8 Gyr, ten times the default. Q2 asks about a strong TP-AGB
+contribution, so the population is rebuilt in that configuration.
+
+**Files:**
+- Modify: `ssp_grid.py` (`build_and_cache_grid(out_dir, extra_params=None)` passes `extra_params` to every `build_ssp`; the `__main__` block accepts `--out-dir` and `--use-lw-tpagb`), `broadening.py` (`__main__` accepts `--grid-dir`), `run_single_csp.py` and `run_population.py` (already have `--grid-dir` and `--out-dir`; verify), `analysis_fast_quenching.py` (accept `--population-dir` and `--out-prefix` so it can be run on the second population, default unchanged), `analysis_agb_separability.py` (accept `--grid-dir`, `--population-dir`, `--single-csp-dir`, `--out-prefix`; skip the LW02-variant step when the grid itself is the LW02 one).
+- Output: `output/ssp_grid_lw02/` (npz git-ignored, provenance JSON committed), `output/single_csp_lw02/`, `output/population_lw02/` (same ignore rules as their defaults), `output/analysis/lw02_q1_*.png`, `lw02_q1_summary.json`, `lw02_q2_*.png`, `lw02_q2_summary.json`.
+
+- [ ] **Step 1: Code changes** above, minimal and default-preserving. `uv run pytest -q` must still pass.
+- [ ] **Step 2: Build** `uv run python ssp_grid.py --out-dir output/ssp_grid_lw02 --use-lw-tpagb` (8 builds, about 100 s), then `uv run python broadening.py --grid-dir output/ssp_grid_lw02`. Verify provenance_native records `use_lw_tpagb = 1` and the build environment.
+- [ ] **Step 3: Single CSP** `uv run python run_single_csp.py --grid-dir output/ssp_grid_lw02 --out-dir output/single_csp_lw02`; look at the figures; record in lessons the largest agb2 vs agb0 bump difference and epoch (expect of order -0.1 mag near t_q + 0.5 Gyr).
+- [ ] **Step 4: Population** `uv run python run_population.py --grid-dir output/ssp_grid_lw02 --out-dir output/population_lw02` (same seed, so the same 2000 histories); look at the figures. Add `.gitignore` lines for `output/population_lw02/indices.*` and `output/single_csp_lw02/spectra_*.npz`.
+- [ ] **Step 5: Analyses** run `analysis_agb_separability.py` and `analysis_fast_quenching.py` on the LW02 grid and population with the `lw02_` prefix; look at the figures.
+- [ ] **Step 6: Commit** code, provenance JSONs, figures, summaries, lessons; subject "Rebuild the pipeline with empirical TP-AGB templates (use_lw_tpagb = 1)".
+
 ---
 
 ## Self-review against the spec
