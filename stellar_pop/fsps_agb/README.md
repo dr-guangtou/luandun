@@ -24,8 +24,20 @@ inverse) as Fortran compile definitions in `python-fsps`'s `CMakeLists.txt`;
     uv run pytest               # fast tests; add `-m slow` for the FSPS-dependent ones
     uv run pre-commit install
 
-The wheel in `wheels/` is built from python-fsps 7d202b8 with the FSPS submodule at bd187a0 plus
-`docs/patches/c3k_hr_nzinit_13.patch`, compiled with `-cpp -DC3K_LR=0 -DC3K_HR=1` (see docs/lessons.md).
+The wheel in `wheels/` is a local build artifact, not published to PyPI. It is built from
+python-fsps 7d202b8 with the FSPS submodule (`$SPS_HOME`) at bd187a0, with the two patches in
+`docs/patches/` applied: `c3k_hr_nzinit_13.patch` (`$SPS_HOME/src/sps_vars.f90` and the
+`python-fsps` `libfsps` submodule) and `python_fsps_cmake_c3k_hr.patch`
+(`python-fsps/src/fsps/CMakeLists.txt`, adding the `-cpp -DC3K_LR=0 -DC3K_HR=1` Fortran compile
+options). Exact commands (docs/lessons.md, Task 1):
+
+    cd /Users/shuang/code/python-fsps
+    git apply /path/to/docs/patches/python_fsps_cmake_c3k_hr.patch
+    # apply docs/patches/c3k_hr_nzinit_13.patch to sps_vars.f90 in $SPS_HOME and in
+    # src/fsps/libfsps, then reset libfsps to v4.0 first if needed
+    FC=/opt/homebrew/bin/gfortran uv build --wheel --python 3.12 --out-dir <repo>/wheels .
+
+`pip install -U fsps` restores the PyPI `c3k_lr` wheel instead.
 
 ## Files
 

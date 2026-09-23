@@ -200,5 +200,18 @@
     "python_fsps_cmake_diff_sha256": "a66b7eaf51629d74ad5506aa8a87193fad009f8e38db6070522789d4770a0214",
     "python_fsps_libfsps_submodule_commit": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
     "wheel_filename": "fsps-0.5.1.dev0+g7d202b8e0.d20260923-cp312-cp312-macosx_15_0_arm64.whl"
-  }
+  },
+  "product": "sigma300",
+  "total_sigma_km_s": 300.0,
+  "velocity_step_km_s": 30.0,
+  "segments_a": [
+    [
+      3400.011933427534,
+      10000.0
+    ],
+    [
+      10000.0,
+      21989.940372589215
+    ]
+  ]
 }

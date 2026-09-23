@@ -5,14 +5,13 @@ import pytest
 
 from ssp_grid import LOG_Z_GRID, ZMET_BY_LOG_Z, SspGrid, build_ssp, load_ssp_grid, save_ssp_grid
 
-pytestmark = pytest.mark.slow
-
 
 def test_zmet_lookup_matches_mist_zlegend():
     assert ZMET_BY_LOG_Z == {-0.5: 9, -0.25: 10, 0.0: 11, 0.25: 12}
     assert LOG_Z_GRID == (-0.5, -0.25, 0.0, 0.25)
 
 
+@pytest.mark.slow
 def test_build_ssp_returns_window_and_provenance():
     wave_a, log_age_yr, flux_nu, provenance = build_ssp(log_z=0.0, agb=1.0)
     assert log_age_yr.shape == (107,)
@@ -26,6 +25,7 @@ def test_build_ssp_returns_window_and_provenance():
     assert provenance["params"]["zmet"] == 11
 
 
+@pytest.mark.slow
 def test_agb_weight_is_exactly_linear():
     wave_a, _, flux_0, _ = build_ssp(log_z=0.0, agb=0.0)
     _, _, flux_1, _ = build_ssp(log_z=0.0, agb=1.0)
@@ -52,3 +52,21 @@ def test_save_and_load_round_trip(tmp_path):
     assert loaded.flux_nu.shape == (4, 2, 107, 100)
     assert loaded.product == "native"
     assert json.loads((tmp_path / "provenance.json").read_text())["note"] == "test"
+
+
+def test_save_and_load_product_provenance(tmp_path):
+    wave_a = np.linspace(3400.0, 22000.0, 100)
+    grid = SspGrid(
+        wave_a=wave_a,
+        log_age_yr=np.linspace(5.0, 10.3, 107),
+        log_z_grid=np.array(LOG_Z_GRID),
+        agb_weights=np.array([0.0, 1.0]),
+        flux_nu=np.ones((4, 2, 107, 100)),
+        native_sigma_km_s=np.full(100, 42.4),
+        product="sigma300",
+        provenance={"total_sigma_km_s": 300.0},
+    )
+    save_ssp_grid(grid, tmp_path)
+    assert (tmp_path / "provenance_sigma300.json").exists()
+    loaded = load_ssp_grid(tmp_path, "sigma300")
+    assert loaded.provenance["total_sigma_km_s"] == 300.0
