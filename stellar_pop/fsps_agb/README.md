@@ -241,7 +241,7 @@ Run order, default C3K TP-AGB templates (after the Phase 2 steps above):
     uv run python analysis_agb_separability.py --pilot
     uv run python analysis_agb_separability.py
     uv run python analysis_fast_quenching.py --pilot
-    uv run python analysis_fast_quenching.py
+    uv run python analysis_fast_quenching.py        # about 3.5 min (3 noise seeds)
     uv run python analysis_alternative_sfh.py --pilot
     uv run python analysis_alternative_sfh.py
 
@@ -269,9 +269,9 @@ Headline numbers (details and JSON keys in `docs/ANALYSIS.md`):
 | Max SSP bump delta, agb2 - agb0, solar Z | 0.020 mag at 0.79 Gyr | 0.111 mag at 0.79 Gyr |
 | Fiducial-track bump delta (sigma300) | -0.011 mag at 3.45 Gyr | -0.074 mag at 3.65 Gyr |
 | Population bump offset at fixed D4000/HdeltaA | 0.003-0.009 mag | 0.032-0.059 mag |
-| Offset / pooled 16-84 half-width, max | 1.35 | 1.90 |
-| Rapid-quenching isolable fraction, D4000-HdeltaA (agb2) | 0.807 | 0.768 |
-| Best bump-plane isolable fraction (agb2, full-range grid) | 0.081 | 0.291 |
-| kNN completeness / purity, no bump (agb2) | 0.418 / 0.617 | 0.413 / 0.613 |
-| kNN completeness / purity, + bump at 0.01 mag | 0.406 / 0.628 | 0.460 / 0.650 |
+| Offset / per-model RMS 16-84 half-width | 0.90-2.20 | 6.07-16.31 |
+| Rapid-quenching isolable fraction, D4000-HdeltaA (agb2, noise-free, full-range grid) | 0.782 | 0.792 |
+| Best bump-plane isolable fraction (agb2, noise-free, full-range grid) | 0.081 | 0.291 |
+| kNN completeness / purity, no bump (agb2, mean of 3 noise seeds) | 0.412 / 0.605 | 0.412 / 0.607 |
+| kNN completeness / purity, + bump at 0.01 mag (mean of 3 noise seeds) | 0.401 / 0.619 | 0.452 / 0.634 |
 | Contaminant epochs in previously pure cells | 0 of 144,600 | 0 of 144,600 |

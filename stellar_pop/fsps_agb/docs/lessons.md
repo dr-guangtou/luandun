@@ -231,8 +231,9 @@
   0.731 (vs 1.000 default, i.e. a larger but slightly less pure high-purity
   island); agb0 D4000-HdeltaA remains the best plane overall at **0.810**
   isolable (agb2 in the same plane drops slightly to 0.768, vs 0.807
-  default, because the LW02 template also perturbs D4000/HdeltaA a little
-  relative to the default C3K agb2 spectrum). Classifier (agb2, unbalanced,
+  default). Correction (final-review fix wave): that drop was a grid-edge
+  artefact of the 0.5-99.5 percentile grid, not a template effect; on the
+  full-range grid LW02 agb2 is 0.792 vs 0.782 default. Classifier (agb2, unbalanced,
   bump_sigma300 @0.010 mag): completeness **0.460 +/- 0.025** vs the
   no-bump baseline **0.413 +/- 0.017** (+2.8 baseline std) and purity
   **0.650 +/- 0.025** vs **0.613 +/- 0.025**; balanced: completeness
@@ -268,3 +269,25 @@
   template set.
 - The Write tool is blocked for .md files in subagent sessions; write required docs through
   the shell instead.
+
+## 2026-09-24 (Phase 3 final-review fix wave)
+- Timings (SPS_HOME set, no grid or population rebuild): `analysis_agb_separability.py`
+  4.4 s (default) and 3.9 s (LW02) wall; `analysis_fast_quenching.py` 207.7 s and 206.7 s
+  wall (run in parallel on a 10-core machine; classifier 202.7 s and 201.5 s for 3 noise
+  seeds x 14 feature sets x 2 training balances x 5 folds); `analysis_alternative_sfh.py
+  --reuse` 13.8 s and 13.5 s; `pytest -m slow` 94.9 s (the new `use_lw_tpagb = 1`
+  linearity case adds 32.2 s); `pytest -q` 3.7 s.
+- A pooled 16-84 half-width grows with the offset itself once the offset dominates (the
+  pooled range spans both models), so "offset over pooled scatter" tends to 2 and cannot
+  show how well separated the models are. Use the per-model
+  RMS half-width: LW02 went from 1.72-1.90 to 6.07-16.31, default from at most 1.35 to
+  0.90-2.20.
+- Reusing `np.random.default_rng(SEED)` for every noise column made the bump noise the same
+  standard-normal draws as the D4000 noise, and the two bump products share the same
+  draws. Spawn independent streams from `np.random.SeedSequence`.
+- A 5-fold paired standard error is itself noisy: the paired gain-over-SE ratio for the
+  LW02 agb2 purity gain at 0.010 mag was 5.6, 7.5 and 17.8 for the three noise seeds. Quote the
+  seed-to-seed spread of the gain alongside it.
+- With independent noise the default-template bump changes completeness by -0.011 to
+  -0.002 and purity by +0.008 to +0.014; the agb0 control shows the same size of change,
+  so compare against agb0 before crediting TP-AGB light.

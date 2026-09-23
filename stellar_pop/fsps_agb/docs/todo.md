@@ -88,13 +88,19 @@
   both TP-AGB template configurations (default C3K, empirical LW02) were run end to end.
 - Q1 is template-dependent: with C3K the population bump offset (agb2 - agb0) at fixed
   D4000/HdeltaA is at most 0.009 mag (0 of 48 bins pass the "clearly" rule); with LW02 it
-  is 0.032-0.059 mag, 1.7-1.9 times the intrinsic scatter (48 of 48 bins pass).
-- Q2: fast-quenching epochs are isolable in D4000-HdeltaA alone (77-81 percent of them in
-  cells above 0.5 purity); the bump adds nothing with C3K and about +0.05 completeness,
-  +0.04 purity at 0.01 mag with LW02.
+  is 0.032-0.059 mag, 6-16 times the per-model RMS intrinsic scatter (48 of 48 bins
+  pass); with C3K it is 0.9-2.2 times that scatter, so the C3K "no" rests on the 0.01 mag
+  precision (final-review fix wave, 2026-09-24).
+- Q2 (after the final-review fix wave): partially, in D4000-HdeltaA only. With yardstick
+  noise the kNN recovers about 41 percent of rapid-quenching epochs at about 61 percent
+  purity (1 percent base rate); noise-free maps put 77-79 percent in cells above 0.5
+  purity (full-range grid). The bump adds nothing TP-AGB-specific with C3K; with LW02 it
+  adds +0.081 completeness / +0.039 purity at 0.005 mag and +0.041 / +0.028 at 0.010 mag
+  (mean over 3 noise seeds, seed std 0.004-0.012).
 - Alternative SFH families (300 bursty, 300 slowly fading histories): no contaminant epoch
   lands in any previously pure cell in either configuration; unbalanced kNN mislabels at
-  most 13 of 144,600 contaminant epochs.
+  most 16 of 144,600 contaminant epochs (neither family can reach R < 0.1, so this is
+  a weak test).
 - Methodology finding: the 0.5-99.5 percentile purity grid clips 29.6 percent of LW02 agb2
   rapid-quenching epochs in the bump planes; the full-range grid raises the D4000-bump
   isolable fraction from 0.134 to 0.291 (still far below the optical plane).
