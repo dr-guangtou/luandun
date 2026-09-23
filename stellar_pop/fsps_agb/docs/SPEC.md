@@ -199,6 +199,76 @@ Style: `snake_case`, English, no camelCase, uv-managed environment with the
 rebuilt python-fsps wheel, Ruff via pre-commit. The Phase 1 scripts are
 left untouched.
 
+## Phase 3 — Diagnostic analysis (2026-09-24)
+
+Two questions, each answered with QA figures and measured numbers; a
+negative answer is acceptable if the evidence supports it.
+
+### Inputs
+
+The Phase 2 products: the SSP grid (4 Z x 2 agb x 107 ages; `native`,
+`sigma300`, `r100`), the fiducial track (Step 1) and the 520,000-row
+population table (Step 2) with `agb0` and `agb2` indices, SFR and the two
+sSFR windows.
+
+### Measurement yardstick
+
+Three reference precisions for the H-minus index: 0.005, 0.010 and 0.020
+mag (the ARP 151 SPHEREx measurement reached 0.018 mag; JWST prism stacks
+are at the 0.01 level), with 0.05 in D4000 and 0.5 A in HdeltaA for the
+optical indices. Population epochs earlier than 1 Gyr after the start of
+star formation are dropped from every population statistic (the discrete
+0.05 Gyr epochs make stripes there and no real sample is that young).
+
+### Q1. Can a model with versus without TP-AGB contribution be told apart?
+
+1. SSP level (`analysis_agb_separability.py`): Delta = index(agb = 2) -
+   index(agb = 0) versus age for all four metallicities, for the three
+   indices at `sigma300` and the bump also at `r100`, drawn next to the
+   metallicity spread of the agb = 0 index at fixed age and the yardstick
+   lines. Spectral QA: the ratio S(agb = 2) / S(agb = 0) over 1.3-2.0 micron
+   at 0.3, 1, 2 and 5 Gyr with the three bump bands shaded, and the
+   continuum-normalized NIR spectra themselves, to show that TP-AGB light
+   enters mostly as a tilted continuum that the pseudo-continuum removes.
+   Broadband contrast: the NIR-to-optical flux ratio F_nu(1.6 micron) /
+   F_nu(4200 A) for agb = 0 and 2, to show what a flux-calibrated
+   measurement would see instead of the index.
+2. CSP level: the fiducial track's Delta versus time since quenching; in
+   the population, in bins of D4000 and separately of HdeltaA, the median
+   and 16-84 percentiles of the bump for agb0 and agb2 and the offset in
+   units of the pooled intrinsic scatter.
+   Answer rule: "clearly" means the offset exceeds both the intrinsic
+   spread at fixed optical indices and the 0.01 mag precision.
+
+### Q2. With agb = 2, can the fast-quenching population be isolated?
+
+Classes follow the manuscript: R = sSFR(0-100 Myr) / sSFR(100-1000 Myr);
+star-forming R > 1; rapid-quenching sSFR(100-1000 Myr) > 1e-10 per yr and
+R < 0.1 (post-starburst as its subset with sSFR(0-100 Myr) < 1e-11);
+quiescent sSFR(100-1000 Myr) < 1e-10 and sSFR(0-100 Myr) < 1e-11 per yr;
+everything else "transitional".
+
+1. Purity maps (`analysis_fast_quenching.py`): 2-D histograms per class
+   in the three planes and the fraction of rapid-quenching points per
+   cell, for agb2 with agb0 as control.
+2. Noise-aware classification: Gaussian noise at the yardstick levels; a
+   k-nearest-neighbour classifier (k = 25) with 5-fold cross-validation
+   grouped by history; completeness and purity of the rapid-quenching class
+   and the confusion matrix for (D4000, HdeltaA) alone versus with the bump
+   added, at the three bump precisions. The bump helps only if purity or
+   completeness rises beyond the fold-to-fold scatter.
+3. Robustness with other SFH families (only if the delayed-tau result is
+   marginal, or to test contamination): a bursty star-forming family
+   (delayed-tau plus a late Gaussian burst holding 10 percent of the mass,
+   100 Myr wide, no quench) and a slowly fading family (tau_q 3-6 Gyr),
+   added as contaminants to the purity maps and the classifier.
+
+### Deliverables
+
+Figures and `summary.json` under `output/analysis/`, and `docs/ANALYSIS.md`
+with one section per question stating the answer, the numbers and the
+figures that support it.
+
 ---
 
 ## Phase 1 — SSP sandbox (2026-08-31, complete)
