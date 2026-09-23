@@ -1,7 +1,9 @@
+from functools import partial
+
 import numpy as np
 
-from run_population import population_indices, specific_sfr_windows
-from sfh_model import draw_population, time_bin_edges
+from run_population import _history_indices, population_indices, specific_sfr_windows
+from sfh_model import cumulative_mass, draw_population, time_bin_edges
 from ssp_grid import SspGrid
 
 LOG_AGE = np.round(np.arange(5.0, 10.3001, 0.05), 3)
@@ -53,3 +55,17 @@ def test_population_indices_layout():
     }
     assert np.allclose(table["hdelta_a_agb0"], 0.0, atol=1e-9)
     assert np.allclose(table["time_since_quenching_gyr"], table["epoch_gyr"] - table["t_q_gyr"])
+
+
+def test_history_indices_cumulative_mass_fn_matches_default_path():
+    grids = _toy_grids()
+    edges = time_bin_edges()[:41]
+    default = _history_indices(grids, 1.5, 0.3, 0.1, edges)
+    delayed_tau = partial(cumulative_mass, t_q_gyr=1.5, tau_q_gyr=0.3)
+    generic = _history_indices(grids, None, None, 0.1, edges, cumulative_mass_fn=delayed_tau)
+    assert set(generic) == set(default)
+    for key in default:
+        if key != "sfr":
+            assert np.array_equal(generic[key], default[key]), key
+    bin_mean_sfr = np.diff(cumulative_mass(edges, 1.5, 0.3)) / np.diff(edges)
+    assert np.allclose(generic["sfr"], bin_mean_sfr, rtol=1e-12)

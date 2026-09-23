@@ -5,6 +5,7 @@ up to a constant; only relative masses matter for spectral indices.
 """
 
 import numpy as np
+from scipy.special import erf
 from scipy.stats import truncnorm
 
 TIME_STEP_GYR = 0.05
@@ -48,6 +49,16 @@ def cumulative_mass(time_gyr, t_q_gyr, tau_q_gyr):
         0.0,
     )
     return before + after
+
+
+def burst_cumulative_mass(time_gyr, t_burst_gyr, width_gyr, mass_fraction, base_cumulative):
+    """Cumulative mass of `base_cumulative` plus a Gaussian burst centred at `t_burst_gyr`
+    with standard deviation `width_gyr` that adds `mass_fraction` of the base mass formed
+    by TIME_END_GYR."""
+    time_gyr = np.asarray(time_gyr, dtype=float)
+    burst_mass = mass_fraction * base_cumulative(TIME_END_GYR)
+    burst = 0.5 * burst_mass * (1.0 + erf((time_gyr - t_burst_gyr) / (np.sqrt(2.0) * width_gyr)))
+    return base_cumulative(time_gyr) + burst
 
 
 def bin_masses(edges_gyr, t_q_gyr, tau_q_gyr):

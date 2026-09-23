@@ -15,7 +15,13 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from csp_integrate import agb_two_spectra, csp_spectra, epoch_weight_matrix, interpolate_log_z
+from csp_integrate import (
+    agb_two_spectra,
+    csp_spectra,
+    epoch_weight_matrix,
+    epoch_weight_matrix_from_cumulative,
+    interpolate_log_z,
+)
 from index_planes import new_plane_figure, plot_population
 from run_single_csp import FIDUCIAL, compute_track_indices
 from sfh_model import bin_masses, draw_population, star_formation_rate, time_bin_edges
@@ -40,10 +46,21 @@ def specific_sfr_windows(edges_gyr, masses, epoch_index):
     return recent / formed, previous / formed
 
 
-def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr):
-    masses = bin_masses(edges_gyr, t_q_gyr, tau_q_gyr)
+def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr, cumulative_mass_fn=None):
+    """Indices and sSFR windows at every epoch of one history. By default the history is
+    the delayed-tau-plus-quenching SFH of (t_q_gyr, tau_q_gyr); when `cumulative_mass_fn`
+    (cumulative mass formed versus time in Gyr) is given it replaces that SFH, t_q_gyr and
+    tau_q_gyr are ignored, and `sfr` is the mean SFR over the 0.05 Gyr bin ending at each
+    epoch."""
     log_age_yr = next(iter(grids.values())).log_age_yr
-    weights = epoch_weight_matrix(edges_gyr, t_q_gyr, tau_q_gyr, log_age_yr)
+    if cumulative_mass_fn is None:
+        masses = bin_masses(edges_gyr, t_q_gyr, tau_q_gyr)
+        weights = epoch_weight_matrix(edges_gyr, t_q_gyr, tau_q_gyr, log_age_yr)
+        sfr = star_formation_rate(edges_gyr[1:], t_q_gyr, tau_q_gyr)
+    else:
+        masses = np.diff(cumulative_mass_fn(edges_gyr))
+        weights = epoch_weight_matrix_from_cumulative(edges_gyr, cumulative_mass_fn, log_age_yr)
+        sfr = masses / np.diff(edges_gyr)
     out = {}
     for product, grid in grids.items():
         flux_agb0 = csp_spectra(
@@ -61,7 +78,7 @@ def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr):
     ssfr = np.array([specific_sfr_windows(edges_gyr, masses, k) for k in range(n_epochs)])
     out["ssfr_0_100_myr"] = ssfr[:, 0]
     out["ssfr_100_1000_myr"] = ssfr[:, 1]
-    out["sfr"] = star_formation_rate(edges_gyr[1:], t_q_gyr, tau_q_gyr)
+    out["sfr"] = sfr
     return out
 
 

@@ -11,6 +11,8 @@ grid ages, the same kernel FSPS uses (sfh_weight.f90, interpolation_type =
 zcontinuous = 1 does.
 """
 
+from functools import partial
+
 import numpy as np
 
 from sfh_model import cumulative_mass, time_bin_edges
@@ -48,20 +50,26 @@ def _lookback_subgrid_edges(t_obs):
     return np.concatenate([[0.0], edges, [t_obs]])
 
 
-def epoch_weight_matrix(edges_gyr, t_q_gyr, tau_q_gyr, log_age_grid_yr):
+def epoch_weight_matrix_from_cumulative(edges_gyr, cumulative_mass_fn, log_age_grid_yr):
+    """Epoch-by-SSP-age mass weights for any SFH given as its cumulative mass formed,
+    `cumulative_mass_fn(time_gyr)`, vectorized over time."""
     n_epochs = edges_gyr.size - 1
     matrix = np.zeros((n_epochs, log_age_grid_yr.size))
     for k in range(n_epochs):
         t_obs = edges_gyr[k + 1]
         a_edges = _lookback_subgrid_edges(t_obs)
         a_lo, a_hi = a_edges[:-1], a_edges[1:]
-        sub_masses = cumulative_mass(t_obs - a_lo, t_q_gyr, tau_q_gyr) - cumulative_mass(
-            t_obs - a_hi, t_q_gyr, tau_q_gyr
-        )
+        sub_masses = cumulative_mass_fn(t_obs - a_lo) - cumulative_mass_fn(t_obs - a_hi)
         a_rep = np.sqrt(a_lo * a_hi)
         a_rep[0] = 0.5 * MIN_LOOKBACK_GYR
         matrix[k] = sub_masses @ age_weights(log_age_grid_yr, a_rep)
     return matrix
+
+
+def epoch_weight_matrix(edges_gyr, t_q_gyr, tau_q_gyr, log_age_grid_yr):
+    return epoch_weight_matrix_from_cumulative(
+        edges_gyr, partial(cumulative_mass, t_q_gyr=t_q_gyr, tau_q_gyr=tau_q_gyr), log_age_grid_yr
+    )
 
 
 def interpolate_log_z(flux_by_z, log_z_grid, log_z):

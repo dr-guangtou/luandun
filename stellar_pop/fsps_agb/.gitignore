@@ -10,3 +10,5 @@ output/population/indices.*
 output/ssp_grid_lw02/*.npz
 output/single_csp_lw02/spectra_*.npz
 output/population_lw02/indices.*
+output/population/alternative_sfh_indices.npz
+output/population_lw02/alternative_sfh_indices.npz
