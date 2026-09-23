@@ -61,7 +61,9 @@ def fsps_tabular_spectrum(t_q_gyr, tau_q_gyr, zmet, agb, tage_gyr, edges_gyr):
     return wave_a[window], flux_nu[window] / population.formed_mass
 
 
-def run_cross_check(epochs_gyr=(1.0, 3.0, 3.5, 5.0, 8.0, 13.0), grid_dir=DEFAULT_GRID_DIR):
+def run_cross_check(
+    epochs_gyr=(1.0, 3.0, 3.5, 5.0, 8.0, 13.0), grid_dir=DEFAULT_GRID_DIR, output_path=OUTPUT_PATH
+):
     grid = load_ssp_grid(grid_dir, "native")
     edges = time_bin_edges()
     epoch_grid, own_flux, _ = csp_track(
@@ -87,8 +89,9 @@ def run_cross_check(epochs_gyr=(1.0, 3.0, 3.5, 5.0, 8.0, 13.0), grid_dir=DEFAULT
             "index_difference": index_difference,
             "own_indices": {key: float(value) for key, value in own_indices.items()},
         }
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(json.dumps(report, indent=2) + "\n")
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(report, indent=2) + "\n")
     return report
 
 
