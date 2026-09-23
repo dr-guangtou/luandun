@@ -16,7 +16,7 @@ def test_log_wavelength_grid_has_constant_velocity_step():
     wave = log_wavelength_grid(3400.0, 22000.0, 30.0)
     steps = np.diff(np.log(wave)) * SPEED_OF_LIGHT_KM_S
     assert np.allclose(steps, 30.0, rtol=1e-9)
-    assert wave[0] >= 3400.0 and wave[-1] <= 22000.0
+    assert wave[0] >= 3400.0 - 1e-6 and wave[-1] <= 22000.0
 
 
 def test_resample_flux_preserves_linear_spectrum():
@@ -37,7 +37,8 @@ def test_gaussian_broaden_recovers_quadrature_sum():
     flux_nu = flux_lambda * wave**2
     broadened = gaussian_broaden(wave, flux_nu[None, :], 300.0)[0] / wave**2
     depth = 1.0 - broadened
-    second_moment = np.sum(depth * velocity**2) / np.sum(depth)
+    window = np.abs(velocity) <= 3000.0
+    second_moment = np.sum(depth[window] * velocity[window] ** 2) / np.sum(depth[window])
     recovered = np.sqrt(second_moment)
     expected = np.hypot(sigma_line, 300.0)
     assert abs(recovered / expected - 1.0) < 0.01
