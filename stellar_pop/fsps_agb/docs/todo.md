@@ -29,14 +29,16 @@
   HdeltaA alone do not capture (`output/population/index_planes_{sigma300,r100}.png`,
   task-11-report.md).
 - TP-AGB sensitivity is concentrated in the bump, not in D4000/HdeltaA: over
-  the fiducial track (`output/single_csp/indices.csv`) the largest `agb2` vs
-  `agb0` change is +1.25% relative in D4000 and -0.14 mag (absolute) in
-  HdeltaA, against -0.0111 mag in the bump at 3.45 Gyr (0.45 Gyr
-  post-quench) — a small fraction of D4000/HdeltaA's own dynamic range
-  (1.02-2.34, -4.6-6.3 mag) but roughly a third of the bump's own range
-  (~-0.02 to +0.01 mag). At the population level, 0.5-2 Gyr after quenching
-  `agb2` gives a more negative bump than `agb0` for 100% of the population
-  (mean offset -0.0087 mag `sigma300`, -0.0089 mag `r100`).
+  the fiducial track (`output/single_csp/indices.csv`, computed directly as
+  `(agb2 - agb0) / agb0` for D4000 and `agb2 - agb0` for HdeltaA) the
+  largest `agb2` vs `agb0` change is +0.75% relative in D4000 (at 4.2 Gyr)
+  and -0.14 A (absolute) in HdeltaA (at 4.0 Gyr), against -0.0111 mag in the
+  bump at 3.45 Gyr (0.45 Gyr post-quench) — a small fraction of
+  D4000/HdeltaA's own dynamic range (1.02-2.34, -4.6-6.3 A) but roughly a
+  third of the bump's own range (~-0.02 to +0.01 mag). At the population
+  level, 0.5-2 Gyr after quenching `agb2` gives a more negative bump than
+  `agb0` for 100% of the population (mean offset -0.0087 mag `sigma300`,
+  -0.0089 mag `r100`).
 - Cross-check against FSPS's tabular SFH (after the log-spaced lookback
   sub-grid fix, docs/lessons.md Task 8): maximum relative flux difference
   inside any index window is 0.312% at 1.0 Gyr, decaying to 0.006% by
