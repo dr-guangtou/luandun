@@ -88,3 +88,13 @@
   solar-like spectrum before the fix); max `|dF/F|` for `zmet=11` vs
   `zmet=12` on the new wheel = **1.0040** (confirms `zmet=12` now loads its
   own distinct supersolar spectrum rather than reusing `zmet=11`'s).
+
+## 2026-09-24 (Task 5: SSP grid build and cache)
+- Full native grid (`uv run python ssp_grid.py`, 8 SSP builds: 4 metallicities
+  x 2 AGB weights) took **96.9 s** wall time on this laptop (~12.1 s/build,
+  consistent with the ~11 s/build estimate). Cache written to
+  `output/ssp_grid/native.npz` (49.9 MB) plus `output/ssp_grid/provenance.json`.
+  Loaded shape: `flux_nu.shape == (4, 2, 107, 7263)`, `wave_a.size == 7263`
+  (3400-22000 A window on the native C3K_HR grid); `native_sigma_km_s` ranges
+  42.44-254.63 km/s, matching the R=3000 (optical) / R=500 (NIR) split
+  recorded above.
