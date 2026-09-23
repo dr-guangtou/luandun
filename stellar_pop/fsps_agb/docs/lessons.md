@@ -98,3 +98,33 @@
   (3400-22000 A window on the native C3K_HR grid); `native_sigma_km_s` ranges
   42.44-254.63 km/s, matching the R=3000 (optical) / R=500 (NIR) split
   recorded above.
+
+## 2026-09-24 (Task 6: broadening and resolution products)
+- Built both resolution products from the cached native grid
+  (`uv run python broadening.py`): `sigma300.npz` in **0.7 s**
+  (18655 wavelength points, 3400.0-21988.7 A) and `r100.npz` in **1.0 s**
+  (5184 points, 12501.3-20999.3 A), both from `output/ssp_grid/native.npz`.
+- Two of the brief's own `tests/test_broadening.py` tests fail against the
+  verbatim `broadening.py` code from the brief (diffed byte-identical, not a
+  transcription error):
+  - `test_log_wavelength_grid_has_constant_velocity_step`: `wave[0]` comes
+    back as `3399.999999999999` instead of `>= 3400.0`, a ~3e-13 relative
+    `exp(log(x)) != x` float64 roundoff in `log_wavelength_grid`.
+  - `test_gaussian_broaden_recovers_quadrature_sum`: `recovered` is `nan`.
+    Root cause: `gaussian_broaden` convolves `flux_nu / wave` (a rapidly
+    growing function of pixel index) with `mode="nearest"` padding; near the
+    domain edges (here 15000 A and 18000 A, ~28500 km/s from the line
+    center, far outside the 300 km/s kernel) the constant "nearest" padding
+    under-estimates the true declining continuation, producing a tiny
+    (~-4e-4) negative "depth" there. The test's second-moment sum weights by
+    `velocity**2`, which is huge at the domain edges, so that tiny edge
+    artifact flips `sum(depth * velocity**2)` negative and `sqrt` returns
+    `nan`. Production use (`_broaden_segment`) pads each segment by 6000
+    km/s before convolving and trims the padding afterward, so this edge
+    artifact does not reach `make_resolution_product` output (its own test,
+    `test_make_resolution_product_shapes_and_ranges`, passes); it only shows
+    up in this unit test's unpadded, wide domain. Left both the test and the
+    implementation unchanged, per instructions not to alter brief-specified
+    test code or logic; reported as a concern for the controller to rule on.
+- `uv run ruff format` reformatted both new files (long call signatures onto
+  multiple lines); reformatting only, no logic or assertion changes.
