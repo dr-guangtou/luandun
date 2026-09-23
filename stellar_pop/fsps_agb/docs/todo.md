@@ -14,7 +14,7 @@
 ### Plan
 - [x] Study Phase 1, FSPS/python-fsps source, and the ProGeny resolution study.
 - [x] Interview and design; spec written to docs/SPEC.md.
-- [ ] Implementation plan (writing-plans).
+- [x] Implementation plan: docs/superpowers/plans/2026-09-24-csp-index-tracks.md
 - [ ] Patch nzinit, rebuild wheel, uv project, pre-commit.
 - [ ] sfh_model, ssp_grid, broadening, csp_integrate, spectral_indices with tests.
 - [ ] Step 1 driver, cross-check against FSPS tabular CSP, figures.
