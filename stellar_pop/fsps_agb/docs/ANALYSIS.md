@@ -5,7 +5,7 @@ All numbers below are computed by the scripts; each is followed by the file (und
 
 ## Setup
 
-Models: MIST isochrones with the C3K spectral library in FSPS (Kroupa IMF, no nebular
+Models: MIST isochrones with the C3K spectral library in FSPS (Chabrier IMF, no nebular
 emission, no dust), SSP grids at four metallicities (log Z = -0.5, -0.25, 0, +0.25) and
 107 ages. Each history has one metallicity; CSPs are assembled by our own integrator
 (`csp_integrate.py`). Indices: D4000 and HdeltaA at sigma = 300 km/s (`sigma300`), and
