@@ -40,3 +40,7 @@
   this clearly to avoid wasted experimentation.
 - The C3K_LR output grid (R=100) is coarse for the 1.6 µm region; the C3K_HR
   rebuild is the main lever to improve the spectral comparison.
+
+## Phase 3 — Diagnostic analysis (requested 2026-09-24)
+- [ ] Q1: Is a model with vs without TP-AGB contribution (agb = 0 vs 2) clearly distinguishable in the three indices, for SSPs and for the CSP tracks and population, given realistic index uncertainties? QA figures required.
+- [ ] Q2: Assuming strong TP-AGB (agb = 2), can fast-quenching epochs be isolated in the index planes from star-forming, slowly quenching and old quiescent epochs? Test alternative SFH families if the delayed-tau family is inconclusive. QA figures required.
