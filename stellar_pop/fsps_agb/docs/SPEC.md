@@ -91,13 +91,19 @@ or `agb` value costs 11–23 s of SSP regeneration. So:
 2. `broadening.py` smooths the cached SSPs (see next section). Convolution
    and SFH integration are both linear, so smoothing the SSPs once is
    identical to smoothing every CSP.
-3. `csp_integrate.py`: for an epoch `t_obs`, each bin with center `t_i < t_obs`
-   contributes mass `m_i` at lookback age `t_obs - t_i`. The SSP at that age is
-   interpolated linearly in log age between the two bracketing grid ages
-   (ages below 10^5 yr use the youngest SSP), matching FSPS's kernel. The
-   metallicity is interpolated linearly in log Z between the two bracketing
-   grid SSPs, matching `zcontinuous = 1`. The CSP is one matrix product
-   (weights of shape epochs x ages, times SSP of shape ages x pixels).
+3. `csp_integrate.py`: for an epoch `t_obs`, the SFH is integrated over
+   lookback age on a log-spaced sub-grid (0.01 dex from 10^5 yr to `t_obs`,
+   plus the sliver from 0 to 10^5 yr). The mass formed in each sub-bin is the
+   analytic integral of the SFR (`sfh_model.cumulative_mass`), and it is
+   assigned to the SSP ages by linear interpolation in log age between the
+   two bracketing grid ages (ages below 10^5 yr use the youngest SSP),
+   matching FSPS's kernel. A fixed 0.05 Gyr bin-center scheme was tried first
+   and disagreed with FSPS by up to 45 percent in the D4000 window while
+   star formation was ongoing, because stars younger than about 100 Myr
+   change their blue flux by large factors within one bin. The metallicity is
+   interpolated linearly in log Z between the two bracketing grid SSPs,
+   matching `zcontinuous = 1`. The CSP is one matrix product (weights of
+   shape epochs x ages, times SSP of shape ages x pixels).
 4. `agb` = 2 spectra are formed from the `agb` = 0 and 1 spectra by linearity.
 
 Cross-check (Step 1 only): the same fiducial history is run through FSPS's

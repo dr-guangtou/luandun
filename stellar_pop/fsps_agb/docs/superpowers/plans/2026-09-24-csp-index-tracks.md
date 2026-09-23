@@ -73,7 +73,7 @@ def make_resolution_product(grid: SspGrid, product, native_sigma_km_s_per_pix) -
 
 # csp_integrate.py
 def age_weights(log_age_grid_yr, lookback_gyr) -> np.ndarray                    # (n_lookback, n_age), rows sum to 1
-def epoch_weight_matrix(edges_gyr, masses, log_age_grid_yr) -> np.ndarray       # (n_epochs, n_age); epoch k uses edges[k]
+def epoch_weight_matrix(edges_gyr, t_q_gyr, tau_q_gyr, log_age_grid_yr) -> np.ndarray  # (n_epochs, n_age); epoch k uses edges[k+1]; SFH integrated on a 0.01 dex lookback sub-grid with analytic masses (ruling after Task 8)
 def interpolate_log_z(flux_by_z, log_z_grid, log_z) -> np.ndarray               # drops the leading z axis
 def csp_spectra(weight_matrix, ssp_flux) -> np.ndarray                          # (n_epochs, n_pix), per Msun formed
 
@@ -1966,9 +1966,10 @@ def specific_sfr_windows(edges_gyr, masses, epoch_index):
 
 def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr):
     masses = bin_masses(edges_gyr, t_q_gyr, tau_q_gyr)
+    log_age_yr = next(iter(grids.values())).log_age_yr
+    weights = epoch_weight_matrix(edges_gyr, t_q_gyr, tau_q_gyr, log_age_yr)
     out = {}
     for product, grid in grids.items():
-        weights = epoch_weight_matrix(edges_gyr, masses, grid.log_age_yr)
         flux_agb0 = csp_spectra(weights, interpolate_log_z(grid.flux_nu[:, 0], grid.log_z_grid, log_z))
         flux_agb1 = csp_spectra(weights, interpolate_log_z(grid.flux_nu[:, 1], grid.log_z_grid, log_z))
         for agb_key, flux in (("agb0", flux_agb0), ("agb2", agb_two_spectra(flux_agb0, flux_agb1))):
