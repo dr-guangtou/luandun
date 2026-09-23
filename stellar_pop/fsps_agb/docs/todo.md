@@ -24,9 +24,12 @@
 ### Review
 - The bump planes (D4000-vs-bump, HdeltaA-vs-bump) fan out into a visibly
   wider, fan-shaped spread at fixed D4000/HdeltaA than the tight,
-  nearly one-dimensional D4000-vs-HdeltaA sequence does, i.e. the H-minus
-  bump carries star-formation-history / recent-SF information that D4000 and
-  HdeltaA alone do not capture (`output/population/index_planes_{sigma300,r100}.png`,
+  nearly one-dimensional D4000-vs-HdeltaA sequence does, but that spread is
+  dominated by metallicity, not by star-formation history: the share of the
+  bump's variance at fixed D4000 explained by log Z is 0.95 at D4000
+  1.2-1.3, 0.75 at 1.6-1.7 and 0.94 at 2.0-2.1. The SFH contribution is
+  small except where age and Z covary (`output/population/index_planes_{sigma300,r100}_logz.png`,
+  colored by log Z; `output/population/index_planes_{sigma300,r100}.png`,
   task-11-report.md).
 - TP-AGB sensitivity is concentrated in the bump, not in D4000/HdeltaA: over
   the fiducial track (`output/single_csp/indices.csv`, computed directly as

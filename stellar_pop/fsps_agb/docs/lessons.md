@@ -126,6 +126,12 @@
     up in this unit test's unpadded, wide domain. Left both the test and the
     implementation unchanged, per instructions not to alter brief-specified
     test code or logic; reported as a concern for the controller to rule on.
+    Follow-up: both tests were later corrected under a controller ruling —
+    `test_log_wavelength_grid_has_constant_velocity_step` now allows a
+    `1e-6` tolerance on the lower bound and
+    `test_gaussian_broaden_recovers_quadrature_sum` restricts its second
+    moment to a `|velocity| <= 3000` km/s window — matching the current
+    `tests/test_broadening.py`.
 - `uv run ruff format` reformatted both new files (long call signatures onto
   multiple lines); reformatting only, no logic or assertion changes.
 
