@@ -64,3 +64,27 @@
   zcontinuous=1 pair); CSP-only changes (tage, tabular SFH, `sigma_smooth`)
   cost milliseconds. `sigma_smooth` only acts inside
   [`min_wave_smooth`, `max_wave_smooth`] = [1e3, 1e4] A by default.
+
+## 2026-09-24 (Task 1: C3K_HR nzinit fix)
+- Fixed the `nzinit=11` bug (see entry above): patched `sps_vars.f90`'s
+  `c3k_hr` block (line 323 of both `/Users/shuang/code/fsps` and the
+  `python-fsps` `libfsps` submodule checked out at `bd187a0`) to
+  `nzinit=13`, leaving the `c3k_lr` block (line 299) untouched. Patch saved
+  at `docs/patches/c3k_hr_nzinit_13.patch`. Also had to append
+  `target_compile_options(_fsps PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-cpp;-DC3K_LR=0;-DC3K_HR=1>)`
+  to `src/fsps/CMakeLists.txt` (after `python_add_library(...)`) so the
+  C3K_HR preprocessor branch is actually compiled in.
+- Rebuilt the wheel with:
+  `FC=/opt/homebrew/bin/gfortran uv build --wheel --python 3.12 --out-dir <repo>/wheels .`
+  run from `/Users/shuang/code/python-fsps` (uv 0.10.4). Wheel build took
+  ~16 s wall time and produced
+  `fsps-0.5.1.dev0+g7d202b8e0.d20260923-cp312-cp312-macosx_15_0_arm64.whl`.
+  `uv build` also silently writes a `wheels/.gitignore` containing `*`;
+  harmless since the parent `.gitignore` already ignores `wheels/`.
+- Verified with `sp.libraries == (b'mist', b'c3k_hr', b'DL07')`. Measured,
+  at `tage=1 Gyr`, Chabrier IMF, `zcontinuous=0`, over 3400-22000 A:
+  max `|dF/F|` for `zmet=12` old (pre-fix) wheel vs new (post-fix) wheel =
+  **0.2151** (supersolar `zmet=12` was silently falling back to a clipped,
+  solar-like spectrum before the fix); max `|dF/F|` for `zmet=11` vs
+  `zmet=12` on the new wheel = **1.0040** (confirms `zmet=12` now loads its
+  own distinct supersolar spectrum rather than reusing `zmet=11`'s).
