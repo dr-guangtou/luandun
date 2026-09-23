@@ -160,7 +160,7 @@ for the implementation plan.
 | `cross_check_fsps_tabular.py` | Cross-check the integrator against FSPS's own tabular SFH (`sfh=3`) at a handful of epochs. |
 | `index_planes.py` | Shared figure helpers for the three 2-D index planes. |
 | `run_single_csp.py` | Step 1 driver: fiducial CSP track, index table, FSPS cross-check, figures. |
-| `run_population.py` | Step 2 driver: population of quenching histories, index table, figures. |
+| `run_population.py` | Step 2 driver: population of quenching histories, index table (sSFR normalized by mass formed by `t_obs`, not surviving stellar mass — no return fraction), figures. |
 | `tests/test_*.py` | Unit tests per module; FSPS-dependent tests marked `slow`. |
 
 ### Running

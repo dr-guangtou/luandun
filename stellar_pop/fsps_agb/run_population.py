@@ -28,7 +28,9 @@ OUTPUT_DIR = Path(__file__).resolve().parent / "output" / "population"
 
 
 def specific_sfr_windows(edges_gyr, masses, epoch_index):
-    """sSFR over the last 100 Myr and over 100 to 1000 Myr before the epoch, per Gyr."""
+    """sSFR over the last 100 Myr and over 100 to 1000 Myr before the epoch, per Gyr,
+    normalized by the mass formed by t_obs (no return fraction), not the surviving
+    stellar mass."""
     t_obs = edges_gyr[epoch_index + 1]
     centers = 0.5 * (edges_gyr[:-1] + edges_gyr[1:])
     formed = masses[centers < t_obs].sum()
@@ -92,9 +94,17 @@ def _write_tables(table, draws, out_dir):
         writer.writerows(zip(*table.values(), strict=True))
 
 
-def _figure_planes(table, track, out_dir, bump_product):
+def _figure_planes(
+    table,
+    track,
+    out_dir,
+    bump_product,
+    color_key="time_since_quenching_gyr",
+    color_label=r"$t_{\rm obs} - t_q$ [Gyr]",
+    suffix="",
+):
     figure, axes = new_plane_figure(n_rows=2)
-    color = table["time_since_quenching_gyr"]
+    color = table[color_key]
     for row, agb_key in enumerate(("agb0", "agb2")):
         indices = {
             "d4000": table[f"d4000_{agb_key}"],
@@ -104,13 +114,13 @@ def _figure_planes(table, track, out_dir, bump_product):
         track_indices = dict(track[agb_key]["sigma300"]) | {
             "h_minus_bump": track[agb_key][bump_product]["h_minus_bump"]
         }
-        plot_population(axes[row], indices, color, r"$t_{\rm obs} - t_q$ [Gyr]", track_indices)
+        plot_population(axes[row], indices, color, color_label, track_indices)
         # plot_population's default loc="best" legend collides with the neighboring
         # panel's rotated y-axis label in the narrow gap between subplots; the
         # top-right corner of the D4000-HdeltaA panel is empty of data points.
         axes[row, 0].legend(frameon=False, loc="upper right")
         axes[row, 0].set_title(f"{agb_key}, bump at {bump_product}")
-    figure.savefig(out_dir / f"index_planes_{bump_product}.png", dpi=150)
+    figure.savefig(out_dir / f"index_planes_{bump_product}{suffix}.png", dpi=150)
     plt.close(figure)
 
 
@@ -121,7 +131,31 @@ def main():
     parser.add_argument("--n-draws", type=int, default=N_DRAWS)
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--pilot", action="store_true", help="10 histories, 10 epochs, timing only")
+    parser.add_argument(
+        "--figures-only",
+        action="store_true",
+        help="redraw figures from the existing indices.npz/draws.npz, no table recomputation",
+    )
     args = parser.parse_args()
+    out_dir = Path(args.out_dir)
+    if args.figures_only:
+        start = time.perf_counter()
+        with np.load(out_dir / "indices.npz") as data:
+            table = {key: data[key] for key in data.files}
+        track = compute_track_indices(args.grid_dir, **FIDUCIAL)
+        for bump_product in ("sigma300", "r100"):
+            _figure_planes(table, track, out_dir, bump_product)
+            _figure_planes(
+                table,
+                track,
+                out_dir,
+                bump_product,
+                color_key="log_z",
+                color_label=r"$\log(Z/Z_\odot)$",
+                suffix="_logz",
+            )
+        print(f"redrew figures in {out_dir} in {time.perf_counter() - start:.1f} s")
+        return
     start = time.perf_counter()
     grids = {product: load_ssp_grid(args.grid_dir, product) for product in ("sigma300", "r100")}
     edges = time_bin_edges()
@@ -136,17 +170,25 @@ def main():
         per_history_epoch = elapsed / (n_draws * (edges.size - 1))
         print(f"extrapolated full run: {per_history_epoch * N_DRAWS * 260 / 60:.1f} min")
         return
-    out_dir = Path(args.out_dir)
     _write_tables(table, draws, out_dir)
     track = compute_track_indices(args.grid_dir, **FIDUCIAL)
     for bump_product in ("sigma300", "r100"):
         _figure_planes(table, track, out_dir, bump_product)
+        _figure_planes(
+            table,
+            track,
+            out_dir,
+            bump_product,
+            color_key="log_z",
+            color_label=r"$\log(Z/Z_\odot)$",
+            suffix="_logz",
+        )
     summary = {
         "n_draws": n_draws,
         "seed": args.seed,
         "n_epochs": int(edges.size - 1),
         "elapsed_s": elapsed,
-        "grid_provenance": grids["sigma300"].provenance,
+        "grid_provenance": {product: grid.provenance for product, grid in grids.items()},
     }
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
     print(f"wrote {out_dir} in {time.perf_counter() - start:.1f} s")
