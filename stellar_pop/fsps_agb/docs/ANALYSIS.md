@@ -364,7 +364,11 @@ track); **for C3K the raw bump has no interior minimum in the +6 Gyr window at a
 every C3K `h_minus_bump` track's `at_window_boundary` is true
 (`c2_age_clocks.c3k.h_minus_bump.*.at_window_boundary`), so the marker plotted in that
 figure sits at the window edge, not at a true extremum: population aging outweighs the
-small C3K TP-AGB signal across the whole window. Figure `c2_clock_planes.png` shows the
+small C3K TP-AGB signal across the whole window. Figure `c2_age_clocks.png` now draws
+these window-edge markers as hollow stars (filled stars mark a true interior
+extremum), so this distinction is visible at a glance — every C3K D4000 and H-minus
+bump track, and the `tau_q` in {1, 3} Gyr HdeltaA tracks, are hollow. Figure
+`c2_clock_planes.png` shows the
 same picture qualitatively: in the D4000-HdeltaA plane the tau_q and t_q families
 collapse onto nearly the same locus for both templates, but in the bump-involving
 planes the LW02 tracks fan out into visibly different loops while the C3K tracks stay
@@ -374,9 +378,10 @@ The quantitative test (Figure `c2_sfh_recovery.png`): a k = 25 nearest-neighbour
 regression (cKDTree, 5 folds grouped by history, 3 noise seeds) predicts log10(time
 since quenching) and log10(tau_q) for 240,000 post-quench epochs (0 < t - t_q < 6 Gyr,
 epoch >= 1 Gyr) from (D4000, HdeltaA) alone versus with the bump added at three
-precisions. The paired gain from adding the bump at 0.005 mag
-(`c2_sfh_recovery.summary.<template>.bump_0.005.paired_gain_mean_over_seeds_dex`, order
-`[log10(t - t_q), log10(tau_q)]`; `..._std_over_seeds_dex` alongside):
+precisions. The paired gain from adding the bump at 0.005 mag, mean over the 3 noise
+seeds (`c2_sfh_recovery.summary.<template>.bump_0.005.paired_gain_mean_over_seeds_dex`,
+order `[log10(t - t_q), log10(tau_q)]`; `..._std_over_seeds_dex` alongside, the
+across-seed spread):
 
 | template | log10(t - t_q) gain [dex] | log10(tau_q) gain [dex] |
 | --- | ---: | ---: |
@@ -384,15 +389,37 @@ precisions. The paired gain from adding the bump at 0.005 mag
 | C3K agb2 | -0.0039 +/- 0.0003 | -0.0002 +/- 0.0003 |
 | C3K agb0 (control, no TP-AGB light) | -0.0063 +/- 0.0004 | -0.0010 +/- 0.0002 |
 
-For LW02 the gain is large, precision-dependent, and many seed-standard-deviations from
-zero for both targets. For C3K the gain on time-since-quenching is small but nonzero
-(about 13 seed-standard-deviations from zero); the gain on tau_q is statistically
-indistinguishable from zero. Critically, the **C3K agb0 control** — which has no
-TP-AGB light by construction — shows a gain of the same size as C3K agb2 on both
-targets, so the small C3K gain is not obviously a TP-AGB effect at all; it more likely
-reflects age or metallicity information that any bump-shaped index carries, TP-AGB or
-not. Conclusion 2 is well supported for the LW02 templates and not clearly supported
-for the default C3K templates, reported as-is whichever way it goes.
+Significance uses two yardsticks. The primary one is the paired gain's own fold-based
+standard error, computed per seed from the 5 grouped folds (ddof-1 std of the 5
+per-fold gains / sqrt(5), `c2_sfh_recovery.definition.paired_gain_definition`) — a
+distinct, smaller quantity than the RMS error bars drawn on the figure itself, which
+are the mean over the 3 seeds of the fold-based standard error of the RMS values, not
+of the gain (`c2_sfh_recovery.definition.figure_error_bar_definition`,
+`...summary.<template>.bump_0.005.rms_fold_standard_error_mean_over_seeds_dex`). The
+per-seed gain, its own fold-based standard error, and their ratio are in
+`c2_sfh_recovery.summary.<template>.bump_0.005.paired_gain_per_seed.<seed>.{paired_gain_mean_dex,
+paired_gain_standard_error_dex,paired_gain_over_standard_error}` (seeds 20260924,
+20260925, 20260926): for **LW02 agb2** at 0.005 mag, `paired_gain_over_standard_error` is
+-33.5 to -99.8 for log10(t - t_q) and -19.3 to -27.5 for log10(tau_q) across the three
+seeds; at 0.010 mag (`bump_0.010.paired_gain_per_seed`) it is -19.9 to -38.1 and -13.5
+to -20.8. Combined, the LW02 gains are 13.5-99.8, i.e. of order **13-100 fold-based
+standard errors from zero, in every seed, at both precisions**. For **C3K agb2** the
+log10(t - t_q) gain is a consistent
+-7.5 to -11.7 standard errors from zero (real but far smaller than LW02); the
+log10(tau_q) gain is **below 1 standard error from zero in 2 of the 3 seeds** (-0.33
+in seed 20260924, +0.08 in seed 20260925) and only -4.4 in the third (seed 20260926) —
+not a consistent detection. The second yardstick, the across-seed standard deviation of
+the gain itself (`paired_gain_std_over_seeds_dex`, which excludes population sampling
+variance since all three seeds share the same 2000 histories), agrees: for LW02 it is
+3-14 times smaller than the gain, so the gain is robust seed to seed; for C3K's
+log10(tau_q) target it is comparable to or larger than the gain
+(-0.0002 +/- 0.0003 dex), consistent with no robust detection. Critically, the **C3K
+agb0 control** — which has no TP-AGB light by construction — shows a gain of the same
+size as C3K agb2 on both targets, so the small, marginal C3K gain is not obviously a
+TP-AGB effect at all; it more likely reflects age or metallicity information that any
+bump-shaped index carries, TP-AGB or not. Conclusion 2 is well supported for the LW02
+templates and not clearly supported for the default C3K templates, reported as-is
+whichever way it goes.
 
 ### Metallicity as a confounder (Figure `c3_metallicity_planes.png`)
 
