@@ -1,0 +1,394 @@
+# FSPS AGB / TP-AGB Experiment
+
+Sandbox to generate single stellar population (SSP) spectra with `python-fsps`
+under different **AGB / TP-AGB** assumptions, and compare their rest-frame NIR
+spectra around 1.6 micron (1.4–1.8 micron).
+
+## Setup
+
+- `python-fsps` 0.5.1.dev0 (built from source), reading data from
+  `$SPS_HOME=/Users/shuang/code/fsps` (FSPS v4.0).
+- Compiled configuration: **MIST** isochrones + **C3K** (high-res, `c3k_hr`)
+  spectra + Draine & Li 2007 dust (see `StellarPopulation.libraries`).
+- The low-res (`c3k_lr`) results are kept in `output/ssp_spectra.npz`; the
+  high-res results in `output/ssp_spectra_hr.npz`.
+
+To rebuild with the other C3K resolution, pass `-DC3K_LR=0 -DC3K_HR=1` (or the
+inverse) as Fortran compile definitions in `python-fsps`'s `CMakeLists.txt`;
+`pip install -U fsps` restores the PyPI `c3k_lr` wheel.
+
+## Phase 2 setup
+
+    uv sync                     # installs numpy/scipy/matplotlib and the local fsps wheel from wheels/
+    export SPS_HOME=/Users/shuang/code/fsps
+    uv run pytest               # fast tests; add `-m slow` for the FSPS-dependent ones
+    uv run pre-commit install
+
+The wheel in `wheels/` is a local build artifact, not published to PyPI. It is built from
+python-fsps 7d202b8 with the FSPS submodule (`$SPS_HOME`) at bd187a0, with the two patches in
+`docs/patches/` applied: `c3k_hr_nzinit_13.patch` (`$SPS_HOME/src/sps_vars.f90` and the
+`python-fsps` `libfsps` submodule) and `python_fsps_cmake_c3k_hr.patch`
+(`python-fsps/src/fsps/CMakeLists.txt`, adding the `-cpp -DC3K_LR=0 -DC3K_HR=1` Fortran compile
+options). Exact commands (docs/lessons.md, Task 1):
+
+    cd /Users/shuang/code/python-fsps
+    git apply /path/to/docs/patches/python_fsps_cmake_c3k_hr.patch
+    # apply docs/patches/c3k_hr_nzinit_13.patch to sps_vars.f90 in $SPS_HOME and in
+    # src/fsps/libfsps, then reset libfsps to v4.0 first if needed
+    FC=/opt/homebrew/bin/gfortran uv build --wheel --python 3.12 --out-dir <repo>/wheels .
+
+`pip install -U fsps` restores the PyPI `c3k_lr` wheel instead.
+
+## Files
+
+| File | Purpose |
+| ---- | ------- |
+| `agb_experiment.py` | Generate SSP spectra for a grid of AGB scenarios + IMFs (`--out`, `--spec-label`). |
+| `plot_nir_comparison.py` | SSP figures: broad SED + two NIR zooms (norm₁, norm₂) (`--in`, `--spec-label`). |
+| `inspect_agb_templates.py` | AGB-template figures (`Orich.spec`, `Crich_Aringer.spec`). |
+| `agb_pagb_response.py` | Response of the SSP spectrum to the `agb`/`pagb` weights. |
+| `norm_utils.py` | Shared normalization helpers and plot style. |
+| `docs/SPEC.md` | Configuration, parameters, mechanism. |
+| `docs/todo.md` | Task tracking. |
+| `docs/lessons.md` | Lessons learned. |
+| `output/ssp_spectra.npz` / `ssp_spectra_hr.npz` | Saved spectra (LR / HR). |
+| `output/nir_comparison_{lr,hr}_*.png` | SSP comparison figures. |
+
+## The AGB / TP-AGB knobs (for MIST)
+
+From `fsps/src/{sps_vars,mod_gb,getspec}.f90` and the `python-fsps` docstrings:
+
+| Parameter | Default | Effect |
+| --------- | ------- | ------ |
+| `agb` | 1.0 | Weight of TP-AGB stars (phase=5). **Dominant NIR knob.** |
+| `pagb` | 1.0 | Weight of post-AGB stars (phase=6, Rauch 2003 spectra). |
+| `add_agb_dust_model` | True | AGB circumstellar dust (Villaume et al. 2014). |
+| `agb_dust` | 1.0 | Scales the AGB dust emission. |
+| `use_lw_tpagb` | 0 | O-rich TP-AGB template: 0 = C3K grid, 1 = Lancon & Mouhcine (2002). |
+| `tpagb_norm_type` | 2 | **Inert for MIST** (guarded by `isoc_type == 'pdva'`). |
+| `fcstar` | 1.0 | **Currently inert** (dilution code commented out in `ssp_gen.f90`). |
+| `redgb`, `dell`, `delt` | 1.0 / 0 / 0 | RGB weight and TP-AGB logL/logT shifts (Padova-specific). |
+
+C-rich TP-AGB stars always use Aringer et al. (2009) templates
+(`Crich_Aringer.spec`, since `cstar_aringer=1` at compile time).
+
+### The "LW02 O-rich TP-AGB" model
+
+The `lw02_o_rich` scenario sets only **`use_lw_tpagb = 1`**; every other AGB
+knob stays fiducial:
+
+| Parameter | Value |
+| --------- | ----- |
+| `use_lw_tpagb` | **1** (use Lancon & Mouhcine 2002 O-rich spectra) |
+| `agb` | 1.0 (TP-AGB weight) |
+| `pagb` | 1.0 (post-AGB weight) |
+| `add_agb_dust_model` | True (AGB circumstellar dust on) |
+| `agb_dust` | 1.0 (dust scaling) |
+| `tpagb_norm_type` | 2 (inert for MIST) |
+| `fcstar` | 1.0 (inert) |
+| `redgb` / `dell` / `delt` | 1.0 / 0 / 0 (fiducial) |
+
+Effect: O-rich TP-AGB stars (`phase=5`, `logT < 3.6`, C/O ≤ 1) are assigned the
+LW02 empirical templates (`Orich.spec`, 9 solar Teff bins ≈ 2457–3944 K) instead
+of the C3K grid. C-rich TP-AGB stars are unaffected (they always use Aringer
+2009 via `cstar_aringer=1`).
+
+## Figure conventions
+
+Each figure has three stacked panels:
+
+1. **Broad SED** (linear wavelength, log flux) for context; the x-axis spans
+   270–1900 nm (SSP) or starts at the templates' blue-end cut-off (~352 nm for
+   the AGB templates);
+2. **NIR zoom** normalized by the median flux in the blue window
+   **1495–1535 nm** (`norm_1`);
+3. **NIR zoom** normalized by a straight line through the median fluxes of the
+   blue (**1495–1535 nm**) and red (**1750–1795 nm**) windows (`norm_2`, a
+   Lick/IDS-style pseudo-continuum).
+
+The zoom panels only plot points within 1400–1800 nm so the continuum
+extrapolation cannot distort the y-axis. The same rules apply to the AGB
+templates and the SSP models. The blue and red normalization windows are shaded
+on the zoom panels. SSP figure headers state the isochrone, IMF, stellar
+library, age and metallicity; the legend states the AGB setup of each curve.
+AGB-template line colors follow the Teff sequence (blue = cold, red = hot).
+
+## Results (1 Gyr, solar Z, Kroupa IMF)
+
+Relative NIR (1.4–1.8 µm) flux vs fiducial:
+
+| Scenario | Change in NIR F_nu | log Lbol | Notes |
+| -------- | ------------------ | -------- | ----- |
+| `no_tpagb` (`agb=0`) | **−31%** | −0.07 dex | TP-AGB dominates NIR light. |
+| `double_tpagb` (`agb=2`) | **+31%** | +0.06 dex | | 
+| `no_pagb` (`pagb=0`) | <0.1% | 0.00 | post-AGB is hot → negligible NIR. |
+| `no_agb_dust` | +0.4% (NIR), −9% (5.7–10 µm) | 0.00 | dust absorbs in NIR, re-emits in mid-IR. |
+| `lw02_o_rich` (`use_lw_tpagb=1`) | −3.4% | 0.00 | different O-rich SED shape. |
+| `norm_type_0/1` | 0% | 0.00 | confirms `tpagb_norm_type` inert for MIST. |
+
+Chabrier IMF gives the same qualitative behavior (slightly higher Lbol).
+
+The fiducial NIR spectrum shows the expected **1.6 µm bump** (H⁻ opacity
+minimum): F_nu rises to a peak near 1.54–1.63 µm before declining.
+
+## Known limitation
+
+The low-res (`c3k_lr`) SSP output has R=100 at 1.6 µm (~80 Å/pixel), smoothing
+the CO-band structure present in the native AGB templates. The high-res
+(`c3k_hr`) rebuild has R=500 at 1.6 µm (~16 Å/pixel, 251 vs 50 points across
+1.4–1.8 µm) and resolves the 1.6 µm bump peak better (norm₂ peak ≈ 1.08 vs
+≈ 1.05 for the fiducial).
+
+## Phase 2 — CSP index tracks and populations
+
+Delayed-tau-plus-quench composite stellar population (CSP) spectra, integrated with an in-house
+numpy integrator from cached FSPS SSP grids (cross-checked against FSPS's own tabular SFH), and
+three spectral indices (D4000, HdeltaA, the 1.6 µm H-minus bump) tracked over cosmic time for a
+fiducial quenching history and a population of 2000 randomly drawn ones. See `docs/SPEC.md`
+("Phase 2" section) for the full spec and `docs/superpowers/plans/2026-09-24-csp-index-tracks.md`
+for the implementation plan.
+
+### Modules
+
+| File | Purpose |
+| ---- | ------- |
+| `sfh_model.py` | Delayed-tau plus exponential quench SFH, bin edges, analytic bin masses, prior draws. |
+| `ssp_grid.py` | Build SSPs with FSPS, cache to `output/ssp_grid/`, load as `SspGrid`; `--surviving-mass` stores the FSPS surviving stellar mass fraction per age and Z (`surviving_mass.npz`). |
+| `broadening.py` | Log-wavelength grid, resampling, quadrature-corrected Gaussian smoothing, resolution products. |
+| `csp_integrate.py` | Age-interpolation weights (log-spaced lookback sub-grid), log-Z interpolation, CSP matrix product. |
+| `spectral_indices.py` | Air-to-vacuum conversion, band means, D4000, HdeltaA, H-minus bump. |
+| `cross_check_fsps_tabular.py` | Cross-check the integrator against FSPS's own tabular SFH (`sfh=3`) at a handful of epochs. |
+| `index_planes.py` | Shared figure helpers for the three 2-D index planes. |
+| `run_single_csp.py` | Step 1 driver: fiducial CSP track, index table, FSPS cross-check, figures. |
+| `run_population.py` | Step 2 driver: population of quenching histories, index table (agb0, agb1 and agb2 indices; sSFR normalized by the surviving stellar mass at `t_obs`, living stars plus remnants), figures. |
+| `tests/test_*.py` | Unit tests per module; FSPS-dependent tests marked `slow`. |
+
+### Running
+
+    uv sync
+    export SPS_HOME=/Users/shuang/code/fsps
+    uv run python ssp_grid.py
+    uv run python ssp_grid.py --surviving-mass
+    uv run python broadening.py
+    uv run python cross_check_fsps_tabular.py
+    uv run python run_single_csp.py --pilot
+    uv run python run_single_csp.py
+    uv run python run_population.py --pilot
+    uv run python run_population.py
+
+### Results
+
+FSPS tabular-SFH cross-check, maximum relative flux difference inside any of the three index
+windows, fiducial history (`t_q=3.0 Gyr`, `tau_q=0.3 Gyr`, solar Z), from
+`output/single_csp/fsps_cross_check.json`:
+
+| Epoch (Gyr) | Max relative flux difference |
+| ----------- | ----------------------------- |
+| 1.00  | 0.312% (D4000) |
+| 3.00  | 0.053% (D4000) |
+| 3.50  | 0.197% (D4000) |
+| 5.00  | 0.065% (D4000) |
+| 8.00  | 0.022% (D4000) |
+| 13.00 | 0.006% (D4000) |
+
+All values are well under the 2% validation threshold (docs/lessons.md, Task 8 fix report).
+
+Timings (this laptop, C3K_HR grid, from docs/lessons.md):
+
+| Step | Time |
+| ---- | ---- |
+| `ssp_grid.py` (8 SSP builds) | 96.9 s |
+| `broadening.py` (`sigma300` + `r100`) | 0.7 s + 1.0 s |
+| `cross_check_fsps_tabular.py` (5-epoch slow test, one shared FSPS population build) | 19.0 s |
+| `run_single_csp.py` (full, 260 epochs, both products, both `agb` settings, tables + 4 figures) | 7.9 s |
+| `run_population.py --pilot` (10 histories x 10 epochs) | 0.2 s, extrapolated to 15.4 min for the full run |
+| `run_population.py` (full, 2000 histories x 260 epochs, table computation) | 299-301 s (~5.0 min) |
+| `run_population.py` (full, including writing output and figures) | 322-334 s (~5.5 min) |
+
+Index ranges over the fiducial CSP track (260 epochs, `output/single_csp/indices.csv`):
+
+| Index | `agb0` range | `agb2` range |
+| ----- | ------------ | ------------ |
+| D4000 (`sigma300`) | 1.020 – 2.335 | 1.020 – 2.344 |
+| HdeltaA (`sigma300`, A) | -4.577 – 6.300 | -4.609 – 6.242 |
+| H-minus bump (`sigma300`, mag) | -0.0202 – 0.0112 | -0.0220 – 0.0112 |
+| H-minus bump (`r100`, mag) | -0.0209 – 0.0104 | -0.0228 – 0.0104 |
+
+H-minus bump range over the population (2000 histories x 260 epochs, docs/lessons.md, Task 11):
+
+| Product | `agb0` range | `agb2` range |
+| ------- | ------------ | ------------ |
+| `sigma300` | -0.0239 – +0.0197 mag | -0.0260 – +0.0197 mag |
+| `r100` | -0.0245 – +0.0186 mag | -0.0266 – +0.0186 mag |
+
+At 0.5-2 Gyr after quenching, `agb2` is more negative (deeper bump) than `agb0` for 100% of the
+population (mean offset -0.0087 mag `sigma300`, -0.0089 mag `r100`), consistent with the fiducial
+track's largest `agb2` vs `agb0` bump difference of -0.0111 mag at 3.45 Gyr (0.45 Gyr after the
+`t_q=3.0 Gyr` quench).
+
+## Phase 3 — Diagnostic analysis
+
+The written answers are in `docs/ANALYSIS.md`. Scripts (outputs in `output/analysis/`):
+
+| Script | Question | Outputs |
+| ------ | -------- | ------- |
+| `population_classes.py` | shared: manuscript sSFR classes, noise, grouped folds, kNN | (library) |
+| `analysis_agb_separability.py` | Q1: agb 0 vs 2 at SSP, track and population level | `q1_*.png`, `q1_summary.json` |
+| `analysis_fast_quenching.py` | Q2: purity maps and noise-aware kNN with and without the bump | `q2_*.png`, `q2_summary.json` |
+| `analysis_alternative_sfh.py` | Q2 robustness: bursty and slowly fading SFH families as contaminants | `q2_alternative_sfh.png`, `q2_alternative_summary.json` |
+
+Run order, default C3K TP-AGB templates (after the Phase 2 steps above):
+
+    uv run python analysis_agb_separability.py --pilot
+    uv run python analysis_agb_separability.py
+    uv run python analysis_fast_quenching.py --pilot
+    uv run python analysis_fast_quenching.py        # about 3.5 min (3 noise seeds)
+    uv run python analysis_alternative_sfh.py --pilot
+    uv run python analysis_alternative_sfh.py
+
+Run order, empirical Lancon & Mouhcine TP-AGB templates (`use_lw_tpagb = 1`), outputs
+prefixed `lw02_`:
+
+    uv run python ssp_grid.py --out-dir output/ssp_grid_lw02 --use-lw-tpagb
+    uv run python ssp_grid.py --out-dir output/ssp_grid_lw02 --use-lw-tpagb --surviving-mass
+    uv run python broadening.py --grid-dir output/ssp_grid_lw02
+    uv run python run_single_csp.py --grid-dir output/ssp_grid_lw02 --out-dir output/single_csp_lw02
+    uv run python run_population.py --grid-dir output/ssp_grid_lw02 --out-dir output/population_lw02
+    uv run python analysis_agb_separability.py --grid-dir output/ssp_grid_lw02 \
+        --population-dir output/population_lw02 --out-prefix lw02_
+    uv run python analysis_fast_quenching.py --population-dir output/population_lw02 --out-prefix lw02_
+    uv run python analysis_alternative_sfh.py --grid-dir output/ssp_grid_lw02 \
+        --population-dir output/population_lw02 --out-prefix lw02_
+
+`analysis_alternative_sfh.py` caches its traced table as
+`<population-dir>/alternative_sfh_indices.npz` (git-ignored); `--reuse` redraws from it in
+about 13 s instead of tracing again (about 120 s; about 130 s wall run alongside the
+other configuration).
+
+Headline numbers (details and JSON keys in `docs/ANALYSIS.md`):
+
+| Quantity | Default (C3K) | LW02 |
+| -------- | ------------- | ---- |
+| Max SSP bump delta, agb2 - agb0, solar Z | 0.020 mag at 0.79 Gyr | 0.111 mag at 0.79 Gyr |
+| Fiducial-track bump delta (sigma300) | -0.011 mag at 3.45 Gyr | -0.074 mag at 3.65 Gyr |
+| Population bump offset at fixed D4000/HdeltaA | 0.003-0.009 mag | 0.032-0.059 mag |
+| Offset / per-model RMS 16-84 half-width | 0.90-2.20 | 6.07-16.31 |
+| Rapid-quenching isolable fraction, D4000-HdeltaA (agb2, noise-free, full-range grid) | 0.839 | 0.843 |
+| Best bump-plane isolable fraction (agb2, noise-free, full-range grid) | 0.084 | 0.319 |
+| kNN completeness / purity, no bump (agb2, mean of 3 noise seeds) | 0.402 / 0.612 | 0.398 / 0.610 |
+| kNN completeness / purity, + bump at 0.01 mag (mean of 3 noise seeds) | 0.388 / 0.623 | 0.446 / 0.632 |
+| Contaminant epochs in previously pure cells | 0 of 144,600 | 0 of 144,600 |
+
+## Phase 4 — Surviving-mass sSFR and conclusion figures
+
+Both sSFR windows now normalize by the surviving stellar mass at `t_obs` (living stars
+plus remnants, FSPS `stellar_mass` at `agb = 1`) instead of the mass formed; R is
+unchanged, but the class thresholds move by 1.35-1.79x (rapid-quenching count: 4,727 ->
+5,907; base rate 0.98% -> 1.23%; docs/lessons.md, 2026-09-24 Phase 4 Task 1 entry).
+`ssp_grid.py --surviving-mass` builds `<grid-dir>/surviving_mass.npz`; `run_population.py`
+now also writes `agb = 1` index columns and a `surviving_mass_fraction` column.
+
+`analysis_conclusion_figures.py` (`--out-dir output/analysis`, `--pilot`) tests two
+conclusions proposed for the manuscript and adds a metallicity-only control, on top of
+the Q1/Q2 population:
+
+| Figure | Tests |
+| ------ | ----- |
+| `c1_tpagb_population_test.png` | population bump locus vs. TP-AGB template and weight (C3K agb0/agb1, LW02 agb1/agb2) |
+| `c2_age_clocks.png` | each index vs. time since quenching, per tau_q/t_q, both templates |
+| `c2_clock_planes.png` | the same tracks drawn in the three index planes |
+| `c2_sfh_recovery.png` | kNN regression RMS for log10(time since quenching) and log10(tau_q), with vs. without the bump |
+| `c3_metallicity_planes.png` | the fiducial SFH at four metallicities, isolating the metallicity effect from the TP-AGB effect |
+
+Run (after the Phase 2/3 steps above, both grids and populations built):
+
+    uv run python analysis_conclusion_figures.py --pilot
+    uv run python analysis_conclusion_figures.py        # about 1-1.5 min, mostly the C2c regression
+
+Headline numbers (full derivation and JSON keys in `docs/ANALYSIS.md`, "Supporting
+figures for the two conclusions"; source `output/analysis/conclusion_summary.json`):
+
+| Quantity | C3K | LW02 |
+| -------- | --- | ---- |
+| Population bump step, TP-AGB weight only (C3K agb0 -> agb1, D4000 in [1.3, 1.5)) | -0.0051 mag | n/a |
+| Population bump step, TP-AGB template swap at fixed weight (C3K agb1 -> LW02 agb1) | -0.0268 mag | (same pair) |
+| Population bump step, TP-AGB weight only, LW02 (agb1 -> agb2) | n/a | -0.0236 mag |
+| SFH-recovery gain from the bump at 0.005 mag, log10(time since quenching) | -0.0039 +/- 0.0003 dex | -0.0183 +/- 0.0001 dex |
+| SFH-recovery gain, C3K agb0 control (no TP-AGB light) | -0.0063 +/- 0.0004 dex | n/a |
+| Raw bump: interior minimum within +6 Gyr of quenching | none (window-edge marker) | 0.5-1.5 Gyr post-quench, grows with tau_q |
+| Bump metallicity spread vs. TP-AGB (agb0-to-agb2) delta, same post-quench epochs | comparable (0.008-0.015 vs. 0.004-0.011 mag) | delta 2-4x the spread (0.033-0.067 vs. 0.014-0.029 mag) |
+
+The population locus mainly tests which TP-AGB *template* is right, not how much
+TP-AGB light a galaxy has (the weight-only steps above are 4-6x smaller than the
+template-swap step); combining the three indices for SFH recovery is well supported
+for the LW02 templates and marginal-to-absent for the default C3K templates.
+
+## Phase 5 — SFH-family sensitivity
+
+Tests whether the Phase 3/4 conclusions depend on the assumed *shape* of the
+post-quench SFR, by rerunning the population with three alternative SFH families,
+paired history by history with the same 2000 draws (seed 20260924), for both TP-AGB
+template configurations:
+
+| Family | Post-quench SFR (`t >= t_q`) | FSPS-native cross-check |
+| ------ | ----------------------------- | ------------------------ |
+| `exponential` (existing) | `e^-1 exp(-(t - t_q)/tau_q)` | tabular `sfh = 3` (Phase 2) |
+| `linear` | `e^-1 max(0, 1 - (t - t_q)/delta_q)`, `delta_q = 2 ln2 tau_q` | `sfh = 5` (`sf_slope`) |
+| `truncation` | `0` | `sfh = 4` with `sf_trunc` |
+| `decoupled` | `(t_q/tau) exp(-t_q/tau) exp(-(t - t_q)/tau_q)`, `tau` drawn independently, log-uniform [0.5, 5] Gyr, seed 20260926 | none (internal `quad`/continuity checks only) |
+
+`sfh_model.py` dispatches all four; `run_population.py --sfh-family
+{exponential,linear,truncation,decoupled}` (default `exponential`, unchanged behavior
+and output path). `cross_check_fsps_families.py` validates `linear` and `truncation`
+against FSPS's own `sfh = 5`/`sfh = 4` (`output/single_csp/fsps_family_cross_check.json`).
+`analysis_sfh_sensitivity.py` (`--out-dir output/analysis`, `--pilot`, `--only` for a
+subset of figures S1-S6) compares all four families' fiducial tracks, population bump
+bands, class fractions, rapid-quenching classifier, SFH-recovery regression, and the
+population TP-AGB (`agb2` - `agb0`) bump offset — every population run already carries
+`agb0`/`agb1`/`agb2` columns, so the last of these needs no rerun
+(`output/analysis/sfh_sensitivity_summary.json`).
+
+Run order (after the Phase 2/3 steps above; six population runs, 2000 histories x 260
+epochs each, 456.5-488.0 s (about 7.6-8.2 min) per run on this laptop):
+
+    uv run python run_population.py --sfh-family linear
+    uv run python run_population.py --sfh-family linear --grid-dir output/ssp_grid_lw02 \
+        --out-dir output/population_linear_lw02
+    uv run python run_population.py --sfh-family truncation
+    uv run python run_population.py --sfh-family truncation --grid-dir output/ssp_grid_lw02 \
+        --out-dir output/population_truncation_lw02
+    uv run python run_population.py --sfh-family decoupled
+    uv run python run_population.py --sfh-family decoupled --grid-dir output/ssp_grid_lw02 \
+        --out-dir output/population_decoupled_lw02
+    uv run python cross_check_fsps_families.py
+    uv run python analysis_sfh_sensitivity.py --pilot
+    uv run python analysis_sfh_sensitivity.py        # 953.4 s (about 15.9 min), mostly the S4 classifier sweep
+    uv run python analysis_sfh_sensitivity.py --only s6   # 2.1 s, from the existing agb0/agb2 columns
+
+Headline numbers (full derivation and JSON keys in `docs/ANALYSIS.md`, "Sensitivity to
+the star formation history model"; sources `output/analysis/sfh_sensitivity_summary.json`
+and `output/single_csp/fsps_family_cross_check.json`):
+
+| Quantity | decoupled | exponential | linear | truncation |
+| -------- | --------: | ----------: | -----: | ---------: |
+| Rapid-quenching base rate | 0.84% | 1.23% | 3.58% | 6.38% |
+| FSPS-native cross-check, max relative flux difference | n/a | 0.312% (tabular, Phase 2) | 0.023% | 0.027% |
+| Population TP-AGB offset (agb2-agb0), D4000 [1.5,1.7), C3K / LW02 [mag] | -0.0061 / -0.0460 | -0.0059 / -0.0460 | -0.0093 / -0.0595 | -0.0107 / -0.0670 |
+| C3K-versus-LW02 template separation, max over D4000 [mag] | 0.0495 | 0.0485 | 0.0533 | 0.0613 |
+| kNN completeness gain, +bump 0.010 mag, C3K / LW02 (agb2, unbalanced) | -0.017 / +0.053 | -0.014 / +0.047 | +0.004 / +0.038 | +0.004 / +0.026 |
+| SFH-recovery gain, log10(time since quenching), 0.005 mag, C3K / LW02 [dex] | -0.0029 / -0.0105 | -0.0039 / -0.0183 | -0.0052 / -0.0171 | -0.0103 / -0.0313 |
+| SFH-recovery gain, log10(tau_q), 0.005 mag, C3K / LW02 [dex] | -0.0004 / -0.0098 | -0.0002 / -0.0129 | -0.0003 / -0.0043 | +0.0002 / +0.0002 |
+
+All four earlier conclusions survive in every family. Phase 3 Q1 and Phase 4
+Conclusion 1 (the population TP-AGB offset separates templates, not weight) are
+directly retested per family (Figure S6) from the `agb0`/`agb1`/`agb2` columns every
+population run already carries: the C3K offset is 1-3x the per-model scatter and the
+LW02 offset is 4-12x it in every family. The Phase 3 Q2 and Phase 4 Conclusion 2
+template split (LW02 real and multi-sigma, C3K small and sign-inconsistent) also
+survives in every family; `truncation`'s `log10(tau_q)` gain is consistent with zero in
+both templates, since a hard cutoff's post-quench SFR carries no `tau_q` information.
+What remains genuinely untested per family is narrower: only the `agb0` *control* of
+the classifier (S4) and SFH-recovery (S5) gains was run at `agb2` only for the three
+new families, so the TP-AGB attribution for those two gains (versus any third noisy
+feature) still rests on the Phase 4 `agb0` control measured for the `exponential`
+family alone.

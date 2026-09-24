@@ -1,0 +1,524 @@
+{
+  "n_draws": 2000,
+  "seed": 20260924,
+  "n_epochs": 260,
+  "elapsed_s": 438.62309583299793,
+  "grid_provenance": {
+    "sigma300": {
+      "per_ssp": {
+        "log_z=-0.50,agb=0": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 9,
+            "agb": 0.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=-0.50,agb=1": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 9,
+            "agb": 1.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=-0.25,agb=0": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 10,
+            "agb": 0.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=-0.25,agb=1": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 10,
+            "agb": 1.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=+0.00,agb=0": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 11,
+            "agb": 0.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=+0.00,agb=1": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 11,
+            "agb": 1.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=+0.25,agb=0": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 12,
+            "agb": 0.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=+0.25,agb=1": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 12,
+            "agb": 1.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        }
+      },
+      "build_environment": {
+        "sps_home_git_describe": "bd187a0-dirty",
+        "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+        "python_fsps_git_describe": "7d202b8-dirty",
+        "python_fsps_cmake_diff_sha256": "a66b7eaf51629d74ad5506aa8a87193fad009f8e38db6070522789d4770a0214",
+        "python_fsps_libfsps_submodule_commit": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "wheel_filename": "fsps-0.5.1.dev0+g7d202b8e0.d20260923-cp312-cp312-macosx_15_0_arm64.whl"
+      },
+      "extra_params": {
+        "use_lw_tpagb": 1
+      },
+      "product": "sigma300",
+      "total_sigma_km_s": 300.0,
+      "velocity_step_km_s": 30.0,
+      "segments_a": [
+        [
+          3400.011933427534,
+          10000.0
+        ],
+        [
+          10000.0,
+          21989.940372589215
+        ]
+      ]
+    },
+    "r100": {
+      "per_ssp": {
+        "log_z=-0.50,agb=0": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 9,
+            "agb": 0.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=-0.50,agb=1": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 9,
+            "agb": 1.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=-0.25,agb=0": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 10,
+            "agb": 0.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=-0.25,agb=1": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 10,
+            "agb": 1.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=+0.00,agb=0": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 11,
+            "agb": 0.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=+0.00,agb=1": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 11,
+            "agb": 1.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=+0.25,agb=0": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 12,
+            "agb": 0.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        },
+        "log_z=+0.25,agb=1": {
+          "fsps_version": "0.5.1.dev0+g7d202b8e0.d20260923",
+          "libraries": [
+            "mist",
+            "c3k_hr",
+            "DL07"
+          ],
+          "sps_home": "/Users/shuang/code/fsps",
+          "sps_home_git_hash": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+          "sps_home_git_describe": "bd187a0-dirty",
+          "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+          "params": {
+            "imf_type": 1,
+            "zmet": 12,
+            "agb": 1.0,
+            "pagb": 1.0,
+            "add_agb_dust_model": true,
+            "agb_dust": 1.0,
+            "use_lw_tpagb": 1,
+            "add_neb_emission": false,
+            "dust1": 0.0,
+            "dust2": 0.0,
+            "sfh": 0
+          },
+          "extra_params": {
+            "use_lw_tpagb": 1
+          },
+          "native_sigma_km_s_note": "from StellarPopulation.resolutions; stored as absolute values"
+        }
+      },
+      "build_environment": {
+        "sps_home_git_describe": "bd187a0-dirty",
+        "sps_home_diff_sha256": "8889a19f8d272a8eaf054894484d329a220f91a6b26d0967ce900b098f3c0c9d",
+        "python_fsps_git_describe": "7d202b8-dirty",
+        "python_fsps_cmake_diff_sha256": "a66b7eaf51629d74ad5506aa8a87193fad009f8e38db6070522789d4770a0214",
+        "python_fsps_libfsps_submodule_commit": "bd187a0d07dac17b55c4dc7c60d83f63694c1b4e",
+        "wheel_filename": "fsps-0.5.1.dev0+g7d202b8e0.d20260923-cp312-cp312-macosx_15_0_arm64.whl"
+      },
+      "extra_params": {
+        "use_lw_tpagb": 1
+      },
+      "product": "r100",
+      "total_sigma_km_s": 1307.97058421476,
+      "velocity_step_km_s": 30.0,
+      "segments_a": [
+        [
+          12500.0,
+          21000.0
+        ]
+      ]
+    }
+  }
+}

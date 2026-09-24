@@ -1,0 +1,13 @@
+diff --git a/src/fsps/CMakeLists.txt b/src/fsps/CMakeLists.txt
+index eee0aab..9536de2 100644
+--- a/src/fsps/CMakeLists.txt
++++ b/src/fsps/CMakeLists.txt
+@@ -72,6 +72,8 @@ python_add_library(
+   ${F2PY_SOURCES}
+   "${F2PY_INCLUDE_DIR}/fortranobject.c"
+   WITH_SOABI)
++target_compile_options(_fsps PRIVATE
++  $<$<COMPILE_LANGUAGE:Fortran>:-cpp;-DC3K_LR=0;-DC3K_HR=1>)
+ target_link_libraries(_fsps PUBLIC Python::NumPy)
+ target_include_directories(_fsps PUBLIC "${F2PY_INCLUDE_DIR}")
+ install(TARGETS _fsps DESTINATION ${SKBUILD_PROJECT_NAME})

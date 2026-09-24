@@ -1,0 +1,177 @@
+"""Manuscript sSFR classification rules and a grouped-cross-validation kNN classifier.
+
+Recent and previous specific star formation rates (sSFR) are passed in per Gyr and
+converted to per yr internally (divided by 1e9) to match the manuscript's thresholds,
+which are defined in per-yr units.
+"""
+
+import numpy as np
+from scipy.spatial import cKDTree
+
+CLASS_NAMES = ("star_forming", "rapid_quenching", "transitional", "quiescent")
+STAR_FORMING, RAPID_QUENCHING, TRANSITIONAL, QUIESCENT = range(4)
+
+_PREVIOUS_QUIESCENT_THRESHOLD_PER_YR = 1e-10
+_RECENT_QUIESCENT_THRESHOLD_PER_YR = 1e-11
+_PREVIOUS_RAPID_QUENCHING_THRESHOLD_PER_YR = 1e-10
+_RATIO_RAPID_QUENCHING_THRESHOLD = 0.1
+_RATIO_STAR_FORMING_THRESHOLD = 1.0
+
+
+def _ssp_ratio(recent_per_yr, previous_per_yr):
+    return np.divide(
+        recent_per_yr,
+        previous_per_yr,
+        out=np.zeros_like(recent_per_yr, dtype=float),
+        where=previous_per_yr > 0,
+    )
+
+
+def is_post_starburst(recent_ssfr_per_gyr, previous_ssfr_per_gyr):
+    """Post-starburst condition, in per-Gyr sSFR inputs.
+
+    True where the previous sSFR was actively star-forming and the recent sSFR has
+    dropped below the absolute quiescent threshold (not merely below some fraction of
+    the previous sSFR, which is the separate rapid-quenching rule in `assign_classes`).
+    """
+    recent_per_yr = np.asarray(recent_ssfr_per_gyr, dtype=float) / 1e9
+    previous_per_yr = np.asarray(previous_ssfr_per_gyr, dtype=float) / 1e9
+    return (previous_per_yr > _PREVIOUS_RAPID_QUENCHING_THRESHOLD_PER_YR) & (
+        recent_per_yr < _RECENT_QUIESCENT_THRESHOLD_PER_YR
+    )
+
+
+def assign_classes(recent_ssfr_per_gyr, previous_ssfr_per_gyr):
+    """Assign one of the four manuscript classes to each sample, in per-Gyr sSFR inputs.
+
+    Rules are applied in order (quiescent, rapid-quenching, star-forming, with
+    transitional as the default) so each sample receives exactly one code, matching
+    `CLASS_NAMES` = ("star_forming", "rapid_quenching", "transitional", "quiescent").
+    """
+    recent_per_yr = np.asarray(recent_ssfr_per_gyr, dtype=float) / 1e9
+    previous_per_yr = np.asarray(previous_ssfr_per_gyr, dtype=float) / 1e9
+    ratio = _ssp_ratio(recent_per_yr, previous_per_yr)
+
+    quiescent = (previous_per_yr < _PREVIOUS_QUIESCENT_THRESHOLD_PER_YR) & (
+        recent_per_yr < _RECENT_QUIESCENT_THRESHOLD_PER_YR
+    )
+    rapid_quenching = (previous_per_yr > _PREVIOUS_RAPID_QUENCHING_THRESHOLD_PER_YR) & (
+        ratio < _RATIO_RAPID_QUENCHING_THRESHOLD
+    )
+    star_forming = ratio > _RATIO_STAR_FORMING_THRESHOLD
+
+    codes = np.full(recent_per_yr.shape, TRANSITIONAL, dtype=int)
+    codes[star_forming] = STAR_FORMING
+    codes[rapid_quenching] = RAPID_QUENCHING
+    codes[quiescent] = QUIESCENT
+    return codes
+
+
+def add_measurement_noise(features, sigmas, rng):
+    """Add independent Gaussian noise with per-feature standard deviations `sigmas`."""
+    features = np.asarray(features, dtype=float)
+    return features + rng.normal(0.0, sigmas, features.shape)
+
+
+def grouped_folds(groups, n_folds, rng):
+    """Assign each sample to one of `n_folds` folds without splitting any group.
+
+    `groups` are sample group ids (e.g. history ids): all samples sharing a group id
+    always land in the same fold. Unique group ids are shuffled and distributed
+    round-robin (group i -> fold i mod n_folds), then mapped back onto the samples.
+    """
+    groups = np.asarray(groups)
+    unique_groups = np.unique(groups)
+    shuffled = rng.permutation(unique_groups)
+    group_to_fold = {group: i % n_folds for i, group in enumerate(shuffled)}
+    return np.array([group_to_fold[group] for group in groups])
+
+
+def knn_predict(features, labels, query, k, feature_scales):
+    """Predict labels for `query` by majority vote among the k nearest training points.
+
+    Features are divided by `feature_scales` before distances are computed. Ties in
+    the vote are broken by the lowest class code (via `np.argmax`).
+    """
+    features = np.asarray(features, dtype=float) / feature_scales
+    query = np.asarray(query, dtype=float) / feature_scales
+    labels = np.asarray(labels)
+    n_query = query.shape[0]
+
+    tree = cKDTree(features)
+    _, neighbor_indices = tree.query(query, k=k)
+    # cKDTree.query returns 1-D indices when k == 1; reshape to (n_query, k) uniformly.
+    neighbor_indices = np.asarray(neighbor_indices).reshape(n_query, k)
+    neighbor_labels = labels[neighbor_indices]
+
+    votes = np.zeros((n_query, len(CLASS_NAMES)), dtype=int)
+    np.add.at(votes, (np.repeat(np.arange(n_query), k), neighbor_labels.ravel()), 1)
+    return np.argmax(votes, axis=1)
+
+
+def completeness_purity(true, pred, positive_class):
+    """Completeness (TP / (TP + FN)) and purity (TP / (TP + FP)) for `positive_class`.
+
+    Returns `float("nan")` for either quantity when its denominator is zero.
+    """
+    true = np.asarray(true)
+    pred = np.asarray(pred)
+    true_positive = np.sum((true == positive_class) & (pred == positive_class))
+    false_negative = np.sum((true == positive_class) & (pred != positive_class))
+    false_positive = np.sum((true != positive_class) & (pred == positive_class))
+
+    completeness_denominator = true_positive + false_negative
+    purity_denominator = true_positive + false_positive
+    completeness = (
+        true_positive / completeness_denominator if completeness_denominator > 0 else float("nan")
+    )
+    purity = true_positive / purity_denominator if purity_denominator > 0 else float("nan")
+    return completeness, purity
+
+
+def cross_validated_metrics(
+    features, labels, groups, feature_scales, k=25, n_folds=5, seed=0, positive_class=1
+):
+    """Grouped k-fold cross-validation of `knn_predict`.
+
+    `groups` are sample group ids (e.g. history ids); samples sharing a group id are
+    never split between the train and test side of a fold. Folds are built internally
+    with `grouped_folds(groups, n_folds, np.random.default_rng(seed))`. For each of the
+    `n_folds` folds, train on the remaining folds and predict the held-out fold,
+    accumulating a 4x4 confusion matrix `confusion[true, pred]` and per-fold
+    completeness/purity of `positive_class`. Returns their means and standard
+    deviations (`ddof=0`, NaN-aware since a fold without any `positive_class`
+    member yields `completeness_purity` = NaN), the per-fold values in fold order
+    (`completeness_per_fold`, `purity_per_fold`) and the summed confusion matrix
+    as a nested list.
+    """
+    features = np.asarray(features, dtype=float)
+    labels = np.asarray(labels)
+    groups = np.asarray(groups)
+    folds = grouped_folds(groups, n_folds, np.random.default_rng(seed))
+
+    confusion = np.zeros((len(CLASS_NAMES), len(CLASS_NAMES)), dtype=int)
+    completeness_per_fold = []
+    purity_per_fold = []
+
+    for fold in range(n_folds):
+        test_mask = folds == fold
+        train_mask = ~test_mask
+        predictions = knn_predict(
+            features[train_mask], labels[train_mask], features[test_mask], k, feature_scales
+        )
+        true_fold = labels[test_mask]
+        np.add.at(confusion, (true_fold, predictions), 1)
+        completeness, purity = completeness_purity(true_fold, predictions, positive_class)
+        completeness_per_fold.append(completeness)
+        purity_per_fold.append(purity)
+
+    return {
+        "completeness_mean": float(np.nanmean(completeness_per_fold)),
+        "completeness_std": float(np.nanstd(completeness_per_fold, ddof=0)),
+        "purity_mean": float(np.nanmean(purity_per_fold)),
+        "purity_std": float(np.nanstd(purity_per_fold, ddof=0)),
+        "completeness_per_fold": [float(value) for value in completeness_per_fold],
+        "purity_per_fold": [float(value) for value in purity_per_fold],
+        "confusion": confusion.tolist(),
+    }

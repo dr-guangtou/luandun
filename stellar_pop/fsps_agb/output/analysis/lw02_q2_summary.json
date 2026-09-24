@@ -1,0 +1,5145 @@
+{
+  "class_summary": {
+    "n_rows": 482000,
+    "counts": {
+      "star_forming": 102100,
+      "rapid_quenching": 5907,
+      "transitional": 126762,
+      "quiescent": 247231
+    },
+    "fraction_percent": {
+      "star_forming": 21.182572614107883,
+      "rapid_quenching": 1.2255186721991702,
+      "transitional": 26.29917012448133,
+      "quiescent": 51.292738589211616
+    },
+    "post_starburst_count": 3159
+  },
+  "purity_grid_definition": "40 x 40 cells spanning the full range (min to max over all classes) of each axis; the `_percentile_clipped` keys use cells between the 0.5 and 99.5 percentiles instead. Noise-free: a noise-free upper bound on isolability.",
+  "purity_maps": {
+    "agb2": {
+      "d4000_hdelta_a": {
+        "max_cell_purity": 1.0,
+        "isolable_fraction": 0.8428982563060775,
+        "max_cell_purity_percentile_clipped": 1.0,
+        "isolable_fraction_percentile_clipped": 0.802776367022177
+      },
+      "d4000_h_minus_bump": {
+        "max_cell_purity": 1.0,
+        "isolable_fraction": 0.31894362620619604,
+        "max_cell_purity_percentile_clipped": 0.8059701492537313,
+        "isolable_fraction_percentile_clipped": 0.17420010157440324
+      },
+      "hdelta_a_h_minus_bump": {
+        "max_cell_purity": 1.0,
+        "isolable_fraction": 0.14406636194345693,
+        "max_cell_purity_percentile_clipped": 0.6896551724137931,
+        "isolable_fraction_percentile_clipped": 0.05705095649229727
+      }
+    },
+    "agb0": {
+      "d4000_hdelta_a": {
+        "max_cell_purity": 1.0,
+        "isolable_fraction": 0.8158117487726426,
+        "max_cell_purity_percentile_clipped": 1.0,
+        "isolable_fraction_percentile_clipped": 0.7878787878787878
+      },
+      "d4000_h_minus_bump": {
+        "max_cell_purity": 0.9743589743589743,
+        "isolable_fraction": 0.22194007110208228,
+        "max_cell_purity_percentile_clipped": 1.0,
+        "isolable_fraction_percentile_clipped": 0.19654647028948705
+      },
+      "hdelta_a_h_minus_bump": {
+        "max_cell_purity": 0.9354838709677419,
+        "isolable_fraction": 0.038598273235144746,
+        "max_cell_purity_percentile_clipped": 0.9523809523809523,
+        "isolable_fraction_percentile_clipped": 0.024547147452175386
+      }
+    }
+  },
+  "bump_product_difference_sigma300_minus_r100": {
+    "agb2": {
+      "max_abs_difference_mag": 0.0007060393223567232,
+      "p99_abs_difference_mag": 0.000649204253710931,
+      "median_difference_mag": 0.00045893532636251747,
+      "std_difference_mag": 8.364666025022823e-05
+    },
+    "agb0": {
+      "max_abs_difference_mag": 0.0009806573625936801,
+      "p99_abs_difference_mag": 0.0009376298784310067,
+      "median_difference_mag": 0.0006568531976855533,
+      "std_difference_mag": 0.0001350807605213213
+    }
+  },
+  "classifier": {
+    "subsampled_non_rapid_quenching": false,
+    "n_rows_used": 482000,
+    "timing_probe_s_per_run": 2.3034133330220357,
+    "projected_minutes_without_subsampling": 3.2247786662308497,
+    "noise_seeds": [
+      20260924,
+      20260925,
+      20260926
+    ],
+    "seed_definition": "each seed sets the measurement noise (independent SeedSequence streams for the optical pair and every bump product/precision) and the grouped fold assignment",
+    "paired_difference_definition": "per-fold (bump set - no_bump) on the same folds; standard error = ddof 1 std over the 5 folds / sqrt(5)",
+    "across_seeds_definition": "mean and ddof 1 std over the noise seeds of each seed's fold-mean metric or paired gain",
+    "across_seeds": {
+      "agb2": {
+        "no_bump": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.3983140896525447,
+            "completeness_mean_std_over_seeds": 0.004115773496598007,
+            "completeness_std_mean_over_seeds": 0.011284308746586612,
+            "completeness_std_std_over_seeds": 0.004636696157266799,
+            "purity_mean_mean_over_seeds": 0.6103938526735692,
+            "purity_mean_std_over_seeds": 0.005212104721842424,
+            "purity_std_mean_over_seeds": 0.021434626354557566,
+            "purity_std_std_over_seeds": 0.009389837758905532
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9076135645189473,
+            "completeness_mean_std_over_seeds": 0.004577532221921137,
+            "completeness_std_mean_over_seeds": 0.008498238482658594,
+            "completeness_std_std_over_seeds": 0.002809979328892538,
+            "purity_mean_mean_over_seeds": 0.2067718952415333,
+            "purity_mean_std_over_seeds": 0.0042976797629014265,
+            "purity_std_mean_over_seeds": 0.009895337740601905,
+            "purity_std_std_over_seeds": 0.0011786788561860366
+          }
+        },
+        "bump_sigma300_0.005": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.48847361178139864,
+            "completeness_mean_std_over_seeds": 0.0050699191512951994,
+            "completeness_std_mean_over_seeds": 0.019917761751439566,
+            "completeness_std_std_over_seeds": 0.007802752466229145,
+            "purity_mean_mean_over_seeds": 0.6507463260063463,
+            "purity_mean_std_over_seeds": 0.007196230712318213,
+            "purity_std_mean_over_seeds": 0.025109584078410074,
+            "purity_std_std_over_seeds": 0.005438593467459951,
+            "completeness_gain_mean_mean_over_seeds": 0.09015952212885399,
+            "completeness_gain_mean_std_over_seeds": 0.008264522067668518,
+            "completeness_gain_over_standard_error_mean_over_seeds": 11.303930004792123,
+            "completeness_gain_over_standard_error_std_over_seeds": 3.429570557953627,
+            "purity_gain_mean_mean_over_seeds": 0.04035247333277723,
+            "purity_gain_mean_std_over_seeds": 0.0032320693305183633,
+            "purity_gain_over_standard_error_mean_over_seeds": 8.988471764398465,
+            "purity_gain_over_standard_error_std_over_seeds": 3.4395687619727955
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9488556655826957,
+            "completeness_mean_std_over_seeds": 0.002397800766915283,
+            "completeness_std_mean_over_seeds": 0.006922373583937252,
+            "completeness_std_std_over_seeds": 0.0008848310781828085,
+            "purity_mean_mean_over_seeds": 0.27153645884894556,
+            "purity_mean_std_over_seeds": 0.0045636501125896085,
+            "purity_std_mean_over_seeds": 0.012618718612978178,
+            "purity_std_std_over_seeds": 0.002938334398745319,
+            "completeness_gain_mean_mean_over_seeds": 0.04124210106374854,
+            "completeness_gain_mean_std_over_seeds": 0.006974382307982951,
+            "completeness_gain_over_standard_error_mean_over_seeds": 15.417964022588885,
+            "completeness_gain_over_standard_error_std_over_seeds": 7.7844401549815085,
+            "purity_gain_mean_mean_over_seeds": 0.06476456360741233,
+            "purity_gain_mean_std_over_seeds": 0.004714740322135115,
+            "purity_gain_over_standard_error_mean_over_seeds": 32.10519773065415,
+            "purity_gain_over_standard_error_std_over_seeds": 23.882954395610557
+          }
+        },
+        "bump_sigma300_0.010": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.44559166681428225,
+            "completeness_mean_std_over_seeds": 0.0008724049791950949,
+            "completeness_std_mean_over_seeds": 0.020306194305903413,
+            "completeness_std_std_over_seeds": 0.006949423224573246,
+            "purity_mean_mean_over_seeds": 0.63179593622665,
+            "purity_mean_std_over_seeds": 0.008041859086529978,
+            "purity_std_mean_over_seeds": 0.02172233961845459,
+            "purity_std_std_over_seeds": 0.006646163214873154,
+            "completeness_gain_mean_mean_over_seeds": 0.04727757716173755,
+            "completeness_gain_mean_std_over_seeds": 0.0032700130482495714,
+            "completeness_gain_over_standard_error_mean_over_seeds": 5.95031946295243,
+            "completeness_gain_over_standard_error_std_over_seeds": 0.7582851602624185,
+            "purity_gain_mean_mean_over_seeds": 0.021402083553080976,
+            "purity_gain_mean_std_over_seeds": 0.007730505724246814,
+            "purity_gain_over_standard_error_mean_over_seeds": 10.020632338220011,
+            "purity_gain_over_standard_error_std_over_seeds": 5.637985907610218
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9336110193453582,
+            "completeness_mean_std_over_seeds": 0.002060911991464373,
+            "completeness_std_mean_over_seeds": 0.005880869265242919,
+            "completeness_std_std_over_seeds": 0.0025470974309974494,
+            "purity_mean_mean_over_seeds": 0.24179589978105442,
+            "purity_mean_std_over_seeds": 0.0022262130958855455,
+            "purity_std_mean_over_seeds": 0.011952995013173116,
+            "purity_std_std_over_seeds": 0.0036013002527835085,
+            "completeness_gain_mean_mean_over_seeds": 0.02599745482641082,
+            "completeness_gain_mean_std_over_seeds": 0.003440122935927111,
+            "completeness_gain_over_standard_error_mean_over_seeds": 13.482554761648208,
+            "completeness_gain_over_standard_error_std_over_seeds": 7.578905082339541,
+            "purity_gain_mean_mean_over_seeds": 0.03502400453952117,
+            "purity_gain_mean_std_over_seeds": 0.002076252029147332,
+            "purity_gain_over_standard_error_mean_over_seeds": 16.042351065910466,
+            "purity_gain_over_standard_error_std_over_seeds": 7.615608509327892
+          }
+        },
+        "bump_sigma300_0.020": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.40541739383828856,
+            "completeness_mean_std_over_seeds": 0.010138134661745526,
+            "completeness_std_mean_over_seeds": 0.015780383737547126,
+            "completeness_std_std_over_seeds": 0.005637700382715927,
+            "purity_mean_mean_over_seeds": 0.6212040082096534,
+            "purity_mean_std_over_seeds": 0.005932287513579817,
+            "purity_std_mean_over_seeds": 0.022287425985883333,
+            "purity_std_std_over_seeds": 0.009390451892707641,
+            "completeness_gain_mean_mean_over_seeds": 0.007103304185743919,
+            "completeness_gain_mean_std_over_seeds": 0.00602318569709135,
+            "completeness_gain_over_standard_error_mean_over_seeds": 1.758067241706559,
+            "completeness_gain_over_standard_error_std_over_seeds": 1.6966765155900803,
+            "purity_gain_mean_mean_over_seeds": 0.010810155536084288,
+            "purity_gain_mean_std_over_seeds": 0.0030855070203232872,
+            "purity_gain_over_standard_error_mean_over_seeds": 1.821974530291625,
+            "purity_gain_over_standard_error_std_over_seeds": 0.17385325320188497
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9174620850947508,
+            "completeness_mean_std_over_seeds": 0.0015012560532669953,
+            "completeness_std_mean_over_seeds": 0.008087726208152155,
+            "completeness_std_std_over_seeds": 0.0016030601676050068,
+            "purity_mean_mean_over_seeds": 0.21725367199679024,
+            "purity_mean_std_over_seeds": 0.00507131942201111,
+            "purity_std_mean_over_seeds": 0.011155867506404203,
+            "purity_std_std_over_seeds": 0.0023812694786464416,
+            "completeness_gain_mean_mean_over_seeds": 0.00984852057580347,
+            "completeness_gain_mean_std_over_seeds": 0.0031062862522194547,
+            "completeness_gain_over_standard_error_mean_over_seeds": 5.083159304064281,
+            "completeness_gain_over_standard_error_std_over_seeds": 2.5559258548781485,
+            "purity_gain_mean_mean_over_seeds": 0.010481776755256958,
+            "purity_gain_mean_std_over_seeds": 0.0023148379929276625,
+            "purity_gain_over_standard_error_mean_over_seeds": 9.12017688464499,
+            "purity_gain_over_standard_error_std_over_seeds": 3.7486160541742644
+          }
+        },
+        "bump_r100_0.005": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.4850207507027529,
+            "completeness_mean_std_over_seeds": 0.004561638709394348,
+            "completeness_std_mean_over_seeds": 0.021206161939860874,
+            "completeness_std_std_over_seeds": 0.008151217574771628,
+            "purity_mean_mean_over_seeds": 0.6455574770047517,
+            "purity_mean_std_over_seeds": 0.00995721800664912,
+            "purity_std_mean_over_seeds": 0.023110111198436183,
+            "purity_std_std_over_seeds": 0.006487483442483759,
+            "completeness_gain_mean_mean_over_seeds": 0.08670666105020829,
+            "completeness_gain_mean_std_over_seeds": 0.001663145770126376,
+            "completeness_gain_over_standard_error_mean_over_seeds": 10.691583595562193,
+            "completeness_gain_over_standard_error_std_over_seeds": 5.034696692090988,
+            "purity_gain_mean_mean_over_seeds": 0.03516362433118275,
+            "purity_gain_mean_std_over_seeds": 0.013013420063073102,
+            "purity_gain_over_standard_error_mean_over_seeds": 6.612625489431832,
+            "purity_gain_over_standard_error_std_over_seeds": 3.7857534603514758
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9494474335881155,
+            "completeness_mean_std_over_seeds": 0.0005415501102232939,
+            "completeness_std_mean_over_seeds": 0.006842579744633544,
+            "completeness_std_std_over_seeds": 0.003529466462779409,
+            "purity_mean_mean_over_seeds": 0.26915028475392216,
+            "purity_mean_std_over_seeds": 0.005034740229189189,
+            "purity_std_mean_over_seeds": 0.012842824391201194,
+            "purity_std_std_over_seeds": 0.0034720977089408556,
+            "completeness_gain_mean_mean_over_seeds": 0.041833869069168084,
+            "completeness_gain_mean_std_over_seeds": 0.004194554568669439,
+            "completeness_gain_over_standard_error_mean_over_seeds": 11.199223160735192,
+            "completeness_gain_over_standard_error_std_over_seeds": 5.2151081146410645,
+            "purity_gain_mean_mean_over_seeds": 0.062378389512388895,
+            "purity_gain_mean_std_over_seeds": 0.001972257790183073,
+            "purity_gain_over_standard_error_mean_over_seeds": 38.218005329601056,
+            "purity_gain_over_standard_error_std_over_seeds": 33.800242199503295
+          }
+        },
+        "bump_r100_0.010": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.44538861252925604,
+            "completeness_mean_std_over_seeds": 0.0027509025747942824,
+            "completeness_std_mean_over_seeds": 0.01420449621027598,
+            "completeness_std_std_over_seeds": 0.007034114518344094,
+            "purity_mean_mean_over_seeds": 0.6225475653945066,
+            "purity_mean_std_over_seeds": 0.008578595609074926,
+            "purity_std_mean_over_seeds": 0.024944317231201236,
+            "purity_std_std_over_seeds": 0.009146630652049017,
+            "completeness_gain_mean_mean_over_seeds": 0.04707452287671135,
+            "completeness_gain_mean_std_over_seeds": 0.0027486201532738418,
+            "completeness_gain_over_standard_error_mean_over_seeds": 9.379754376008513,
+            "completeness_gain_over_standard_error_std_over_seeds": 1.9850901739148406,
+            "purity_gain_mean_mean_over_seeds": 0.012153712720937527,
+            "purity_gain_mean_std_over_seeds": 0.011461564113748081,
+            "purity_gain_over_standard_error_mean_over_seeds": 3.553721711404599,
+            "purity_gain_over_standard_error_std_over_seeds": 2.767398673390042
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9331052600791513,
+            "completeness_mean_std_over_seeds": 0.002881246613554162,
+            "completeness_std_mean_over_seeds": 0.00705381034149135,
+            "completeness_std_std_over_seeds": 0.0006572409819233708,
+            "purity_mean_mean_over_seeds": 0.23933692591846298,
+            "purity_mean_std_over_seeds": 0.0020557903385173175,
+            "purity_std_mean_over_seeds": 0.010630152506568803,
+            "purity_std_std_over_seeds": 0.001891454207821826,
+            "completeness_gain_mean_mean_over_seeds": 0.02549169556020402,
+            "completeness_gain_mean_std_over_seeds": 0.0059679955087840264,
+            "completeness_gain_over_standard_error_mean_over_seeds": 6.368074844095921,
+            "completeness_gain_over_standard_error_std_over_seeds": 4.237019019376666,
+            "purity_gain_mean_mean_over_seeds": 0.032565030676929695,
+            "purity_gain_mean_std_over_seeds": 0.002462894448011951,
+            "purity_gain_over_standard_error_mean_over_seeds": 28.345220891696226,
+            "purity_gain_over_standard_error_std_over_seeds": 8.042177317606964
+          }
+        },
+        "bump_r100_0.020": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.40565725853770535,
+            "completeness_mean_std_over_seeds": 0.004471815466939436,
+            "completeness_std_mean_over_seeds": 0.012216842732126747,
+            "completeness_std_std_over_seeds": 0.0076088052042932695,
+            "purity_mean_mean_over_seeds": 0.6222919268053102,
+            "purity_mean_std_over_seeds": 0.0037554825063537915,
+            "purity_std_mean_over_seeds": 0.020016410544023637,
+            "purity_std_std_over_seeds": 0.01212472979765982,
+            "completeness_gain_mean_mean_over_seeds": 0.007343168885160636,
+            "completeness_gain_mean_std_over_seeds": 0.0072336487935293564,
+            "completeness_gain_over_standard_error_mean_over_seeds": 1.6762404011716525,
+            "completeness_gain_over_standard_error_std_over_seeds": 1.6411165901868057,
+            "purity_gain_mean_mean_over_seeds": 0.011898074131741154,
+            "purity_gain_mean_std_over_seeds": 0.0015691157808487195,
+            "purity_gain_over_standard_error_mean_over_seeds": 3.248306949375839,
+            "purity_gain_over_standard_error_std_over_seeds": 0.3889573024275226
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9197672897546774,
+            "completeness_mean_std_over_seeds": 0.003969424030843783,
+            "completeness_std_mean_over_seeds": 0.005322329428732561,
+            "completeness_std_std_over_seeds": 0.0010051534909106612,
+            "purity_mean_mean_over_seeds": 0.2176988734950651,
+            "purity_mean_std_over_seeds": 0.0008954850680498023,
+            "purity_std_mean_over_seeds": 0.010412948155589142,
+            "purity_std_std_over_seeds": 0.001984026993014417,
+            "completeness_gain_mean_mean_over_seeds": 0.012153725235730195,
+            "completeness_gain_mean_std_over_seeds": 0.003283817638026872,
+            "completeness_gain_over_standard_error_mean_over_seeds": 4.243069515487242,
+            "completeness_gain_over_standard_error_std_over_seeds": 0.9607341118981053,
+            "purity_gain_mean_mean_over_seeds": 0.010926978253531791,
+            "purity_gain_mean_std_over_seeds": 0.003495744732213991,
+            "purity_gain_over_standard_error_mean_over_seeds": 9.106782445215458,
+            "purity_gain_over_standard_error_std_over_seeds": 0.12417009378522564
+          }
+        }
+      },
+      "agb0": {
+        "no_bump": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.39590490960939745,
+            "completeness_mean_std_over_seeds": 0.009394309746069937,
+            "completeness_std_mean_over_seeds": 0.012032426418462994,
+            "completeness_std_std_over_seeds": 0.006347481909326564,
+            "purity_mean_mean_over_seeds": 0.6100921915037083,
+            "purity_mean_std_over_seeds": 0.006083075130503505,
+            "purity_std_mean_over_seeds": 0.018190763996633746,
+            "purity_std_std_over_seeds": 0.012141499439498262
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9063084031542544,
+            "completeness_mean_std_over_seeds": 0.0047444273883135765,
+            "completeness_std_mean_over_seeds": 0.00971625469363035,
+            "completeness_std_std_over_seeds": 0.0008131805962346159,
+            "purity_mean_mean_over_seeds": 0.20611870930377454,
+            "purity_mean_std_over_seeds": 0.0039636880404182095,
+            "purity_std_mean_over_seeds": 0.010182934136703802,
+            "purity_std_std_over_seeds": 0.0009238987644849838
+          }
+        },
+        "bump_sigma300_0.005": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.401609869229927,
+            "completeness_mean_std_over_seeds": 0.0071683077554341255,
+            "completeness_std_mean_over_seeds": 0.01376081008975865,
+            "completeness_std_std_over_seeds": 0.002811123487918182,
+            "purity_mean_mean_over_seeds": 0.6223696895999691,
+            "purity_mean_std_over_seeds": 0.008974453456925513,
+            "purity_std_mean_over_seeds": 0.022247230453015954,
+            "purity_std_std_over_seeds": 0.012609140949825334,
+            "completeness_gain_mean_mean_over_seeds": 0.005704959620529437,
+            "completeness_gain_mean_std_over_seeds": 0.005180681495150325,
+            "completeness_gain_over_standard_error_mean_over_seeds": 1.374463589374825,
+            "completeness_gain_over_standard_error_std_over_seeds": 1.3254260430712834,
+            "purity_gain_mean_mean_over_seeds": 0.01227749809626076,
+            "purity_gain_mean_std_over_seeds": 0.0069558386691083674,
+            "purity_gain_over_standard_error_mean_over_seeds": 2.3396666283107663,
+            "purity_gain_over_standard_error_std_over_seeds": 0.12444204284624585
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.919392511994663,
+            "completeness_mean_std_over_seeds": 0.002766709790626106,
+            "completeness_std_mean_over_seeds": 0.008561036359938495,
+            "completeness_std_std_over_seeds": 0.0015615848545595928,
+            "purity_mean_mean_over_seeds": 0.2173981461507977,
+            "purity_mean_std_over_seeds": 0.004085610441616141,
+            "purity_std_mean_over_seeds": 0.010369032128202645,
+            "purity_std_std_over_seeds": 0.002147061852769628,
+            "completeness_gain_mean_mean_over_seeds": 0.013084108840408788,
+            "completeness_gain_mean_std_over_seeds": 0.006361512469061735,
+            "completeness_gain_over_standard_error_mean_over_seeds": 4.573123153984627,
+            "completeness_gain_over_standard_error_std_over_seeds": 3.043814314654911,
+            "purity_gain_mean_mean_over_seeds": 0.011279436847023148,
+            "purity_gain_mean_std_over_seeds": 0.0026191118743495298,
+            "purity_gain_over_standard_error_mean_over_seeds": 15.606881170560365,
+            "purity_gain_over_standard_error_std_over_seeds": 16.020352168381468
+          }
+        },
+        "bump_sigma300_0.010": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.385754556774724,
+            "completeness_mean_std_over_seeds": 0.004487838494472269,
+            "completeness_std_mean_over_seeds": 0.013218492964553234,
+            "completeness_std_std_over_seeds": 0.0006389715456891465,
+            "purity_mean_mean_over_seeds": 0.619181420517457,
+            "purity_mean_std_over_seeds": 0.0018021963061102013,
+            "purity_std_mean_over_seeds": 0.021366147909797174,
+            "purity_std_std_over_seeds": 0.007910458048180916,
+            "completeness_gain_mean_mean_over_seeds": -0.010150352834673552,
+            "completeness_gain_mean_std_over_seeds": 0.007394468358015357,
+            "completeness_gain_over_standard_error_mean_over_seeds": -2.2163481061331454,
+            "completeness_gain_over_standard_error_std_over_seeds": 1.1490991835957332,
+            "purity_gain_mean_mean_over_seeds": 0.009089229013748623,
+            "purity_gain_mean_std_over_seeds": 0.004675411823261941,
+            "purity_gain_over_standard_error_mean_over_seeds": 1.527163190717183,
+            "purity_gain_over_standard_error_std_over_seeds": 0.7638730301234744
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9130427559572075,
+            "completeness_mean_std_over_seeds": 0.0022344850686185796,
+            "completeness_std_mean_over_seeds": 0.008597828985855744,
+            "completeness_std_std_over_seeds": 0.0016874068749578681,
+            "purity_mean_mean_over_seeds": 0.210154328638279,
+            "purity_mean_std_over_seeds": 0.0019526010898307912,
+            "purity_std_mean_over_seeds": 0.009607628536132668,
+            "purity_std_std_over_seeds": 0.0019046095639018658,
+            "completeness_gain_mean_mean_over_seeds": 0.006734352802953129,
+            "completeness_gain_mean_std_over_seeds": 0.0029137541050654626,
+            "completeness_gain_over_standard_error_mean_over_seeds": 3.2427469555037356,
+            "completeness_gain_over_standard_error_std_over_seeds": 0.7961978769046701,
+            "purity_gain_mean_mean_over_seeds": 0.004035619334504403,
+            "purity_gain_mean_std_over_seeds": 0.002110598377625837,
+            "purity_gain_over_standard_error_mean_over_seeds": 3.211039244818356,
+            "purity_gain_over_standard_error_std_over_seeds": 1.5892148564890356
+          }
+        },
+        "bump_sigma300_0.020": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.38233657141320143,
+            "completeness_mean_std_over_seeds": 0.012033868703988138,
+            "completeness_std_mean_over_seeds": 0.01186068856906467,
+            "completeness_std_std_over_seeds": 0.0023491272133806004,
+            "purity_mean_mean_over_seeds": 0.6143736189617791,
+            "purity_mean_std_over_seeds": 0.002762632743858855,
+            "purity_std_mean_over_seeds": 0.021077689638630753,
+            "purity_std_std_over_seeds": 0.009746121077343491,
+            "completeness_gain_mean_mean_over_seeds": -0.013568338196196081,
+            "completeness_gain_mean_std_over_seeds": 0.0065793876643169364,
+            "completeness_gain_over_standard_error_mean_over_seeds": -3.345149045050705,
+            "completeness_gain_over_standard_error_std_over_seeds": 1.5316956774063983,
+            "purity_gain_mean_mean_over_seeds": 0.004281427458070749,
+            "purity_gain_mean_std_over_seeds": 0.004665631980221094,
+            "purity_gain_over_standard_error_mean_over_seeds": 1.6758141014304158,
+            "purity_gain_over_standard_error_std_over_seeds": 1.8225610139265576
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9105081157101198,
+            "completeness_mean_std_over_seeds": 0.0024701536191372208,
+            "completeness_std_mean_over_seeds": 0.008092068795156669,
+            "completeness_std_std_over_seeds": 0.002103777069160314,
+            "purity_mean_mean_over_seeds": 0.2062879438133172,
+            "purity_mean_std_over_seeds": 0.002496327711261696,
+            "purity_std_mean_over_seeds": 0.009625571359101111,
+            "purity_std_std_over_seeds": 0.0023080194159169746,
+            "completeness_gain_mean_mean_over_seeds": 0.004199712555865502,
+            "completeness_gain_mean_std_over_seeds": 0.0024581954683059225,
+            "completeness_gain_over_standard_error_mean_over_seeds": 1.2470415452836991,
+            "completeness_gain_over_standard_error_std_over_seeds": 0.6435708016263408,
+            "purity_gain_mean_mean_over_seeds": 0.000169234509542652,
+            "purity_gain_mean_std_over_seeds": 0.00203399468201736,
+            "purity_gain_over_standard_error_mean_over_seeds": -0.1015580095007657,
+            "purity_gain_over_standard_error_std_over_seeds": 1.5472399650048174
+          }
+        },
+        "bump_r100_0.005": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.4075179734554242,
+            "completeness_mean_std_over_seeds": 0.003538146155199669,
+            "completeness_std_mean_over_seeds": 0.012305859781339565,
+            "completeness_std_std_over_seeds": 0.0024070475904566404,
+            "purity_mean_mean_over_seeds": 0.6313744566376627,
+            "purity_mean_std_over_seeds": 0.009304314583725378,
+            "purity_std_mean_over_seeds": 0.022155054998088907,
+            "purity_std_std_over_seeds": 0.0057995640900429185,
+            "completeness_gain_mean_mean_over_seeds": 0.01161306384602665,
+            "completeness_gain_mean_std_over_seeds": 0.012156930377579008,
+            "completeness_gain_over_standard_error_mean_over_seeds": 3.7501919157863486,
+            "completeness_gain_over_standard_error_std_over_seeds": 4.174299283333051,
+            "purity_gain_mean_mean_over_seeds": 0.021282265133954342,
+            "purity_gain_mean_std_over_seeds": 0.006190834792324178,
+            "purity_gain_over_standard_error_mean_over_seeds": 4.512607162258905,
+            "purity_gain_over_standard_error_std_over_seeds": 2.1737231207000196
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9215730021750824,
+            "completeness_mean_std_over_seeds": 0.0012043025673588298,
+            "completeness_std_mean_over_seeds": 0.008140906857840193,
+            "completeness_std_std_over_seeds": 0.002053209148317324,
+            "purity_mean_mean_over_seeds": 0.21862053313766994,
+            "purity_mean_std_over_seeds": 0.002377178177248102,
+            "purity_std_mean_over_seeds": 0.009937244997945452,
+            "purity_std_std_over_seeds": 0.003313915734381728,
+            "completeness_gain_mean_mean_over_seeds": 0.015264599020827952,
+            "completeness_gain_mean_std_over_seeds": 0.003973737353135486,
+            "completeness_gain_over_standard_error_mean_over_seeds": 6.1773216175225985,
+            "completeness_gain_over_standard_error_std_over_seeds": 3.534685996517297,
+            "purity_gain_mean_mean_over_seeds": 0.012501823833895392,
+            "purity_gain_mean_std_over_seeds": 0.0036622595668129223,
+            "purity_gain_over_standard_error_mean_over_seeds": 8.393011236315141,
+            "purity_gain_over_standard_error_std_over_seeds": 1.4485441231993237
+          }
+        },
+        "bump_r100_0.010": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.3868338719043971,
+            "completeness_mean_std_over_seeds": 0.006765545751586046,
+            "completeness_std_mean_over_seeds": 0.013614756912502718,
+            "completeness_std_std_over_seeds": 0.004037094645841713,
+            "purity_mean_mean_over_seeds": 0.6167337039326614,
+            "purity_mean_std_over_seeds": 0.009103734975879864,
+            "purity_std_mean_over_seeds": 0.01936417672093646,
+            "purity_std_std_over_seeds": 0.007195644740439127,
+            "completeness_gain_mean_mean_over_seeds": -0.009071037705000406,
+            "completeness_gain_mean_std_over_seeds": 0.007229222272895205,
+            "completeness_gain_over_standard_error_mean_over_seeds": -2.043696158724663,
+            "completeness_gain_over_standard_error_std_over_seeds": 1.1353625363868771,
+            "purity_gain_mean_mean_over_seeds": 0.006641512428952982,
+            "purity_gain_mean_std_over_seeds": 0.004292088096205373,
+            "purity_gain_over_standard_error_mean_over_seeds": 2.977377820500107,
+            "purity_gain_over_standard_error_std_over_seeds": 3.745559961019354
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9130037510055512,
+            "completeness_mean_std_over_seeds": 0.002415458978687588,
+            "completeness_std_mean_over_seeds": 0.00923847026333233,
+            "completeness_std_std_over_seeds": 0.0026288299879971317,
+            "purity_mean_mean_over_seeds": 0.20888998131728942,
+            "purity_mean_std_over_seeds": 0.0004280855797926951,
+            "purity_std_mean_over_seeds": 0.010984132199921703,
+            "purity_std_std_over_seeds": 0.0023196116618324353,
+            "completeness_gain_mean_mean_over_seeds": 0.006695347851296929,
+            "completeness_gain_mean_std_over_seeds": 0.0024236772633574365,
+            "completeness_gain_over_standard_error_mean_over_seeds": 2.6271763879240484,
+            "completeness_gain_over_standard_error_std_over_seeds": 0.5366513805841787,
+            "purity_gain_mean_mean_over_seeds": 0.002771272013514875,
+            "purity_gain_mean_std_over_seeds": 0.003559333958314537,
+            "purity_gain_over_standard_error_mean_over_seeds": 2.329070180327813,
+            "purity_gain_over_standard_error_std_over_seeds": 3.6101167107281977
+          }
+        },
+        "bump_r100_0.020": {
+          "unbalanced": {
+            "completeness_mean_mean_over_seeds": 0.3843353210105707,
+            "completeness_mean_std_over_seeds": 0.010933254284875044,
+            "completeness_std_mean_over_seeds": 0.012471865933987742,
+            "completeness_std_std_over_seeds": 0.0035640275752371704,
+            "purity_mean_mean_over_seeds": 0.6146801524901235,
+            "purity_mean_std_over_seeds": 0.006836420714145578,
+            "purity_std_mean_over_seeds": 0.022010555138184267,
+            "purity_std_std_over_seeds": 0.008641765807463864,
+            "completeness_gain_mean_mean_over_seeds": -0.011569588598826742,
+            "completeness_gain_mean_std_over_seeds": 0.0046070449049661994,
+            "completeness_gain_over_standard_error_mean_over_seeds": -5.10249832765319,
+            "completeness_gain_over_standard_error_std_over_seeds": 3.8314536807529667,
+            "purity_gain_mean_mean_over_seeds": 0.004587960986415148,
+            "purity_gain_mean_std_over_seeds": 0.0008132338992248351,
+            "purity_gain_over_standard_error_mean_over_seeds": 1.2461205616246716,
+            "purity_gain_over_standard_error_std_over_seeds": 0.26959276293945417
+          },
+          "balanced": {
+            "completeness_mean_mean_over_seeds": 0.9080645116882216,
+            "completeness_mean_std_over_seeds": 0.0026680014166854597,
+            "completeness_std_mean_over_seeds": 0.007513823831672348,
+            "completeness_std_std_over_seeds": 0.0025619056158343793,
+            "purity_mean_mean_over_seeds": 0.20696962102464292,
+            "purity_mean_std_over_seeds": 0.005311531565774603,
+            "purity_std_mean_over_seeds": 0.009661340509115813,
+            "purity_std_std_over_seeds": 0.0007537405883178566,
+            "completeness_gain_mean_mean_over_seeds": 0.0017561085339671191,
+            "completeness_gain_mean_std_over_seeds": 0.0040787925218205645,
+            "completeness_gain_over_standard_error_mean_over_seeds": 1.1427498332475226,
+            "completeness_gain_over_standard_error_std_over_seeds": 2.1046773356890003,
+            "purity_gain_mean_mean_over_seeds": 0.0008509117208684061,
+            "purity_gain_mean_std_over_seeds": 0.0029167043896882313,
+            "purity_gain_over_standard_error_mean_over_seeds": 0.6525927724190921,
+            "purity_gain_over_standard_error_std_over_seeds": 3.859757371090813
+          }
+        }
+      }
+    },
+    "results_by_seed": {
+      "20260924": {
+        "agb2": {
+          "no_bump": {
+            "unbalanced": {
+              "completeness_mean": 0.39722514473910975,
+              "completeness_std": 0.016151095373387245,
+              "purity_mean": 0.616335854699338,
+              "purity_std": 0.01492970384567247,
+              "completeness_per_fold": [
+                0.39829059829059826,
+                0.42311365807067813,
+                0.37613168724279833,
+                0.3850528025995126,
+                0.40353697749196143
+              ],
+              "purity_per_fold": [
+                0.6155878467635403,
+                0.589095744680851,
+                0.6243169398907104,
+                0.6336898395721925,
+                0.6189889025893958
+              ],
+              "confusion": [
+                [
+                  95440,
+                  0,
+                  6660,
+                  0
+                ],
+                [
+                  0,
+                  2342,
+                  3210,
+                  355
+                ],
+                [
+                  14997,
+                  1190,
+                  98704,
+                  11871
+                ],
+                [
+                  0,
+                  268,
+                  9555,
+                  237408
+                ]
+              ]
+            },
+            "balanced": {
+              "completeness_mean": 0.9058396063182184,
+              "completeness_std": 0.0074593782559546976,
+              "purity_mean": 0.2075053734161491,
+              "purity_std": 0.010054644560344201,
+              "completeness_per_fold": [
+                0.9145299145299145,
+                0.9073543457497613,
+                0.9069958847736626,
+                0.8919577579203899,
+                0.9083601286173634
+              ],
+              "purity_per_fold": [
+                0.2072438504745303,
+                0.18890435474249354,
+                0.21155692071414858,
+                0.2108294930875576,
+                0.2189922480620155
+              ],
+              "confusion": [
+                [
+                  96940,
+                  6,
+                  5154,
+                  0
+                ],
+                [
+                  0,
+                  5350,
+                  538,
+                  19
+                ],
+                [
+                  16875,
+                  15747,
+                  87954,
+                  6186
+                ],
+                [
+                  0,
+                  4666,
+                  13965,
+                  228600
+                ]
+              ]
+            }
+          },
+          "bump_sigma300_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.4937925239713537,
+              "completeness_std": 0.026012516248183303,
+              "purity_mean": 0.6577005667620531,
+              "purity_std": 0.02304814624016354,
+              "completeness_per_fold": [
+                0.47863247863247865,
+                0.5434574976122254,
+                0.4691358024691358,
+                0.4849715678310317,
+                0.4927652733118971
+              ],
+              "purity_per_fold": [
+                0.6722689075630253,
+                0.6178067318132465,
+                0.6867469879518072,
+                0.6567656765676567,
+                0.6549145299145299
+              ],
+              "confusion": [
+                [
+                  96377,
+                  0,
+                  5723,
+                  0
+                ],
+                [
+                  0,
+                  2909,
+                  2627,
+                  371
+                ],
+                [
+                  11809,
+                  1228,
+                  102964,
+                  10761
+                ],
+                [
+                  0,
+                  292,
+                  9918,
+                  237021
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.09656737923224398,
+                "completeness_gain_standard_error": 0.006731930120351106,
+                "completeness_gain_over_standard_error": 14.344679387017683,
+                "purity_gain_mean": 0.04136471206271515,
+                "purity_gain_standard_error": 0.007754103004124202,
+                "purity_gain_over_standard_error": 5.334557980557436
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9496936929079774,
+              "completeness_std": 0.0075449885769150295,
+              "purity_mean": 0.27656789384452457,
+              "purity_std": 0.01428289858522565,
+              "completeness_per_fold": [
+                0.9504273504273504,
+                0.9541547277936963,
+                0.9530864197530864,
+                0.9350121852152722,
+                0.9557877813504824
+              ],
+              "purity_per_fold": [
+                0.2735547355473555,
+                0.24993745308981735,
+                0.2887060583395662,
+                0.284548825710754,
+                0.2860923965351299
+              ],
+              "confusion": [
+                [
+                  97577,
+                  0,
+                  4523,
+                  0
+                ],
+                [
+                  0,
+                  5609,
+                  288,
+                  10
+                ],
+                [
+                  13251,
+                  11483,
+                  96639,
+                  5389
+                ],
+                [
+                  0,
+                  3182,
+                  15699,
+                  228350
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.0438540865897592,
+                "completeness_gain_standard_error": 0.0021260347893605844,
+                "completeness_gain_over_standard_error": 20.62717261693941,
+                "purity_gain_mean": 0.06906252042837549,
+                "purity_gain_standard_error": 0.0028545866363251277,
+                "purity_gain_over_standard_error": 24.193527549503145
+              }
+            }
+          },
+          "bump_sigma300_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.44558069445270626,
+              "completeness_std": 0.02790648233068405,
+              "purity_mean": 0.6339411829678935,
+              "purity_std": 0.01796269041771526,
+              "completeness_per_fold": [
+                0.4282051282051282,
+                0.49283667621776506,
+                0.4222222222222222,
+                0.42242079610073113,
+                0.4622186495176849
+              ],
+              "purity_per_fold": [
+                0.6374045801526718,
+                0.5986078886310905,
+                0.64366373902133,
+                0.6475716064757161,
+                0.6424581005586593
+              ],
+              "confusion": [
+                [
+                  95774,
+                  0,
+                  6326,
+                  0
+                ],
+                [
+                  0,
+                  2625,
+                  2902,
+                  380
+                ],
+                [
+                  13539,
+                  1247,
+                  100729,
+                  11247
+                ],
+                [
+                  0,
+                  271,
+                  9873,
+                  237087
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.04835554971359655,
+                "completeness_gain_standard_error": 0.007173302599768692,
+                "completeness_gain_over_standard_error": 6.741044176103181,
+                "purity_gain_mean": 0.017605328268555542,
+                "purity_gain_standard_error": 0.0025934355917325964,
+                "purity_gain_over_standard_error": 6.788419317093567
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9346273339332718,
+              "completeness_std": 0.006498143028818814,
+              "purity_mean": 0.24205968185995674,
+              "purity_std": 0.015370138263207484,
+              "completeness_per_fold": [
+                0.9401709401709402,
+                0.9379178605539638,
+                0.9325102880658436,
+                0.9228269699431356,
+                0.9397106109324759
+              ],
+              "purity_per_fold": [
+                0.23933855526544823,
+                0.21357111787733798,
+                0.24895627334651724,
+                0.2573046432616082,
+                0.2511278195488722
+              ],
+              "confusion": [
+                [
+                  97425,
+                  1,
+                  4674,
+                  0
+                ],
+                [
+                  0,
+                  5520,
+                  376,
+                  11
+                ],
+                [
+                  15630,
+                  13409,
+                  91837,
+                  5886
+                ],
+                [
+                  0,
+                  3885,
+                  14693,
+                  228653
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.028787727615053483,
+                "completeness_gain_standard_error": 0.0013166262675745413,
+                "completeness_gain_over_standard_error": 21.864767796320496,
+                "purity_gain_mean": 0.034554308443807656,
+                "purity_gain_standard_error": 0.003604609790430823,
+                "purity_gain_over_standard_error": 9.586143980283016
+              }
+            }
+          },
+          "bump_sigma300_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.4029111801204695,
+              "completeness_std": 0.021622268492799985,
+              "purity_mean": 0.6275479284856963,
+              "purity_std": 0.022854933942783238,
+              "completeness_per_fold": [
+                0.39829059829059826,
+                0.44412607449856734,
+                0.38106995884773665,
+                0.3915515840779854,
+                0.3995176848874598
+              ],
+              "purity_per_fold": [
+                0.6366120218579235,
+                0.5819774718397998,
+                0.6386206896551724,
+                0.6384105960264901,
+                0.6421188630490956
+              ],
+              "confusion": [
+                [
+                  95567,
+                  0,
+                  6533,
+                  0
+                ],
+                [
+                  0,
+                  2373,
+                  3164,
+                  370
+                ],
+                [
+                  14703,
+                  1154,
+                  99148,
+                  11757
+                ],
+                [
+                  0,
+                  258,
+                  9662,
+                  237311
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.005686035381359744,
+                "completeness_gain_standard_error": 0.004258180671004559,
+                "completeness_gain_over_standard_error": 1.3353203681745933,
+                "purity_gain_mean": 0.01121207378635829,
+                "purity_gain_standard_error": 0.005594687763305641,
+                "purity_gain_over_standard_error": 2.0040571092985533
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.916620737740864,
+              "completeness_std": 0.008852491712653496,
+              "purity_mean": 0.2153930362757301,
+              "purity_std": 0.012969555073707112,
+              "completeness_per_fold": [
+                0.9256410256410257,
+                0.9169054441260746,
+                0.9152263374485596,
+                0.90089358245329,
+                0.9244372990353698
+              ],
+              "purity_per_fold": [
+                0.2129793510324484,
+                0.19154030327214686,
+                0.22098569157392686,
+                0.22246740220661987,
+                0.22899243329350857
+              ],
+              "confusion": [
+                [
+                  97380,
+                  2,
+                  4718,
+                  0
+                ],
+                [
+                  0,
+                  5414,
+                  473,
+                  20
+                ],
+                [
+                  16866,
+                  15348,
+                  88259,
+                  6289
+                ],
+                [
+                  0,
+                  4372,
+                  13912,
+                  228947
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.010781131422645607,
+                "completeness_gain_standard_error": 0.0014067874132542128,
+                "completeness_gain_over_standard_error": 7.663653599022789,
+                "purity_gain_mean": 0.007887662859581002,
+                "purity_gain_standard_error": 0.0016296382669586682,
+                "purity_gain_over_standard_error": 4.840131101180783
+              }
+            }
+          },
+          "bump_r100_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.48575962330432426,
+              "completeness_std": 0.030529332501596736,
+              "purity_mean": 0.6391887606673323,
+              "purity_std": 0.022195015060175134,
+              "completeness_per_fold": [
+                0.45042735042735044,
+                0.5396370582617,
+                0.4633744855967078,
+                0.4882209585702681,
+                0.4871382636655949
+              ],
+              "purity_per_fold": [
+                0.6419001218026796,
+                0.6004250797024442,
+                0.6615746180963572,
+                0.6326315789473684,
+                0.6594124047878128
+              ],
+              "confusion": [
+                [
+                  96163,
+                  0,
+                  5937,
+                  0
+                ],
+                [
+                  0,
+                  2862,
+                  2678,
+                  367
+                ],
+                [
+                  11717,
+                  1293,
+                  103037,
+                  10715
+                ],
+                [
+                  0,
+                  327,
+                  10060,
+                  236844
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.0885344785652145,
+                "completeness_gain_standard_error": 0.010835874589267925,
+                "completeness_gain_over_standard_error": 8.170496791546562,
+                "purity_gain_mean": 0.022852905967994476,
+                "purity_gain_standard_error": 0.007850882513029475,
+                "purity_gain_over_standard_error": 2.910870966425412
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9496911061790506,
+              "completeness_std": 0.009274391379525113,
+              "purity_mean": 0.26772603450646093,
+              "purity_std": 0.014832830123798131,
+              "completeness_per_fold": [
+                0.9547008547008548,
+                0.958930276981853,
+                0.9440329218106996,
+                0.934199837530463,
+                0.9565916398713826
+              ],
+              "purity_per_fold": [
+                0.2734394124847001,
+                0.23847980997624704,
+                0.2740086000955566,
+                0.2728998576174656,
+                0.2798024923583353
+              ],
+              "confusion": [
+                [
+                  97546,
+                  0,
+                  4554,
+                  0
+                ],
+                [
+                  0,
+                  5608,
+                  290,
+                  9
+                ],
+                [
+                  13293,
+                  11974,
+                  95917,
+                  5578
+                ],
+                [
+                  0,
+                  3366,
+                  15032,
+                  228833
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.043851499860832276,
+                "completeness_gain_standard_error": 0.0026591821728215895,
+                "completeness_gain_over_standard_error": 16.49059636042257,
+                "purity_gain_mean": 0.060220661090311836,
+                "purity_gain_standard_error": 0.002808614449484741,
+                "purity_gain_over_standard_error": 21.441412544665827
+              }
+            }
+          },
+          "bump_r100_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.442793808441117,
+              "completeness_std": 0.022305799938265584,
+              "purity_mean": 0.6177215345575442,
+              "purity_std": 0.019106586961947527,
+              "completeness_per_fold": [
+                0.44188034188034186,
+                0.4813753581661891,
+                0.411522633744856,
+                0.4394800974817222,
+                0.4397106109324759
+              ],
+              "purity_per_fold": [
+                0.6289537712895377,
+                0.5806451612903226,
+                0.6203473945409429,
+                0.634232121922626,
+                0.6244292237442922
+              ],
+              "confusion": [
+                [
+                  95748,
+                  0,
+                  6352,
+                  0
+                ],
+                [
+                  0,
+                  2609,
+                  2932,
+                  366
+                ],
+                [
+                  13662,
+                  1306,
+                  100305,
+                  11489
+                ],
+                [
+                  0,
+                  310,
+                  9678,
+                  237243
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.04556866370200725,
+                "completeness_gain_standard_error": 0.004665603739608091,
+                "completeness_gain_over_standard_error": 9.766938266779382,
+                "purity_gain_mean": 0.0013856798582063013,
+                "purity_gain_standard_error": 0.0037822493930702514,
+                "purity_gain_over_standard_error": 0.3663639581105126
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9364160491287239,
+              "completeness_std": 0.006728538734360468,
+              "purity_mean": 0.23887366663399517,
+              "purity_std": 0.012302393248188971,
+              "completeness_per_fold": [
+                0.935042735042735,
+                0.944603629417383,
+                0.9382716049382716,
+                0.9244516653127539,
+                0.9397106109324759
+              ],
+              "purity_per_fold": [
+                0.23782608695652174,
+                0.21575043630017451,
+                0.242914979757085,
+                0.24793028322440086,
+                0.24994654693179388
+              ],
+              "confusion": [
+                [
+                  97278,
+                  2,
+                  4820,
+                  0
+                ],
+                [
+                  0,
+                  5530,
+                  358,
+                  19
+                ],
+                [
+                  15479,
+                  13770,
+                  91304,
+                  6209
+                ],
+                [
+                  0,
+                  3842,
+                  14649,
+                  228740
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.030576442810505554,
+                "completeness_gain_standard_error": 0.002743793862976928,
+                "completeness_gain_over_standard_error": 11.143855674832327,
+                "purity_gain_mean": 0.031368293217846094,
+                "purity_gain_standard_error": 0.0016447081880412075,
+                "purity_gain_over_standard_error": 19.07225454699334
+              }
+            }
+          },
+          "bump_r100_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.4107178060076583,
+              "completeness_std": 0.020956621234516668,
+              "purity_mean": 0.6266267374038107,
+              "purity_std": 0.016586277519192102,
+              "completeness_per_fold": [
+                0.394017094017094,
+                0.45081184336198665,
+                0.3958847736625514,
+                0.40129975629569453,
+                0.4115755627009646
+              ],
+              "purity_per_fold": [
+                0.6255088195386703,
+                0.5952080706179067,
+                0.6421895861148198,
+                0.6357786357786358,
+                0.6344485749690211
+              ],
+              "confusion": [
+                [
+                  95510,
+                  0,
+                  6590,
+                  0
+                ],
+                [
+                  0,
+                  2420,
+                  3147,
+                  340
+                ],
+                [
+                  14728,
+                  1185,
+                  99042,
+                  11807
+                ],
+                [
+                  0,
+                  258,
+                  9589,
+                  237384
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.0134926612685485,
+                "completeness_gain_standard_error": 0.005449585059171451,
+                "completeness_gain_over_standard_error": 2.475906169377217,
+                "purity_gain_mean": 0.010290882704472759,
+                "purity_gain_standard_error": 0.0029074982176191234,
+                "purity_gain_over_standard_error": 3.539428723330294
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9216952518229364,
+              "completeness_std": 0.0064281060197247455,
+              "purity_mean": 0.21824878206878434,
+              "purity_std": 0.012420971440267495,
+              "completeness_per_fold": [
+                0.9222222222222223,
+                0.9302769818529131,
+                0.9160493827160494,
+                0.9130787977254264,
+                0.9268488745980707
+              ],
+              "purity_per_fold": [
+                0.21754032258064515,
+                0.19546457957053984,
+                0.2235388632255473,
+                0.22195892575039494,
+                0.2327412192167945
+              ],
+              "confusion": [
+                [
+                  97287,
+                  5,
+                  4808,
+                  0
+                ],
+                [
+                  0,
+                  5443,
+                  443,
+                  21
+                ],
+                [
+                  16735,
+                  15230,
+                  88334,
+                  6463
+                ],
+                [
+                  0,
+                  4262,
+                  13890,
+                  229079
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.015855645504718074,
+                "completeness_gain_standard_error": 0.0031425248373886283,
+                "completeness_gain_over_standard_error": 5.045511595031268,
+                "purity_gain_mean": 0.010743408652635239,
+                "purity_gain_standard_error": 0.0011919556576686654,
+                "purity_gain_over_standard_error": 9.013262014837169
+              }
+            }
+          }
+        },
+        "agb0": {
+          "no_bump": {
+            "unbalanced": {
+              "completeness_mean": 0.39442162522494606,
+              "completeness_std": 0.019076557382905222,
+              "purity_mean": 0.6154828283074512,
+              "purity_std": 0.011392418610151635,
+              "completeness_per_fold": [
+                0.39829059829059826,
+                0.4269340974212034,
+                0.3728395061728395,
+                0.3777416734362307,
+                0.3963022508038585
+              ],
+              "purity_per_fold": [
+                0.6123521681997371,
+                0.5983935742971888,
+                0.6248275862068966,
+                0.6309362279511533,
+                0.61090458488228
+              ],
+              "confusion": [
+                [
+                  95353,
+                  0,
+                  6747,
+                  0
+                ],
+                [
+                  1,
+                  2324,
+                  3252,
+                  330
+                ],
+                [
+                  15205,
+                  1183,
+                  98465,
+                  11909
+                ],
+                [
+                  0,
+                  270,
+                  9600,
+                  237361
+                ]
+              ]
+            },
+            "balanced": {
+              "completeness_mean": 0.9036297921996592,
+              "completeness_std": 0.010404365460298624,
+              "purity_mean": 0.20676847007757634,
+              "purity_std": 0.010693356240025915,
+              "completeness_per_fold": [
+                0.9162393162393162,
+                0.9035339063992359,
+                0.9061728395061729,
+                0.8846466287571081,
+                0.907556270096463
+              ],
+              "purity_per_fold": [
+                0.20615384615384616,
+                0.18728964561472974,
+                0.2103955665965985,
+                0.21035348657523661,
+                0.21964980544747081
+              ],
+              "confusion": [
+                [
+                  96929,
+                  10,
+                  5161,
+                  0
+                ],
+                [
+                  0,
+                  5337,
+                  550,
+                  20
+                ],
+                [
+                  17078,
+                  15873,
+                  87635,
+                  6176
+                ],
+                [
+                  0,
+                  4581,
+                  14154,
+                  228496
+                ]
+              ]
+            }
+          },
+          "bump_sigma300_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.40514232923393684,
+              "completeness_std": 0.015730194608328356,
+              "purity_mean": 0.6325482194569443,
+              "purity_std": 0.02262493853237399,
+              "completeness_per_fold": [
+                0.39658119658119656,
+                0.4326647564469914,
+                0.3868312757201646,
+                0.39886271324126726,
+                0.4107717041800643
+              ],
+              "purity_per_fold": [
+                0.6312925170068027,
+                0.58984375,
+                0.6394557823129252,
+                0.6511936339522546,
+                0.6509554140127388
+              ],
+              "confusion": [
+                [
+                  95723,
+                  0,
+                  6377,
+                  0
+                ],
+                [
+                  0,
+                  2389,
+                  3191,
+                  327
+                ],
+                [
+                  14880,
+                  1166,
+                  99041,
+                  11675
+                ],
+                [
+                  0,
+                  222,
+                  9851,
+                  237158
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.010720704008990755,
+                "completeness_gain_standard_error": 0.003951759439474936,
+                "completeness_gain_over_standard_error": 2.7128938826335034,
+                "purity_gain_mean": 0.01706539114949308,
+                "purity_gain_standard_error": 0.00775923310085221,
+                "purity_gain_over_standard_error": 2.199365701182345
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9225687864914442,
+              "completeness_std": 0.008490225980360418,
+              "purity_mean": 0.215055179488506,
+              "purity_std": 0.012323154531039184,
+              "completeness_per_fold": [
+                0.9299145299145299,
+                0.9340974212034384,
+                0.9209876543209876,
+                0.9106417546709992,
+                0.9172025723472669
+              ],
+              "purity_per_fold": [
+                0.21442648797792668,
+                0.1923682140047207,
+                0.21635730858468677,
+                0.2257349979863069,
+                0.2263888888888889
+              ],
+              "confusion": [
+                [
+                  97453,
+                  5,
+                  4642,
+                  0
+                ],
+                [
+                  0,
+                  5447,
+                  447,
+                  13
+                ],
+                [
+                  16785,
+                  15886,
+                  87814,
+                  6277
+                ],
+                [
+                  0,
+                  3998,
+                  14469,
+                  228764
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.018938994291785183,
+                "completeness_gain_standard_error": 0.003974851184121669,
+                "completeness_gain_over_standard_error": 4.764705246687159,
+                "purity_gain_mean": 0.008286709410929622,
+                "purity_gain_standard_error": 0.0018497189217176893,
+                "purity_gain_over_standard_error": 4.479983046956346
+              }
+            }
+          },
+          "bump_sigma300_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.38926015317157725,
+              "completeness_std": 0.013424582860455926,
+              "purity_mean": 0.6197948070979526,
+              "purity_std": 0.018176995192391805,
+              "completeness_per_fold": [
+                0.3871794871794872,
+                0.4145176695319962,
+                0.37448559670781895,
+                0.3866774979691308,
+                0.3834405144694534
+              ],
+              "purity_per_fold": [
+                0.6335664335664336,
+                0.5856950067476383,
+                0.6363636363636364,
+                0.6246719160104987,
+                0.6186770428015564
+              ],
+              "confusion": [
+                [
+                  95521,
+                  0,
+                  6579,
+                  0
+                ],
+                [
+                  0,
+                  2295,
+                  3289,
+                  323
+                ],
+                [
+                  15122,
+                  1175,
+                  98697,
+                  11768
+                ],
+                [
+                  0,
+                  234,
+                  9709,
+                  237288
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.005161472053368777,
+                "completeness_gain_standard_error": 0.004429465760849096,
+                "completeness_gain_over_standard_error": -1.1652583702056567,
+                "purity_gain_mean": 0.004311978790501492,
+                "purity_gain_standard_error": 0.006128074847886592,
+                "purity_gain_over_standard_error": 0.7036432970443527
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9129077584229632,
+              "completeness_std": 0.009915840479205603,
+              "purity_mean": 0.20995556634093804,
+              "purity_std": 0.011757838375448564,
+              "completeness_per_fold": [
+                0.9222222222222223,
+                0.9235912129894938,
+                0.9119341563786009,
+                0.8960194963444355,
+                0.9107717041800643
+              ],
+              "purity_per_fold": [
+                0.20742022299115725,
+                0.1886829268292683,
+                0.21377580551803974,
+                0.21695515342250196,
+                0.22294372294372294
+              ],
+              "confusion": [
+                [
+                  97339,
+                  5,
+                  4756,
+                  0
+                ],
+                [
+                  0,
+                  5390,
+                  500,
+                  17
+                ],
+                [
+                  17344,
+                  15953,
+                  87268,
+                  6197
+                ],
+                [
+                  0,
+                  4328,
+                  14250,
+                  228653
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.009277966223304101,
+                "completeness_gain_standard_error": 0.0030046741176159536,
+                "completeness_gain_over_standard_error": 3.0878444250938153,
+                "purity_gain_mean": 0.003187096263361672,
+                "purity_gain_standard_error": 0.0009647523692020383,
+                "purity_gain_over_standard_error": 3.3035381566336746
+              }
+            }
+          },
+          "bump_sigma300_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.38822410839000715,
+              "completeness_std": 0.012985346043242965,
+              "purity_mean": 0.6145404607988009,
+              "purity_std": 0.018453953152927194,
+              "completeness_per_fold": [
+                0.38632478632478634,
+                0.41260744985673353,
+                0.3794238683127572,
+                0.3753046303818034,
+                0.387459807073955
+              ],
+              "purity_per_fold": [
+                0.6158038147138964,
+                0.579088471849866,
+                0.6315068493150685,
+                0.625169147496617,
+                0.6211340206185567
+              ],
+              "confusion": [
+                [
+                  95475,
+                  0,
+                  6625,
+                  0
+                ],
+                [
+                  0,
+                  2289,
+                  3290,
+                  328
+                ],
+                [
+                  15295,
+                  1196,
+                  98441,
+                  11830
+                ],
+                [
+                  0,
+                  240,
+                  9760,
+                  237231
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.006197516834938988,
+                "completeness_gain_standard_error": 0.0037674210449335343,
+                "completeness_gain_over_standard_error": -1.6450289895984604,
+                "purity_gain_mean": -0.0009423675086502436,
+                "purity_gain_standard_error": 0.005304119576675435,
+                "purity_gain_over_standard_error": -0.1776670934784825
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9098370485067762,
+              "completeness_std": 0.007633806621710872,
+              "purity_mean": 0.20541090102305368,
+              "purity_std": 0.011960427180143526,
+              "completeness_per_fold": [
+                0.9153846153846154,
+                0.9207258834765998,
+                0.9094650205761317,
+                0.8992688870836718,
+                0.9043408360128617
+              ],
+              "purity_per_fold": [
+                0.20245746691871455,
+                0.18517095658855168,
+                0.20661929693343306,
+                0.2112192329708071,
+                0.22158755170376207
+              ],
+              "confusion": [
+                [
+                  97245,
+                  8,
+                  4847,
+                  0
+                ],
+                [
+                  0,
+                  5372,
+                  514,
+                  21
+                ],
+                [
+                  17502,
+                  16324,
+                  86721,
+                  6215
+                ],
+                [
+                  0,
+                  4458,
+                  14154,
+                  228619
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.006207256307116849,
+                "completeness_gain_standard_error": 0.004114804650166049,
+                "completeness_gain_over_standard_error": 1.5085178604691138,
+                "purity_gain_mean": -0.0013575690545226727,
+                "purity_gain_standard_error": 0.001176895999966209,
+                "purity_gain_over_standard_error": -1.1535165847803468
+              }
+            }
+          },
+          "bump_r100_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.4050521576200022,
+              "completeness_std": 0.014266536558102842,
+              "purity_mean": 0.6421155286191239,
+              "purity_std": 0.018282992794167025,
+              "completeness_per_fold": [
+                0.4017094017094017,
+                0.4278892072588348,
+                0.39012345679012345,
+                0.3915515840779854,
+                0.4139871382636656
+              ],
+              "purity_per_fold": [
+                0.6420765027322405,
+                0.6086956521739131,
+                0.6610878661087866,
+                0.6426666666666667,
+                0.6560509554140127
+              ],
+              "confusion": [
+                [
+                  95693,
+                  0,
+                  6407,
+                  0
+                ],
+                [
+                  0,
+                  2389,
+                  3207,
+                  311
+                ],
+                [
+                  14794,
+                  1128,
+                  99044,
+                  11796
+                ],
+                [
+                  0,
+                  203,
+                  9747,
+                  237281
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.010630532395056114,
+                "completeness_gain_standard_error": 0.003533858952665466,
+                "completeness_gain_over_standard_error": 3.0081937444158253,
+                "purity_gain_mean": 0.02663270031167273,
+                "purity_gain_standard_error": 0.006832902405755981,
+                "purity_gain_over_standard_error": 3.897714138173196
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9202387185134656,
+              "completeness_std": 0.010333873277914924,
+              "purity_mean": 0.22124844906441465,
+              "purity_std": 0.01333801239050355,
+              "completeness_per_fold": [
+                0.9307692307692308,
+                0.9321872015281757,
+                0.9176954732510288,
+                0.9041429731925265,
+                0.9163987138263665
+              ],
+              "purity_per_fold": [
+                0.21946795646916567,
+                0.19697275479313825,
+                0.2250706499798143,
+                0.22816728167281672,
+                0.23656360240713842
+              ],
+              "confusion": [
+                [
+                  97523,
+                  7,
+                  4570,
+                  0
+                ],
+                [
+                  1,
+                  5433,
+                  455,
+                  18
+                ],
+                [
+                  17102,
+                  15265,
+                  88170,
+                  6225
+                ],
+                [
+                  0,
+                  3863,
+                  14588,
+                  228780
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.01660892631380644,
+                "completeness_gain_standard_error": 0.0034922408091693715,
+                "completeness_gain_over_standard_error": 4.755951041576903,
+                "purity_gain_mean": 0.014479978986838305,
+                "purity_gain_standard_error": 0.0014395324801623728,
+                "purity_gain_over_standard_error": 10.058806721196751
+              }
+            }
+          },
+          "bump_r100_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.3920721696344291,
+              "completeness_std": 0.017661348590232346,
+              "purity_mean": 0.6268268163400976,
+              "purity_std": 0.011552474620076249,
+              "completeness_per_fold": [
+                0.38974358974358975,
+                0.4221585482330468,
+                0.36707818930041153,
+                0.3874898456539399,
+                0.39389067524115756
+              ],
+              "purity_per_fold": [
+                0.6289655172413793,
+                0.6071428571428571,
+                0.6326241134751773,
+                0.6419919246298789,
+                0.6234096692111959
+              ],
+              "confusion": [
+                [
+                  95557,
+                  0,
+                  6543,
+                  0
+                ],
+                [
+                  1,
+                  2311,
+                  3264,
+                  331
+                ],
+                [
+                  15233,
+                  1159,
+                  98586,
+                  11784
+                ],
+                [
+                  0,
+                  217,
+                  9762,
+                  237252
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.002349455590516969,
+                "completeness_gain_standard_error": 0.003180352556536298,
+                "completeness_gain_over_standard_error": -0.7387406109075361,
+                "purity_gain_mean": 0.011343988032646513,
+                "purity_gain_standard_error": 0.0015574722283097924,
+                "purity_gain_over_standard_error": 7.283589284257923
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9121466245346672,
+              "completeness_std": 0.008257012529540895,
+              "purity_mean": 0.20910888581991838,
+              "purity_std": 0.012601106755568725,
+              "completeness_per_fold": [
+                0.9222222222222223,
+                0.9197707736389685,
+                0.9111111111111111,
+                0.8992688870836718,
+                0.9083601286173634
+              ],
+              "purity_per_fold": [
+                0.2017953992893211,
+                0.18826979472140762,
+                0.21420278637770898,
+                0.21795629060838748,
+                0.22332015810276679
+              ],
+              "confusion": [
+                [
+                  97395,
+                  7,
+                  4698,
+                  0
+                ],
+                [
+                  1,
+                  5386,
+                  507,
+                  13
+                ],
+                [
+                  17390,
+                  15972,
+                  87153,
+                  6247
+                ],
+                [
+                  0,
+                  4404,
+                  14233,
+                  228594
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.008516832335008195,
+                "completeness_gain_standard_error": 0.0029630390664174065,
+                "completeness_gain_over_standard_error": 2.8743570854453324,
+                "purity_gain_mean": 0.002340415742342028,
+                "purity_gain_standard_error": 0.001979116751856872,
+                "purity_gain_over_standard_error": 1.1825556729516709
+              }
+            }
+          },
+          "bump_r100_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.38800160469388917,
+              "completeness_std": 0.01646446169890098,
+              "purity_mean": 0.6204912317672913,
+              "purity_std": 0.017595355068077478,
+              "completeness_per_fold": [
+                0.3888888888888889,
+                0.4164278892072588,
+                0.36707818930041153,
+                0.3777416734362307,
+                0.38987138263665594
+              ],
+              "purity_per_fold": [
+                0.625,
+                0.5883940620782726,
+                0.6194444444444445,
+                0.6413793103448275,
+                0.6282383419689119
+              ],
+              "confusion": [
+                [
+                  95505,
+                  0,
+                  6595,
+                  0
+                ],
+                [
+                  0,
+                  2287,
+                  3285,
+                  335
+                ],
+                [
+                  15288,
+                  1146,
+                  98566,
+                  11762
+                ],
+                [
+                  0,
+                  253,
+                  9798,
+                  237180
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.006420020531056903,
+                "completeness_gain_standard_error": 0.0018335494280418121,
+                "completeness_gain_over_standard_error": -3.501416669150465,
+                "purity_gain_mean": 0.005008403459840128,
+                "purity_gain_standard_error": 0.005352722146886506,
+                "purity_gain_over_standard_error": 0.9356740967310143
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9049849753724374,
+              "completeness_std": 0.009310485330760161,
+              "purity_mean": 0.20441829608559886,
+              "purity_std": 0.010497387103408605,
+              "completeness_per_fold": [
+                0.9196581196581196,
+                0.9092645654250239,
+                0.9045267489711935,
+                0.8919577579203899,
+                0.8995176848874598
+              ],
+              "purity_per_fold": [
+                0.20153586814010113,
+                0.18611925708699903,
+                0.2077112077112077,
+                0.20906321401370906,
+                0.21766193347597743
+              ],
+              "confusion": [
+                [
+                  97115,
+                  6,
+                  4979,
+                  0
+                ],
+                [
+                  1,
+                  5344,
+                  539,
+                  23
+                ],
+                [
+                  17267,
+                  16216,
+                  86916,
+                  6363
+                ],
+                [
+                  0,
+                  4572,
+                  13762,
+                  228897
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.0013551831727780961,
+                "completeness_gain_standard_error": 0.0027939858480431376,
+                "completeness_gain_over_standard_error": 0.4850358042175641,
+                "purity_gain_mean": -0.0023501739919774946,
+                "purity_gain_standard_error": 0.0006285364811248163,
+                "purity_gain_over_standard_error": -3.7391210574948177
+              }
+            }
+          }
+        }
+      },
+      "20260925": {
+        "agb2": {
+          "no_bump": {
+            "unbalanced": {
+              "completeness_mean": 0.40286483727541417,
+              "completeness_std": 0.006918367322088261,
+              "purity_mean": 0.6065949056625843,
+              "purity_std": 0.01717486154054224,
+              "completeness_per_fold": [
+                0.40502092050209204,
+                0.410459587955626,
+                0.40747330960854095,
+                0.3905540417801998,
+                0.4008163265306122
+              ],
+              "purity_per_fold": [
+                0.6103404791929382,
+                0.6363636363636364,
+                0.5886889460154242,
+                0.5906593406593407,
+                0.6069221260815822
+              ],
+              "confusion": [
+                [
+                  95486,
+                  0,
+                  6614,
+                  0
+                ],
+                [
+                  0,
+                  2381,
+                  3130,
+                  396
+                ],
+                [
+                  15099,
+                  1262,
+                  98675,
+                  11726
+                ],
+                [
+                  0,
+                  279,
+                  9600,
+                  237352
+                ]
+              ]
+            },
+            "balanced": {
+              "completeness_mean": 0.9041885133006247,
+              "completeness_std": 0.011679728118416626,
+              "purity_mean": 0.2106556336179904,
+              "purity_std": 0.01098626104710082,
+              "completeness_per_fold": [
+                0.9146443514644351,
+                0.9096671949286846,
+                0.9110320284697508,
+                0.8819255222524978,
+                0.9036734693877551
+              ],
+              "purity_per_fold": [
+                0.20689002460723074,
+                0.22714681440443213,
+                0.19914430182808246,
+                0.2004541701073493,
+                0.21964285714285714
+              ],
+              "confusion": [
+                [
+                  97256,
+                  4,
+                  4840,
+                  0
+                ],
+                [
+                  0,
+                  5343,
+                  529,
+                  35
+                ],
+                [
+                  16741,
+                  15487,
+                  87857,
+                  6677
+                ],
+                [
+                  0,
+                  4529,
+                  12794,
+                  229908
+                ]
+              ]
+            }
+          },
+          "bump_sigma300_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.48369614717904197,
+              "completeness_std": 0.011123783614928561,
+              "purity_mean": 0.6433303430898072,
+              "purity_std": 0.02100307082119732,
+              "completeness_per_fold": [
+                0.48535564853556484,
+                0.4960380348652932,
+                0.47686832740213525,
+                0.4940962761126249,
+                0.4661224489795918
+              ],
+              "purity_per_fold": [
+                0.6502242152466368,
+                0.6796959826275787,
+                0.6298472385428907,
+                0.6181818181818182,
+                0.6387024608501118
+              ],
+              "confusion": [
+                [
+                  96626,
+                  0,
+                  5474,
+                  0
+                ],
+                [
+                  0,
+                  2857,
+                  2647,
+                  403
+                ],
+                [
+                  11812,
+                  1284,
+                  103015,
+                  10651
+                ],
+                [
+                  0,
+                  297,
+                  9832,
+                  237102
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.0808313099036278,
+                "completeness_gain_standard_error": 0.006746807446660967,
+                "completeness_gain_over_standard_error": 11.98067538501216,
+                "purity_gain_mean": 0.03673543742722289,
+                "purity_gain_standard_error": 0.0030201350155567726,
+                "purity_gain_over_standard_error": 12.163508332573862
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9507219814738349,
+              "completeness_std": 0.005909504283465554,
+              "purity_mean": 0.27037735432621074,
+              "purity_std": 0.014347231642518493,
+              "completeness_per_fold": [
+                0.9464435146443515,
+                0.9540412044374009,
+                0.9564056939501779,
+                0.9554950045413261,
+                0.9412244897959183
+              ],
+              "purity_per_fold": [
+                0.27912142152023695,
+                0.28456629638383363,
+                0.26386843397152676,
+                0.24522144522144523,
+                0.27910917453401113
+              ],
+              "confusion": [
+                [
+                  97972,
+                  0,
+                  4128,
+                  0
+                ],
+                [
+                  0,
+                  5615,
+                  279,
+                  13
+                ],
+                [
+                  13464,
+                  11805,
+                  95685,
+                  5808
+                ],
+                [
+                  0,
+                  3358,
+                  14544,
+                  229329
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.04653346817321027,
+                "completeness_gain_standard_error": 0.0071928387120696186,
+                "completeness_gain_over_standard_error": 6.469416323089086,
+                "purity_gain_mean": 0.059721720708220384,
+                "purity_gain_standard_error": 0.004530546854201566,
+                "purity_gain_over_standard_error": 13.182011494448025
+              }
+            }
+          },
+          "bump_sigma300_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.4464695062223729,
+              "completeness_std": 0.014276431579580137,
+              "purity_mean": 0.622898995960478,
+              "purity_std": 0.017808179070908516,
+              "completeness_per_fold": [
+                0.4502092050209205,
+                0.46909667194928684,
+                0.42526690391459077,
+                0.4477747502270663,
+                0.44
+              ],
+              "purity_per_fold": [
+                0.6255813953488372,
+                0.6541436464088398,
+                0.5997490589711418,
+                0.6154806491885143,
+                0.6195402298850575
+              ],
+              "confusion": [
+                [
+                  95771,
+                  0,
+                  6329,
+                  0
+                ],
+                [
+                  0,
+                  2640,
+                  2877,
+                  390
+                ],
+                [
+                  13535,
+                  1267,
+                  100511,
+                  11449
+                ],
+                [
+                  0,
+                  326,
+                  9649,
+                  237256
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.04360466894695868,
+                "completeness_gain_standard_error": 0.007414966780809294,
+                "completeness_gain_over_standard_error": 5.880629035292794,
+                "purity_gain_mean": 0.016304090297893793,
+                "purity_gain_standard_error": 0.002418031012603473,
+                "purity_gain_over_standard_error": 6.742713477582456
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9312393474337078,
+              "completeness_std": 0.008062600859924758,
+              "purity_mean": 0.24387847007778185,
+              "purity_std": 0.01229666911351559,
+              "completeness_per_fold": [
+                0.9405857740585774,
+                0.9397781299524565,
+                0.9314946619217082,
+                0.92188919164396,
+                0.9224489795918367
+              ],
+              "purity_per_fold": [
+                0.24371205550737207,
+                0.25923497267759565,
+                0.2367706919945726,
+                0.22505543237250555,
+                0.25461919783686343
+              ],
+              "confusion": [
+                [
+                  97324,
+                  2,
+                  4774,
+                  0
+                ],
+                [
+                  0,
+                  5502,
+                  384,
+                  21
+                ],
+                [
+                  15230,
+                  13268,
+                  91888,
+                  6376
+                ],
+                [
+                  0,
+                  3785,
+                  13946,
+                  229500
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.027050834133083047,
+                "completeness_gain_standard_error": 0.0038027733312587723,
+                "completeness_gain_over_standard_error": 7.113448995427985,
+                "purity_gain_mean": 0.0332228364597915,
+                "purity_gain_standard_error": 0.002356260799948125,
+                "purity_gain_over_standard_error": 14.099812915668304
+              }
+            }
+          },
+          "bump_sigma300_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.4165735781996792,
+              "completeness_std": 0.010371881815903008,
+              "purity_mean": 0.6202699135260735,
+              "purity_std": 0.01262609034751711,
+              "completeness_per_fold": [
+                0.4276150627615063,
+                0.4231378763866878,
+                0.4234875444839858,
+                0.407811080835604,
+                0.4008163265306122
+              ],
+              "purity_per_fold": [
+                0.6269938650306749,
+                0.6223776223776224,
+                0.6017699115044248,
+                0.611716621253406,
+                0.6384915474642393
+              ],
+              "confusion": [
+                [
+                  95782,
+                  0,
+                  6318,
+                  0
+                ],
+                [
+                  0,
+                  2461,
+                  3047,
+                  399
+                ],
+                [
+                  14729,
+                  1221,
+                  99195,
+                  11617
+                ],
+                [
+                  0,
+                  285,
+                  9773,
+                  237173
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.013708740924265028,
+                "completeness_gain_standard_error": 0.003780525683965205,
+                "completeness_gain_over_standard_error": 3.6261467505457103,
+                "purity_gain_mean": 0.01367500786348914,
+                "purity_gain_standard_error": 0.007579788048891759,
+                "purity_gain_over_standard_error": 1.8041411943555024
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9165701770751695,
+              "completeness_std": 0.009165190089389194,
+              "purity_mean": 0.22299250383933217,
+              "purity_std": 0.012038813483057357,
+              "completeness_per_fold": [
+                0.9205020920502092,
+                0.9207606973058637,
+                0.9279359430604982,
+                0.9009990917347865,
+                0.9126530612244897
+              ],
+              "purity_per_fold": [
+                0.22262699858328275,
+                0.2401322587311428,
+                0.20768618080446039,
+                0.2123742239349176,
+                0.23214285714285715
+              ],
+              "confusion": [
+                [
+                  97409,
+                  5,
+                  4686,
+                  0
+                ],
+                [
+                  0,
+                  5415,
+                  469,
+                  23
+                ],
+                [
+                  16635,
+                  14719,
+                  88851,
+                  6557
+                ],
+                [
+                  0,
+                  4150,
+                  13373,
+                  229708
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.012381663774544794,
+                "completeness_gain_standard_error": 0.0024599530633190965,
+                "completeness_gain_over_standard_error": 5.033292691299894,
+                "purity_gain_mean": 0.012336870221341778,
+                "purity_gain_standard_error": 0.0011529019839757705,
+                "purity_gain_over_standard_error": 10.700710375046983
+              }
+            }
+          },
+          "bump_r100_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.4891678504833055,
+              "completeness_std": 0.015425999009094523,
+              "purity_mean": 0.6404517338717852,
+              "purity_std": 0.01712876256783579,
+              "completeness_per_fold": [
+                0.500418410041841,
+                0.5126782884310618,
+                0.48398576512455516,
+                0.4695731153496821,
+                0.4791836734693877
+              ],
+              "purity_per_fold": [
+                0.6471861471861472,
+                0.666323377960865,
+                0.6415094339622641,
+                0.6140142517814727,
+                0.6332254584681769
+              ],
+              "confusion": [
+                [
+                  96330,
+                  0,
+                  5770,
+                  0
+                ],
+                [
+                  0,
+                  2893,
+                  2623,
+                  391
+                ],
+                [
+                  11732,
+                  1306,
+                  102851,
+                  10873
+                ],
+                [
+                  0,
+                  313,
+                  9822,
+                  237096
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.08630301320789134,
+                "completeness_gain_standard_error": 0.005234043354127563,
+                "completeness_gain_over_standard_error": 16.488784553118546,
+                "purity_gain_mean": 0.033856828209200863,
+                "purity_gain_standard_error": 0.005249220892696514,
+                "purity_gain_over_standard_error": 6.449876829589597
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9488268546002672,
+              "completeness_std": 0.008458961455174472,
+              "purity_mean": 0.2747437255404502,
+              "purity_std": 0.01486201634087031,
+              "completeness_per_fold": [
+                0.9506276150627615,
+                0.9556259904912837,
+                0.9519572953736655,
+                0.9536784741144414,
+                0.9322448979591836
+              ],
+              "purity_per_fold": [
+                0.2790469172193564,
+                0.29116368903911155,
+                0.2677677677677678,
+                0.24952471482889735,
+                0.2862155388471178
+              ],
+              "confusion": [
+                [
+                  97498,
+                  0,
+                  4602,
+                  0
+                ],
+                [
+                  0,
+                  5604,
+                  288,
+                  15
+                ],
+                [
+                  13186,
+                  11514,
+                  95990,
+                  6072
+                ],
+                [
+                  0,
+                  3289,
+                  14301,
+                  229641
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.04463834129964246,
+                "completeness_gain_standard_error": 0.007361347300276914,
+                "completeness_gain_over_standard_error": 6.063881987739294,
+                "purity_gain_mean": 0.06408809192245983,
+                "purity_gain_standard_error": 0.003983592249861912,
+                "purity_gain_over_standard_error": 16.088015013253777
+              }
+            }
+          },
+          "bump_r100_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.44827274353069113,
+              "completeness_std": 0.010659240712834644,
+              "purity_mean": 0.6174689606681488,
+              "purity_std": 0.020240746320666293,
+              "completeness_per_fold": [
+                0.44435146443514645,
+                0.46671949286846276,
+                0.45195729537366547,
+                0.44323342415985467,
+                0.43510204081632653
+              ],
+              "purity_per_fold": [
+                0.6181606519208381,
+                0.6551724137931034,
+                0.6011834319526628,
+                0.5987730061349693,
+                0.6140552995391705
+              ],
+              "confusion": [
+                [
+                  95747,
+                  0,
+                  6353,
+                  0
+                ],
+                [
+                  0,
+                  2649,
+                  2857,
+                  401
+                ],
+                [
+                  13606,
+                  1313,
+                  100383,
+                  11460
+                ],
+                [
+                  0,
+                  324,
+                  9644,
+                  237263
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.04540790625527698,
+                "completeness_gain_standard_error": 0.004075115679134616,
+                "completeness_gain_over_standard_error": 11.14272816542958,
+                "purity_gain_mean": 0.010874055005564487,
+                "purity_gain_standard_error": 0.0021968814081273365,
+                "purity_gain_over_standard_error": 4.949768779204945
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9311659836246129,
+              "completeness_std": 0.007810259663356489,
+              "purity_mean": 0.2415848186988951,
+              "purity_std": 0.011010710892389287,
+              "completeness_per_fold": [
+                0.9297071129707113,
+                0.9326465927099842,
+                0.9306049822064056,
+                0.9436875567665758,
+                0.9191836734693878
+              ],
+              "purity_per_fold": [
+                0.24094556495337238,
+                0.2562595253646854,
+                0.2296377607025247,
+                0.22946113074204946,
+                0.25162011173184357
+              ],
+              "confusion": [
+                [
+                  97208,
+                  0,
+                  4892,
+                  0
+                ],
+                [
+                  0,
+                  5499,
+                  388,
+                  20
+                ],
+                [
+                  15290,
+                  13400,
+                  91639,
+                  6433
+                ],
+                [
+                  0,
+                  3863,
+                  13929,
+                  229439
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.02697747032398825,
+                "completeness_gain_standard_error": 0.008815429192974969,
+                "completeness_gain_over_standard_error": 3.060256027634666,
+                "purity_gain_mean": 0.030929185080904743,
+                "purity_gain_standard_error": 0.0009501823329715828,
+                "purity_gain_over_standard_error": 32.5507894723504
+              }
+            }
+          },
+          "bump_r100_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.4022380089601869,
+              "completeness_std": 0.00862549084917596,
+              "purity_mean": 0.6200210243472816,
+              "purity_std": 0.009976277643403912,
+              "completeness_per_fold": [
+                0.4,
+                0.40966719492868464,
+                0.41459074733096085,
+                0.39509536784741145,
+                0.39183673469387753
+              ],
+              "purity_per_fold": [
+                0.6191709844559585,
+                0.6390605686032138,
+                0.6131578947368421,
+                0.6109550561797753,
+                0.6177606177606177
+              ],
+              "confusion": [
+                [
+                  95698,
+                  0,
+                  6402,
+                  0
+                ],
+                [
+                  0,
+                  2376,
+                  3127,
+                  404
+                ],
+                [
+                  14634,
+                  1193,
+                  99175,
+                  11760
+                ],
+                [
+                  0,
+                  261,
+                  9649,
+                  237321
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.0006268283152273014,
+                "completeness_gain_standard_error": 0.002964688790153477,
+                "completeness_gain_over_standard_error": -0.21143140464158178,
+                "purity_gain_mean": 0.013426118684697164,
+                "purity_gain_standard_error": 0.003950103631055409,
+                "purity_gain_over_standard_error": 3.3989282152351796
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9152021215782078,
+              "completeness_std": 0.005074854195170903,
+              "purity_mean": 0.21818226868404933,
+              "purity_std": 0.010364051676542849,
+              "completeness_per_fold": [
+                0.9213389121338912,
+                0.9183835182250396,
+                0.9163701067615658,
+                0.9064486830154405,
+                0.913469387755102
+              ],
+              "purity_per_fold": [
+                0.21681764474202442,
+                0.23245086241476134,
+                0.2075357646584727,
+                0.20666804721474424,
+                0.2274390243902439
+              ],
+              "confusion": [
+                [
+                  97178,
+                  3,
+                  4919,
+                  0
+                ],
+                [
+                  0,
+                  5407,
+                  471,
+                  29
+                ],
+                [
+                  16392,
+                  14988,
+                  88831,
+                  6551
+                ],
+                [
+                  0,
+                  4378,
+                  13199,
+                  229654
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.011013608277583131,
+                "completeness_gain_standard_error": 0.003465069322667108,
+                "completeness_gain_over_standard_error": 3.178466937309588,
+                "purity_gain_mean": 0.007526635066058968,
+                "purity_gain_standard_error": 0.0008138958974386643,
+                "purity_gain_over_standard_error": 9.247663109920245
+              }
+            }
+          }
+        },
+        "agb0": {
+          "no_bump": {
+            "unbalanced": {
+              "completeness_mean": 0.4059526227330763,
+              "completeness_std": 0.006756596184039447,
+              "purity_mean": 0.6112968191503035,
+              "purity_std": 0.010971420614456842,
+              "completeness_per_fold": [
+                0.4092050209205021,
+                0.410459587955626,
+                0.41192170818505336,
+                0.3932788374205268,
+                0.4048979591836735
+              ],
+              "purity_per_fold": [
+                0.6089663760896638,
+                0.6256038647342995,
+                0.5981912144702842,
+                0.6013888888888889,
+                0.6223337515683814
+              ],
+              "confusion": [
+                [
+                  95588,
+                  0,
+                  6512,
+                  0
+                ],
+                [
+                  0,
+                  2399,
+                  3141,
+                  367
+                ],
+                [
+                  15226,
+                  1260,
+                  98480,
+                  11796
+                ],
+                [
+                  0,
+                  263,
+                  9742,
+                  237226
+                ]
+              ]
+            },
+            "balanced": {
+              "completeness_mean": 0.9035090646799148,
+              "completeness_std": 0.009925498832877685,
+              "purity_mean": 0.2097173708223942,
+              "purity_std": 0.010739012727739515,
+              "completeness_per_fold": [
+                0.9129707112970711,
+                0.9096671949286846,
+                0.9065836298932385,
+                0.8846503178928247,
+                0.9036734693877551
+              ],
+              "purity_per_fold": [
+                0.2071781238131409,
+                0.2252305277614283,
+                0.19744235613253244,
+                0.19991789819376027,
+                0.21881794821110892
+              ],
+              "confusion": [
+                [
+                  97166,
+                  6,
+                  4928,
+                  0
+                ],
+                [
+                  0,
+                  5339,
+                  536,
+                  32
+                ],
+                [
+                  16943,
+                  15629,
+                  87507,
+                  6683
+                ],
+                [
+                  0,
+                  4481,
+                  12907,
+                  229843
+                ]
+              ]
+            }
+          },
+          "bump_sigma300_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.40632638022357115,
+              "completeness_std": 0.01054149062938661,
+              "purity_mean": 0.6155955026217947,
+              "purity_std": 0.009453479033839836,
+              "completeness_per_fold": [
+                0.4200836820083682,
+                0.40491283676703643,
+                0.4092526690391459,
+                0.40962761126248864,
+                0.3877551020408163
+              ],
+              "purity_per_fold": [
+                0.6136919315403423,
+                0.6293103448275862,
+                0.6013071895424836,
+                0.6119402985074627,
+                0.6217277486910995
+              ],
+              "confusion": [
+                [
+                  95809,
+                  0,
+                  6291,
+                  0
+                ],
+                [
+                  0,
+                  2399,
+                  3150,
+                  358
+                ],
+                [
+                  14738,
+                  1256,
+                  99074,
+                  11694
+                ],
+                [
+                  0,
+                  241,
+                  9810,
+                  237180
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.0003737574904947638,
+                "completeness_gain_standard_error": 0.005986221552960932,
+                "completeness_gain_over_standard_error": 0.06243629427813178,
+                "purity_gain_mean": 0.004298683471491293,
+                "purity_gain_standard_error": 0.001803943681712098,
+                "purity_gain_over_standard_error": 2.3829366266088043
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.917507485362209,
+              "completeness_std": 0.010156821848115687,
+              "purity_mean": 0.22211576725354593,
+              "purity_std": 0.010713306927076434,
+              "completeness_per_fold": [
+                0.9255230125523013,
+                0.9239302694136292,
+                0.9261565836298933,
+                0.9000908265213442,
+                0.9118367346938776
+              ],
+              "purity_per_fold": [
+                0.22014331210191082,
+                0.2383483237939493,
+                0.21013322567622122,
+                0.2120239623448866,
+                0.22993001235076163
+              ],
+              "confusion": [
+                [
+                  97628,
+                  5,
+                  4467,
+                  0
+                ],
+                [
+                  0,
+                  5421,
+                  466,
+                  20
+                ],
+                [
+                  16914,
+                  15139,
+                  88014,
+                  6695
+                ],
+                [
+                  0,
+                  3837,
+                  13529,
+                  229865
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.013998420682294333,
+                "completeness_gain_standard_error": 0.0018623288876492975,
+                "completeness_gain_over_standard_error": 7.5166211377216365,
+                "purity_gain_mean": 0.012398396431151749,
+                "purity_gain_standard_error": 0.0003649957701102584,
+                "purity_gain_over_standard_error": 33.968603053691346
+              }
+            }
+          },
+          "bump_sigma300_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.38730687427461163,
+              "completeness_std": 0.01250190922214347,
+              "purity_mean": 0.6205968564914945,
+              "purity_std": 0.015548077963648283,
+              "completeness_per_fold": [
+                0.40334728033472805,
+                0.401743264659271,
+                0.3790035587188612,
+                0.37693006357856496,
+                0.37551020408163266
+              ],
+              "purity_per_fold": [
+                0.6267880364109233,
+                0.6483375959079284,
+                0.6068376068376068,
+                0.6085043988269795,
+                0.6125166444740346
+              ],
+              "confusion": [
+                [
+                  95741,
+                  0,
+                  6359,
+                  0
+                ],
+                [
+                  0,
+                  2290,
+                  3250,
+                  367
+                ],
+                [
+                  15080,
+                  1161,
+                  98723,
+                  11798
+                ],
+                [
+                  0,
+                  235,
+                  9741,
+                  237255
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.018645748458464763,
+                "completeness_gain_standard_error": 0.005415232492916662,
+                "completeness_gain_over_standard_error": -3.4432036819941043,
+                "purity_gain_mean": 0.009300037341190958,
+                "purity_gain_standard_error": 0.005584562701295801,
+                "purity_gain_over_standard_error": 1.6653116526085463
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9108788302306058,
+              "completeness_std": 0.009181592823296605,
+              "purity_mean": 0.2121987088043978,
+              "purity_std": 0.00813254133425676,
+              "completeness_per_fold": [
+                0.9230125523012552,
+                0.910459587955626,
+                0.9128113879003559,
+                0.8946412352406903,
+                0.913469387755102
+              ],
+              "purity_per_fold": [
+                0.21049618320610686,
+                0.22177185871453386,
+                0.2018095987411487,
+                0.205550918196995,
+                0.22136498516320474
+              ],
+              "confusion": [
+                [
+                  97517,
+                  8,
+                  4575,
+                  0
+                ],
+                [
+                  0,
+                  5382,
+                  503,
+                  22
+                ],
+                [
+                  17210,
+                  15578,
+                  87251,
+                  6723
+                ],
+                [
+                  0,
+                  4384,
+                  13077,
+                  229770
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.007369765550691088,
+                "completeness_gain_standard_error": 0.0017953084972855764,
+                "completeness_gain_over_standard_error": 4.105013462496186,
+                "purity_gain_mean": 0.0024813379820036673,
+                "purity_gain_standard_error": 0.0015728610619063373,
+                "purity_gain_over_standard_error": 1.5775951494382083
+              }
+            }
+          },
+          "bump_sigma300_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.3902931092161321,
+              "completeness_std": 0.00916066063915711,
+              "purity_mean": 0.6170490497117175,
+              "purity_std": 0.012912011722564074,
+              "completeness_per_fold": [
+                0.40585774058577406,
+                0.3898573692551506,
+                0.3932384341637011,
+                0.3796548592188919,
+                0.38285714285714284
+              ],
+              "purity_per_fold": [
+                0.6170483460559797,
+                0.6299615877080665,
+                0.6030013642564802,
+                0.6023054755043228,
+                0.6329284750337382
+              ],
+              "confusion": [
+                [
+                  95663,
+                  0,
+                  6437,
+                  0
+                ],
+                [
+                  0,
+                  2306,
+                  3229,
+                  372
+                ],
+                [
+                  15382,
+                  1177,
+                  98618,
+                  11585
+                ],
+                [
+                  0,
+                  252,
+                  9778,
+                  237201
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.015659513516944244,
+                "completeness_gain_standard_error": 0.003391378610683986,
+                "completeness_gain_over_standard_error": -4.61744774458726,
+                "purity_gain_mean": 0.005752230561413918,
+                "purity_gain_standard_error": 0.0016597144813313921,
+                "purity_gain_over_standard_error": 3.46579524738471
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9084428347607311,
+              "completeness_std": 0.010387204429797191,
+              "purity_mean": 0.20910443682309202,
+              "purity_std": 0.009570928174148148,
+              "completeness_per_fold": [
+                0.9246861924686193,
+                0.9096671949286846,
+                0.9128113879003559,
+                0.8946412352406903,
+                0.9004081632653061
+              ],
+              "purity_per_fold": [
+                0.20801957831325302,
+                0.22304254905770352,
+                0.19708029197080293,
+                0.2010204081632653,
+                0.21635935661043545
+              ],
+              "confusion": [
+                [
+                  97378,
+                  5,
+                  4717,
+                  0
+                ],
+                [
+                  0,
+                  5367,
+                  509,
+                  31
+                ],
+                [
+                  17341,
+                  15863,
+                  86859,
+                  6699
+                ],
+                [
+                  0,
+                  4428,
+                  13036,
+                  229767
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.004933770080816457,
+                "completeness_gain_standard_error": 0.002870606959769146,
+                "completeness_gain_over_standard_error": 1.7187201696233714,
+                "purity_gain_mean": -0.0006129339993021232,
+                "purity_gain_standard_error": 0.0007418944465076758,
+                "purity_gain_over_standard_error": -0.826174130548343
+              }
+            }
+          },
+          "bump_r100_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.4059298368121807,
+              "completeness_std": 0.01303159525874422,
+              "purity_mean": 0.6257982524925507,
+              "purity_std": 0.01935924773095533,
+              "completeness_per_fold": [
+                0.4175732217573222,
+                0.4223454833597464,
+                0.39679715302491103,
+                0.40599455040871935,
+                0.38693877551020406
+              ],
+              "purity_per_fold": [
+                0.6389244558258643,
+                0.6460606060606061,
+                0.5978552278820375,
+                0.6073369565217391,
+                0.6388140161725068
+              ],
+              "confusion": [
+                [
+                  95845,
+                  0,
+                  6255,
+                  0
+                ],
+                [
+                  0,
+                  2399,
+                  3191,
+                  317
+                ],
+                [
+                  14750,
+                  1223,
+                  99196,
+                  11593
+                ],
+                [
+                  0,
+                  208,
+                  9726,
+                  237297
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -2.2785920895729284e-05,
+                "completeness_gain_standard_error": 0.006798060394773575,
+                "completeness_gain_over_standard_error": -0.003351826781834324,
+                "purity_gain_mean": 0.014501433342247206,
+                "purity_gain_standard_error": 0.005346019450246161,
+                "purity_gain_over_standard_error": 2.7125665136851453
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9219008653497627,
+              "completeness_std": 0.007824706620225282,
+              "purity_mean": 0.2179932479477899,
+              "purity_std": 0.009756112219345242,
+              "completeness_per_fold": [
+                0.9255230125523013,
+                0.9255150554675119,
+                0.9279359430604982,
+                0.9064486830154405,
+                0.9240816326530612
+              ],
+              "purity_per_fold": [
+                0.21814595660749506,
+                0.23276205659625349,
+                0.20793460925039872,
+                0.2070539419087137,
+                0.22406967537608868
+              ],
+              "confusion": [
+                [
+                  97346,
+                  5,
+                  4749,
+                  0
+                ],
+                [
+                  1,
+                  5447,
+                  440,
+                  19
+                ],
+                [
+                  16506,
+                  15381,
+                  88261,
+                  6614
+                ],
+                [
+                  0,
+                  4143,
+                  13498,
+                  229590
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.018391800669847823,
+                "completeness_gain_standard_error": 0.0018028646446432708,
+                "completeness_gain_over_standard_error": 10.2014317738684,
+                "purity_gain_mean": 0.008275877125395764,
+                "purity_gain_standard_error": 0.0010760507754738356,
+                "purity_gain_over_standard_error": 7.690972688302286
+              }
+            }
+          },
+          "bump_r100_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.38923396471372396,
+              "completeness_std": 0.01359569534756419,
+              "purity_mean": 0.6142317109447428,
+              "purity_std": 0.02081843931769589,
+              "completeness_per_fold": [
+                0.4066945606694561,
+                0.40491283676703643,
+                0.37722419928825623,
+                0.37693006357856496,
+                0.38040816326530613
+              ],
+              "purity_per_fold": [
+                0.6214833759590793,
+                0.6452020202020202,
+                0.5824175824175825,
+                0.6031976744186046,
+                0.6188579017264276
+              ],
+              "confusion": [
+                [
+                  95633,
+                  0,
+                  6467,
+                  0
+                ],
+                [
+                  0,
+                  2302,
+                  3257,
+                  348
+                ],
+                [
+                  15197,
+                  1197,
+                  98700,
+                  11668
+                ],
+                [
+                  0,
+                  244,
+                  9819,
+                  237168
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.01671865801935237,
+                "completeness_gain_standard_error": 0.005960079124819309,
+                "completeness_gain_over_standard_error": -2.8051067224479556,
+                "purity_gain_mean": 0.002934891794439287,
+                "purity_gain_standard_error": 0.00617193543223236,
+                "purity_gain_over_standard_error": 0.4755221156579324
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9111337401748807,
+              "completeness_std": 0.012216829055152319,
+              "purity_mean": 0.20916434917705956,
+              "purity_std": 0.012024872659966523,
+              "completeness_per_fold": [
+                0.9297071129707113,
+                0.9167987321711569,
+                0.9110320284697508,
+                0.8928247048138056,
+                0.9053061224489796
+              ],
+              "purity_per_fold": [
+                0.2072374556985637,
+                0.22793538219070134,
+                0.1945288753799392,
+                0.19939148073022311,
+                0.21672855188587062
+              ],
+              "confusion": [
+                [
+                  97479,
+                  8,
+                  4613,
+                  0
+                ],
+                [
+                  0,
+                  5384,
+                  496,
+                  27
+                ],
+                [
+                  17148,
+                  15875,
+                  87129,
+                  6610
+                ],
+                [
+                  0,
+                  4481,
+                  13091,
+                  229659
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.00762467549496606,
+                "completeness_gain_standard_error": 0.002545211089991,
+                "completeness_gain_over_standard_error": 2.9956947480505525,
+                "purity_gain_mean": -0.0005530216453345727,
+                "purity_gain_standard_error": 0.0009726678647079502,
+                "purity_gain_over_standard_error": -0.5685616492538499
+              }
+            }
+          },
+          "bump_r100_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.39296424503674154,
+              "completeness_std": 0.011339672704075368,
+              "purity_mean": 0.616401724953775,
+              "purity_std": 0.016468340818896754,
+              "completeness_per_fold": [
+                0.39246861924686194,
+                0.4112519809825674,
+                0.39412811387900354,
+                0.39146230699364215,
+                0.37551020408163266
+              ],
+              "purity_per_fold": [
+                0.6067270375161707,
+                0.6439205955334988,
+                0.603542234332425,
+                0.601115760111576,
+                0.6267029972752044
+              ],
+              "confusion": [
+                [
+                  95659,
+                  0,
+                  6441,
+                  0
+                ],
+                [
+                  0,
+                  2322,
+                  3198,
+                  387
+                ],
+                [
+                  15277,
+                  1193,
+                  98572,
+                  11720
+                ],
+                [
+                  0,
+                  249,
+                  9789,
+                  237193
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.012988377696334808,
+                "completeness_gain_standard_error": 0.00557134266956784,
+                "completeness_gain_over_standard_error": -2.331283223213103,
+                "purity_gain_mean": 0.005104905803471426,
+                "purity_gain_standard_error": 0.0035917632789905585,
+                "purity_gain_over_standard_error": 1.4212812501680585
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9095296231701855,
+              "completeness_std": 0.008650773401326604,
+              "purity_mean": 0.21307544118991145,
+              "purity_std": 0.009452827220337317,
+              "completeness_per_fold": [
+                0.9138075313807531,
+                0.9167987321711569,
+                0.9163701067615658,
+                0.8937329700272479,
+                0.9069387755102041
+              ],
+              "purity_per_fold": [
+                0.21245136186770427,
+                0.2249222395023328,
+                0.20176297747306562,
+                0.20368453736286482,
+                0.22255608974358973
+              ],
+              "confusion": [
+                [
+                  97310,
+                  4,
+                  4786,
+                  0
+                ],
+                [
+                  0,
+                  5374,
+                  509,
+                  24
+                ],
+                [
+                  17141,
+                  15581,
+                  87363,
+                  6677
+                ],
+                [
+                  0,
+                  4253,
+                  13261,
+                  229717
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.006020558490270789,
+                "completeness_gain_standard_error": 0.0017212697636035622,
+                "completeness_gain_over_standard_error": 3.497742548888128,
+                "purity_gain_mean": 0.003358070367517285,
+                "purity_gain_standard_error": 0.0009578084302240284,
+                "purity_gain_over_standard_error": 3.5059937473424023
+              }
+            }
+          }
+        }
+      },
+      "20260926": {
+        "agb2": {
+          "no_bump": {
+            "unbalanced": {
+              "completeness_mean": 0.39485228694311003,
+              "completeness_std": 0.010783463544284331,
+              "purity_mean": 0.6082507976587849,
+              "purity_std": 0.03219931367745799,
+              "completeness_per_fold": [
+                0.39952153110047844,
+                0.384549356223176,
+                0.4105726872246696,
+                0.3809924306139613,
+                0.39862542955326463
+              ],
+              "purity_per_fold": [
+                0.6498054474708171,
+                0.5670886075949367,
+                0.5788819875776398,
+                0.6072386058981233,
+                0.6382393397524071
+              ],
+              "confusion": [
+                [
+                  95737,
+                  0,
+                  6363,
+                  0
+                ],
+                [
+                  0,
+                  2332,
+                  3201,
+                  374
+                ],
+                [
+                  15273,
+                  1223,
+                  98500,
+                  11766
+                ],
+                [
+                  0,
+                  284,
+                  9441,
+                  237506
+                ]
+              ]
+            },
+            "balanced": {
+              "completeness_mean": 0.9128125739379988,
+              "completeness_std": 0.006355609073604459,
+              "purity_mean": 0.2021546786904604,
+              "purity_std": 0.008645107614360693,
+              "completeness_per_fold": [
+                0.9154704944178629,
+                0.9030042918454936,
+                0.9162995594713657,
+                0.9083263246425568,
+                0.9209621993127147
+              ],
+              "purity_per_fold": [
+                0.21713637223378096,
+                0.1964886066492342,
+                0.19366852886405958,
+                0.19700839109813936,
+                0.20647149460708783
+              ],
+              "confusion": [
+                [
+                  97394,
+                  2,
+                  4704,
+                  0
+                ],
+                [
+                  1,
+                  5392,
+                  483,
+                  31
+                ],
+                [
+                  17159,
+                  16676,
+                  86359,
+                  6568
+                ],
+                [
+                  0,
+                  4615,
+                  12923,
+                  229693
+                ]
+              ]
+            }
+          },
+          "bump_sigma300_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.48793216419380026,
+              "completeness_std": 0.02261698539120683,
+              "purity_mean": 0.6512080681671785,
+              "purity_std": 0.031277535173869365,
+              "completeness_per_fold": [
+                0.5223285486443381,
+                0.4652360515021459,
+                0.46255506607929514,
+                0.48696383515559294,
+                0.5025773195876289
+              ],
+              "purity_per_fold": [
+                0.6953290870488322,
+                0.6166097838452788,
+                0.6294964028776978,
+                0.6327868852459017,
+                0.6818181818181818
+              ],
+              "confusion": [
+                [
+                  96454,
+                  0,
+                  5646,
+                  0
+                ],
+                [
+                  0,
+                  2886,
+                  2655,
+                  366
+                ],
+                [
+                  11828,
+                  1267,
+                  102970,
+                  10697
+                ],
+                [
+                  0,
+                  275,
+                  10001,
+                  236955
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.0930798772506902,
+                "completeness_gain_standard_error": 0.012269250877029833,
+                "completeness_gain_over_standard_error": 7.58643524234653,
+                "purity_gain_mean": 0.04295727050839364,
+                "purity_gain_standard_error": 0.004537412806779496,
+                "purity_gain_over_standard_error": 9.467348980064099
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9461513223662749,
+              "completeness_std": 0.007312627891431171,
+              "purity_mean": 0.2676641283761015,
+              "purity_std": 0.009226025611190396,
+              "completeness_per_fold": [
+                0.9513556618819776,
+                0.9399141630901288,
+                0.9497797356828194,
+                0.9352396972245585,
+                0.9544673539518901
+              ],
+              "purity_per_fold": [
+                0.2829025373488262,
+                0.258376592732421,
+                0.25869930405567554,
+                0.2658379153717428,
+                0.27250429237184204
+              ],
+              "confusion": [
+                [
+                  98270,
+                  0,
+                  3830,
+                  0
+                ],
+                [
+                  0,
+                  5589,
+                  302,
+                  16
+                ],
+                [
+                  13881,
+                  12090,
+                  94822,
+                  5969
+                ],
+                [
+                  0,
+                  3203,
+                  14211,
+                  229817
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.03333874842827613,
+                "completeness_gain_standard_error": 0.0017402631365165612,
+                "completeness_gain_over_standard_error": 19.157303127738157,
+                "purity_gain_mean": 0.06550944968564112,
+                "purity_gain_standard_error": 0.0011114589328529063,
+                "purity_gain_over_standard_error": 58.94005414801127
+              }
+            }
+          },
+          "bump_sigma300_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.44472479976776746,
+              "completeness_std": 0.018735669007446058,
+              "purity_mean": 0.6385476297515785,
+              "purity_std": 0.029396149366739992,
+              "completeness_per_fold": [
+                0.47607655502392343,
+                0.4274678111587983,
+                0.4290748898678414,
+                0.4348191757779647,
+                0.45618556701030927
+              ],
+              "purity_per_fold": [
+                0.673055242390079,
+                0.5992779783393501,
+                0.6125786163522012,
+                0.6390605686032138,
+                0.6687657430730478
+              ],
+              "confusion": [
+                [
+                  95956,
+                  0,
+                  6144,
+                  0
+                ],
+                [
+                  0,
+                  2630,
+                  2913,
+                  364
+                ],
+                [
+                  13694,
+                  1193,
+                  100439,
+                  11436
+                ],
+                [
+                  0,
+                  293,
+                  9766,
+                  237172
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.04987251282465742,
+                "completeness_gain_standard_error": 0.009537156825872185,
+                "completeness_gain_over_standard_error": 5.229285177461315,
+                "purity_gain_mean": 0.03029683209279359,
+                "purity_gain_standard_error": 0.001832754474603649,
+                "purity_gain_over_standard_error": 16.53076421998401
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9349663766690947,
+              "completeness_std": 0.0030818639069851855,
+              "purity_mean": 0.2394495474054247,
+              "purity_std": 0.008192177662796276,
+              "completeness_per_fold": [
+                0.9370015948963317,
+                0.9313304721030042,
+                0.933920704845815,
+                0.9327165685449958,
+                0.9398625429553265
+              ],
+              "purity_per_fold": [
+                0.2514982876712329,
+                0.22933840625660537,
+                0.23332599603786044,
+                0.23696581196581196,
+                0.24611923509561304
+              ],
+              "confusion": [
+                [
+                  97728,
+                  1,
+                  4371,
+                  0
+                ],
+                [
+                  0,
+                  5523,
+                  370,
+                  14
+                ],
+                [
+                  15706,
+                  13794,
+                  90928,
+                  6334
+                ],
+                [
+                  0,
+                  3753,
+                  13879,
+                  229599
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.022153802731095927,
+                "completeness_gain_standard_error": 0.0019315492524149844,
+                "completeness_gain_over_standard_error": 11.469447493196142,
+                "purity_gain_mean": 0.03729486871496435,
+                "purity_gain_standard_error": 0.0015259081775414519,
+                "purity_gain_over_standard_error": 24.441096301780075
+              }
+            }
+          },
+          "bump_sigma300_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.396767423194717,
+              "completeness_std": 0.015347000903938389,
+              "purity_mean": 0.6157941826171902,
+              "purity_std": 0.03138125366734965,
+              "completeness_per_fold": [
+                0.4138755980861244,
+                0.3682403433476395,
+                0.40440528634361234,
+                0.3969722455845248,
+                0.40034364261168387
+              ],
+              "purity_per_fold": [
+                0.6577946768060836,
+                0.5689655172413793,
+                0.5922580645161291,
+                0.6276595744680851,
+                0.6322930800542741
+              ],
+              "confusion": [
+                [
+                  95650,
+                  0,
+                  6450,
+                  0
+                ],
+                [
+                  0,
+                  2345,
+                  3210,
+                  352
+                ],
+                [
+                  14621,
+                  1187,
+                  99277,
+                  11677
+                ],
+                [
+                  0,
+                  275,
+                  9571,
+                  237385
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.001915136251606986,
+                "completeness_gain_standard_error": 0.00612383859163092,
+                "completeness_gain_over_standard_error": 0.3127346063993729,
+                "purity_gain_mean": 0.00754338495840543,
+                "purity_gain_standard_error": 0.004550443319261862,
+                "purity_gain_over_standard_error": 1.6577252872208195
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9191953404682188,
+              "completeness_std": 0.006245496822413775,
+              "purity_mean": 0.2133754758753085,
+              "purity_std": 0.008459233962448137,
+              "completeness_per_fold": [
+                0.9130781499202552,
+                0.9107296137339056,
+                0.9251101321585903,
+                0.9209419680403701,
+                0.9261168384879725
+              ],
+              "purity_per_fold": [
+                0.2261505036539601,
+                0.20577967416602017,
+                0.2050380785002929,
+                0.20936902485659656,
+                0.22054009819967266
+              ],
+              "confusion": [
+                [
+                  97633,
+                  2,
+                  4465,
+                  0
+                ],
+                [
+                  1,
+                  5429,
+                  451,
+                  26
+                ],
+                [
+                  16998,
+                  15818,
+                  87491,
+                  6455
+                ],
+                [
+                  0,
+                  4209,
+                  13464,
+                  229558
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.0063827665302200074,
+                "completeness_gain_standard_error": 0.0025005631568017768,
+                "completeness_gain_over_standard_error": 2.5525316218701604,
+                "purity_gain_mean": 0.011220797184848091,
+                "purity_gain_standard_error": 0.000949330986301343,
+                "purity_gain_over_standard_error": 11.819689177707206
+              }
+            }
+          },
+          "bump_r100_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.480134778320629,
+              "completeness_std": 0.017663154308891378,
+              "purity_mean": 0.6570319364751376,
+              "purity_std": 0.030006555967297628,
+              "completeness_per_fold": [
+                0.5007974481658692,
+                0.4652360515021459,
+                0.45374449339207046,
+                0.4894869638351556,
+                0.49140893470790376
+              ],
+              "purity_per_fold": [
+                0.7008928571428571,
+                0.615909090909091,
+                0.6319018404907976,
+                0.6666666666666666,
+                0.6697892271662763
+              ],
+              "confusion": [
+                [
+                  96407,
+                  0,
+                  5693,
+                  0
+                ],
+                [
+                  0,
+                  2839,
+                  2698,
+                  370
+                ],
+                [
+                  11718,
+                  1208,
+                  103200,
+                  10636
+                ],
+                [
+                  0,
+                  271,
+                  9908,
+                  237052
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.085282491377519,
+                "completeness_gain_standard_error": 0.011500619353138461,
+                "completeness_gain_over_standard_error": 7.415469442021472,
+                "purity_gain_mean": 0.04878113881635291,
+                "purity_gain_standard_error": 0.00465596446719357,
+                "purity_gain_over_standard_error": 10.477128672280491
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9498243399850284,
+              "completeness_std": 0.0027943863992010453,
+              "purity_mean": 0.26498109421485544,
+              "purity_std": 0.008833626708935147,
+              "completeness_per_fold": [
+                0.9537480063795853,
+                0.9510729613733906,
+                0.9462555066079296,
+                0.9470142977291842,
+                0.9510309278350515
+              ],
+              "purity_per_fold": [
+                0.2812132612273689,
+                0.26033834586466165,
+                0.25817307692307695,
+                0.25772487983520254,
+                0.2674559072239671
+              ],
+              "confusion": [
+                [
+                  98110,
+                  0,
+                  3990,
+                  0
+                ],
+                [
+                  0,
+                  5611,
+                  291,
+                  5
+                ],
+                [
+                  13735,
+                  12233,
+                  95062,
+                  5732
+                ],
+                [
+                  0,
+                  3333,
+                  14539,
+                  229359
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.037011766047029514,
+                "completeness_gain_standard_error": 0.003351546269350572,
+                "completeness_gain_over_standard_error": 11.043191134043711,
+                "purity_gain_mean": 0.06282641552439502,
+                "purity_gain_standard_error": 0.0008146094105992919,
+                "purity_gain_over_standard_error": 77.12458843088356
+              }
+            }
+          },
+          "bump_r100_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.44509928561595985,
+              "completeness_std": 0.009648447979727706,
+              "purity_mean": 0.6324522009578266,
+              "purity_std": 0.03548561841098989,
+              "completeness_per_fold": [
+                0.4513556618819777,
+                0.4369098712446352,
+                0.4343612334801762,
+                0.44238856181665265,
+                0.46048109965635736
+              ],
+              "purity_per_fold": [
+                0.6902439024390243,
+                0.5925494761350407,
+                0.6019536019536019,
+                0.6254458977407847,
+                0.6520681265206812
+              ],
+              "confusion": [
+                [
+                  95643,
+                  0,
+                  6457,
+                  0
+                ],
+                [
+                  0,
+                  2630,
+                  2924,
+                  353
+                ],
+                [
+                  13737,
+                  1240,
+                  100186,
+                  11599
+                ],
+                [
+                  0,
+                  291,
+                  9722,
+                  237218
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.05024699867284982,
+                "completeness_gain_standard_error": 0.00695018004281281,
+                "completeness_gain_over_standard_error": 7.2295966958165785,
+                "purity_gain_mean": 0.02420140329904179,
+                "purity_gain_standard_error": 0.004527830984352046,
+                "purity_gain_over_standard_error": 5.345032396898341
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.931733747484117,
+              "completeness_std": 0.0066226326267570905,
+              "purity_mean": 0.23755229242249865,
+              "purity_std": 0.008577353379128147,
+              "completeness_per_fold": [
+                0.9441786283891547,
+                0.9278969957081545,
+                0.9251101321585903,
+                0.9293523969722456,
+                0.9321305841924399
+              ],
+              "purity_per_fold": [
+                0.24989447024060785,
+                0.23227331327889988,
+                0.22786458333333334,
+                0.23214285714285715,
+                0.24558623811679492
+              ],
+              "confusion": [
+                [
+                  97676,
+                  1,
+                  4423,
+                  0
+                ],
+                [
+                  0,
+                  5505,
+                  389,
+                  13
+                ],
+                [
+                  16006,
+                  13933,
+                  90579,
+                  6244
+                ],
+                [
+                  0,
+                  3739,
+                  14034,
+                  229458
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.018921173546118265,
+                "completeness_gain_standard_error": 0.0038613750750735943,
+                "completeness_gain_over_standard_error": 4.900112829820771,
+                "purity_gain_mean": 0.035397613732038244,
+                "purity_gain_standard_error": 0.0010594085455182367,
+                "purity_gain_over_standard_error": 33.412618655744936
+              }
+            }
+          },
+          "bump_r100_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.4040159606452707,
+              "completeness_std": 0.007068416112687609,
+              "purity_mean": 0.6202280186648383,
+              "purity_std": 0.033486676469474896,
+              "completeness_per_fold": [
+                0.4130781499202552,
+                0.3948497854077253,
+                0.41145374449339206,
+                0.3994953742640875,
+                0.4012027491408935
+              ],
+              "purity_per_fold": [
+                0.6692506459948321,
+                0.5830164765525983,
+                0.5956632653061225,
+                0.6027918781725888,
+                0.6504178272980501
+              ],
+              "confusion": [
+                [
+                  95659,
+                  0,
+                  6441,
+                  0
+                ],
+                [
+                  0,
+                  2387,
+                  3150,
+                  370
+                ],
+                [
+                  14707,
+                  1186,
+                  99245,
+                  11624
+                ],
+                [
+                  0,
+                  280,
+                  9618,
+                  237333
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.009163673702160712,
+                "completeness_gain_standard_error": 0.0033150711794739055,
+                "completeness_gain_over_standard_error": 2.7642464387793226,
+                "purity_gain_mean": 0.01197722100605354,
+                "purity_gain_standard_error": 0.004267574654276285,
+                "purity_gain_over_standard_error": 2.8065639095620445
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9224044958628881,
+              "completeness_std": 0.004464028071302035,
+              "purity_mean": 0.21666556973236156,
+              "purity_std": 0.00845382134995708,
+              "completeness_per_fold": [
+                0.9282296650717703,
+                0.91931330472103,
+                0.9224669603524229,
+                0.9158957106812448,
+                0.9261168384879725
+              ],
+              "purity_per_fold": [
+                0.22792245936949285,
+                0.20747772181325067,
+                0.20860729228930067,
+                0.21403301886792453,
+                0.22528735632183908
+              ],
+              "confusion": [
+                [
+                  97634,
+                  3,
+                  4463,
+                  0
+                ],
+                [
+                  0,
+                  5449,
+                  439,
+                  19
+                ],
+                [
+                  16881,
+                  15560,
+                  87765,
+                  6556
+                ],
+                [
+                  0,
+                  4149,
+                  13351,
+                  229731
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.00959192192488938,
+                "completeness_gain_standard_error": 0.002129063753643021,
+                "completeness_gain_over_standard_error": 4.505230014120871,
+                "purity_gain_mean": 0.01451089104190117,
+                "purity_gain_standard_error": 0.0016017457520038992,
+                "purity_gain_over_standard_error": 9.059422210888963
+              }
+            }
+          }
+        },
+        "agb0": {
+          "no_bump": {
+            "unbalanced": {
+              "completeness_mean": 0.3873404808701701,
+              "completeness_std": 0.010264125688444318,
+              "purity_mean": 0.6034969270533703,
+              "purity_std": 0.032208452765292765,
+              "completeness_per_fold": [
+                0.39314194577352474,
+                0.3708154506437768,
+                0.4,
+                0.3809924306139613,
+                0.3917525773195876
+              ],
+              "purity_per_fold": [
+                0.6444444444444445,
+                0.5625,
+                0.5761421319796954,
+                0.5984147952443857,
+                0.6359832635983264
+              ],
+              "confusion": [
+                [
+                  95596,
+                  0,
+                  6504,
+                  0
+                ],
+                [
+                  1,
+                  2288,
+                  3269,
+                  349
+                ],
+                [
+                  15440,
+                  1240,
+                  98266,
+                  11816
+                ],
+                [
+                  0,
+                  267,
+                  9589,
+                  237375
+                ]
+              ]
+            },
+            "balanced": {
+              "completeness_mean": 0.911786352583189,
+              "completeness_std": 0.00881889978771474,
+              "purity_mean": 0.20187028701135312,
+              "purity_std": 0.009116433442345976,
+              "completeness_per_fold": [
+                0.916267942583732,
+                0.8969957081545065,
+                0.9180616740088106,
+                0.9066442388561816,
+                0.9209621993127147
+              ],
+              "purity_per_fold": [
+                0.21777862016679303,
+                0.19550982226379796,
+                0.19232188999630861,
+                0.19794344473007713,
+                0.20579765789978882
+              ],
+              "confusion": [
+                [
+                  97401,
+                  2,
+                  4697,
+                  0
+                ],
+                [
+                  1,
+                  5386,
+                  490,
+                  30
+                ],
+                [
+                  17392,
+                  16774,
+                  86004,
+                  6592
+                ],
+                [
+                  0,
+                  4532,
+                  13080,
+                  229619
+                ]
+              ]
+            }
+          },
+          "bump_sigma300_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.3933608982322729,
+              "completeness_std": 0.015010745031560987,
+              "purity_mean": 0.6189653467211682,
+              "purity_std": 0.034663273792834036,
+              "completeness_per_fold": [
+                0.4003189792663477,
+                0.3648068669527897,
+                0.40704845814977975,
+                0.4020185029436501,
+                0.39261168384879724
+              ],
+              "purity_per_fold": [
+                0.6666666666666666,
+                0.5651595744680851,
+                0.5976714100905562,
+                0.6306068601583114,
+                0.6347222222222222
+              ],
+              "confusion": [
+                [
+                  95907,
+                  0,
+                  6193,
+                  0
+                ],
+                [
+                  1,
+                  2324,
+                  3237,
+                  345
+                ],
+                [
+                  14775,
+                  1180,
+                  99207,
+                  11600
+                ],
+                [
+                  0,
+                  252,
+                  9793,
+                  237186
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.006020417362102792,
+                "completeness_gain_standard_error": 0.0044659842453270366,
+                "completeness_gain_over_standard_error": 1.3480605912128396,
+                "purity_gain_mean": 0.015468419667797906,
+                "purity_gain_standard_error": 0.006348108168970382,
+                "purity_gain_over_standard_error": 2.4366975571411498
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.918101264130336,
+              "completeness_std": 0.007036061251339374,
+              "purity_mean": 0.21502349171034116,
+              "purity_std": 0.008070634926492319,
+              "completeness_per_fold": [
+                0.9242424242424242,
+                0.9141630901287554,
+                0.9083700440528635,
+                0.9158957106812448,
+                0.9278350515463918
+              ],
+              "purity_per_fold": [
+                0.22721035091158595,
+                0.20528141865844257,
+                0.20968069961358551,
+                0.21149737813167604,
+                0.22144761123641582
+              ],
+              "confusion": [
+                [
+                  98025,
+                  3,
+                  4072,
+                  0
+                ],
+                [
+                  1,
+                  5424,
+                  459,
+                  23
+                ],
+                [
+                  17254,
+                  15950,
+                  87260,
+                  6298
+                ],
+                [
+                  0,
+                  3855,
+                  14110,
+                  229266
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.006314911547146851,
+                "completeness_gain_standard_error": 0.004391322934447261,
+                "completeness_gain_over_standard_error": 1.4380430775450843,
+                "purity_gain_mean": 0.013153204698988069,
+                "purity_gain_standard_error": 0.0015710839108262278,
+                "purity_gain_over_standard_error": 8.372057411033406
+              }
+            }
+          },
+          "bump_sigma300_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.38069664287798294,
+              "completeness_std": 0.01372898681106031,
+              "purity_mean": 0.6171525979629238,
+              "purity_std": 0.030373370573351433,
+              "completeness_per_fold": [
+                0.37799043062200954,
+                0.3579399141630901,
+                0.39559471365638765,
+                0.3776282590412111,
+                0.3943298969072165
+              ],
+              "purity_per_fold": [
+                0.6601671309192201,
+                0.569672131147541,
+                0.6125511596180082,
+                0.6067567567567568,
+                0.636615811373093
+              ],
+              "confusion": [
+                [
+                  95838,
+                  0,
+                  6262,
+                  0
+                ],
+                [
+                  1,
+                  2248,
+                  3316,
+                  342
+                ],
+                [
+                  15210,
+                  1152,
+                  98577,
+                  11823
+                ],
+                [
+                  0,
+                  244,
+                  9783,
+                  237204
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.006643837992187119,
+                "completeness_gain_standard_error": 0.0032558540286446867,
+                "completeness_gain_over_standard_error": -2.0405822661996758,
+                "purity_gain_mean": 0.013655670909553419,
+                "purity_gain_standard_error": 0.006171958065963216,
+                "purity_gain_over_standard_error": 2.2125346224986497
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9153416792180533,
+              "completeness_std": 0.006696053655065024,
+              "purity_mean": 0.20830871076950103,
+              "purity_std": 0.008932505898692683,
+              "completeness_per_fold": [
+                0.9186602870813397,
+                0.9055793991416309,
+                0.9180616740088106,
+                0.9100084104289319,
+                0.9243986254295533
+              ],
+              "purity_per_fold": [
+                0.2224367638540259,
+                0.19842016174534513,
+                0.2024087024087024,
+                0.20342169580748262,
+                0.21485623003194887
+              ],
+              "confusion": [
+                [
+                  97700,
+                  6,
+                  4394,
+                  0
+                ],
+                [
+                  1,
+                  5407,
+                  476,
+                  23
+                ],
+                [
+                  17413,
+                  16421,
+                  86330,
+                  6598
+                ],
+                [
+                  0,
+                  4137,
+                  13411,
+                  229683
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.003555326634864198,
+                "completeness_gain_standard_error": 0.0014022838618160066,
+                "completeness_gain_over_standard_error": 2.535382978921205,
+                "purity_gain_mean": 0.006438423758147871,
+                "purity_gain_standard_error": 0.0013548915942762211,
+                "purity_gain_over_standard_error": 4.751984428383185
+              }
+            }
+          },
+          "bump_sigma300_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.3684924966334651,
+              "completeness_std": 0.013436059024793928,
+              "purity_mean": 0.6115313463748189,
+              "purity_std": 0.03186710404040099,
+              "completeness_per_fold": [
+                0.3620414673046252,
+                0.34506437768240344,
+                0.38061674008810575,
+                0.3793103448275862,
+                0.3754295532646048
+              ],
+              "purity_per_fold": [
+                0.6504297994269341,
+                0.5654008438818565,
+                0.5837837837837838,
+                0.623789764868603,
+                0.6342525399129173
+              ],
+              "confusion": [
+                [
+                  95581,
+                  0,
+                  6519,
+                  0
+                ],
+                [
+                  1,
+                  2176,
+                  3375,
+                  355
+                ],
+                [
+                  15313,
+                  1132,
+                  98526,
+                  11791
+                ],
+                [
+                  0,
+                  253,
+                  9667,
+                  237311
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.01884798423670502,
+                "completeness_gain_standard_error": 0.004995529313423015,
+                "completeness_gain_over_standard_error": -3.772970400966396,
+                "purity_gain_mean": 0.008034419321448572,
+                "purity_gain_standard_error": 0.004619303142948645,
+                "purity_gain_over_standard_error": 1.7393141503850194
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9132444638628522,
+              "completeness_std": 0.00625519533396194,
+              "purity_mean": 0.20434849359380589,
+              "purity_std": 0.007345358723011658,
+              "completeness_per_fold": [
+                0.9114832535885168,
+                0.9090128755364807,
+                0.918942731277533,
+                0.9049621530698065,
+                0.9218213058419243
+              ],
+              "purity_per_fold": [
+                0.21602721602721603,
+                0.19687674288901283,
+                0.1994263862332696,
+                0.19955489614243324,
+                0.2098572266770976
+              ],
+              "confusion": [
+                [
+                  97711,
+                  4,
+                  4385,
+                  0
+                ],
+                [
+                  2,
+                  5394,
+                  487,
+                  24
+                ],
+                [
+                  17669,
+                  16610,
+                  85857,
+                  6626
+                ],
+                [
+                  0,
+                  4397,
+                  13318,
+                  229516
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.001458111279663199,
+                "completeness_gain_standard_error": 0.0028374183396173537,
+                "completeness_gain_over_standard_error": 0.5138866057586122,
+                "purity_gain_mean": 0.002478206582452752,
+                "purity_gain_standard_error": 0.001479511578567101,
+                "purity_gain_over_standard_error": 1.6750166868263927
+              }
+            }
+          },
+          "bump_r100_0.005": {
+            "unbalanced": {
+              "completeness_mean": 0.41157192593408964,
+              "completeness_std": 0.00961944752717163,
+              "purity_mean": 0.6262095888013135,
+              "purity_std": 0.028822924469144365,
+              "completeness_per_fold": [
+                0.41148325358851673,
+                0.3931330472103004,
+                0.4193832599118943,
+                0.415475189234651,
+                0.4183848797250859
+              ],
+              "purity_per_fold": [
+                0.669260700389105,
+                0.5894465894465895,
+                0.6071428571428571,
+                0.616729088639201,
+                0.6484687083888149
+              ],
+              "confusion": [
+                [
+                  95861,
+                  0,
+                  6239,
+                  0
+                ],
+                [
+                  1,
+                  2431,
+                  3175,
+                  300
+                ],
+                [
+                  14790,
+                  1200,
+                  99021,
+                  11751
+                ],
+                [
+                  0,
+                  253,
+                  9741,
+                  237237
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.024231445063919565,
+                "completeness_gain_standard_error": 0.00293866447356906,
+                "completeness_gain_over_standard_error": 8.245733829725054,
+                "purity_gain_mean": 0.022712661747943085,
+                "purity_gain_standard_error": 0.003278603806051863,
+                "purity_gain_over_standard_error": 6.927540834918375
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9225794226620188,
+              "completeness_std": 0.006264140675380376,
+              "purity_mean": 0.21661990240080523,
+              "purity_std": 0.006717610383987566,
+              "completeness_per_fold": [
+                0.9298245614035088,
+                0.9184549356223176,
+                0.9251101321585903,
+                0.9125315391084945,
+                0.9269759450171822
+              ],
+              "purity_per_fold": [
+                0.22561919504643962,
+                0.21188118811881188,
+                0.2107164358819988,
+                0.2108843537414966,
+                0.22399833921527923
+              ],
+              "confusion": [
+                [
+                  97739,
+                  5,
+                  4356,
+                  0
+                ],
+                [
+                  1,
+                  5450,
+                  442,
+                  14
+                ],
+                [
+                  17139,
+                  15916,
+                  87200,
+                  6507
+                ],
+                [
+                  0,
+                  3792,
+                  13974,
+                  229465
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.010793070078829592,
+                "completeness_gain_standard_error": 0.003019393586926298,
+                "completeness_gain_over_standard_error": 3.5745820371224912,
+                "purity_gain_mean": 0.014749615389452114,
+                "purity_gain_standard_error": 0.0019853426461053057,
+                "purity_gain_over_standard_error": 7.429254299446389
+              }
+            }
+          },
+          "bump_r100_0.010": {
+            "unbalanced": {
+              "completeness_mean": 0.3791954813650382,
+              "completeness_std": 0.009587226799711622,
+              "purity_mean": 0.6091425845131436,
+              "purity_std": 0.025721616225037245,
+              "completeness_per_fold": [
+                0.3835725677830941,
+                0.36394849785407724,
+                0.3920704845814978,
+                0.3826745164003364,
+                0.37371134020618557
+              ],
+              "purity_per_fold": [
+                0.6473755047106325,
+                0.5745257452574526,
+                0.596514745308311,
+                0.5986842105263158,
+                0.6286127167630058
+              ],
+              "confusion": [
+                [
+                  95609,
+                  0,
+                  6491,
+                  0
+                ],
+                [
+                  0,
+                  2240,
+                  3324,
+                  343
+                ],
+                [
+                  15300,
+                  1188,
+                  98476,
+                  11798
+                ],
+                [
+                  0,
+                  251,
+                  9681,
+                  237299
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.008144999505131877,
+                "completeness_gain_standard_error": 0.0031481408401919787,
+                "completeness_gain_over_standard_error": -2.5872411428184967,
+                "purity_gain_mean": 0.005645657459773146,
+                "purity_gain_standard_error": 0.004812916691564393,
+                "purity_gain_over_standard_error": 1.1730220615844649
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9157308883071057,
+              "completeness_std": 0.007241569205303776,
+              "purity_mean": 0.2083967089548903,
+              "purity_std": 0.008326417184229863,
+              "completeness_per_fold": [
+                0.9154704944178629,
+                0.9064377682403434,
+                0.9180616740088106,
+                0.9108494533221194,
+                0.9278350515463918
+              ],
+              "purity_per_fold": [
+                0.2219644238205723,
+                0.19969742813918306,
+                0.20162538699690402,
+                0.20491958372753075,
+                0.21377672209026127
+              ],
+              "confusion": [
+                [
+                  97726,
+                  5,
+                  4369,
+                  0
+                ],
+                [
+                  1,
+                  5409,
+                  479,
+                  18
+                ],
+                [
+                  17725,
+                  16359,
+                  86152,
+                  6526
+                ],
+                [
+                  0,
+                  4192,
+                  13564,
+                  229475
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": 0.003944535723916532,
+                "completeness_gain_standard_error": 0.001961014257801643,
+                "completeness_gain_over_standard_error": 2.0114773302762607,
+                "purity_gain_mean": 0.0065264219435371695,
+                "purity_gain_standard_error": 0.0010240389489100242,
+                "purity_gain_over_standard_error": 6.373216517285618
+              }
+            }
+          },
+          "bump_r100_0.020": {
+            "unbalanced": {
+              "completeness_mean": 0.37204011330108155,
+              "completeness_std": 0.009611463398986879,
+              "purity_mean": 0.6071475007493043,
+              "purity_std": 0.03196796952757856,
+              "completeness_per_fold": [
+                0.38197767145135564,
+                0.3587982832618026,
+                0.3832599118942731,
+                0.3641715727502103,
+                0.37199312714776633
+              ],
+              "purity_per_fold": [
+                0.6525885558583107,
+                0.5625841184387618,
+                0.585464333781965,
+                0.603905160390516,
+                0.6311953352769679
+              ],
+              "confusion": [
+                [
+                  95660,
+                  0,
+                  6440,
+                  0
+                ],
+                [
+                  0,
+                  2198,
+                  3363,
+                  346
+                ],
+                [
+                  15394,
+                  1181,
+                  98440,
+                  11747
+                ],
+                [
+                  0,
+                  244,
+                  9680,
+                  237307
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.015300367569088513,
+                "completeness_gain_standard_error": 0.0016148494424195572,
+                "completeness_gain_over_standard_error": -9.474795090596002,
+                "purity_gain_mean": 0.0036505736959338898,
+                "purity_gain_standard_error": 0.002642650171480616,
+                "purity_gain_over_standard_error": 1.3814063379749417
+              }
+            },
+            "balanced": {
+              "completeness_mean": 0.9096789365220417,
+              "completeness_std": 0.004580212762930277,
+              "purity_mean": 0.20341512579841853,
+              "purity_std": 0.009033807203601519,
+              "completeness_per_fold": [
+                0.9138755980861244,
+                0.9055793991416309,
+                0.9039647577092511,
+                0.9091673675357443,
+                0.915807560137457
+              ],
+              "purity_per_fold": [
+                0.2180365296803653,
+                0.19526189154173607,
+                0.19376770538243626,
+                0.20115370301451432,
+                0.20885579937304075
+              ],
+              "confusion": [
+                [
+                  97630,
+                  4,
+                  4466,
+                  0
+                ],
+                [
+                  1,
+                  5374,
+                  506,
+                  26
+                ],
+                [
+                  17552,
+                  16676,
+                  85884,
+                  6650
+                ],
+                [
+                  0,
+                  4378,
+                  13219,
+                  229634
+                ]
+              ],
+              "paired_difference_vs_no_bump": {
+                "completeness_gain_mean": -0.0021074160611475267,
+                "completeness_gain_standard_error": 0.003800372240986926,
+                "completeness_gain_over_standard_error": -0.5545288533631242,
+                "purity_gain_mean": 0.0015448387870654278,
+                "purity_gain_standard_error": 0.0007051142540045831,
+                "purity_gain_over_standard_error": 2.1909056274096916
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "timing_s": {
+    "class_planes_figure": 1.794051832985133,
+    "purity_maps_figure": 0.6969924999866635,
+    "classifier": 211.5307682499988,
+    "total": 216.97631329193246
+  }
+}

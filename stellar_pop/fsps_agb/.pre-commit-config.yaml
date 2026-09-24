@@ -1,0 +1,14 @@
+# The git repo root is stellar_pop/fsps_agb's parent's parent (the whole
+# luandun monorepo), so paths matched below are relative to that root, not
+# to this file. `files` scopes every hook to this project only; `exclude`
+# keeps the Phase 1 scripts named in the task brief untouched.
+files: ^stellar_pop/fsps_agb/
+exclude: ^stellar_pop/fsps_agb/(agb_experiment|agb_pagb_response|inspect_agb_templates|plot_nir_comparison|norm_utils)\.py$
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
