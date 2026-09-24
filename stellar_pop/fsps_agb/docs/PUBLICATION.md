@@ -9,6 +9,29 @@ all of it in the classifier and recovery sweeps for figures 4 and 6; `--reuse-ga
 redraws those figures (and figure 7) from the sweeps stored in the summary JSON by an
 earlier full run.
 
+## Final selection (`output/publication/final/`, 2026-09-25)
+
+`publication_figures.py --final` writes the three figures kept for the paper, named by
+content, with their numbers in `final/final_summary.json`:
+
+| File | Content | Origin |
+| --- | --- | --- |
+| `index_planes_agb_on_off` | Figure 1 below, main text | identical to `fig1_index_planes` |
+| `index_planes_sfh_families` | Figure 5 below, appendix | identical to `fig5_robustness_planes` |
+| `age_sensitivity_and_classifier_gain` | new two-part figure | Figure 3 (a, b) and Figure 4 (a, b) recombined |
+
+The combined figure: (a) HdeltaA, the bump strength (minus the bump index) and D4000
+against log10(t - t_q) for tau_q = 0.1, 0.3, 1, 3 Gyr at t_q = 3 Gyr, AGB on, solar
+metallicity, each track scaled to [0, 1] over 0.05 < t - t_q < 6 Gyr so the three
+indices share one axis (line style = index, colour = tau_q; the unscaled ranges are in
+`final_summary.json`). HdeltaA is already falling by 0.2 to 0.3 Gyr, the bump peaks 0.5
+to 1.5 Gyr after t_q with the delay set by tau_q, and D4000 only rises. (b, c)
+Rapid-quenching completeness and purity against bump precision for AGB on, with the
+D4000-plus-HdeltaA baseline as a dashed line and its fold standard error as a band. No
+significance labels: the gain is consistent across folds but moderate in absolute
+terms, which is the honest reading for a three-feature test. Figures 2, 6 and 7 and the
+recovery panels of Figure 4 are kept as candidates only.
+
 ## Conventions
 
 | item | choice | reason |

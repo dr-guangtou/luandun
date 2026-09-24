@@ -154,6 +154,19 @@ AXIS_LABELS = {
     "h_minus_bump": r"H$^-$ bump [mag]",
 }
 FIGURE_IDS = ("fig1", "fig2", "fig3", "fig4", "fig5", "fig6", "fig7")
+FINAL_DIR = OUTPUT_DIR / "final"
+FINAL_STEMS = {
+    "fig1": "index_planes_agb_on_off",
+    "fig5": "index_planes_sfh_families",
+    "combined": "age_sensitivity_and_classifier_gain",
+}
+CLOCK_LOG_WINDOW_GYR = (0.05, 6.0)
+INDEX_LINESTYLES = {"hdelta_a": "-", "h_minus_bump": "--", "d4000": ":"}
+INDEX_SHORT_LABELS = {
+    "hdelta_a": r"H$\delta_{\rm A}$",
+    "h_minus_bump": r"H$^-$ bump strength",
+    "d4000": "D4000",
+}
 
 PUBLICATION_RC = {
     "text.usetex": True,
@@ -463,7 +476,7 @@ def row_title(axis, text, fontsize=12):
     )
 
 
-def figure_1(tables, tracks_by_template, out_dir):
+def figure_1(tables, tracks_by_template, out_dir, stem="fig1_index_planes"):
     figure, axes = plt.subplots(2, 3, figsize=(DOUBLE_COLUMN_IN, 5.4), layout="constrained")
     summary = {}
     for row, config_key in enumerate(CONFIG_ORDER):
@@ -492,7 +505,7 @@ def figure_1(tables, tracks_by_template, out_dir):
         title=FIDUCIAL_SFH_CAPTION,
         title_fontsize=8,
     )
-    save_figure(figure, out_dir, "fig1_index_planes")
+    save_figure(figure, out_dir, stem)
     return summary
 
 
@@ -1181,7 +1194,7 @@ def figure_6(gains_by_family, out_dir):
 # ---------------------------------------------------------------------------
 
 
-def figure_5(tables_by_family, out_dir):
+def figure_5(tables_by_family, out_dir, stem="fig5_robustness_planes"):
     figure, axes = plt.subplots(
         len(ROBUSTNESS_FAMILIES),
         3,
@@ -1204,7 +1217,7 @@ def figure_5(tables_by_family, out_dir):
         ncol=2,
         fontsize=8,
     )
-    save_figure(figure, out_dir, "fig5_robustness_planes")
+    save_figure(figure, out_dir, stem)
     return summary
 
 
@@ -1400,6 +1413,130 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
 
 
 # ---------------------------------------------------------------------------
+# Combined figure: age sensitivity after quenching and the classifier gain
+# ---------------------------------------------------------------------------
+
+
+def scaled_post_quench_tracks(result, agb_key, t_q, window=CLOCK_LOG_WINDOW_GYR):
+    """Each index over `window` after t_q, scaled to [0, 1] over that window; the bump enters
+    as its strength (minus the index) so that every curve rises when the feature strengthens."""
+    series = track_series(result, agb_key)
+    delay = series["epoch_gyr"] - t_q
+    inside = (delay >= window[0] - 1e-9) & (delay <= window[1] + 1e-9)
+    out = {"log_delay": np.log10(delay[inside])}
+    for key in ("hdelta_a", "h_minus_bump", "d4000"):
+        values = series[key][inside]
+        if key == "h_minus_bump":
+            values = -values
+        low, high = values.min(), values.max()
+        out[key] = (values - low) / (high - low)
+        out[f"{key}_range"] = [float(low), float(high)]
+    return out
+
+
+def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
+    """Left: the three indices against log10(t - t_q) for the tau_q family, AGB on, each
+    scaled to its own post-quench range. Right: rapid-quenching completeness and purity
+    against bump precision, AGB on, with the optical-only baseline."""
+    figure = plt.figure(figsize=(DOUBLE_COLUMN_IN, 3.3), layout="constrained")
+    grid = figure.add_gridspec(1, 4, width_ratios=(1, 1, 1, 1), wspace=0.08)
+    axis_clock = figure.add_subplot(grid[0, :2])
+    axes_gain = [figure.add_subplot(grid[0, 2]), figure.add_subplot(grid[0, 3])]
+    on_template, on_agb = AGB_CONFIGS["agb_on"]["template"], AGB_CONFIGS["agb_on"]["agb"]
+    t_q = FIDUCIAL["t_q_gyr"]
+    summary = {"scaled_tracks": {}, "classifier": {}}
+
+    for tau_q, color in zip(CLOCK_TAU_Q_GYR, CLOCK_TAU_Q_COLORS, strict=True):
+        scaled = scaled_post_quench_tracks(clock_tracks[on_template][(t_q, tau_q)], on_agb, t_q)
+        summary["scaled_tracks"][f"tau_q_{tau_q:g}"] = {
+            key: scaled[f"{key}_range"] for key in INDEX_LINESTYLES
+        }
+        for key, linestyle in INDEX_LINESTYLES.items():
+            axis_clock.plot(scaled["log_delay"], scaled[key], color=color, ls=linestyle, lw=1.2)
+    axis_clock.set_xlabel(r"$\log_{10}(t - t_q)$ [Gyr]")
+    axis_clock.set_ylabel("index scaled to its post-quench range")
+    axis_clock.set_ylim(-0.04, 1.04)
+    axis_clock.set_xlim(
+        np.log10(CLOCK_LOG_WINDOW_GYR[0]) - 0.03, np.log10(CLOCK_LOG_WINDOW_GYR[1]) + 0.03
+    )
+    classifier = gains["agb_on"]["classifier"]["across_seeds"]
+    precisions = np.array(BUMP_PRECISIONS)
+    point_color = "#0072B2"
+    for axis, metric in zip(axes_gain, ("completeness", "purity"), strict=True):
+        baseline = classifier["no_bump"][f"{metric}_mean_mean"]
+        baseline_error = classifier["no_bump"][f"{metric}_std_mean"] / np.sqrt(N_FOLDS)
+        axis.axhline(baseline, color="0.35", ls="--", lw=0.9)
+        axis.axhspan(
+            baseline - baseline_error, baseline + baseline_error, color="0.5", alpha=0.15, lw=0
+        )
+        means = [classifier[f"bump_{p:.3f}"][f"{metric}_mean_mean"] for p in precisions]
+        errors = [
+            classifier[f"bump_{p:.3f}"][f"{metric}_std_mean"] / np.sqrt(N_FOLDS) for p in precisions
+        ]
+        axis.errorbar(
+            precisions, means, yerr=errors, marker="o", ms=4, capsize=2.5, color=point_color, lw=1.2
+        )
+        summary["classifier"][metric] = {
+            "optical_only": float(baseline),
+            "optical_only_fold_standard_error": float(baseline_error),
+            "bump_precision_mag": precisions.tolist(),
+            "with_bump": [float(value) for value in means],
+            "with_bump_fold_standard_error": [float(value) for value in errors],
+        }
+        axis.set_xscale("log")
+        axis.set_xticks(precisions)
+        axis.set_xticklabels([f"{p:g}" for p in precisions])
+        axis.set_xlim(0.0036, 0.028)
+        axis.minorticks_off()
+        axis.set_xlabel("bump precision [mag]")
+        axis.set_ylabel(f"rapid-quenching {metric}")
+    handles = [
+        Line2D([], [], color="0.2", ls=linestyle, lw=1.2, label=INDEX_SHORT_LABELS[key])
+        for key, linestyle in INDEX_LINESTYLES.items()
+    ]
+    handles += [
+        Line2D([], [], color=color, lw=1.2, label=rf"$\tau_q = {tau_q:g}$ Gyr")
+        for tau_q, color in zip(CLOCK_TAU_Q_GYR, CLOCK_TAU_Q_COLORS, strict=True)
+    ]
+    handles += [
+        Line2D(
+            [],
+            [],
+            color=point_color,
+            marker="o",
+            ms=4,
+            lw=1.2,
+            label=r"(b, c) D4000, H$\delta_{\rm A}$ and bump",
+        ),
+        Line2D(
+            [],
+            [],
+            color="0.35",
+            ls="--",
+            lw=0.9,
+            label=r"(b, c) D4000 and H$\delta_{\rm A}$ only (band: fold standard error)",
+        ),
+    ]
+    figure.legend(
+        handles=handles,
+        loc="outside lower center",
+        ncol=3,
+        fontsize=7.5,
+        title=(
+            rf"AGB on; (a) tracks at $t_q = {t_q:g}$ Gyr, solar metallicity, "
+            r"delayed-$\tau$ rise with $\tau = t_q$"
+        ),
+        title_fontsize=7.5,
+        columnspacing=1.6,
+    )
+    panel_label(axis_clock, "(a)", x=0.02, y=0.97)
+    panel_label(axes_gain[0], "(b)", x=0.05, y=0.97)
+    panel_label(axes_gain[1], "(c)", x=0.05, y=0.97)
+    save_figure(figure, out_dir, stem)
+    return summary
+
+
+# ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
 
@@ -1459,6 +1596,13 @@ def main():
     )
     parser.add_argument("--pilot", action="store_true", help="stride-50 tables, one seed, 2 folds")
     parser.add_argument(
+        "--final",
+        action="store_true",
+        help="write the selected figures (index planes, SFH families, the combined age "
+        "sensitivity and classifier gain figure) under output/publication/final/ with "
+        "content-based names; implies --reuse-gains when the stored gains exist",
+    )
+    parser.add_argument(
         "--reuse-gains",
         action="store_true",
         help="redraw figures 4, 6 and 7 from the gains stored in publication_summary.json "
@@ -1466,6 +1610,9 @@ def main():
     )
     args = parser.parse_args()
     figure_ids = FIGURE_IDS if args.only is None else tuple(args.only.split(","))
+    if args.final:
+        figure_ids = ("final",)
+        args.reuse_gains = True
     out_dir = Path(args.out_dir) if not args.pilot else Path(args.out_dir) / "pilot"
     out_dir.mkdir(parents=True, exist_ok=True)
     stride = 50 if args.pilot else 1
@@ -1577,6 +1724,33 @@ def main():
         }
         timing["fig6_s"] = time.perf_counter() - t0
         print(f"fig6 done in {timing['fig6_s']:.1f} s")
+    if "final" in figure_ids:
+        t0 = time.perf_counter()
+        final_dir = FINAL_DIR if not args.pilot else out_dir / "final"
+        final_dir.mkdir(parents=True, exist_ok=True)
+        tracks_by_template = {
+            template: compute_metallicity_tracks(template, edges) for template in ("c3k", "lw02")
+        }
+        final_summary = {}
+        final_summary[FINAL_STEMS["fig1"]] = figure_1(
+            tables, tracks_by_template, final_dir, stem=FINAL_STEMS["fig1"]
+        )
+        tables_by_family = {
+            family: load_family_table(family, AGB_CONFIGS["agb_on"]["template"], stride=stride)
+            for family in ROBUSTNESS_FAMILIES
+        }
+        final_summary[FINAL_STEMS["fig5"]] = figure_5(
+            tables_by_family, final_dir, stem=FINAL_STEMS["fig5"]
+        )
+        clock_tracks = compute_clock_tracks(edges, CLOCK_TAU_Q_GYR, (FIDUCIAL["t_q_gyr"],))
+        cached = cached_gains(summary, "exponential")
+        gains = cached or compute_gains("exponential", stride=stride, seeds=seeds, with_log_z=True)
+        final_summary[FINAL_STEMS["combined"]] = figure_combined(clock_tracks, gains, final_dir)
+        (final_dir / "final_summary.json").write_text(
+            json.dumps(_to_native(final_summary), indent=2) + "\n"
+        )
+        timing["final_s"] = time.perf_counter() - t0
+        print(f"final figures done in {timing['final_s']:.1f} s")
     if "fig7" in figure_ids:
         t0 = time.perf_counter()
         summary["fig7_metallicity"] = figure_7(

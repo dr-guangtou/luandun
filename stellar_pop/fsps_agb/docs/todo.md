@@ -32,6 +32,11 @@
   the fixed log Teff = 3.6 template switch and from the Z-dependent Teff labels in
   `Orich.teff`. The AGB-off bump's trend has the opposite sign and comes from the
   non-AGB stars.
+- Final selection (2026-09-25): `--final` writes `output/publication/final/` with the
+  index planes (main text), the SFH-family planes (appendix) and a new combined figure,
+  age sensitivity of the three indices after quenching (scaled tracks against
+  log10(t - t_q)) beside the classifier completeness and purity gain without
+  significance labels. Figures 2, 6, 7 and the recovery panels stay candidates.
 - Not done: no agb = 1 "AGB off" variant of Figures 1 and 6 (Figure 2 shows it differs
   from agb = 0 by 0.005 mag); figures are candidates, not final captions.
 
