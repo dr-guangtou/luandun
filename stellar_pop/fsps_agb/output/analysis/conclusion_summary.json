@@ -1960,7 +1960,8 @@
         6.0
       ],
       "min_epoch_gyr": 1.0,
-      "paired_gain_definition": "per-fold (bump set - no_bump) RMS difference on the same folds; standard error = ddof 1 std over folds / sqrt(n_folds)"
+      "paired_gain_definition": "per-fold (bump set - no_bump) RMS difference on the same folds; standard error = ddof 1 std over folds / sqrt(n_folds); reported per seed as paired_gain_mean_dex/paired_gain_standard_error_dex/paired_gain_over_standard_error, and across seeds as the mean of that standard error plus the across-seed mean/std of the gain",
+      "figure_error_bar_definition": "mean, over the 3 noise seeds, of the per-fold standard error of the RMS (ddof 1 std of the 5 per-fold RMS values / sqrt(5))"
     },
     "n_rows_by_template": {
       "c3k": 240000,
@@ -2794,6 +2795,10 @@
           "rms_std_over_seeds_dex": [
             0.0005266143128078451,
             0.0002064052808184311
+          ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0007141254394352523,
+            0.001343504132585031
           ]
         },
         "bump_0.005": {
@@ -2805,6 +2810,54 @@
             0.00028167979038810713,
             0.0001262339392715905
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0009492510064769603,
+            0.001369962042974901
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                -0.0037625067539236723,
+                -4.5219085228476175e-05
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0004597640425643433,
+                0.0001370759800847448
+              ],
+              "paired_gain_over_standard_error": [
+                -8.18356027352251,
+                -0.3298833625010033
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.00415994991227604,
+                1.9075306664972926e-05
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00035661253896034686,
+                0.00023569912409531632
+              ],
+              "paired_gain_over_standard_error": [
+                -11.665181276025185,
+                0.08093074905640678
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                -0.003629361844352019,
+                -0.0005860195422988212
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0004822049762929333,
+                0.00013417494295578708
+              ],
+              "paired_gain_over_standard_error": [
+                -7.526595582346767,
+                -4.367578099078638
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -0.0038506061701839103,
             -0.00020405444028744147
@@ -2812,6 +2865,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.000276047196716218,
             0.0003323498857727499
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.0004328605192725411,
+            0.00016898334904528274
           ]
         },
         "bump_0.010": {
@@ -2823,6 +2880,54 @@
             0.00039705032291411865,
             0.0001848182443046269
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0007434299843793408,
+            0.0013178782914447672
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                -0.0012131145948286847,
+                0.00019171488483291644
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0002682018039800005,
+                9.598004475215253e-05
+              ],
+              "paired_gain_over_standard_error": [
+                -4.523141070740692,
+                1.9974452536251488
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.0013353774590980304,
+                4.411318891709426e-05
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00020783704248401465,
+                0.00020679973372037642
+              ],
+              "paired_gain_over_standard_error": [
+                -6.4251176938333225,
+                0.21331356730246936
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                -0.0010762645931053805,
+                -0.0005052980263288931
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00020428410280422173,
+                6.23282489720995e-05
+              ],
+              "paired_gain_over_standard_error": [
+                -5.2684696377810285,
+                -8.107046718977838
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -0.001208252215677365,
             -8.982331752629414e-05
@@ -2830,6 +2935,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.0001296248486170365,
             0.0003673023147221645
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.00022677431642274562,
+            0.00012170267581487614
           ]
         },
         "bump_0.020": {
@@ -2841,6 +2950,54 @@
             0.0003538966085834555,
             0.00016277067975800386
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0007151856261110963,
+            0.0013697627848858315
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                7.576063530166377e-05,
+                -0.0001616135452953582
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00030754762596212846,
+                0.00017643892860052762
+              ],
+              "paired_gain_over_standard_error": [
+                0.2463378966579731,
+                -0.9159744200287266
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.0002879629357670166,
+                1.5408800384930644e-05
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00020901751700267327,
+                0.00016327427201516217
+              ],
+              "paired_gain_over_standard_error": [
+                -1.3776976202589455,
+                0.09437371972174363
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                0.00010360220272068733,
+                -0.0001668382942463742
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00017406342933837495,
+                0.00012719633984901237
+              ],
+              "paired_gain_over_standard_error": [
+                0.5951979868171345,
+                -1.3116595528174675
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -3.620003258155517e-05,
             -0.00010434767971893392
@@ -2848,6 +3005,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.0002184770188929857,
             0.0001037450499809546
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.0002302095241010589,
+            0.00015563651348823407
           ]
         }
       },
@@ -2860,6 +3021,10 @@
           "rms_std_over_seeds_dex": [
             0.0004781663679843424,
             0.0001417060542867761
+          ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0006874551861618387,
+            0.0013519810482283243
           ]
         },
         "bump_0.005": {
@@ -2871,6 +3036,54 @@
             0.0004292481424545819,
             0.00022254499173720454
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0009407780169335794,
+            0.0015912702617514498
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                -0.018372790345343403,
+                -0.013031731681985025
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0005485540244951263,
+                0.0006615372179525742
+              ],
+              "paired_gain_over_standard_error": [
+                -33.49312834274291,
+                -19.699166317985263
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.01826739942718427,
+                -0.01266496922702599
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0001830264022977016,
+                0.0006564083888189919
+              ],
+              "paired_gain_over_standard_error": [
+                -99.80745508766233,
+                -19.294343952265397
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                -0.01815468840144277,
+                -0.012924776065010645
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0004053311055522673,
+                0.0004692100081988791
+              ],
+              "paired_gain_over_standard_error": [
+                -44.78977347841795,
+                -27.545823488769994
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -0.01826495939132348,
             -0.012873825658007218
@@ -2878,6 +3091,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.0001090714436255438,
             0.00018861503803317383
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.0003789705107816984,
+            0.0005957185383234818
           ]
         },
         "bump_0.010": {
@@ -2889,6 +3106,54 @@
             0.0006406500539829063,
             0.0001665868745039037
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.000775714411186526,
+            0.0013828898248683626
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                -0.008706392999098745,
+                -0.00591907351846821
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0004384610121007103,
+                0.0004382877655912579
+              ],
+              "paired_gain_over_standard_error": [
+                -19.856709624843383,
+                -13.50499371225495
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.00823364473945104,
+                -0.005699847722112739
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0002160359915127794,
+                0.000274352001756589
+              ],
+              "paired_gain_over_standard_error": [
+                -38.11237508063089,
+                -20.775673899291487
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                -0.008506623563046744,
+                -0.0062403457134461385
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00024844957392659264,
+                0.0003386614221815756
+              ],
+              "paired_gain_over_standard_error": [
+                -34.238833372119714,
+                -18.42650300482213
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -0.00848222043386551,
             -0.005953088984675695
@@ -2896,6 +3161,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.00023731701115883033,
             0.00027184979053669416
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.00030098219251336076,
+            0.0003504337298431408
           ]
         },
         "bump_0.020": {
@@ -2907,6 +3176,54 @@
             0.00024187616767392558,
             0.00017425469465096882
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0006664621308823935,
+            0.001393558202823314
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                -0.0023737206492365935,
+                -0.0015458114756173203
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00020544541235591963,
+                0.00015922457906505943
+              ],
+              "paired_gain_over_standard_error": [
+                -11.55402119724285,
+                -9.708372191618098
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.002869863401966366,
+                -0.0016808922835702233
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0001851721870513984,
+                0.00037535266300211964
+              ],
+              "paired_gain_over_standard_error": [
+                -15.4983501986169,
+                -4.478167998399764
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                -0.0023110961846801057,
+                -0.0015680794200919278
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0001959591491704373,
+                0.00012331886228133293
+              ],
+              "paired_gain_over_standard_error": [
+                -11.793765151888918,
+                -12.715649423642889
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -0.002518226745294355,
             -0.001598261059759824
@@ -2914,6 +3231,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.0003061318500692943,
             7.242171427882871e-05
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.00019552558285925177,
+            0.000219298701449504
           ]
         }
       },
@@ -2926,6 +3247,10 @@
           "rms_std_over_seeds_dex": [
             0.0004740418791902465,
             8.718005791405554e-05
+          ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0006750158631468865,
+            0.0013906396032451415
           ]
         },
         "bump_0.005": {
@@ -2937,6 +3262,54 @@
             0.00022880731538562737,
             0.00022630413307438575
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0009423759690314275,
+            0.0014092665205626782
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                -0.0059708076903547125,
+                -0.0008322457219708923
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0003894050622426545,
+                0.0001520524003460437
+              ],
+              "paired_gain_over_standard_error": [
+                -15.333153749896692,
+                -5.473413902554986
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.006772312594970548,
+                -0.001201017654491976
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0002918966700529316,
+                0.00017605407071439902
+              ],
+              "paired_gain_over_standard_error": [
+                -23.201061504889655,
+                -6.821868131866761
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                -0.006045751848813158,
+                -0.0009699127632758486
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0005457782070088224,
+                0.00018573406119119898
+              ],
+              "paired_gain_over_standard_error": [
+                -11.077305343405603,
+                -5.2220511254389566
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -0.006262957378046139,
             -0.001001058713246239
@@ -2944,6 +3317,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.0004427032973424124,
             0.00018634842957079682
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.0004090266464348028,
+            0.00017128017741721387
           ]
         },
         "bump_0.010": {
@@ -2955,6 +3332,54 @@
             0.0005710430344352387,
             9.416724979835249e-05
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0007797591094244027,
+            0.0013292464149616504
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                -0.0022719132631498105,
+                -0.000332581120707498
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0002315795941256686,
+                0.0001187489992661737
+              ],
+              "paired_gain_over_standard_error": [
+                -9.810507146484323,
+                -2.800706723953299
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.001936586382825989,
+                -0.00028004971623052377
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00015999727551592767,
+                0.0002561707386447698
+              ],
+              "paired_gain_over_standard_error": [
+                -12.103870997685847,
+                -1.0932150865945185
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                -0.00205573423216715,
+                -0.0006170791456927227
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00022661252415365026,
+                8.096953418645235e-05
+              ],
+              "paired_gain_over_standard_error": [
+                -9.071582604910658,
+                -7.621127525221346
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -0.0020880779593809833,
             -0.0004099033275435815
@@ -2962,6 +3387,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.00016998710740667592,
             0.00018133188311327214
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.00020606313126508217,
+            0.00015196309069913196
           ]
         },
         "bump_0.020": {
@@ -2973,6 +3402,54 @@
             0.00030416228380913046,
             0.00018051925201146272
           ],
+          "rms_fold_standard_error_mean_over_seeds_dex": [
+            0.0006721435724931684,
+            0.0013695319739311601
+          ],
+          "paired_gain_per_seed": {
+            "20260924": {
+              "paired_gain_mean_dex": [
+                -5.618247468020532e-05,
+                -0.00013385949444491007
+              ],
+              "paired_gain_standard_error_dex": [
+                0.00024742484637119524,
+                0.00011102500017638656
+              ],
+              "paired_gain_over_standard_error": [
+                -0.22706884738616123,
+                -1.205669842217934
+              ]
+            },
+            "20260925": {
+              "paired_gain_mean_dex": [
+                -0.0006117343543105503,
+                -0.00024555157813394013
+              ],
+              "paired_gain_standard_error_dex": [
+                0.0002136357162093095,
+                0.00021017231709605856
+              ],
+              "paired_gain_over_standard_error": [
+                -2.8634460808566478,
+                -1.168334543419967
+              ]
+            },
+            "20260926": {
+              "paired_gain_mean_dex": [
+                -0.00019829144700378998,
+                -4.927147150967093e-05
+              ],
+              "paired_gain_standard_error_dex": [
+                5.227958326538729e-05,
+                0.00021208838176272482
+              ],
+              "paired_gain_over_standard_error": [
+                -3.7929041246790636,
+                -0.232315750161146
+              ]
+            }
+          },
           "paired_gain_mean_over_seeds_dex": [
             -0.00028873609199818185,
             -0.00014289418136284037
@@ -2980,6 +3457,10 @@
           "paired_gain_std_over_seeds_dex": [
             0.00028860812202071426,
             9.845145626087704e-05
+          ],
+          "paired_gain_standard_error_mean_over_seeds_dex": [
+            0.00017111338194863068,
+            0.00017776189967838997
           ]
         }
       }
@@ -3324,16 +3805,16 @@
     }
   },
   "timing_s": {
-    "load_population_tables_s": 0.08043670793995261,
-    "c1_s": 0.6530153749044985,
-    "c2_tracks_s": 4.020624459022656,
-    "c2a_s": 0.3231064169667661,
-    "c2b_s": 0.6865534590324387,
-    "load_post_quench_tables_s": 0.09921899996697903,
-    "c2c_regression_s": 49.14379237499088,
-    "c2c_figure_s": 0.7207057500490919,
-    "c3_tracks_s": 2.351472583017312,
-    "c3_s": 0.524282458005473,
-    "total_s": 58.603862292016856
+    "load_population_tables_s": 0.07917750009801239,
+    "c1_s": 0.6688957919832319,
+    "c2_tracks_s": 4.0564936669543386,
+    "c2a_s": 0.5180867089657113,
+    "c2b_s": 0.6535868329228833,
+    "load_post_quench_tables_s": 0.11290245805867016,
+    "c2c_regression_s": 49.89747566601727,
+    "c2c_figure_s": 0.7807672910857946,
+    "c3_tracks_s": 2.3440672919387,
+    "c3_s": 0.5072487089782953,
+    "total_s": 59.619755499996245
   }
 }

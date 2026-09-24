@@ -366,16 +366,28 @@ def figure_c2a(
                 extremum = track_extremum(
                     delay[window], series[index_key][window], C2A_EXTREMUM_KIND[index_key]
                 )
-                axis.scatter(
-                    [extremum["delay_gyr"]],
-                    [extremum["value"]],
-                    marker="*",
-                    s=90,
-                    color=color,
-                    edgecolor="black",
-                    linewidth=0.5,
-                    zorder=5,
-                )
+                if extremum["at_window_boundary"]:
+                    axis.scatter(
+                        [extremum["delay_gyr"]],
+                        [extremum["value"]],
+                        marker="*",
+                        s=110,
+                        facecolors="none",
+                        edgecolors=color,
+                        linewidth=1.6,
+                        zorder=5,
+                    )
+                else:
+                    axis.scatter(
+                        [extremum["delay_gyr"]],
+                        [extremum["value"]],
+                        marker="*",
+                        s=90,
+                        color=color,
+                        edgecolor="black",
+                        linewidth=0.5,
+                        zorder=5,
+                    )
                 summary[template][index_key][label] = extremum
             axis.axvline(0.0, color="0.7", ls=":", lw=1.0, zorder=0)
             axis.set_ylabel(AXIS_LABELS[index_key])
@@ -386,7 +398,21 @@ def figure_c2a(
             if row == 0 and col == 0:
                 legend_handles = axis.get_legend_handles_labels()
         axes[row, 0].set_title(TEMPLATE_LABELS[template], loc="left")
-    figure.legend(*legend_handles, loc="outside lower center", ncol=4, frameon=False, fontsize=8)
+    boundary_handle = plt.Line2D(
+        [],
+        [],
+        marker="*",
+        linestyle="none",
+        markersize=11,
+        markerfacecolor="none",
+        markeredgecolor="black",
+        markeredgewidth=1.4,
+        label="extremum at window edge (monotonic in window)",
+    )
+    handles, labels = legend_handles
+    handles = [*handles, boundary_handle]
+    labels = [*labels, boundary_handle.get_label()]
+    figure.legend(handles, labels, loc="outside lower center", ncol=4, frameon=False, fontsize=8)
     if out_path is not None:
         figure.savefig(out_path, dpi=150)
     plt.close(figure)
@@ -559,6 +585,20 @@ def compute_c2c_results(post_quench_tables, seeds=NOISE_SEEDS, n_folds=N_FOLDS):
     return results_by_seed
 
 
+TARGET_LABELS = {
+    "log10_time_since_quenching_gyr": "log10 time since quenching [Gyr]",
+    "log10_tau_q_gyr": "log10 tau_q [Gyr]",
+}
+C2C_ERROR_BAR_DEFINITION = (
+    "mean, over the 3 noise seeds, of the per-fold standard error of the RMS "
+    "(ddof 1 std of the 5 per-fold RMS values / sqrt(5))"
+)
+
+
+def fold_standard_error(rms_per_fold, n_folds):
+    return rms_per_fold.std(axis=0, ddof=1) / np.sqrt(n_folds)
+
+
 def paired_regression_difference(rms_per_fold, baseline_rms_per_fold, n_folds):
     diff = rms_per_fold - baseline_rms_per_fold
     mean = diff.mean(axis=0)
@@ -577,22 +617,45 @@ def summarize_c2c(results_by_seed, n_folds=N_FOLDS):
             rms_per_seed = np.array(
                 [results_by_seed[seed][label][key].mean(axis=0) for seed in seeds]
             )
+            fold_se_per_seed = np.array(
+                [fold_standard_error(results_by_seed[seed][label][key], n_folds) for seed in seeds]
+            )
             entry = {
                 "rms_mean_over_seeds_dex": rms_per_seed.mean(axis=0).tolist(),
                 "rms_std_over_seeds_dex": rms_per_seed.std(axis=0, ddof=1).tolist(),
+                "rms_fold_standard_error_mean_over_seeds_dex": fold_se_per_seed.mean(
+                    axis=0
+                ).tolist(),
             }
             if key != "no_bump":
+                per_seed = {}
                 gains = []
+                standard_errors = []
                 for seed in seeds:
                     mean_diff, standard_error = paired_regression_difference(
                         results_by_seed[seed][label][key],
                         results_by_seed[seed][label]["no_bump"],
                         n_folds,
                     )
+                    with np.errstate(divide="ignore", invalid="ignore"):
+                        gain_over_se = np.where(
+                            standard_error > 0, mean_diff / standard_error, np.nan
+                        )
+                    per_seed[seed] = {
+                        "paired_gain_mean_dex": mean_diff.tolist(),
+                        "paired_gain_standard_error_dex": standard_error.tolist(),
+                        "paired_gain_over_standard_error": gain_over_se.tolist(),
+                    }
                     gains.append(mean_diff)
+                    standard_errors.append(standard_error)
                 gains = np.array(gains)
+                standard_errors = np.array(standard_errors)
+                entry["paired_gain_per_seed"] = per_seed
                 entry["paired_gain_mean_over_seeds_dex"] = gains.mean(axis=0).tolist()
                 entry["paired_gain_std_over_seeds_dex"] = gains.std(axis=0, ddof=1).tolist()
+                entry["paired_gain_standard_error_mean_over_seeds_dex"] = standard_errors.mean(
+                    axis=0
+                ).tolist()
             summary[label][key] = entry
     return summary
 
@@ -604,24 +667,34 @@ def figure_c2c(summary, out_path):
         axis = axes[col]
         for label, color in C2C_COLORS.items():
             baseline_mean = summary[label]["no_bump"]["rms_mean_over_seeds_dex"][col]
-            baseline_std = summary[label]["no_bump"]["rms_std_over_seeds_dex"][col]
+            baseline_se = summary[label]["no_bump"]["rms_fold_standard_error_mean_over_seeds_dex"][
+                col
+            ]
             axis.axhline(baseline_mean, color=color, ls="--", lw=1.2, alpha=0.7)
             axis.axhspan(
-                baseline_mean - baseline_std, baseline_mean + baseline_std, color=color, alpha=0.08
+                baseline_mean - baseline_se, baseline_mean + baseline_se, color=color, alpha=0.08
             )
             means = [
                 summary[label][f"bump_{p:.3f}"]["rms_mean_over_seeds_dex"][col] for p in precisions
             ]
-            stds = [
-                summary[label][f"bump_{p:.3f}"]["rms_std_over_seeds_dex"][col] for p in precisions
+            standard_errors = [
+                summary[label][f"bump_{p:.3f}"]["rms_fold_standard_error_mean_over_seeds_dex"][col]
+                for p in precisions
             ]
             axis.errorbar(
-                precisions, means, yerr=stds, marker="o", capsize=3, color=color, label=label
+                precisions,
+                means,
+                yerr=standard_errors,
+                marker="o",
+                capsize=3,
+                color=color,
+                label=label,
             )
         axis.set_xlabel("bump precision [mag]")
         axis.set_ylabel("RMS error [dex]")
-        axis.set_title(target_name, fontsize=10)
+        axis.set_title(TARGET_LABELS[target_name], fontsize=10)
     axes[0].legend(frameon=False, fontsize=8, loc="best")
+    figure.suptitle(f"error bars: {C2C_ERROR_BAR_DEFINITION}", fontsize=8)
     if out_path is not None:
         figure.savefig(out_path, dpi=150)
     plt.close(figure)
@@ -886,7 +959,11 @@ def main():
                 "post_quench_window_gyr": list(POST_QUENCH_WINDOW_GYR),
                 "min_epoch_gyr": MIN_EPOCH_GYR,
                 "paired_gain_definition": "per-fold (bump set - no_bump) RMS difference on the "
-                "same folds; standard error = ddof 1 std over folds / sqrt(n_folds)",
+                "same folds; standard error = ddof 1 std over folds / sqrt(n_folds); reported "
+                "per seed as paired_gain_mean_dex/paired_gain_standard_error_dex/"
+                "paired_gain_over_standard_error, and across seeds as the mean of that "
+                "standard error plus the across-seed mean/std of the gain",
+                "figure_error_bar_definition": C2C_ERROR_BAR_DEFINITION,
             },
             "n_rows_by_template": n_rows_by_template,
             "rms_per_fold_dex_by_seed": _serialize_results_by_seed(results_by_seed),
