@@ -20,17 +20,19 @@ content, with their numbers in `final/final_summary.json`:
 | `index_planes_sfh_families` | Figure 5 below, appendix | identical to `fig5_robustness_planes` |
 | `age_sensitivity_and_classifier_gain` | new two-part figure | Figure 3 (a, b) and Figure 4 (a, b) recombined |
 
-The combined figure: (a) HdeltaA, the bump strength (minus the bump index) and D4000
-against log10(t - t_q) for tau_q = 0.1, 0.3, 1, 3 Gyr at t_q = 3 Gyr, AGB on, solar
-metallicity, each track scaled to [0, 1] over 0.05 < t - t_q < 6 Gyr so the three
-indices share one axis (line style = index, colour = tau_q; the unscaled ranges are in
-`final_summary.json`). HdeltaA is already falling by 0.2 to 0.3 Gyr, the bump peaks 0.5
-to 1.5 Gyr after t_q with the delay set by tau_q, and D4000 only rises. (b, c)
-Rapid-quenching completeness and purity against bump precision for AGB on, with the
-D4000-plus-HdeltaA baseline as a dashed line and its fold standard error as a band. No
-significance labels: the gain is consistent across folds but moderate in absolute
-terms, which is the honest reading for a three-feature test. Figures 2, 6 and 7 and the
-recovery panels of Figure 4 are kept as candidates only.
+The combined figure: (a-c) one panel per tau_q = 0.3, 1, 3 Gyr at t_q = 3 Gyr, AGB on,
+solar metallicity, sharing the log10(t - t_q) axis, with HdeltaA (blue), the H-minus
+bump strength (vermilion, minus the bump index) and D4000 (green), each track scaled to
+[0, 1] over 0.05 < t - t_q < 6 Gyr so the three indices share one axis (the unscaled
+ranges are in `final_summary.json`). Stars mark the HdeltaA and H-minus bump peaks: 0.25
+and 0.8 Gyr after t_q at tau_q = 0.3 Gyr, 0.2 and 1.25 Gyr at 1 Gyr, and at 3 Gyr the
+HdeltaA maximum sits at the window edge (open star) while the bump still peaks at 1.5
+Gyr; D4000 only rises. (d, e) Rapid-quenching completeness and purity against H-minus
+bump precision for AGB on, with the D4000-plus-HdeltaA baseline as a dashed line and
+its fold standard error as a band. No significance labels: the gain is consistent
+across folds but moderate in absolute terms, which is the honest reading for a
+three-feature test. Figures 2, 6 and 7 and the recovery panels of Figure 4 are kept as
+candidates only.
 
 ## Conventions
 

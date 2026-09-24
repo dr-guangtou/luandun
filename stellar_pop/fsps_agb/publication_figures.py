@@ -162,11 +162,13 @@ FINAL_STEMS = {
 }
 CLOCK_LOG_WINDOW_GYR = (0.05, 6.0)
 INDEX_LINESTYLES = {"hdelta_a": "-", "h_minus_bump": "--", "d4000": ":"}
+INDEX_COLORS = {"hdelta_a": "#0072B2", "h_minus_bump": "#D55E00", "d4000": "#009E73"}
 INDEX_SHORT_LABELS = {
     "hdelta_a": r"H$\delta_{\rm A}$",
     "h_minus_bump": r"H$^-$ bump strength",
     "d4000": "D4000",
 }
+COMBINED_TAU_Q_GYR = (0.3, 1.0, 3.0)
 
 PUBLICATION_RC = {
     "text.usetex": True,
@@ -1435,33 +1437,68 @@ def scaled_post_quench_tracks(result, agb_key, t_q, window=CLOCK_LOG_WINDOW_GYR)
 
 
 def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
-    """Left: the three indices against log10(t - t_q) for the tau_q family, AGB on, each
-    scaled to its own post-quench range. Right: rapid-quenching completeness and purity
-    against bump precision, AGB on, with the optical-only baseline."""
-    figure = plt.figure(figsize=(DOUBLE_COLUMN_IN, 3.3), layout="constrained")
-    grid = figure.add_gridspec(1, 4, width_ratios=(1, 1, 1, 1), wspace=0.08)
-    axis_clock = figure.add_subplot(grid[0, :2])
-    axes_gain = [figure.add_subplot(grid[0, 2]), figure.add_subplot(grid[0, 3])]
+    """Left: one panel per tau_q with the three indices against log10(t - t_q), AGB on,
+    each index scaled to its own post-quench range, with the HdeltaA and H-minus bump peaks
+    marked. Right: rapid-quenching completeness and purity against H-minus bump precision,
+    AGB on, with the optical-only baseline."""
+    figure = plt.figure(figsize=(DOUBLE_COLUMN_IN, 4.2), layout="constrained")
+    grid = figure.add_gridspec(len(COMBINED_TAU_Q_GYR), 4, width_ratios=(1, 1, 1, 1))
+    axes_clock = [figure.add_subplot(grid[0, :2])]
+    axes_clock += [
+        figure.add_subplot(grid[row, :2], sharex=axes_clock[0])
+        for row in range(1, len(COMBINED_TAU_Q_GYR))
+    ]
+    axes_gain = [figure.add_subplot(grid[:, 2]), figure.add_subplot(grid[:, 3])]
     on_template, on_agb = AGB_CONFIGS["agb_on"]["template"], AGB_CONFIGS["agb_on"]["agb"]
     t_q = FIDUCIAL["t_q_gyr"]
     summary = {"scaled_tracks": {}, "classifier": {}}
 
-    for tau_q, color in zip(CLOCK_TAU_Q_GYR, CLOCK_TAU_Q_COLORS, strict=True):
+    for axis, tau_q in zip(axes_clock, COMBINED_TAU_Q_GYR, strict=True):
         scaled = scaled_post_quench_tracks(clock_tracks[on_template][(t_q, tau_q)], on_agb, t_q)
-        summary["scaled_tracks"][f"tau_q_{tau_q:g}"] = {
-            key: scaled[f"{key}_range"] for key in INDEX_LINESTYLES
-        }
-        for key, linestyle in INDEX_LINESTYLES.items():
-            axis_clock.plot(scaled["log_delay"], scaled[key], color=color, ls=linestyle, lw=1.2)
-    axis_clock.set_xlabel(r"$\log_{10}(t - t_q)$ [Gyr]")
-    axis_clock.set_ylabel("index scaled to its post-quench range")
-    axis_clock.set_ylim(-0.04, 1.04)
-    axis_clock.set_xlim(
+        entry = {key: {"range": scaled[f"{key}_range"]} for key in INDEX_COLORS}
+        for key, color in INDEX_COLORS.items():
+            axis.plot(scaled["log_delay"], scaled[key], color=color, lw=1.3)
+            if key == "d4000":
+                continue
+            peak = int(np.argmax(scaled[key]))
+            at_edge = peak in (0, scaled[key].size - 1)
+            entry[key]["peak_delay_gyr"] = float(10.0 ** scaled["log_delay"][peak])
+            entry[key]["peak_at_window_edge"] = at_edge
+            axis.plot(
+                scaled["log_delay"][peak],
+                scaled[key][peak],
+                marker="*",
+                ms=9,
+                mfc="white" if at_edge else color,
+                mec=color,
+                mew=0.9,
+                ls="none",
+                zorder=6,
+            )
+        summary["scaled_tracks"][f"tau_q_{tau_q:g}"] = entry
+        axis.set_ylim(-0.06, 1.12)
+        axis.set_yticks((0.0, 0.5, 1.0))
+        axis.text(
+            1.02,
+            0.5,
+            rf"$\tau_q = {tau_q:g}$ Gyr",
+            transform=axis.transAxes,
+            rotation=270,
+            ha="left",
+            va="center",
+            fontsize=8,
+        )
+    axes_clock[-1].set_xlabel(r"$\log_{10}(t - t_q)$ [Gyr]")
+    axes_clock[1].set_ylabel("index scaled to its post-quench range")
+    axes_clock[0].set_xlim(
         np.log10(CLOCK_LOG_WINDOW_GYR[0]) - 0.03, np.log10(CLOCK_LOG_WINDOW_GYR[1]) + 0.03
     )
+    for axis in axes_clock[:-1]:
+        axis.tick_params(labelbottom=False)
+
     classifier = gains["agb_on"]["classifier"]["across_seeds"]
     precisions = np.array(BUMP_PRECISIONS)
-    point_color = "#0072B2"
+    point_color = "0.15"
     for axis, metric in zip(axes_gain, ("completeness", "purity"), strict=True):
         baseline = classifier["no_bump"][f"{metric}_mean_mean"]
         baseline_error = classifier["no_bump"][f"{metric}_std_mean"] / np.sqrt(N_FOLDS)
@@ -1488,17 +1525,24 @@ def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
         axis.set_xticklabels([f"{p:g}" for p in precisions])
         axis.set_xlim(0.0036, 0.028)
         axis.minorticks_off()
-        axis.set_xlabel("bump precision [mag]")
+        axis.set_xlabel(r"H$^-$ bump precision [mag]")
         axis.set_ylabel(f"rapid-quenching {metric}")
     handles = [
-        Line2D([], [], color="0.2", ls=linestyle, lw=1.2, label=INDEX_SHORT_LABELS[key])
-        for key, linestyle in INDEX_LINESTYLES.items()
+        Line2D([], [], color=color, lw=1.3, label=INDEX_SHORT_LABELS[key])
+        for key, color in INDEX_COLORS.items()
     ]
     handles += [
-        Line2D([], [], color=color, lw=1.2, label=rf"$\tau_q = {tau_q:g}$ Gyr")
-        for tau_q, color in zip(CLOCK_TAU_Q_GYR, CLOCK_TAU_Q_COLORS, strict=True)
-    ]
-    handles += [
+        Line2D(
+            [],
+            [],
+            marker="*",
+            ms=9,
+            mfc="0.5",
+            mec="0.3",
+            mew=0.9,
+            ls="none",
+            label="peak (open: at the window edge)",
+        ),
         Line2D(
             [],
             [],
@@ -1506,7 +1550,7 @@ def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
             marker="o",
             ms=4,
             lw=1.2,
-            label=r"(b, c) D4000, H$\delta_{\rm A}$ and bump",
+            label=r"(d, e) D4000, H$\delta_{\rm A}$ and H$^-$ bump",
         ),
         Line2D(
             [],
@@ -1514,7 +1558,7 @@ def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
             color="0.35",
             ls="--",
             lw=0.9,
-            label=r"(b, c) D4000 and H$\delta_{\rm A}$ only (band: fold standard error)",
+            label=r"(d, e) D4000 and H$\delta_{\rm A}$ only (band: fold standard error)",
         ),
     ]
     figure.legend(
@@ -1523,15 +1567,16 @@ def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
         ncol=3,
         fontsize=7.5,
         title=(
-            rf"AGB on; (a) tracks at $t_q = {t_q:g}$ Gyr, solar metallicity, "
+            rf"AGB on; (a--c) tracks at $t_q = {t_q:g}$ Gyr, solar metallicity, "
             r"delayed-$\tau$ rise with $\tau = t_q$"
         ),
         title_fontsize=7.5,
         columnspacing=1.6,
     )
-    panel_label(axis_clock, "(a)", x=0.02, y=0.97)
-    panel_label(axes_gain[0], "(b)", x=0.05, y=0.97)
-    panel_label(axes_gain[1], "(c)", x=0.05, y=0.97)
+    for axis, letter in zip(axes_clock, "abc", strict=True):
+        panel_label(axis, f"({letter})", x=0.07, y=0.95)
+    panel_label(axes_gain[0], "(d)", x=0.05, y=0.97)
+    panel_label(axes_gain[1], "(e)", x=0.05, y=0.97)
     save_figure(figure, out_dir, stem)
     return summary
 
@@ -1742,7 +1787,7 @@ def main():
         final_summary[FINAL_STEMS["fig5"]] = figure_5(
             tables_by_family, final_dir, stem=FINAL_STEMS["fig5"]
         )
-        clock_tracks = compute_clock_tracks(edges, CLOCK_TAU_Q_GYR, (FIDUCIAL["t_q_gyr"],))
+        clock_tracks = compute_clock_tracks(edges, COMBINED_TAU_Q_GYR, (FIDUCIAL["t_q_gyr"],))
         cached = cached_gains(summary, "exponential")
         gains = cached or compute_gains("exponential", stride=stride, seeds=seeds, with_log_z=True)
         final_summary[FINAL_STEMS["combined"]] = figure_combined(clock_tracks, gains, final_dir)
