@@ -1479,14 +1479,16 @@ def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
         axis.set_ylim(-0.06, 1.12)
         axis.set_yticks((0.0, 0.5, 1.0))
         axis.text(
-            1.02,
-            0.5,
+            0.05,
+            0.60,
             rf"$\tau_q = {tau_q:g}$ Gyr",
             transform=axis.transAxes,
-            rotation=270,
             ha="left",
             va="center",
-            fontsize=8,
+            fontsize=9.5,
+            fontweight="bold",
+            zorder=8,
+            bbox={"facecolor": "white", "edgecolor": "0.6", "lw": 0.5, "alpha": 0.9, "pad": 2.5},
         )
     axes_clock[-1].set_xlabel(r"$\log_{10}(t - t_q)$ [Gyr]")
     axes_clock[1].set_ylabel("index scaled to its post-quench range")
