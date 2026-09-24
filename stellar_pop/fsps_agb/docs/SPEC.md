@@ -316,6 +316,77 @@ the JSON keyed to the figure and, within it, to the numbers drawn on the page. A
 with every number traced to a JSON key, are in docs/ANALYSIS.md, "Supporting figures
 for the two conclusions".
 
+## Phase 5 — SFH-family sensitivity (2026-09-24)
+
+### Goal
+
+Test whether the Phase 3 and 4 conclusions depend on the assumed *shape* of the
+post-quench star formation rate, by rerunning the population with three alternative
+SFH families alongside the existing one, paired history by history with the same 2000
+draws, for both TP-AGB template configurations.
+
+### The four families
+
+All four share the delayed-tau rise `SFR(t) = (t/tau) exp(-t/tau)` for `t < t_q` and
+the same 2000 draws of `(t_q, tau_q, log_z)` (seed 20260924, unchanged since Phase 2):
+
+- `exponential` (existing, `tau = t_q`): `SFR(t >= t_q) = e^-1 exp(-(t - t_q)/tau_q)`.
+- `linear` (FSPS `sfh = 5` form, `tau = t_q`): `SFR(t >= t_q) = e^-1 max(0, 1 -
+  (t - t_q)/delta_q)`, `delta_q = 2 ln2 x tau_q` (same SFR half-life as `exponential`).
+- `truncation` (FSPS `sfh = 4` with `sf_trunc`, `tau = t_q`): `SFR(t >= t_q) = 0`.
+- `decoupled`: exponential quench with `tau_q` as drawn, but the rise `tau` independent
+  of `t_q`, log-uniform on [0.5, 5] Gyr, seed 20260926 (new `tau_gyr` column in
+  `draws.npz`). `SFR(t >= t_q) = (t_q/tau) exp(-t_q/tau) exp(-(t - t_q)/tau_q)`
+  (continuous at `t_q`).
+
+`sfh_model.py` dispatches all four through `sfh_family_cumulative`/
+`star_formation_rate_family`; `run_population.py` gained `--sfh-family` (default
+`exponential`, unchanged behavior and output path) and `--out-dir` now defaults to
+`output/population` for `exponential` and `output/population_<family>` otherwise (both
+also get an `_lw02` variant for the LW02 template configuration, same convention as
+Phase 3).
+
+### FSPS-native cross-checks
+
+FSPS's own `sfh = 5` (delayed-tau plus a linear ramp, `sf_slope`) and `sfh = 4` with
+`sf_trunc` (delayed-tau plus a hard cut) are close FSPS-native analogues of the
+`linear` and `truncation` families respectively; `cross_check_fsps_families.py`
+compares this project's integrator against a native FSPS population built with those
+`sfh` values at the same fiducial history (`t_q = 3.0`, `tau_q = 0.3` Gyr, solar Z), at
+6 epochs and the 3 index windows, and asserts a maximum relative flux difference below
+2 percent (docs/SPEC.md, "Validation"). Result:
+`output/single_csp/fsps_family_cross_check.json`, largest difference 2.69e-04 (0.027
+percent), also recording the `sfh = 5` `sf_slope` sign check. `exponential` and
+`decoupled` have no matching FSPS-native `sfh` value (a two-branch rise-then-decay, or
+a rise `tau` independent of the quench parameters, cannot be built from one native
+call); `exponential` was cross-checked in Phase 2 via FSPS's tabular `sfh = 3` instead
+(`output/single_csp/fsps_cross_check.json`); `decoupled` has no FSPS-native
+cross-check, only the internal `scipy.integrate.quad` and continuity checks in
+`tests/test_sfh_families.py`.
+
+### Outputs
+
+- `output/population_{linear,truncation,decoupled}[_lw02]/`: same layout as
+  `output/population[_lw02]/` (Phase 2) — `draws.npz`, `indices.npz`/`indices.csv`
+  (git-ignored), four `index_planes_*.png`, `summary.json` (now also carrying an
+  `sfh_family` provenance key).
+- `output/single_csp/fsps_family_cross_check.json`: the `linear`/`truncation`
+  cross-check and the `sf_slope` sign check.
+- `output/analysis/{s1_fiducial_families,s2_population_bands,s3_class_fractions,
+  s4_classifier_by_family,s5_recovery_by_family}.png`, `sfh_sensitivity_summary.json`:
+  the family-comparison figures and their numbers (`analysis_sfh_sensitivity.py`).
+
+### Code layout additions
+
+| File | Purpose |
+| ---- | ------- |
+| `sfh_model.py` | generalized cumulative-mass/SFR (rise `tau` separate from `t_q`), the four-family dispatch, `linear`/`truncation` closed forms, `draw_decoupled_tau`. |
+| `cross_check_fsps_families.py` | cross-check `linear`/`truncation` against FSPS's own `sfh = 5`/`sfh = 4`, and the `sf_slope` sign check. |
+| `analysis_sfh_sensitivity.py` | S1-S5: fiducial tracks, population bump bands, class fractions, classifier and SFH-recovery gain, per family and template. |
+
+Answers, with every number traced to a JSON key, are in docs/ANALYSIS.md, "Sensitivity
+to the star formation history model".
+
 ---
 
 ## Phase 1 — SSP sandbox (2026-08-31, complete)

@@ -1,5 +1,44 @@
 # TODO
 
+## Phase 5 — SFH-family sensitivity (2026-09-24)
+
+### Plan
+- [x] Task 1: `sfh_model.py` generalized cumulative-mass/SFR and the four-family
+      dispatch (`linear`, `truncation`, `decoupled` alongside the existing
+      `exponential`); `run_population.py` `--sfh-family`; FSPS-native cross-checks
+      (`cross_check_fsps_families.py`) against `sfh = 5` (`linear`) and `sfh = 4` with
+      `sf_trunc` (`truncation`), plus the `sf_slope` sign check.
+- [x] Task 2: six population runs (`linear`/`truncation`/`decoupled`, C3K and LW02) and
+      `analysis_sfh_sensitivity.py` (S1-S5: fiducial tracks, population bump bands,
+      class fractions, classifier and SFH-recovery gain, per family and template).
+- [x] Task 3: write-up (`docs/ANALYSIS.md` new section, `docs/SPEC.md` Phase 5
+      subsection, this Review, `README.md`, `docs/lessons.md`).
+
+### Review
+- The Phase 3 Q2 and Phase 4 Conclusion 2 findings survive across all four SFH
+  families: the LW02 bump gain is positive and multi-sigma, and the C3K gain is small
+  and sign-inconsistent, in every family (docs/ANALYSIS.md, "Sensitivity to the star
+  formation history model"). Phase 3 Q1 and Phase 4 Conclusion 1 were not retested —
+  both need an `agb0` (or `agb0`/`agb1`/`agb2`) comparison per family, and only `agb2`
+  was run for the three new families.
+- The rapid-quenching base rate is highly SFH-shape-dependent even though the
+  `(t_q, tau_q, log_z)` prior and the sample size are identical: 0.84 percent
+  (`decoupled`) to 6.38 percent (`truncation`), driven by how long a family's post-quench
+  SFR keeps R = sSFR(0-100 Myr)/sSFR(100 Myr-1 Gyr) below the 0.1 threshold.
+- `linear` and `truncation` were validated against FSPS's own `sfh = 5` and `sfh = 4`
+  (with `sf_trunc`) to 0.027 percent maximum relative flux difference, four orders of
+  magnitude under the 2 percent threshold
+  (`output/single_csp/fsps_family_cross_check.json`); `decoupled` has no FSPS-native
+  form and was validated only internally (`quad` integration, continuity at `t_q`).
+- S4 and S5 (the classifier and SFH-recovery tests) carry no `agb0` control per family:
+  the *pattern* (LW02 real, C3K not) replicates across families, but the *attribution*
+  to TP-AGB light specifically still rests on the one Phase 4 `agb0` control, measured
+  for the `exponential` family only.
+- One genuinely new, family-specific finding: for `truncation`, adding the bump gives
+  no `log10(tau_q)` recovery gain in either template (consistent with zero, both C3K
+  and LW02) — a hard cutoff's SFR is identically zero after `t_q` and carries no
+  `tau_q` information to begin with, unlike the other three families' post-quench SFR.
+
 ## Phase 4 — Surviving-mass sSFR and conclusion figures (2026-09-24)
 
 ### Plan

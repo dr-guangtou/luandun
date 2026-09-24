@@ -322,3 +322,61 @@ The population locus mainly tests which TP-AGB *template* is right, not how much
 TP-AGB light a galaxy has (the weight-only steps above are 4-6x smaller than the
 template-swap step); combining the three indices for SFH recovery is well supported
 for the LW02 templates and marginal-to-absent for the default C3K templates.
+
+## Phase 5 — SFH-family sensitivity
+
+Tests whether the Phase 3/4 conclusions depend on the assumed *shape* of the
+post-quench SFR, by rerunning the population with three alternative SFH families,
+paired history by history with the same 2000 draws (seed 20260924), for both TP-AGB
+template configurations:
+
+| Family | Post-quench SFR (`t >= t_q`) | FSPS-native cross-check |
+| ------ | ----------------------------- | ------------------------ |
+| `exponential` (existing) | `e^-1 exp(-(t - t_q)/tau_q)` | tabular `sfh = 3` (Phase 2) |
+| `linear` | `e^-1 max(0, 1 - (t - t_q)/delta_q)`, `delta_q = 2 ln2 tau_q` | `sfh = 5` (`sf_slope`) |
+| `truncation` | `0` | `sfh = 4` with `sf_trunc` |
+| `decoupled` | `(t_q/tau) exp(-t_q/tau) exp(-(t - t_q)/tau_q)`, `tau` drawn independently, log-uniform [0.5, 5] Gyr, seed 20260926 | none (internal `quad`/continuity checks only) |
+
+`sfh_model.py` dispatches all four; `run_population.py --sfh-family
+{exponential,linear,truncation,decoupled}` (default `exponential`, unchanged behavior
+and output path). `cross_check_fsps_families.py` validates `linear` and `truncation`
+against FSPS's own `sfh = 5`/`sfh = 4` (`output/single_csp/fsps_family_cross_check.json`).
+`analysis_sfh_sensitivity.py` (`--out-dir output/analysis`, `--pilot`) compares all
+four families' fiducial tracks, population bump bands, class fractions, rapid-quenching
+classifier and SFH-recovery regression (`output/analysis/sfh_sensitivity_summary.json`).
+
+Run order (after the Phase 2/3 steps above; six population runs, 2000 histories x 260
+epochs each, 456.5-488.0 s (about 7.6-8.2 min) per run on this laptop):
+
+    uv run python run_population.py --sfh-family linear
+    uv run python run_population.py --sfh-family linear --grid-dir output/ssp_grid_lw02 \
+        --out-dir output/population_linear_lw02
+    uv run python run_population.py --sfh-family truncation
+    uv run python run_population.py --sfh-family truncation --grid-dir output/ssp_grid_lw02 \
+        --out-dir output/population_truncation_lw02
+    uv run python run_population.py --sfh-family decoupled
+    uv run python run_population.py --sfh-family decoupled --grid-dir output/ssp_grid_lw02 \
+        --out-dir output/population_decoupled_lw02
+    uv run python cross_check_fsps_families.py
+    uv run python analysis_sfh_sensitivity.py --pilot
+    uv run python analysis_sfh_sensitivity.py        # 953.4 s (about 15.9 min), mostly the S4 classifier sweep
+
+Headline numbers (full derivation and JSON keys in `docs/ANALYSIS.md`, "Sensitivity to
+the star formation history model"; sources `output/analysis/sfh_sensitivity_summary.json`
+and `output/single_csp/fsps_family_cross_check.json`):
+
+| Quantity | decoupled | exponential | linear | truncation |
+| -------- | --------: | ----------: | -----: | ---------: |
+| Rapid-quenching base rate | 0.84% | 1.23% | 3.58% | 6.38% |
+| FSPS-native cross-check, max relative flux difference | n/a | 0.312% (tabular, Phase 2) | 0.023% | 0.027% |
+| kNN completeness gain, +bump 0.010 mag, C3K / LW02 (agb2, unbalanced) | -0.017 / +0.053 | -0.014 / +0.047 | +0.004 / +0.038 | +0.004 / +0.026 |
+| SFH-recovery gain, log10(time since quenching), 0.005 mag, C3K / LW02 [dex] | -0.0029 / -0.0105 | -0.0039 / -0.0183 | -0.0052 / -0.0171 | -0.0103 / -0.0313 |
+| SFH-recovery gain, log10(tau_q), 0.005 mag, C3K / LW02 [dex] | -0.0004 / -0.0098 | -0.0002 / -0.0129 | -0.0003 / -0.0043 | +0.0002 / +0.0002 |
+
+The Phase 3 Q2 and Phase 4 Conclusion 2 template split (LW02 real and multi-sigma, C3K
+small and sign-inconsistent) survives in every family; `truncation`'s `log10(tau_q)`
+gain is consistent with zero in both templates, since a hard cutoff's post-quench SFR
+carries no `tau_q` information. Phase 3 Q1 and Phase 4 Conclusion 1 were not retested
+(no `agb0` population was run for the three new families), and S4/S5 carry no `agb0`
+control per family, so the TP-AGB attribution (versus any third noisy feature) still
+rests on the Phase 4 `agb0` control measured for the `exponential` family alone.

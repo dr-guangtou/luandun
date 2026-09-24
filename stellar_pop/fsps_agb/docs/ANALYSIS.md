@@ -462,6 +462,243 @@ mag at log Z = +0.25). A metallicity correction to the bump derived assuming one
 template would move a measurement in the wrong direction if the other template is the
 one nature uses.
 
+## Sensitivity to the star formation history model (Phase 5)
+
+**Answer: the Phase 3 Q2 and Phase 4 Conclusion 2 findings survive across all four SFH
+families tested — the LW02 bump gain is positive and multi-sigma and the C3K gain is
+small and sign-inconsistent, in every family — but the base rates and absolute numbers
+they operate on change a lot with the assumed post-quench SFH shape (rapid-quenching
+base rate 0.84-6.38 percent across families). Phase 3 Q1 and Phase 4 Conclusion 1 were
+not retested here: both need an agb0-versus-agb2 comparison per family, and only agb2
+was run for the three new families, so nothing in this section repeats them. Because
+every family/template combination below is agb2 only, the specific attribution "the
+gain is TP-AGB light, not any third noisy feature" still rests on the one agb0 control
+run in Phase 3/4, for the `exponential` family alone.**
+
+### FSPS-native SFH forms, and which were used
+
+FSPS provides four native star-formation histories relevant here: `sfh = 1` (a single
+exponential decay), `sfh = 4` (the delayed-tau rise `(t/tau) exp(-t/tau)`, with
+`sf_trunc` as a hard cut to zero SFR), `sfh = 5` (the same delayed-tau rise plus a
+linear ramp after `sf_trunc`, slope set by `sf_slope`), and `sfh = 3` (a tabular SFH,
+an arbitrary `SFR(t)` table). None of them can express this project's `exponential`
+family (delayed-tau rise, then a *second*, independent exponential decay with its own
+`tau_q`) or the `decoupled` family (rise `tau` independent of the quench parameters) in
+one native call; that is why the original `exponential` family was cross-checked in
+Phase 2 via the tabular route (`sfh = 3`) instead of a native form
+(`output/single_csp/fsps_cross_check.json`, docs/SPEC.md "CSP assembly"). Phase 5 uses
+`sfh = 5` to cross-check the new `linear` family and `sfh = 4` with `sf_trunc` to
+cross-check the new `truncation` family (`cross_check_fsps_families.py`). `decoupled`
+has no FSPS-native counterpart at all and was not cross-checked against FSPS's own
+Fortran engine; it is validated only internally, against a `scipy.integrate.quad`
+numerical integration of its analytic cumulative-mass formula and a continuity check at
+`t_q` (`tests/test_sfh_families.py`).
+
+Cross-check numbers (`output/single_csp/fsps_family_cross_check.json`, fiducial
+`t_q = 3.0`, `tau_q = 0.3` Gyr, solar Z, `agb = 1`; 6 epochs x 3 index windows, each
+family): the largest relative flux difference inside any index window anywhere in the
+table is 2.69e-04 (0.027 percent), for `truncation` at 13.0 Gyr, D4000
+(`families.truncation.epochs."13.00".max_relative_flux_difference.d4000`); `linear`'s
+largest is 2.25e-04 (0.023 percent), also at 13.0 Gyr, D4000
+(`families.linear.epochs."13.00".max_relative_flux_difference.d4000`). Both are four
+orders of magnitude under the 2 percent validation threshold (docs/SPEC.md,
+"Validation"), and tighter than the original `exponential` family's own tabular
+cross-check (up to 0.312 percent at 1 Gyr, `output/single_csp/fsps_cross_check.json`).
+
+`sfh = 5`'s `sf_slope` sign was verified directly against FSPS rather than assumed: with
+`sf_slope = -1 / delta_q_gyr = -2.40449` (`delta_q_gyr = 2 ln2 x 0.3 = 0.41589`),
+`population.sfr` read from FSPS at `t_q = 3.0` and `t_q + delta_q/2 = 3.20795` gives a
+ratio of 0.4663 (below 1, declining); the opposite sign gives 1.339 (rising)
+(`fsps_family_cross_check.json`, `sf_slope_sign_check.{sf_slope_per_gyr,ratio,
+declining}`). This confirms the plan's expected sign with no flip needed; the ratio is
+not exactly 0.5 because of FSPS's own internal SFH time-grid discretization, not a bug
+in this project's code (task-1-report.md).
+
+### The four-family design
+
+All four families share the same delayed-tau rise, `SFR(t) = (t/tau) exp(-t/tau)` for
+`t < t_q`, and the same 2000 paired draws of `(t_q, tau_q, log_z)`, seed 20260924
+(unchanged from Phases 2-4), so any difference between families below is purely the
+assumed post-quench SFR shape, not a different sampling of the prior:
+
+- `exponential` (existing, rise `tau = t_q`): `SFR(t >= t_q) = e^-1 exp(-(t - t_q) /
+  tau_q)`.
+- `linear` (FSPS `sfh = 5` form, rise `tau = t_q`): `SFR(t >= t_q) = e^-1 max(0, 1 -
+  (t - t_q) / delta_q)`, with `delta_q = 2 ln2 x tau_q` chosen so the ramp has the same
+  SFR half-life as the `exponential` family's decay.
+- `truncation` (FSPS `sfh = 4` plus `sf_trunc`, rise `tau = t_q`): `SFR(t >= t_q) = 0`, a
+  hard cut.
+- `decoupled`: the rise e-folding `tau` is drawn independently of `t_q` and `tau_q`,
+  log-uniform on [0.5, 5] Gyr, seed 20260926 (a separate RNG stream from the draws'
+  seed, stored as the `tau_gyr` column of `draws.npz`); the quench SFR is continuous at
+  `t_q`: `SFR(t >= t_q) = (t_q/tau) exp(-t_q/tau) exp(-(t - t_q)/tau_q)`.
+
+For the `decoupled` family's Figure S1 fiducial track only (there is no natural single
+`tau` for one history), the implementer fixed `tau = sqrt(0.5 x 5.0) = 1.581` Gyr, the
+geometric mean of the population's draw range (`sfh_sensitivity_summary.json`,
+`decoupled_fiducial_tau_gyr`) — a documented choice, not a given, and it affects only
+the S1 picture: S2-S5 use the full 2000 `tau_gyr` draws.
+
+### Class fractions per family
+
+Counts and fractions over the same 482,000 rows (epochs >= 1 Gyr) used everywhere else
+in this document; identical between C3K and LW02 within a family because class
+assignment depends only on the SFH, not the TP-AGB template
+(`sfh_sensitivity_summary.json`, `s3_class_fractions.<family>.c3k`, `...lw02`):
+
+| family | star_forming | rapid_quenching | transitional | quiescent | rapid_quenching % | post-starburst |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| decoupled | 42,305 | 4,072 | 161,835 | 273,788 | 0.84 | 2,188 |
+| exponential | 102,100 | 5,907 | 126,762 | 247,231 | 1.23 | 3,159 |
+| linear | 102,394 | 17,262 | 45,296 | 317,048 | 3.58 | 16,000 |
+| truncation | 99,922 | 30,730 | 3,466 | 347,882 | 6.38 | 30,394 |
+
+The mechanism is the sharpness of the post-quench SFR drop: a sharper cutoff holds R =
+sSFR(0-100 Myr) / sSFR(100 Myr-1 Gyr) below the rapid-quenching threshold (R < 0.1) for
+longer, so the rapid-quenching share rises monotonically from 0.84 percent
+(`decoupled`, whose SFR after `t_q` still carries the smooth exponential tail of an
+independently-drawn, often slower `tau`) through 1.23 percent (`exponential`) and 3.58
+percent (`linear`, ramping to zero over `delta_q`) to 6.38 percent (`truncation`, SFR
+identically zero the instant SFR stops). `truncation` correspondingly empties
+`transitional` (3,466 rows versus `exponential`'s 126,762), since almost nothing sits
+in the intermediate-R regime once star formation has truly stopped; `decoupled`
+instead moves mass out of `star_forming` into `transitional` (21.18 percent down to
+8.78 percent), because many of its 2000 histories, with an independently drawn and
+often larger `tau`, are still rising or have only just finished rising at the 1 Gyr
+floor.
+
+### Does each earlier conclusion survive?
+
+**Phase 3 Q1 (agb0 versus agb2 separability): not retested.** Q1's central comparison
+is a paired agb0-versus-agb2 offset in bins of D4000/HdeltaA; S1-S5 fix `agb = 2` in
+every family and never build an `agb0` population for `linear`, `truncation` or
+`decoupled` (task-2-report.md, Concerns), so nothing here repeats it. The only
+indirectly relevant fact is that S1's fiducial track (all four families, `agb = 2`,
+both templates) converges to nearly the same D4000/HdeltaA/bump curve beyond about 1
+Gyr after quenching regardless of family (`s1_fiducial_families.png`) — i.e. there is
+no sign the SFH shape alone would move the *absolute* index values enough to flip which
+template gives a detectable offset — but this is an inference from a same-`agb`
+comparison, not a re-measurement of Q1's statistic, and should not be read as a
+confirmation.
+
+**Phase 3 Q2 (isolating rapid quenching): survives, and is directly retested by S4.**
+At the 0.010 mag bump precision (`agb2`, unbalanced;
+`sfh_sensitivity_summary.json`, `s4_classifier_by_family.<family>.<template>.
+bump_sigma300_0.010`): LW02 gives a positive completeness gain that is multi-sigma in
+every family and every one of the 3 noise seeds (per-seed
+`completeness_gain_over_standard_error` 4.19-12.83 across families: exponential
+6.74/5.88/5.23, linear 11.83/9.23/9.78, truncation 9.64/8.09/12.83, decoupled
+7.67/6.39/4.19), and a positive multi-sigma purity gain in every family too (per-seed
+`purity_gain_over_standard_error` 4.27-16.53). C3K's completeness gain is small and
+sign-inconsistent across families: negative and multi-sigma for `exponential`
+(-5.57/-4.86/-2.54 sigma, matching the original Q2 finding that the bump actively hurts
+C3K completeness) and `decoupled` (-3.12/-0.92/-3.16), but weakly positive for `linear`
+(0.77/1.24/2.6) and `truncation` (3.09/2.61/6.86); C3K purity gain straddles zero in
+every family (-2.32 to 3.4 sigma). So the qualitative Q2 pattern — a real, multi-sigma
+LW02 gain, and a small-to-negative, sign-inconsistent C3K gain — replicates in all four
+families, while the absolute numbers move with the base rate: no-bump completeness
+alone ranges from 0.319 (`decoupled`) to 0.846 (`truncation`)
+(`s4_classifier_by_family.<family>.<template>.no_bump.completeness_mean_mean_over_seeds`),
+because a sharper quench (fewer, more separable rapid-quenching epochs) or a slower one
+(more confusable ones) changes how well D4000 and HdeltaA alone already separate the
+class before the bump is even added.
+
+**Phase 4 Conclusion 1 (population locus tests template, not weight): not retested.**
+Like Q1, this needs multiple `agb` weights (`agb0`, `agb1`, `agb2`) per family, and
+only `agb2` was run for `linear`, `truncation` and `decoupled`
+(task-2-report.md, Concerns). Untested here.
+
+**Phase 4 Conclusion 2 (combining indices adds SFH-recovery information): survives, and
+is the most directly retested of the four.** S5 reruns the same k-nearest-neighbour
+regression (`log10(time since quenching)`, `log10(tau_q)`, `agb2`, 3 noise seeds, 5
+grouped folds) per family. At 0.005 mag
+(`sfh_sensitivity_summary.json`, `s5_recovery_by_family.<family>.<template>.
+bump_0.005`), the `log10(time since quenching)` gain is negative (an improvement) in
+every family and template, and LW02's gain is always several times C3K's (mean +/- std
+over 3 seeds, dex): exponential -0.0039 +/- 0.0004 (C3K) vs -0.0183 +/- 0.0004 (LW02);
+linear -0.0052 +/- 0.0005 vs -0.0171 +/- 0.0003; truncation -0.0103 +/- 0.0001 vs
+-0.0313 +/- 0.0003; decoupled -0.0029 +/- 0.0004 vs -0.0105 +/- 0.0005. Per-seed
+significance (`paired_gain_over_standard_error`) is many-sigma in every one of the 8
+family/template combinations: 5.9-103.5 sigma for C3K, 17.9-102.7 sigma for LW02 — a
+robust detection regardless of family or template.
+
+The `log10(tau_q)` target is where the SFH shape genuinely changes the answer, not just
+its size. For `truncation` the gain is consistent with zero in *both* templates
+(per-seed gain-over-SE -0.2 to +2.1 sigma; mean gain +0.0002 dex, C3K and LW02 alike) —
+a hard cutoff's post-quench SFR is identically zero and carries no `tau_q` information
+for the bump, or any other index, to recover, beyond what D4000/HdeltaA's own age clock
+already gives. This is a genuinely new, family-specific finding not visible in the
+Phase 4 single-family (`exponential`) test. `exponential`, `linear` and `decoupled`
+(whose post-quench SFR does depend on `tau_q`) all show a real, LW02-only `tau_q` gain:
+-0.0129 +/- 0.0002 (exponential), -0.0043 +/- 0.0003 (linear), -0.0098 +/- 0.0006
+(decoupled) dex, versus C3K gains of -0.0002 to -0.0004 dex that are each consistent
+with zero (per-seed gain-over-SE -0.3 to -4.4 sigma for exponential, -0.8 to -1.5 for
+linear, -1.3 to -1.7 for decoupled).
+
+**The caveat that applies to both Q2 and Conclusion 2 above: S4 and S5 carry no `agb0`
+control per family.** The Phase 3/4 finding that the small C3K gain is *not*
+TP-AGB-specific rests on one explicit `agb0`-control run: for Q2, the C3K agb0 change in
+completeness/purity is the same size as the agb2 change (docs/ANALYSIS.md, Q2 evidence
+above); for Conclusion 2, the C3K agb0 control gives a gain of the same size as C3K agb2
+on *both* SFH-recovery targets (-0.0063 +/- 0.0004 vs -0.0039 +/- 0.0003 dex for
+`log10(time since quenching)`, -0.0010 +/- 0.0002 vs -0.0002 +/- 0.0003 dex for
+`log10(tau_q)`; `output/analysis/conclusion_summary.json`,
+`c2_sfh_recovery.summary."C3K agb0 (control)".bump_0.005.paired_gain_mean_over_seeds_dex`
+versus `c2_sfh_recovery.summary."C3K agb2".bump_0.005.paired_gain_mean_over_seeds_dex`,
+the "C3K agb0 (control, no TP-AGB light)" row in the Conclusion 2 table above). Both
+controls were measured once, for the `exponential` family only; neither was rerun for
+`linear`, `truncation` or `decoupled` in this task. What Phase 5 therefore shows is that the
+*qualitative pattern* replicates across all four families — LW02 gain positive and
+multi-sigma, C3K gain small or sign-inconsistent — while the *attribution* of that
+pattern to TP-AGB light specifically, rather than to any third noisy feature, still
+rests entirely on the Phase 4 agb0 control measured for the `exponential` family alone.
+
+### What changed and what did not
+
+The population-level bump-vs-D4000 relationship (S2, agb2) is nearly family-invariant
+for **C3K** everywhere: the spread across the four families' 20-bin band medians is at
+most 0.0028 mag at any D4000 (`sfh_sensitivity_summary.json`,
+`s2_population_bands.c3k.<family>.band_median_mag`). For **LW02** the same statement
+needs a qualification, not the unqualified "nearly family-invariant" used for C3K: the
+four families' band medians agree closely below D4000 ~ 1.4 and above D4000 ~ 1.9
+(spread < 0.001 mag in the lowest two and highest four of the 20 bins,
+`s2_population_bands.lw02.<family>.band_median_mag`), but in the D4000 ~ 1.5-1.8 range
+`truncation` and `linear` sit systematically stronger (more negative) than
+`exponential` and `decoupled`: the spread across families peaks at 0.0178 mag at the
+D4000 = 1.543 bin (exponential -0.0568, linear -0.0672, truncation -0.0746, decoupled
+-0.0569 mag). Using the same three D4000 slices as Q1/Conclusion 1
+(`s2_population_bands.lw02.<family>.d4000_slices`), the [1.5, 1.7) slice shows the same
+pattern: exponential -0.0558, linear -0.0657, truncation -0.0713, decoupled -0.0557 mag
+(`...d4000_1.5_1.7.median_mag`) — linear about 0.010 mag and truncation about 0.016 mag
+stronger than exponential/decoupled. This tracks the class-fraction shift above: the
+rapid-quenching *locus* itself — where the density of rapid-quenching epochs peaks —
+sits at essentially the same place for all four families (D4000 1.625-1.654, bump
+-0.0739 to -0.0756 mag, `s2_population_bands.lw02.<family>.rq_locus_centroid`, and
+visually the same in `s2_population_bands.png`'s dotted density contours), but
+`truncation` and `linear` have 3-5x more rapid-quenching epochs overall (S3, above) to
+pull the local median down through that same locus.
+
+What did change with the SFH family: the class fractions (0.84-6.38 percent
+rapid-quenching, S3), and the absolute classifier/regression numbers they feed — the
+no-bump classifier completeness baseline alone spans 0.319-0.846 across families (S4),
+and the LW02 gain's absolute size varies by roughly a factor of 2 between families (S4,
+S5). What did not change: which template (C3K or LW02) gives a real, multi-sigma bump
+gain in the classifier and the SFH-recovery regression — the answer is LW02 in all four
+families — and, except for the specific D4000 ~ 1.5-1.8 / LW02 exception above, the
+shape of the population bump-vs-D4000/HdeltaA locus itself.
+
+### Figures (`output/analysis/`)
+
+- `s1_fiducial_families.png`: the fiducial history's SFR and the three indices versus
+  time since quenching, 4 families x 2 templates.
+- `s2_population_bands.png`: the population's 16-84 bump-vs-D4000 band per family
+  (agb2), with the rapid-quenching density contours.
+- `s3_class_fractions.png`: class fractions per family, C3K and LW02 panels.
+- `s4_classifier_by_family.png`: classifier completeness/purity gain (bump at 0.010 mag
+  minus optical-only) per family, C3K versus LW02.
+- `s5_recovery_by_family.png`: SFH-recovery RMS gain (bump minus no-bump) per family, at
+  0.005 and 0.010 mag, for `log10(time since quenching)` and `log10(tau_q)`.
+
 ## Caveats
 
 - In the default configuration, O-rich TP-AGB stars have hydrostatic C3K model
@@ -473,7 +710,13 @@ one nature uses.
   TP-AGB *template* is swapped than when the TP-AGB *weight* is doubled within either
   template ("Supporting figures for the two conclusions", Conclusion 1 above), and the
   SFH-recovery gain from adding the bump (Conclusion 2 above) is real for LW02 and not
-  clearly distinguishable from a no-TP-AGB control for C3K.
+  clearly distinguishable from a no-TP-AGB control for C3K. This C3K-versus-LW02 split
+  is not an artifact of the one delayed-tau-plus-exponential-quench SFH assumed
+  everywhere else: it replicates in the rapid-quenching classifier and the SFH-recovery
+  regression for three alternative post-quench SFH shapes too ("Sensitivity to the star
+  formation history model" above), though the no-TP-AGB (agb0) control that makes the
+  C3K non-detection precise was itself only rerun for the original `exponential`
+  family, not the three new ones.
 - The LW02 signal sits in the H2O bands next to the index side bands. Its strength
   depends on the pulsation phase of the observed stars and on how the telluric H2O was
   corrected in the empirical spectra, which also have gaps at about 1.34-1.42 and
@@ -495,7 +738,11 @@ one nature uses.
   sign of the metallicity trend is opposite between the two templates.
 - The population weights every epoch of every history equally, from 1 Gyr to 13 Gyr.
   Class fractions (1.23 percent rapid-quenching) are not those of a real sample, and
-  purities scale with the class mix.
+  purities scale with the class mix. This is also assumption-dependent: holding the
+  weighting scheme fixed and instead changing only the assumed post-quench SFR shape
+  moves the rapid-quenching base rate by a factor of 7.6, from 0.84 percent
+  (`decoupled`) to 6.38 percent (`truncation`) ("Sensitivity to the star formation
+  history model" above).
 - The bump index removes a tilted continuum. Most of the TP-AGB NIR flux excess (84
   percent in F_nu(1.6 micron)/F_nu(4200 A) at 1 Gyr) is invisible to it. A
   flux-calibrated NIR/optical ratio would respond far more strongly, but it is also

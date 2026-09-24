@@ -334,3 +334,43 @@
   the per-metallicity tracks directly rather than trusting the sign implied by a
   min/max-only summary; a metallicity correction built from one template would push a
   measurement the wrong way under the other.
+
+## 2026-09-24 (Phase 5: SFH-family sensitivity)
+- Timings: `sfh_model`/`cross_check_fsps_families` unit tests 0.64 s + 30.1 s (15 + 2
+  new tests); six population runs (`linear`/`truncation`/`decoupled`, C3K and LW02)
+  456.5-488.0 s each, run two at a time (one C3K/LW02 pair per family); the exponential
+  family's code path is byte-for-byte unchanged (verified with `np.array_equal`, not
+  just `np.isclose`), so its own runtime was not repeated. `analysis_sfh_sensitivity.py`
+  full run: 953.4 s (15.9 min), of which the S4 classifier sweep (reusing
+  `run_classifier`'s full 7-feature-set x 2-balance sweep even though only one
+  feature set reaches the summary JSON) is 98.5-106.1 s per (family, template) combo,
+  8 combos.
+- FSPS's `sfh = 5` `sf_slope` must be *negative* for a declining post-quench ramp
+  (verified by reading `population.sfr` directly at `t_q` and `t_q + delta_q/2`: ratio
+  0.4663 for `sf_slope = -1/delta_q_gyr`, 1.339 for the opposite sign). The ratio is not
+  exactly 0.5 because of FSPS's own internal SFH time-grid discretization, not a bug —
+  do not expect it to sharpen at finer epoch sampling.
+- Surprise: holding the `(t_q, tau_q, log_z)` prior and the 2000-draw sample fixed and
+  changing only the assumed post-quench SFR shape moves the rapid-quenching base rate
+  by a factor of 7.6 (0.84% `decoupled` to 6.38% `truncation`) — the SFH functional
+  form is a bigger lever on the class-fraction numbers than any of the TP-AGB template
+  or normalization choices tested in Phases 2-4. Mechanism: a sharper cutoff holds
+  R = sSFR(0-100 Myr)/sSFR(100 Myr-1 Gyr) below the 0.1 threshold longer.
+- Surprise: for the `truncation` family, adding the bump gives no `log10(tau_q)`
+  recovery gain in either template (consistent with zero, C3K and LW02 alike) — a hard
+  cutoff's SFR is identically zero after `t_q`, so it carries no `tau_q` information for
+  any index to recover in the first place. This is invisible in a single-family test
+  and only showed up once `truncation` was compared against the other three.
+- The population bump-vs-D4000 band is close to family-invariant for C3K everywhere,
+  but for LW02 only below D4000 ~ 1.4 and above ~ 1.9; in the D4000 ~ 1.5-1.8 range
+  `truncation`/`linear` sit up to 0.018 mag stronger (more negative) than
+  `exponential`/`decoupled`, because that D4000 range is where the extra
+  rapid-quenching epochs those two families produce actually sit. Worth checking a
+  claim of "nearly invariant" against the finer per-bin numbers, not just three coarse
+  slices, before writing it down unqualified.
+- S4/S5 do not carry an `agb0` control per family (only `agb2` was run for the three
+  new families); this was a literal reading of the task-1 brief, not an oversight, but
+  it means the TP-AGB attribution (as opposed to "any third noisy feature moves the
+  classifier/regression similarly") still rests on the single Phase 4 `agb0` control,
+  for the `exponential` family only — worth flagging explicitly in the write-up rather
+  than letting the four-family replication read as a stronger result than it is.
