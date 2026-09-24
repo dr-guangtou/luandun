@@ -313,3 +313,24 @@
   rapid-quenching 4,727 -> 5,907, post-starburst 2,845 -> 3,159, quiescent
   264,299 -> 247,231, star-forming 102,100 -> 102,100, transitional 110,874 -> 126,762.
   All moves are out of quiescent (1,180 to rapid-quenching, 15,888 to transitional).
+
+## 2026-09-24 (Phase 4 Task 3: write-up)
+- Separating "TP-AGB template" from "TP-AGB weight" in the population locus needed two
+  different pairs of prescriptions at the *same* weight (C3K agb1 -> LW02 agb1, both
+  agb = 1) versus the *same* template (C3K agb0 -> agb1, LW02 agb1 -> agb2); a naive
+  C3K-agb0-vs-LW02-agb2 comparison alone conflates the two. Once separated, the
+  weight-only step within C3K (-0.0026 to -0.0051 mag) is 4-6x smaller than either the
+  template-swap step or the weight-only step within LW02 (-0.016 to -0.027 mag both):
+  the population test is mostly a template test, not a TP-AGB-mass-fraction test.
+  Worth stating explicitly next time a "population can test TP-AGB" claim is written,
+  since the obvious reading (more TP-AGB light -> bigger signal) is only true for the
+  empirical LW02 spectra, not the default C3K ones.
+- A raw index track's plotted "extremum" marker can sit at a window boundary rather
+  than a true interior extremum (the C3K H-minus bump never turns over within +6 Gyr of
+  quenching in `c2_age_clocks.png`); always check the `at_window_boundary` flag before
+  quoting a "delay to extremum" number, not just the delay value itself.
+- The metallicity trend of the bump has opposite signs between TP-AGB templates (C3K:
+  weaker bump at higher Z; LW02: stronger bump at higher Z), confirmed by recomputing
+  the per-metallicity tracks directly rather than trusting the sign implied by a
+  min/max-only summary; a metallicity correction built from one template would push a
+  measurement the wrong way under the other.

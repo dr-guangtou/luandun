@@ -1,5 +1,41 @@
 # TODO
 
+## Phase 4 — Surviving-mass sSFR and conclusion figures (2026-09-24)
+
+### Plan
+- [x] Task 1: surviving-mass sSFR normalization, `agb = 1` population columns, rerun
+      both populations and dependent analyses, refresh `docs/ANALYSIS.md`/`README.md`.
+- [x] Task 2: `analysis_conclusion_figures.py` — the TP-AGB population test, the age
+      clocks and clock planes, the SFH-recovery test, and the metallicity-only figure.
+- [x] Task 3: write-up (`docs/ANALYSIS.md` new section, `docs/SPEC.md` Phase 4
+      subsection, this Review, `README.md`, `docs/lessons.md`).
+
+### Review
+- Conclusion 1 ("population locus tests the TP-AGB model") holds only in a narrower
+  form than stated: the locus separates TP-AGB *templates* (C3K vs LW02: -0.017 to
+  -0.027 mag at fixed D4000, several times the 0.01 mag yardstick) far more than it
+  separates TP-AGB *weight* within a template (C3K agb0 -> agb1: -0.0026 to -0.0051
+  mag, about half the yardstick); see docs/ANALYSIS.md, "Supporting figures for the two
+  conclusions".
+- Conclusion 2 ("combining the indices adds SFH information") is template-dependent:
+  the SFH-recovery regression gain from adding the bump is real and multi-sigma for
+  LW02 (-0.018 dex on log10(time since quenching) at 0.005 mag precision) but small and
+  statistically indistinguishable from a no-TP-AGB control for the default C3K
+  templates (-0.004 dex vs. -0.006 dex for the C3K agb0 control).
+- The raw C3K H-minus bump (not the agb0-to-agb2 delta) has no interior minimum within
+  +6 Gyr of quenching — the marker in `c2_age_clocks.png` sits at the window edge, not
+  a true extremum (`conclusion_summary.json`,
+  `c2_age_clocks.c3k.h_minus_bump.*.at_window_boundary: true`, every track).
+- Metallicity is a genuine confounder for the C3K bump (spread 0.008-0.015 mag,
+  comparable to the 0.004-0.011 mag TP-AGB delta at the same epochs) and a secondary
+  systematic for LW02 (spread 0.014-0.029 mag, 2-4x smaller than the 0.033-0.067 mag
+  TP-AGB delta); the sign of the metallicity trend is opposite between templates (C3K
+  bump weakens with increasing Z, LW02 strengthens).
+- Surviving-mass sSFR normalization moved rapid-quenching counts from 4,727 to 5,907
+  (base rate 0.98% -> 1.23%) with R unchanged; every number depending on it in
+  `docs/ANALYSIS.md` and `README.md` was refreshed and cross-checked against the
+  regenerated summary JSONs, not estimated.
+
 ## Phase 2 — CSP index tracks and populations (2026-09-24)
 
 ### Decisions from the interview

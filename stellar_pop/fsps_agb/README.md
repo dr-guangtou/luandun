@@ -278,3 +278,47 @@ Headline numbers (details and JSON keys in `docs/ANALYSIS.md`):
 | kNN completeness / purity, no bump (agb2, mean of 3 noise seeds) | 0.402 / 0.612 | 0.398 / 0.610 |
 | kNN completeness / purity, + bump at 0.01 mag (mean of 3 noise seeds) | 0.388 / 0.623 | 0.446 / 0.632 |
 | Contaminant epochs in previously pure cells | 0 of 144,600 | 0 of 144,600 |
+
+## Phase 4 — Surviving-mass sSFR and conclusion figures
+
+Both sSFR windows now normalize by the surviving stellar mass at `t_obs` (living stars
+plus remnants, FSPS `stellar_mass` at `agb = 1`) instead of the mass formed; R is
+unchanged, but the class thresholds move by 1.35-1.79x (rapid-quenching count: 4,727 ->
+5,907; base rate 0.98% -> 1.23%; docs/lessons.md, 2026-09-24 Phase 4 Task 1 entry).
+`ssp_grid.py --surviving-mass` builds `<grid-dir>/surviving_mass.npz`; `run_population.py`
+now also writes `agb = 1` index columns and a `surviving_mass_fraction` column.
+
+`analysis_conclusion_figures.py` (`--out-dir output/analysis`, `--pilot`) tests two
+conclusions proposed for the manuscript and adds a metallicity-only control, on top of
+the Q1/Q2 population:
+
+| Figure | Tests |
+| ------ | ----- |
+| `c1_tpagb_population_test.png` | population bump locus vs. TP-AGB template and weight (C3K agb0/agb1, LW02 agb1/agb2) |
+| `c2_age_clocks.png` | each index vs. time since quenching, per tau_q/t_q, both templates |
+| `c2_clock_planes.png` | the same tracks drawn in the three index planes |
+| `c2_sfh_recovery.png` | kNN regression RMS for log10(time since quenching) and log10(tau_q), with vs. without the bump |
+| `c3_metallicity_planes.png` | the fiducial SFH at four metallicities, isolating the metallicity effect from the TP-AGB effect |
+
+Run (after the Phase 2/3 steps above, both grids and populations built):
+
+    uv run python analysis_conclusion_figures.py --pilot
+    uv run python analysis_conclusion_figures.py        # about 1-1.5 min, mostly the C2c regression
+
+Headline numbers (full derivation and JSON keys in `docs/ANALYSIS.md`, "Supporting
+figures for the two conclusions"; source `output/analysis/conclusion_summary.json`):
+
+| Quantity | C3K | LW02 |
+| -------- | --- | ---- |
+| Population bump step, TP-AGB weight only (C3K agb0 -> agb1, D4000 in [1.3, 1.5)) | -0.0051 mag | n/a |
+| Population bump step, TP-AGB template swap at fixed weight (C3K agb1 -> LW02 agb1) | -0.0268 mag | (same pair) |
+| Population bump step, TP-AGB weight only, LW02 (agb1 -> agb2) | n/a | -0.0236 mag |
+| SFH-recovery gain from the bump at 0.005 mag, log10(time since quenching) | -0.0039 +/- 0.0003 dex | -0.0183 +/- 0.0001 dex |
+| SFH-recovery gain, C3K agb0 control (no TP-AGB light) | -0.0063 +/- 0.0004 dex | n/a |
+| C3K raw bump: interior minimum within +6 Gyr of quenching | none (window-edge marker) | 0.65-0.8 Gyr post-quench |
+| Bump metallicity spread vs. TP-AGB (agb0-to-agb2) delta, same post-quench epochs | comparable (0.008-0.015 vs. 0.004-0.011 mag) | delta 2-4x the spread (0.033-0.067 vs. 0.014-0.029 mag) |
+
+The population locus mainly tests which TP-AGB *template* is right, not how much
+TP-AGB light a galaxy has (the weight-only steps above are 4-6x smaller than the
+template-swap step); combining the three indices for SFH recovery is well supported
+for the LW02 templates and marginal-to-absent for the default C3K templates.

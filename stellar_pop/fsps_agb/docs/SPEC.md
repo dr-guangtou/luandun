@@ -280,6 +280,42 @@ Figures and `summary.json` under `output/analysis/`, and `docs/ANALYSIS.md`
 with one section per question stating the answer, the numbers and the
 figures that support it.
 
+## Phase 4 — Surviving-mass sSFR and conclusion figures (2026-09-24)
+
+### sSFR convention change
+
+Both sSFR windows now normalize by the surviving stellar mass at `t_obs` (living stars
+plus remnants) instead of the mass formed. `ssp_grid.py --surviving-mass` stores FSPS
+`StellarPopulation.stellar_mass` (`tage = 0`, `agb = 1`, remnants on) per solar mass
+formed for the 4 metallicities x 107 ages in `<grid-dir>/surviving_mass.npz`;
+`load_ssp_grid` attaches it, and `csp_integrate.surviving_mass_per_epoch` is the epoch
+weight matrix times the fraction interpolated in log Z. `agb = 1` is used because FSPS
+rescales the TP-AGB IMF weights by `agb` before summing the mass; the fraction is
+above 1 below about 2 Myr (youngest MIST isochrones lack low-mass stars) but that age
+range carries negligible mass and lies well below the `epoch_gyr >= 1.0` floor used by
+every population statistic (docs/ANALYSIS.md, Setup). R, the ratio of the two windows,
+is unchanged (a per-epoch normalizer cancels); the absolute thresholds that define the
+sSFR classes move by 1.35-1.79x, shifting counts out of quiescent into rapid-quenching
+and transitional (docs/lessons.md, 2026-09-24 Phase 4 Task 1 entry).
+
+`run_population.py` also emits `agb = 1` index columns (`d4000_agb1`, `hdelta_a_agb1`,
+`h_minus_bump_sigma300_agb1`, `h_minus_bump_r100_agb1`) and a per-epoch
+`surviving_mass_fraction` column, both used by the conclusion figures below.
+
+### Conclusion figures
+
+`analysis_conclusion_figures.py` (`--out-dir output/analysis`, `--pilot`) tests two
+conclusions proposed for the manuscript against the Phase 3 population and fiducial
+track machinery: (1) that the population-level bump locus can test the TP-AGB model,
+and (2) that combining the three indices adds SFH/quenching information beyond D4000
+and HdeltaA alone. A third figure isolates metallicity by tracing the fiducial SFH at
+four metallicities. Five figures and one summary JSON
+(`output/analysis/{c1_tpagb_population_test,c2_age_clocks,c2_clock_planes,
+c2_sfh_recovery,c3_metallicity_planes}.png`, `conclusion_summary.json`), each entry in
+the JSON keyed to the figure and, within it, to the numbers drawn on the page. Answers,
+with every number traced to a JSON key, are in docs/ANALYSIS.md, "Supporting figures
+for the two conclusions".
+
 ---
 
 ## Phase 1 — SSP sandbox (2026-08-31, complete)

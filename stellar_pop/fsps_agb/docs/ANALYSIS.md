@@ -32,6 +32,15 @@ convention had no return fraction. R, the ratio of the two windows, is unchanged
 this (a per-epoch normalizer cancels), but the absolute sSFR thresholds that define the
 classes see values 1.35-1.79 times larger than under the old convention.
 
+The surviving-mass fraction is above 1 (more stars "return" than were formed) for the
+youngest SSP ages, crossing 1 between log(age/yr) = 6.30 and 6.35, i.e. about 2.0-2.2
+Myr (`output/ssp_grid/surviving_mass.npz`; solar Z, agb = 1 fraction 1.0028 at
+10^6.30 yr, 0.9960 at 10^6.35 yr). This is an artifact of the youngest MIST isochrones
+lacking low-mass stars (lowest initial mass 2.6 Msun at 10^5 yr), not a physical return
+of mass. It carries negligible mass and does not affect any population statistic here,
+which is restricted to `epoch_gyr >= 1.0`: the per-epoch surviving fraction there is
+0.559-0.743 (docs/lessons.md, 2026-09-24 Phase 4 Task 1 entry).
+
 ## Q1. Can a model with TP-AGB contribution be told apart from one without?
 
 **Answer: conditional on the TP-AGB templates. With the default C3K templates, no: agb 0
@@ -290,13 +299,148 @@ Figures (`output/analysis/`):
   the noise-free purity maps with contaminants added. Red outlines mark the cells that
   had purity > 0.5 before.
 
+## Supporting figures for the two conclusions
+
+`analysis_conclusion_figures.py` (`--out-dir output/analysis`, `--pilot` for a
+subsampled dry run) tests two conclusions proposed for the manuscript, plus a
+metallicity-only control, on top of the Q1/Q2 population (2000 histories, 482,000
+epochs at `epoch_gyr >= 1.0`, both TP-AGB template configurations). Every number below
+is in `output/analysis/conclusion_summary.json`, keyed per figure
+(`c1_tpagb_population_test`, `c2_age_clocks`, `c2_clock_planes`, `c2_sfh_recovery`,
+`c3_metallicity_planes`).
+
+### Conclusion 1: "the inclusion of AGB makes a huge difference to the H-minus bump, so at the population level we can use it to test the AGB/TP-AGB model"
+
+**The figures support a narrower claim than the one stated: the population bump locus
+separates TP-AGB *templates*, not TP-AGB *weight*.** Figure `c1_tpagb_population_test.png`
+draws four prescriptions on the same population — C3K agb0, C3K agb1, LW02 agb1, LW02
+agb2 — as 16-84 percentile bands of the bump in 20 bins of D4000 (and separately of
+HdeltaA), plus histograms in three D4000 slices. In the D4000 in [1.3, 1.5) slice, the
+median offset between neighbouring prescriptions is
+(`c1_tpagb_population_test.slices.d4000_1.3_1.5.neighbouring_separations`):
+
+| pair | what changes | delta median [mag] | / wider-band half-width | / 0.01 mag yardstick |
+| --- | --- | ---: | ---: | ---: |
+| C3K agb0 -> agb1 | TP-AGB weight, C3K template | -0.0051 | -1.05 | -0.51 |
+| C3K agb1 -> LW02 agb1 | TP-AGB template, fixed weight | -0.0268 | -6.32 | -2.68 |
+| LW02 agb1 -> agb2 | TP-AGB weight, LW02 template | -0.0236 | -3.91 | -2.36 |
+
+The same ordering holds in the other two D4000 slices, [1.5, 1.7) and [1.7, 1.9)
+(`c1_tpagb_population_test.slices.d4000_{1.5_1.7,1.7_1.9}.neighbouring_separations`):
+the weight step within C3K is always smallest (-0.0026 to -0.0051 mag, 0.6-1.1
+half-widths, 0.3-0.5 of the yardstick); the template step (C3K agb1 -> LW02 agb1) and
+the weight step within LW02 (LW02 agb1 -> agb2) are both several times larger (-0.016
+to -0.027 mag, 2.2-6.3 half-widths, 1.6-2.7 yardsticks).
+
+So doubling the TP-AGB weight inside the C3K template configuration moves the
+population locus by about half the 0.01 mag yardstick, below what a bump measurement
+at that precision could resolve. Swapping to the empirical LW02 template at the fixed
+fiducial weight (agb = 1) moves the locus several times further than doubling the
+TP-AGB weight does. What the population locus actually tests is which TP-AGB spectral
+template is closer to nature (C3K hydrostatic models vs. LW02 empirical spectra) — the
+same template dependence already reported for Q1 above — far more than "how much"
+TP-AGB light a galaxy has. A population-level bump measurement could plausibly rule the
+C3K hydrostatic templates in or out; it cannot, by itself, constrain the TP-AGB mass
+fraction, because that quantity barely moves the locus within either template.
+
+### Conclusion 2: "the three indices have different age sensitivities, so by combining them we could gain more understanding about the SFH and the quenching process"
+
+**The qualitative premise (different clocks) holds; the practical payoff (combining
+gains information) is template-dependent — real for the empirical LW02 templates,
+marginal-to-absent for the default C3K templates.**
+
+Age clocks (Figure `c2_age_clocks.png`: tau_q in {0.1, 0.3, 1, 3} Gyr at fixed t_q = 3
+Gyr, and t_q in {1.5, 3, 4.5} Gyr at fixed tau_q = 0.3 Gyr, solar Z, agb = 2,
+sigma300). HdeltaA is a fast clock, peaking 0.2-0.3 Gyr after quenching in both
+templates with little shift across the tau_q/t_q family
+(`c2_age_clocks.{c3k,lw02}.hdelta_a.*.delay_gyr`). D4000 has no interior extremum
+within the +6 Gyr window in either template — every track's `at_window_boundary` flag
+is true (`c2_age_clocks.{c3k,lw02}.d4000.*.at_window_boundary`) — so alone it only says
+"quenched," not "how long ago," beyond the coarse rising trend. The raw H-minus bump
+(as opposed to the agb0-to-agb2 delta) has an interior minimum only for LW02, 0.65-0.8
+Gyr after quenching depending on tau_q and t_q
+(`c2_age_clocks.lw02.h_minus_bump.*.delay_gyr`, `at_window_boundary: false` in every
+track); **for C3K the raw bump has no interior minimum in the +6 Gyr window at all** —
+every C3K `h_minus_bump` track's `at_window_boundary` is true
+(`c2_age_clocks.c3k.h_minus_bump.*.at_window_boundary`), so the marker plotted in that
+figure sits at the window edge, not at a true extremum: population aging outweighs the
+small C3K TP-AGB signal across the whole window. Figure `c2_clock_planes.png` shows the
+same picture qualitatively: in the D4000-HdeltaA plane the tau_q and t_q families
+collapse onto nearly the same locus for both templates, but in the bump-involving
+planes the LW02 tracks fan out into visibly different loops while the C3K tracks stay
+compressed.
+
+The quantitative test (Figure `c2_sfh_recovery.png`): a k = 25 nearest-neighbour
+regression (cKDTree, 5 folds grouped by history, 3 noise seeds) predicts log10(time
+since quenching) and log10(tau_q) for 240,000 post-quench epochs (0 < t - t_q < 6 Gyr,
+epoch >= 1 Gyr) from (D4000, HdeltaA) alone versus with the bump added at three
+precisions. The paired gain from adding the bump at 0.005 mag
+(`c2_sfh_recovery.summary.<template>.bump_0.005.paired_gain_mean_over_seeds_dex`, order
+`[log10(t - t_q), log10(tau_q)]`; `..._std_over_seeds_dex` alongside):
+
+| template | log10(t - t_q) gain [dex] | log10(tau_q) gain [dex] |
+| --- | ---: | ---: |
+| LW02 agb2 | -0.0183 +/- 0.0001 | -0.0129 +/- 0.0002 |
+| C3K agb2 | -0.0039 +/- 0.0003 | -0.0002 +/- 0.0003 |
+| C3K agb0 (control, no TP-AGB light) | -0.0063 +/- 0.0004 | -0.0010 +/- 0.0002 |
+
+For LW02 the gain is large, precision-dependent, and many seed-standard-deviations from
+zero for both targets. For C3K the gain on time-since-quenching is small but nonzero
+(about 13 seed-standard-deviations from zero); the gain on tau_q is statistically
+indistinguishable from zero. Critically, the **C3K agb0 control** — which has no
+TP-AGB light by construction — shows a gain of the same size as C3K agb2 on both
+targets, so the small C3K gain is not obviously a TP-AGB effect at all; it more likely
+reflects age or metallicity information that any bump-shaped index carries, TP-AGB or
+not. Conclusion 2 is well supported for the LW02 templates and not clearly supported
+for the default C3K templates, reported as-is whichever way it goes.
+
+### Metallicity as a confounder (Figure `c3_metallicity_planes.png`)
+
+The fiducial SFH (t_q = 3, tau_q = 0.3 Gyr, agb = 2) traced at four metallicities (log
+Z = -0.5, -0.25, 0, +0.25) isolates the metallicity effect from the TP-AGB effect. The
+bump's metallicity spread and the TP-AGB (agb0-to-agb2) delta at the same epochs
+(`c3_metallicity_planes.<template>.spread_across_metallicity.h_minus_bump.<epoch>` and
+`...agb0_to_agb2_delta.h_minus_bump.<epoch>.mean`):
+
+| epoch (since t_q) | C3K spread [mag] | C3K TP-AGB delta (mean) [mag] | LW02 spread [mag] | LW02 TP-AGB delta (mean) [mag] |
+| --- | ---: | ---: | ---: | ---: |
+| +0.0 Gyr | 0.0154 | -0.0091 | 0.0144 | -0.0523 |
+| +0.5 Gyr | 0.0115 | -0.0111 | 0.0285 | -0.0674 |
+| +1.0 Gyr | 0.0105 | -0.0097 | 0.0288 | -0.0650 |
+| +2.0 Gyr | 0.0092 | -0.0064 | 0.0242 | -0.0471 |
+| +5.0 Gyr | 0.0080 | -0.0039 | 0.0142 | -0.0331 |
+
+For C3K, the metallicity spread (0.008-0.015 mag) is comparable to, and at every epoch
+larger in magnitude than, the TP-AGB delta (0.004-0.011 mag): metallicity is a genuine
+confounder for a C3K-based TP-AGB test, since an observed bump shift of this size could
+equally be a metallicity difference. For LW02, the TP-AGB delta (0.033-0.067 mag) is
+2-4 times the metallicity spread (0.014-0.029 mag) at every epoch, so metallicity is a
+secondary systematic there.
+
+The direction of the metallicity trend is also opposite between templates. Recomputing
+the per-metallicity tracks directly (`analysis_conclusion_figures.compute_c3_tracks`,
+consistent with the `min`/`max` values in
+`c3_metallicity_planes.<template>.spread_across_metallicity.h_minus_bump`) shows the
+C3K bump getting **weaker** (less negative) with increasing metallicity at every one of
+the five marker epochs (e.g. at t_q: -0.0121 mag at log Z = -0.5 rising to +0.0033 mag
+at log Z = +0.25), while the LW02 bump gets **stronger** (more negative) with
+increasing metallicity (e.g. at t_q: -0.0417 mag at log Z = -0.5 deepening to -0.0561
+mag at log Z = +0.25). A metallicity correction to the bump derived assuming one
+template would move a measurement in the wrong direction if the other template is the
+one nature uses.
+
 ## Caveats
 
 - In the default configuration, O-rich TP-AGB stars have hydrostatic C3K model
   spectra. Real TP-AGB stars are pulsating, extended, and dusty, with H2O absorption
   that hydrostatic models underpredict. The LW02 empirical spectra give a bump about 5
   times larger. The Q1 answer and the bump part of Q2 depend on which template is
-  right, and this analysis cannot decide that.
+  right, and this analysis cannot decide that. The Phase 4 conclusion figures make the
+  same point a second way: the population bump locus moves several times more when the
+  TP-AGB *template* is swapped than when the TP-AGB *weight* is doubled within either
+  template ("Supporting figures for the two conclusions", Conclusion 1 above), and the
+  SFH-recovery gain from adding the bump (Conclusion 2 above) is real for LW02 and not
+  clearly distinguishable from a no-TP-AGB control for C3K.
 - The LW02 signal sits in the H2O bands next to the index side bands. Its strength
   depends on the pulsation phase of the observed stars and on how the telluric H2O was
   corrected in the empirical spectra, which also have gaps at about 1.34-1.42 and
@@ -310,7 +454,12 @@ Figures (`output/analysis/`):
   in the optical plane.
 - Four metallicities, one Z per history, interpolated linearly in log Z. At fixed
   D4000 the population bump scatter is mostly metallicity (Phase 2 review), so a
-  metallicity spread within galaxies would widen the bump planes.
+  metallicity spread within galaxies would widen the bump planes. The Phase 4
+  metallicity-only figure quantifies this for the post-quench bump specifically
+  ("Supporting figures for the two conclusions", "Metallicity as a confounder"
+  above): the metallicity spread is comparable to the TP-AGB delta for C3K (a genuine
+  confounder) and 2-4 times smaller than it for LW02 (a secondary systematic), and the
+  sign of the metallicity trend is opposite between the two templates.
 - The population weights every epoch of every history equally, from 1 Gyr to 13 Gyr.
   Class fractions (1.23 percent rapid-quenching) are not those of a real sample, and
   purities scale with the class mix.
