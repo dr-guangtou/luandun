@@ -35,6 +35,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
+from matplotlib.ticker import MaxNLocator
 from scipy.ndimage import gaussian_filter
 
 from analysis_conclusion_figures import (
@@ -74,8 +75,18 @@ def population_dir(family, template):
 BUMP_PRODUCT = "r100"
 OPTICAL_PRODUCT = "sigma300"
 AGB_CONFIGS = {
-    "agb_off": {"template": "c3k", "agb": "agb0", "label": "AGB off (C3K, agb = 0)"},
-    "agb_on": {"template": "lw02", "agb": "agb2", "label": "AGB on (LW02, agb = 2)"},
+    "agb_off": {
+        "template": "c3k",
+        "agb": "agb0",
+        "label": "AGB off (C3K, agb = 0)",
+        "short_label": "AGB off",
+    },
+    "agb_on": {
+        "template": "lw02",
+        "agb": "agb2",
+        "label": "AGB on (LW02, agb = 2)",
+        "short_label": "AGB on",
+    },
 }
 CONFIG_COLORS = {"agb_off": "#0072B2", "agb_on": "#D55E00"}
 CONFIG_ORDER = ("agb_off", "agb_on")
@@ -91,17 +102,14 @@ D4000_SLICE = (1.3, 1.5)
 BAND_BINS = 20
 HIST_BINS = 40
 
-TAU_Q_TERCILES_GYR = ((0.1, 0.3), (0.3, 1.0), (1.0, 3.0))
-TAU_Q_TERCILE_COLORS = tuple(plt.get_cmap("viridis")(level) for level in (0.15, 0.55, 0.9))
-RAPID_QUENCHING_COLOR = plt.get_cmap("Blues")(0.72)
-RECENT_QUENCH_WINDOW_GYR = (0.0, 2.0)
+RAPID_QUENCHING_COLOR = "#d62728"
 POPULATION_LEVELS = (0.68, 0.95, 0.995)
 CLASS_LEVELS = (0.68, 0.95)
 DENSITY_BINS = 90
 DENSITY_SMOOTH_BINS = 1.2
 
 LOG_Z_TRACKS = (-0.5, -0.25, 0.0, 0.25)
-LOG_Z_TRACK_COLORS = tuple(plt.get_cmap("Reds")(level) for level in (0.4, 0.58, 0.76, 0.95))
+LOG_Z_TRACK_COLORS = tuple(plt.get_cmap("Blues")(level) for level in (0.4, 0.55, 0.7, 0.85))
 TRACK_MARKER_OFFSETS_GYR = (0.0, 0.5, 1.0, 2.0, 5.0)
 TRACK_MARKER_SHAPES = ("o", "s", "^", "D", "P")
 TRACK_WINDOW_GYR = (0.0, 5.0)
@@ -148,22 +156,32 @@ AXIS_LABELS = {
 FIGURE_IDS = ("fig1", "fig2", "fig3", "fig4", "fig5", "fig6", "fig7")
 
 PUBLICATION_RC = {
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman"],
+    "mathtext.fontset": "cm",
     "font.size": 8,
     "axes.labelsize": 9,
     "axes.titlesize": 9,
     "xtick.labelsize": 7.5,
     "ytick.labelsize": 7.5,
     "legend.fontsize": 7,
-    "axes.linewidth": 0.8,
+    "axes.linewidth": 0.7,
     "axes.grid": False,
     "xtick.direction": "in",
     "ytick.direction": "in",
     "xtick.top": True,
     "ytick.right": True,
-    "xtick.major.size": 3.5,
-    "ytick.major.size": 3.5,
-    "xtick.minor.visible": True,
-    "ytick.minor.visible": True,
+    "xtick.major.size": 3.0,
+    "ytick.major.size": 3.0,
+    "xtick.major.width": 0.6,
+    "ytick.major.width": 0.6,
+    "xtick.minor.size": 1.6,
+    "ytick.minor.size": 1.6,
+    "xtick.minor.width": 0.4,
+    "ytick.minor.width": 0.4,
+    "xtick.minor.visible": False,
+    "ytick.minor.visible": False,
     "lines.linewidth": 1.2,
     "legend.frameon": False,
     "savefig.dpi": 300,
@@ -303,6 +321,8 @@ def set_plane_axes(axis, x_key, y_key, ranges, xlabel=True, ylabel=True):
     axis.set_xlim(*ranges[x_key])
     low, high = ranges[y_key]
     axis.set_ylim((high, low) if y_key == "h_minus_bump" else (low, high))
+    axis.xaxis.set_major_locator(MaxNLocator(nbins=4))
+    axis.yaxis.set_major_locator(MaxNLocator(nbins=4))
     if xlabel:
         axis.set_xlabel(AXIS_LABELS[x_key])
     if ylabel:
@@ -340,31 +360,19 @@ def _draw_metallicity_tracks(axes, tracks, agb_key, summary):
             for key in ("d4000", "hdelta_a", "h_minus_bump")
         }
         for axis, (x_key, y_key) in zip(axes, PLANES, strict=True):
-            axis.plot(series[x_key][window], series[y_key][window], color=color, lw=1.1, zorder=6)
+            axis.plot(series[x_key][window], series[y_key][window], color=color, lw=0.9, zorder=6)
             for shape, index in zip(TRACK_MARKER_SHAPES, marker_indices, strict=True):
                 axis.plot(
                     series[x_key][index],
                     series[y_key][index],
                     marker=shape,
-                    ms=4.2,
+                    ms=3.6,
                     mfc=color,
-                    mec="black",
-                    mew=0.4,
+                    mec="0.25",
+                    mew=0.35,
                     ls="none",
                     zorder=7,
                 )
-
-
-def _tau_q_tercile_masks(table):
-    """Recently quenched epochs (RECENT_QUENCH_WINDOW_GYR after t_q) split by tau_q."""
-    delay = table["time_since_quenching_gyr"]
-    recent = (delay > RECENT_QUENCH_WINDOW_GYR[0]) & (delay <= RECENT_QUENCH_WINDOW_GYR[1])
-    tau_q = table["tau_q_gyr"]
-    masks = []
-    for k, (low, high) in enumerate(TAU_Q_TERCILES_GYR):
-        upper = tau_q <= high if k == len(TAU_Q_TERCILES_GYR) - 1 else tau_q < high
-        masks.append(recent & (tau_q >= low) & upper)
-    return masks
 
 
 def _bump_statistics(values):
@@ -377,13 +385,11 @@ def _bump_statistics(values):
     }
 
 
-def draw_plane_row(axes, table, codes, agb_key, ranges, split_by_tau_q=True):
-    """One row of the three planes: the full population as grey filled contours, the
-    rapid-quenching class as one filled contour, and (unless `split_by_tau_q` is False) the
-    recently quenched epochs as 68 per cent contour lines in three tau_q bins."""
+def draw_plane_row(axes, table, codes, agb_key, ranges):
+    """One row of the three planes: the full population as grey filled contours and the
+    rapid-quenching class as one filled contour."""
     indices = plane_columns(table, agb_key)
     rapid = codes == RAPID_QUENCHING
-    tercile_masks = _tau_q_tercile_masks(table) if split_by_tau_q else []
     row_summary = {"n_rows": int(rapid.size), "n_rapid_quenching": int(rapid.sum())}
     tau_q_rapid = table["tau_q_gyr"][rapid]
     row_summary["rapid_quenching_tau_q_range_gyr"] = (
@@ -399,69 +405,28 @@ def draw_plane_row(axes, table, codes, agb_key, ranges, split_by_tau_q=True):
             ranges[y_key],
             RAPID_QUENCHING_COLOR,
         )
-        for mask, color in zip(
-            tercile_masks, TAU_Q_TERCILE_COLORS[: len(tercile_masks)], strict=True
-        ):
-            if mask.sum() < 50:
-                continue
-            x_centers, y_centers, density, level_values = density_levels(
-                indices[x_key][mask], indices[y_key][mask], (0.68,), ranges[x_key], ranges[y_key]
-            )
-            axis.contour(
-                x_centers,
-                y_centers,
-                density,
-                levels=level_values,
-                colors=[color],
-                linewidths=1.1,
-                zorder=5,
-            )
         set_plane_axes(axis, x_key, y_key, ranges)
     row_summary["rapid_quenching"] = _bump_statistics(indices["h_minus_bump"][rapid])
-    for k, mask in enumerate(tercile_masks):
-        row_summary[f"recent_tercile_{k}"] = {
-            "tau_q_range_gyr": list(TAU_Q_TERCILES_GYR[k]),
-            "window_gyr": list(RECENT_QUENCH_WINDOW_GYR),
-            **_bump_statistics(indices["h_minus_bump"][mask]),
-        }
     return row_summary
 
 
-def _plane_legend_handles(split_by_tau_q=True, with_tracks=True):
+def _plane_legend_handles(with_tracks=True):
     handles = [
-        Patch(facecolor="0.85", edgecolor="0.55", lw=0.5, label="all epochs (68, 95, 99.5\\%)")
+        Patch(facecolor="0.85", edgecolor="0.55", lw=0.5, label="all epochs (68, 95, 99.5\\%)"),
+        Patch(
+            facecolor=RAPID_QUENCHING_COLOR,
+            edgecolor=RAPID_QUENCHING_COLOR,
+            alpha=0.6,
+            label="rapid-quenching class (68, 95\\%)",
+        ),
     ]
-    handles.append(
-        Patch(facecolor=RAPID_QUENCHING_COLOR, alpha=0.7, label="rapid-quenching class (68, 95\\%)")
-    )
-    if split_by_tau_q:
-        window_low, window_high = RECENT_QUENCH_WINDOW_GYR
-        for (low, high), color in zip(TAU_Q_TERCILES_GYR, TAU_Q_TERCILE_COLORS, strict=True):
-            handles.append(
-                Line2D(
-                    [],
-                    [],
-                    color=color,
-                    lw=1.1,
-                    label=(
-                        rf"$t - t_q$ in ({window_low:g}, {window_high:g}] Gyr, "
-                        rf"$\tau_q$ = {low:g}--{high:g} Gyr (68\%)"
-                    ),
-                )
-            )
     if with_tracks:
         for log_z, color in zip(LOG_Z_TRACKS, LOG_Z_TRACK_COLORS, strict=True):
             handles.append(
-                Line2D(
-                    [],
-                    [],
-                    color=color,
-                    lw=1.1,
-                    label=rf"fiducial SFH, $\log Z/Z_\odot$ = {log_z:+.2f}",
-                )
+                Line2D([], [], color=color, lw=0.9, label=rf"$\log Z/Z_\odot = {log_z:+.2f}$")
             )
         for shape, offset in zip(TRACK_MARKER_SHAPES, TRACK_MARKER_OFFSETS_GYR, strict=True):
-            label = "$t_q$" if offset == 0 else f"$t_q$ + {offset:g} Gyr"
+            label = "$t_q$" if offset == 0 else f"$t_q + {offset:g}$ Gyr"
             handles.append(
                 Line2D(
                     [],
@@ -469,13 +434,33 @@ def _plane_legend_handles(split_by_tau_q=True, with_tracks=True):
                     marker=shape,
                     ls="none",
                     mfc="0.6",
-                    mec="black",
-                    mew=0.4,
-                    ms=4.2,
+                    mec="0.25",
+                    mew=0.35,
+                    ms=3.6,
                     label=label,
                 )
             )
     return handles
+
+
+FIDUCIAL_SFH_CAPTION = (
+    rf"fiducial SFH: delayed-$\tau$ rise with $\tau = t_q = {FIDUCIAL['t_q_gyr']:g}$ Gyr, "
+    rf"exponential quench with $\tau_q = {FIDUCIAL['tau_q_gyr']:g}$ Gyr, "
+    rf"drawn from $t_q$ to $t_q + {TRACK_WINDOW_GYR[1]:g}$ Gyr"
+)
+
+
+def row_title(axis, text, fontsize=12):
+    axis.text(
+        0.95,
+        0.93,
+        text,
+        transform=axis.transAxes,
+        fontsize=fontsize,
+        ha="right",
+        va="top",
+        zorder=20,
+    )
 
 
 def figure_1(tables, tracks_by_template, out_dir):
@@ -494,16 +479,18 @@ def figure_1(tables, tracks_by_template, out_dir):
             config["agb"],
             summary[config_key]["metallicity_tracks"],
         )
-        axes[row, 0].set_title(config["label"], loc="left", fontsize=9)
+        row_title(axes[row, 0], config["short_label"])
         for col in range(3):
             panel_label(axes[row, col], f"({'abcdef'[3 * row + col]})", x=0.04, y=0.96)
     figure.legend(
         handles=_plane_legend_handles(),
         loc="outside lower center",
         ncol=4,
-        fontsize=6.5,
+        fontsize=8,
         handlelength=1.6,
-        columnspacing=1.2,
+        columnspacing=1.4,
+        title=FIDUCIAL_SFH_CAPTION,
+        title_fontsize=8,
     )
     save_figure(figure, out_dir, "fig1_index_planes")
     return summary
@@ -1207,20 +1194,15 @@ def figure_5(tables_by_family, out_dir):
     ranges = _plane_ranges(all_indices)
     for row, family in enumerate(ROBUSTNESS_FAMILIES):
         table, codes = tables_by_family[family]
-        split = family != "truncation"
-        summary[family] = draw_plane_row(
-            axes[row], table, codes, config["agb"], ranges, split_by_tau_q=split
-        )
-        axes[row, 0].set_title(
-            f"{FAMILY_LABELS[family]}, {config['label']}", loc="left", fontsize=9
-        )
+        summary[family] = draw_plane_row(axes[row], table, codes, config["agb"], ranges)
+        row_title(axes[row, 0], f"{config['short_label']}\n{FAMILY_LABELS[family]}", fontsize=11)
         for col in range(3):
             panel_label(axes[row, col], f"({'abcdefghi'[3 * row + col]})", x=0.04, y=0.96)
     figure.legend(
         handles=_plane_legend_handles(with_tracks=False),
         loc="outside lower center",
         ncol=2,
-        fontsize=6.5,
+        fontsize=8,
     )
     save_figure(figure, out_dir, "fig5_robustness_planes")
     return summary
@@ -1255,7 +1237,8 @@ def _relative_gain_entries(gains_with_z):
             baseline = classifier[baseline_key][f"{metric}_mean_mean"]
             gain = classifier[key][f"{metric}_gain_mean"] / baseline
             error = classifier[key][f"{metric}_gain_standard_error_mean"] / baseline
-            entries.append((f"{metric}, {suffix}", gain, error, suffix, baseline))
+            short_metric = {"completeness": "compl.", "purity": "purity"}[metric]
+            entries.append((f"{short_metric}, {suffix}", gain, error, suffix, baseline))
     for col, target_label in enumerate(TARGET_LABELS):
         for suffix, key, baseline_key in (
             ("Z unknown", f"bump_{RECOVERY_PRECISION:.3f}", "no_bump"),
@@ -1264,12 +1247,18 @@ def _relative_gain_entries(gains_with_z):
             baseline = recovery[baseline_key]["rms_mean_dex_mean"][col]
             gain = -recovery[key]["rms_gain_dex_mean"][col] / baseline
             error = recovery[key]["rms_gain_standard_error_dex_mean"][col] / baseline
-            entries.append((f"RMS {target_label}, {suffix}", gain, error, suffix, baseline))
+            entries.append((f"{target_label} RMS, {suffix}", gain, error, suffix, baseline))
     return entries
 
 
 def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
-    figure, axes = plt.subplots(1, 3, figsize=(DOUBLE_COLUMN_IN, 2.6), layout="constrained")
+    figure, axes = plt.subplots(
+        1,
+        3,
+        figsize=(DOUBLE_COLUMN_IN, 2.7),
+        layout="constrained",
+        width_ratios=(1.0, 1.0, 1.15),
+    )
     summary = {"tracks": {}, "population_slice": {}, "known_z": {}}
     log_z = np.array(LOG_Z_TRACKS)
 
@@ -1277,10 +1266,10 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
     # the full AGB-on model (LW02, agb = 2) and the TP-AGB increment of each template.
     axis = axes[0]
     components = {
-        "non_agb_stars": ("c3k", "agb0", None, "#0072B2", "non-AGB stars (C3K, agb = 0)"),
-        "agb_on_total": ("lw02", "agb2", None, "#D55E00", "AGB on (LW02, agb = 2)"),
-        "lw02_increment": ("lw02", "agb2", "agb0", "#E69F00", "TP-AGB increment, LW02"),
-        "c3k_increment": ("c3k", "agb2", "agb0", "#56B4E9", "TP-AGB increment, C3K"),
+        "non_agb_stars": ("c3k", "agb0", None, "#0072B2", "non-AGB stars (C3K, agb 0)"),
+        "agb_on_total": ("lw02", "agb2", None, "#D55E00", "AGB on (LW02, agb 2)"),
+        "lw02_increment": ("lw02", "agb2", "agb0", "#E69F00", "TP-AGB part, LW02"),
+        "c3k_increment": ("c3k", "agb2", "agb0", "#56B4E9", "TP-AGB part, C3K"),
     }
     offsets = {1.0: "-"}
     for name, (template, agb_key, subtract_key, color, label) in components.items():
@@ -1309,7 +1298,14 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
     axis.set_xlabel(r"$\log Z/Z_\odot$")
     axis.set_ylabel(AXIS_LABELS["h_minus_bump"])
     axis.invert_yaxis()
-    axis.legend(loc="upper left", fontsize=5.8, title="$t_q$ + 1 Gyr", title_fontsize=6)
+    axis.legend(
+        loc="upper left",
+        fontsize=5.5,
+        title="$t_q + 1$ Gyr",
+        title_fontsize=6,
+        handlelength=1.4,
+        borderaxespad=0.3,
+    )
 
     # (b) population: bump versus log Z inside one D4000 slice, AGB on, rapid quenching vs all.
     axis = axes[1]
@@ -1337,7 +1333,7 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
     axis.set_ylim(b_range[1], b_range[0])
     axis.set_xlabel(r"$\log Z/Z_\odot$")
     axis.set_ylabel(AXIS_LABELS["h_minus_bump"])
-    axis.set_title(rf"AGB on, D4000 in [{low:.1f}, {high:.1f})", fontsize=8)
+    axis.set_title(rf"AGB on, D4000 $\in$ [{low:.1f}, {high:.1f})", fontsize=8)
     for name, mask in (
         ("all", in_slice),
         ("rapid_quenching", in_slice & rapid),
@@ -1359,7 +1355,7 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
     axis.legend(
         handles=[
             Patch(facecolor="0.85", edgecolor="0.55", lw=0.5, label="all epochs in slice"),
-            Patch(facecolor=RAPID_QUENCHING_COLOR, alpha=0.7, label="rapid quenching"),
+            Patch(facecolor=RAPID_QUENCHING_COLOR, alpha=0.6, label="rapid quenching"),
         ],
         loc="lower left",
         fontsize=6,
@@ -1378,11 +1374,11 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
             "baseline": float(baseline),
         }
     axis.set_yticks(positions)
-    axis.set_yticklabels([entry[0] for entry in entries], fontsize=5.8)
+    axis.set_yticklabels([entry[0] for entry in entries], fontsize=5.5)
     axis.invert_yaxis()
     axis.axvline(0.0, color="0.3", lw=0.6)
     axis.set_xlabel(r"bump gain [\% of baseline]")
-    axis.set_title("AGB on, exponential family", fontsize=8)
+    axis.set_title("AGB on", fontsize=8)
     axis.set_xlim(right=1.3 * max(100.0 * entry[1] for entry in entries))
     axis.minorticks_off()
     figure.legend(
@@ -1486,7 +1482,6 @@ def main():
         "agb_configs": AGB_CONFIGS,
         "bump_product": BUMP_PRODUCT,
         "optical_product": OPTICAL_PRODUCT,
-        "tau_q_terciles_gyr": TAU_Q_TERCILES_GYR,
         "population_contour_levels": POPULATION_LEVELS,
         "class_contour_levels": CLASS_LEVELS,
         "bump_precisions_mag": BUMP_PRECISIONS,

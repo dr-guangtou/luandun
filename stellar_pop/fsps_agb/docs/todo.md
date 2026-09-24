@@ -17,8 +17,11 @@
 ### Review
 - The rapid-quenching class of the exponential family contains only tau_q < 0.3 Gyr
   histories (the ratio rule forces it), so "colour the fast-quenching population by
-  quenching timescale" has no dynamic range; Figure 1 colours the epochs within 2 Gyr
-  of t_q by tau_q instead and keeps the class as one contour.
+  quenching timescale" has no dynamic range; a tau_q colouring of the recently quenched
+  epochs was tried and dropped on review as a distraction. Figures 1 and 5 now show the
+  population, the rapid-quenching class in red and (Figure 1) light-blue metallicity
+  tracks, with Computer Modern fonts, sparser thin ticks, in-panel row titles and the
+  fiducial SFH parameters in the legend.
 - All Phase 4/5 gain numbers were recomputed with the R = 100 bump (they had used the
   sigma300 bump); the changes are within the seed scatter.
 - New results: the AGB-on bump minimum lags the HdeltaA peak by 0.3 to 2 Gyr with the

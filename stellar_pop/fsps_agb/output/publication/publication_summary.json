@@ -4,30 +4,18 @@
       "agb_off": {
         "template": "c3k",
         "agb": "agb0",
-        "label": "AGB off (C3K, agb = 0)"
+        "label": "AGB off (C3K, agb = 0)",
+        "short_label": "AGB off"
       },
       "agb_on": {
         "template": "lw02",
         "agb": "agb2",
-        "label": "AGB on (LW02, agb = 2)"
+        "label": "AGB on (LW02, agb = 2)",
+        "short_label": "AGB on"
       }
     },
     "bump_product": "r100",
     "optical_product": "sigma300",
-    "tau_q_terciles_gyr": [
-      [
-        0.1,
-        0.3
-      ],
-      [
-        0.3,
-        1.0
-      ],
-      [
-        1.0,
-        3.0
-      ]
-    ],
     "population_contour_levels": [
       0.68,
       0.95,
@@ -69,54 +57,6 @@
         "bump_p16_p84_mag": [
           -0.0071694088091627094,
           -0.00015769535712278568
-        ]
-      },
-      "recent_tercile_0": {
-        "tau_q_range_gyr": [
-          0.1,
-          0.3
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 25480,
-        "bump_median_mag": -0.0060354138303864956,
-        "bump_p16_p84_mag": [
-          -0.010752029381573573,
-          0.00060537828462363
-        ]
-      },
-      "recent_tercile_1": {
-        "tau_q_range_gyr": [
-          0.3,
-          1.0
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 28360,
-        "bump_median_mag": -0.003435677320092156,
-        "bump_p16_p84_mag": [
-          -0.008377860910672046,
-          0.002292912350247261
-        ]
-      },
-      "recent_tercile_2": {
-        "tau_q_range_gyr": [
-          1.0,
-          3.0
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 26160,
-        "bump_median_mag": -0.0009947034685171868,
-        "bump_p16_p84_mag": [
-          -0.004936652632741459,
-          0.0035877170362838815
         ]
       },
       "metallicity_tracks": {
@@ -227,54 +167,6 @@
         "bump_p16_p84_mag": [
           -0.08282338450064083,
           -0.06642011543505688
-        ]
-      },
-      "recent_tercile_0": {
-        "tau_q_range_gyr": [
-          0.1,
-          0.3
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 25480,
-        "bump_median_mag": -0.06607730040891205,
-        "bump_p16_p84_mag": [
-          -0.0760929066884683,
-          -0.05686780912762636
-        ]
-      },
-      "recent_tercile_1": {
-        "tau_q_range_gyr": [
-          0.3,
-          1.0
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 28360,
-        "bump_median_mag": -0.06292898682194698,
-        "bump_p16_p84_mag": [
-          -0.0701201954741183,
-          -0.055282771185266484
-        ]
-      },
-      "recent_tercile_2": {
-        "tau_q_range_gyr": [
-          1.0,
-          3.0
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 26160,
-        "bump_median_mag": -0.057219199524879236,
-        "bump_p16_p84_mag": [
-          -0.06238094924346649,
-          -0.05162769789895604
         ]
       },
       "metallicity_tracks": {
@@ -2290,54 +2182,6 @@
           -0.08268793277965021,
           -0.06582944321352105
         ]
-      },
-      "recent_tercile_0": {
-        "tau_q_range_gyr": [
-          0.1,
-          0.3
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 25480,
-        "bump_median_mag": -0.0663569657012969,
-        "bump_p16_p84_mag": [
-          -0.0778968843000509,
-          -0.05649629831228814
-        ]
-      },
-      "recent_tercile_1": {
-        "tau_q_range_gyr": [
-          0.3,
-          1.0
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 28360,
-        "bump_median_mag": -0.06454972828573083,
-        "bump_p16_p84_mag": [
-          -0.07444342503061371,
-          -0.05519284087761006
-        ]
-      },
-      "recent_tercile_2": {
-        "tau_q_range_gyr": [
-          1.0,
-          3.0
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 26160,
-        "bump_median_mag": -0.0573791792705614,
-        "bump_p16_p84_mag": [
-          -0.06378489729198111,
-          -0.0515422846899
-        ]
       }
     },
     "truncation": {
@@ -2369,54 +2213,6 @@
         "bump_p16_p84_mag": [
           -0.0838940325284568,
           -0.06584107825084047
-        ]
-      },
-      "recent_tercile_0": {
-        "tau_q_range_gyr": [
-          0.1,
-          0.3
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 25480,
-        "bump_median_mag": -0.06207837398711495,
-        "bump_p16_p84_mag": [
-          -0.07379711995351862,
-          -0.05357480080169976
-        ]
-      },
-      "recent_tercile_1": {
-        "tau_q_range_gyr": [
-          0.3,
-          1.0
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 28360,
-        "bump_median_mag": -0.060440888119759686,
-        "bump_p16_p84_mag": [
-          -0.06865153558108682,
-          -0.053071567140940926
-        ]
-      },
-      "recent_tercile_2": {
-        "tau_q_range_gyr": [
-          1.0,
-          3.0
-        ],
-        "window_gyr": [
-          0.0,
-          2.0
-        ],
-        "n_rows": 26160,
-        "bump_median_mag": -0.05672303043609477,
-        "bump_p16_p84_mag": [
-          -0.06212006474759939,
-          -0.05135654849298127
         ]
       }
     }
@@ -4831,12 +4627,12 @@
       }
     },
     "known_z": {
-      "completeness, Z unknown": {
+      "compl., Z unknown": {
         "relative_gain": 0.11806526129194667,
         "relative_gain_standard_error": 0.020712012171587718,
         "baseline": 0.3983140896525447
       },
-      "completeness, Z known": {
+      "compl., Z known": {
         "relative_gain": 0.13022294810307952,
         "relative_gain_standard_error": 0.018052569549205588,
         "baseline": 0.38608485190012426
@@ -4851,22 +4647,22 @@
         "relative_gain_standard_error": 0.007384676159563464,
         "baseline": 0.634612536273199
       },
-      "RMS $\\log_{10}(t - t_q)$, Z unknown": {
+      "$\\log_{10}(t - t_q)$ RMS, Z unknown": {
         "relative_gain": 0.07551990267318903,
         "relative_gain_standard_error": 0.0015447383810205488,
         "baseline": 0.23957116747300664
       },
-      "RMS $\\log_{10}(t - t_q)$, Z known": {
+      "$\\log_{10}(t - t_q)$ RMS, Z known": {
         "relative_gain": 0.08732506773463822,
         "relative_gain_standard_error": 0.001500112101498599,
         "baseline": 0.23564655663003956
       },
-      "RMS $\\log_{10}\\tau_q$, Z unknown": {
+      "$\\log_{10}\\tau_q$ RMS, Z unknown": {
         "relative_gain": 0.04090600441870179,
         "relative_gain_standard_error": 0.001947723077220911,
         "baseline": 0.3106706151254326
       },
-      "RMS $\\log_{10}\\tau_q$, Z known": {
+      "$\\log_{10}\\tau_q$ RMS, Z known": {
         "relative_gain": 0.06984298620573742,
         "relative_gain_standard_error": 0.0014728880922058583,
         "baseline": 0.3056395166682371
@@ -4874,14 +4670,14 @@
     }
   },
   "timing_s": {
-    "metallicity_tracks_s": 2.2616889169439673,
-    "fig1_s": 1.9475716250017285,
-    "fig2_s": 0.6905492919031531,
-    "fig3_s": 18.039880917058326,
-    "gains_exponential_s": 0.00010108295828104019,
-    "fig5_s": 1.4771714999806136,
-    "fig6_s": 0.46383920800872147,
-    "fig7_s": 1.2351627920288593,
-    "total_s": 3.5844022090313956
+    "metallicity_tracks_s": 2.22372154192999,
+    "fig1_s": 1.0287189170485362,
+    "fig2_s": 4.956478207954206,
+    "fig3_s": 25.771519417059608,
+    "gains_exponential_s": 0.00010062498040497303,
+    "fig5_s": 1.4663471659878269,
+    "fig6_s": 5.323338375077583,
+    "fig7_s": 1.0851168329827487,
+    "total_s": 3.3982460000552237
   }
 }

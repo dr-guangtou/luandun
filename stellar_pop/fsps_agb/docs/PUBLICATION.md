@@ -32,11 +32,11 @@ the sigma300 bump). They agree with the Phase 3 R = 100 classifier numbers in
 
 Two rows (AGB off, AGB on) of the three index planes for the exponential family, all
 epochs later than 1 Gyr. Grey filled contours enclose 68, 95 and 99.5 per cent of all
-epochs; the blue filled contour is the rapid-quenching class (68 and 95 per cent); the
-three viridis contour lines are the recently quenched epochs (0 to 2 Gyr after t_q) in
-three tau_q bins; the red curves are the fiducial history (t_q = 3 Gyr, tau_q = 0.3 Gyr)
-at log Z = -0.5, -0.25, 0, +0.25 from t_q to t_q + 5 Gyr, with markers at t_q and 0.5, 1,
-2, 5 Gyr later.
+epochs; the red filled contour is the rapid-quenching class (68 and 95 per cent); the
+light blue curves are the fiducial history (t_q = 3 Gyr, tau_q = 0.3 Gyr) at log Z =
+-0.5, -0.25, 0, +0.25 from t_q to t_q + 5 Gyr, with markers at t_q and 0.5, 1, 2, 5 Gyr
+later. The row titles sit in the empty top-right corner of the D4000-HdeltaA panels;
+all text is Computer Modern (usetex) and the legend carries the fiducial SFH parameters.
 
 What it shows: the D4000-HdeltaA plane is identical in the two rows. In the two bump
 planes the AGB-on population sits 0.04 to 0.08 mag deeper than the AGB-off one and its
@@ -49,9 +49,9 @@ rapid-quenching class occupies the deepest part of the plane
 One design change from the handover brief: the rapid-quenching class cannot be
 coloured by quenching timescale, because the class rule (recent-to-previous sSFR ratio
 below 0.1) admits only tau_q < 0.3 Gyr histories in this family
-(`fig1_index_planes.agb_on.rapid_quenching_tau_q_range_gyr`). The tau_q colouring is
-therefore applied to all epochs within 2 Gyr of t_q, where Figure 3 shows the bump acts
-as a clock.
+(`fig1_index_planes.agb_on.rapid_quenching_tau_q_range_gyr`). A first version coloured
+the epochs within 2 Gyr of t_q by tau_q instead; those contours added no information
+beyond Figure 3 and crowded the panels, so they were dropped on review.
 
 ### Figure 2, `fig2_bump_offsets`
 
@@ -114,9 +114,9 @@ AGB-on effect: 0.013 dex against 0.001 dex.
 
 ### Figure 5, `fig5_robustness_planes`
 
-Figure 1's AGB-on row for the linear, truncation and decoupled families, same layers
-(no tau_q lines for truncation, which has no tau_q). The rapid-quenching class lands in
-the deep-bump region in every family.
+Figure 1's AGB-on row for the linear, truncation and decoupled families, with the
+population and rapid-quenching contours only (no metallicity tracks). The
+rapid-quenching class lands in the deep-bump region in every family.
 
 ### Figure 6, `fig6_robustness_gains`
 
@@ -232,9 +232,6 @@ set), AGB on, exponential family (`fig7_metallicity.known_z`):
 - The AGB-off row of Figure 1 and the AGB-off bars of Figure 6 use agb = 0. If the paper
   prefers the FSPS default weight (agb = 1) as its "off" model, rerun with
   `AGB_CONFIGS["agb_off"]["agb"] = "agb1"`; Figure 2 shows the two differ by 0.005 mag.
-- The 68 per cent tau_q contour lines in Figure 1 overlap heavily in the two optical
-  planes by construction (the optical indices do not resolve tau_q at fixed phase); the
-  spread is visible only in the bump planes, which is the point.
 - Model omissions carried over from Phase 5: no C-rich TP-AGB stars, no nebular
   emission or dust, four metallicities interpolated linearly in log Z, one Z per
   history, uniform time weighting.
