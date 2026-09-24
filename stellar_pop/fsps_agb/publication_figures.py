@@ -25,6 +25,7 @@ Every number drawn is written to `publication_summary.json`.
 
 import argparse
 import json
+import re
 import time
 from pathlib import Path
 
@@ -226,7 +227,39 @@ def _to_native(obj):
     return obj
 
 
+def capitalise_sentence(text):
+    """Upper-case the first letter of a legend entry treated as a sentence: skip a leading
+    panel reference such as "(d, e) ", skip LaTeX math ($...$) and commands, and leave
+    entries that start inside math (for example "$\\tau_q = 0.3$ Gyr") unchanged."""
+    match = re.match(r"^\([^)]*\)\s*", text)
+    start = match.end() if match else 0
+    if text[start:].startswith("$"):
+        return text
+    for position in range(start, len(text)):
+        character = text[position]
+        if character == "$":
+            return text
+        if character.isalpha():
+            if position > 0 and text[position - 1] == "\\":
+                return text
+            return text[:position] + character.upper() + text[position + 1 :]
+    return text
+
+
+def _capitalise_legends(figure):
+    legends = list(figure.legends) + [
+        axis.get_legend() for axis in figure.axes if axis.get_legend() is not None
+    ]
+    for legend in legends:
+        for entry in legend.get_texts():
+            entry.set_text(capitalise_sentence(entry.get_text()))
+        title = legend.get_title()
+        if title.get_text():
+            title.set_text(capitalise_sentence(title.get_text()))
+
+
 def save_figure(figure, out_dir, stem):
+    _capitalise_legends(figure)
     for extension in ("pdf", "png"):
         figure.savefig(out_dir / f"{stem}.{extension}")
     plt.close(figure)
@@ -1680,10 +1713,7 @@ def figure_jwst_plane(tables, tracks_by_template, jwst, out_dir, stem=FINAL_STEM
             mew=0.5,
             color="0.2",
             lw=0.6,
-            label=(
-                rf"JWST quiescent galaxies, $z = {z_low:.1f}$--${z_high:.1f}$ "
-                rf"($N = {summary['n_jwst']}$)"
-            ),
+            label="Lu+2026",
         )
     ]
     figure.legend(

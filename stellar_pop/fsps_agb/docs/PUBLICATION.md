@@ -38,13 +38,17 @@ candidates only.
 The JWST figure: the same layers as Figure 1 (population contours, rapid-quenching class,
 fiducial-SFH metallicity tracks) in the D4000 versus H-minus bump plane, AGB off on the
 left and AGB on on the right, on one shared bump axis, with the 19 quiescent galaxies at
-z = 1.0 to 2.0 from `JWST_QG_indices.npz` overplotted (D4000 bars are the 16th to 84th
+z = 1.0 to 2.0 from `JWST_QG_indices.npz` (Lu+2026 in the legend) overplotted (D4000 bars are the 16th to 84th
 percentile bounds stored in the file, bump bars the stored symmetric error, mostly
 smaller than the marker). The data occupy D4000 = 1.35 to 1.94 and bump = -0.037 to
 -0.073 mag (median -0.059 mag). Over that D4000 range the AGB-on population spans
 -0.081 to -0.041 mag (1st to 99th percentile) and the AGB-off population -0.021 to
 +0.003 mag, so every galaxy lies inside the AGB-on locus and 0.02 to 0.05 mag outside
 the AGB-off one.
+
+Legend entries are treated as sentences: `save_figure` capitalises the first letter of
+every legend label and title, skipping panel references such as "(d, e)" and anything
+that starts inside LaTeX math.
 
 ## Conventions
 
