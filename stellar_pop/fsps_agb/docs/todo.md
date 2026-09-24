@@ -1,5 +1,37 @@
 # TODO
 
+## Phase 6 — Publication figure candidates (2026-09-24)
+
+### Plan
+- [x] Task 1: check in the FSPS source (`getspec.f90`, `sps_setup.f90`, `sps_vars.f90`,
+      `mod_gb.f90`, `add_agb_dust.f90`) how the TP-AGB templates depend on metallicity.
+- [x] Task 2: `publication_figures.py` writing PDF and PNG candidates to
+      `output/publication/`: Figure 1 (index planes, AGB off versus on, rapid-quenching
+      class, tau_q contours, metallicity tracks), Figure 2 (prescription offsets),
+      Figure 3 (quenching clocks), Figure 4 (classifier and recovery gain at R = 100),
+      Figures 5 and 6 (the other SFH families), Figure 7 (metallicity decomposition and
+      the known-Z test), plus `publication_summary.json`.
+- [x] Task 3: write-up in `docs/PUBLICATION.md` with the FSPS facts, the metallicity
+      caveat and the advantage argument; SPEC, README, lessons, this review.
+
+### Review
+- The rapid-quenching class of the exponential family contains only tau_q < 0.3 Gyr
+  histories (the ratio rule forces it), so "colour the fast-quenching population by
+  quenching timescale" has no dynamic range; Figure 1 colours the epochs within 2 Gyr
+  of t_q by tau_q instead and keeps the class as one contour.
+- All Phase 4/5 gain numbers were recomputed with the R = 100 bump (they had used the
+  sigma300 bump); the changes are within the seed scatter.
+- New results: the AGB-on bump minimum lags the HdeltaA peak by 0.3 to 2 Gyr with the
+  lag growing monotonically in tau_q (Figure 3d), and a known metallicity (0.1 dex)
+  raises the bump's tau_q recovery gain from 4 to 7 per cent of the baseline (Figure 7c).
+- The LW02 O-rich templates have no metallicity dependence in their spectra; the AGB-on
+  bump's -0.04 mag per dex trend comes from the MIST TP-AGB Teff distribution crossing
+  the fixed log Teff = 3.6 template switch and from the Z-dependent Teff labels in
+  `Orich.teff`. The AGB-off bump's trend has the opposite sign and comes from the
+  non-AGB stars.
+- Not done: no agb = 1 "AGB off" variant of Figures 1 and 6 (Figure 2 shows it differs
+  from agb = 0 by 0.005 mag); figures are candidates, not final captions.
+
 ## Phase 5 — SFH-family sensitivity (2026-09-24)
 
 ### Plan

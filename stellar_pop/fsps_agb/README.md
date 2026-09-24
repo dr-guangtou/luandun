@@ -392,3 +392,21 @@ the classifier (S4) and SFH-recovery (S5) gains was run at `agb2` only for the t
 new families, so the TP-AGB attribution for those two gains (versus any third noisy
 feature) still rests on the Phase 4 `agb0` control measured for the `exponential`
 family alone.
+
+## Phase 6 — Publication figure candidates
+
+`publication_figures.py` writes seven figure candidates (PDF and PNG) and
+`publication_summary.json` to `output/publication/`: the index planes with AGB off
+(C3K, `agb = 0`) against AGB on (LW02, `agb = 2`), the prescription offsets, the
+quenching clocks (HdeltaA peak against bump minimum), the classifier and SFH-recovery
+gains at R = 100, the same for the other SFH families, and the metallicity
+decomposition with a known-metallicity test. Optical indices at sigma = 300 km/s, the
+bump at R = 100.
+
+    uv run python publication_figures.py --pilot          # 35 s dry run
+    uv run python publication_figures.py                  # 10 min
+    uv run python publication_figures.py --only fig1,fig3
+    uv run python publication_figures.py --only fig4,fig6,fig7 --reuse-gains   # seconds
+
+The figure descriptions, every quoted number, the FSPS TP-AGB template facts and the
+metallicity discussion are in `docs/PUBLICATION.md`.

@@ -393,6 +393,40 @@ to the star formation history model".
 
 ---
 
+## Phase 6 — Publication figure candidates (2026-09-24)
+
+### Goal
+
+Publication-ready candidates for the model section, backing two messages: (1) the
+H-minus bump diagnoses the TP-AGB contribution, AGB on (LW02 templates, `agb = 2`)
+against AGB off (default C3K templates, `agb = 0`); (2) with AGB on, the bump adds
+multi-sigma classification and SFH-recovery gains over D4000 and HdeltaA, and with
+HdeltaA constrains the quenching timescale. Optical indices at sigma = 300 km/s, the
+bump at R = 100, the exponential family by default and the other three families as
+robustness figures. The metallicity behaviour is traced to the FSPS code and discussed
+as a caveat and as an advantage.
+
+### Figures (`output/publication/`, PDF and PNG, numbers in `publication_summary.json`)
+
+| Figure | Content |
+| ------ | ------- |
+| `fig1_index_planes` | three planes, AGB off and on rows: population contours, rapid-quenching class, tau_q contours of the recently quenched epochs, metallicity tracks of the fiducial SFH |
+| `fig2_bump_offsets` | bump bands versus D4000 and HdeltaA for C3K agb 0/1 and LW02 agb 1/2, slice histogram |
+| `fig3_quenching_clocks` | HdeltaA and bump versus time since quenching, the HdeltaA-bump plane, extremum delay against tau_q |
+| `fig4_information_gain` | rapid-quenching completeness and purity and recovery RMS versus bump precision, AGB on and off |
+| `fig5_robustness_planes`, `fig6_robustness_gains` | Figures 1 and 4 repeated for the linear, truncation and decoupled families |
+| `fig7_metallicity` | bump against log Z decomposed into non-AGB and TP-AGB parts, population slice, gains with a known metallicity |
+
+### Code layout additions
+
+| File | Purpose |
+| ---- | ------- |
+| `publication_figures.py` | all seven figures; `--only` for a subset, `--pilot` for a stride-50, one-seed, two-fold dry run into `output/publication/pilot/`. Classifier and recovery gains are recomputed with the R = 100 bump. |
+
+The write-up, including the FSPS TP-AGB template facts, is `docs/PUBLICATION.md`.
+
+---
+
 ## Phase 1 — SSP sandbox (2026-08-31, complete)
 
 ### Goal
