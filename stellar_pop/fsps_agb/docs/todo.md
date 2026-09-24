@@ -37,6 +37,9 @@
   age sensitivity of the three indices after quenching (scaled tracks against
   log10(t - t_q)) beside the classifier completeness and purity gain without
   significance labels. Figures 2, 6, 7 and the recovery panels stay candidates.
+- JWST comparison (2026-09-25): `d4000_hminus_plane_with_jwst_data` overplots the 19
+  z ~ 1 quiescent galaxies on the D4000 versus H-minus bump plane for both AGB
+  configurations; all 19 sit inside the AGB-on locus and outside the AGB-off one.
 - Not done: no agb = 1 "AGB off" variant of Figures 1 and 6 (Figure 2 shows it differs
   from agb = 0 by 0.005 mag); figures are candidates, not final captions.
 

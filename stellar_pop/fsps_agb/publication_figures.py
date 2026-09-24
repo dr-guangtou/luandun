@@ -159,7 +159,9 @@ FINAL_STEMS = {
     "fig1": "index_planes_agb_on_off",
     "fig5": "index_planes_sfh_families",
     "combined": "age_sensitivity_and_classifier_gain",
+    "jwst": "d4000_hminus_plane_with_jwst_data",
 }
+JWST_DATA_PATH = FINAL_DIR / "JWST_QG_indices.npz"
 CLOCK_LOG_WINDOW_GYR = (0.05, 6.0)
 INDEX_LINESTYLES = {"hdelta_a": "-", "h_minus_bump": "--", "d4000": ":"}
 INDEX_COLORS = {"hdelta_a": "#0072B2", "h_minus_bump": "#D55E00", "d4000": "#009E73"}
@@ -362,7 +364,7 @@ def compute_metallicity_tracks(template, edges_gyr, log_z_grid=LOG_Z_TRACKS):
     }
 
 
-def _draw_metallicity_tracks(axes, tracks, agb_key, summary):
+def _draw_metallicity_tracks(axes, tracks, agb_key, summary, planes=PLANES):
     for (log_z, result), color in zip(tracks.items(), LOG_Z_TRACK_COLORS, strict=True):
         series = track_series(result, agb_key)
         delay = series["epoch_gyr"] - FIDUCIAL["t_q_gyr"]
@@ -374,7 +376,7 @@ def _draw_metallicity_tracks(axes, tracks, agb_key, summary):
             key: [float(series[key][index]) for index in marker_indices]
             for key in ("d4000", "hdelta_a", "h_minus_bump")
         }
-        for axis, (x_key, y_key) in zip(axes, PLANES, strict=True):
+        for axis, (x_key, y_key) in zip(axes, planes, strict=True):
             axis.plot(series[x_key][window], series[y_key][window], color=color, lw=0.9, zorder=6)
             for shape, index in zip(TRACK_MARKER_SHAPES, marker_indices, strict=True):
                 axis.plot(
@@ -1584,6 +1586,121 @@ def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
 
 
 # ---------------------------------------------------------------------------
+# D4000 versus H-minus bump plane with the JWST quiescent galaxies
+# ---------------------------------------------------------------------------
+
+
+def load_jwst_indices(path=JWST_DATA_PATH):
+    """The z ~ 1 JWST quiescent-galaxy sample: D4000 with its 16th and 84th percentile
+    bounds, and the H-minus bump with a symmetric error."""
+    with np.load(path) as data:
+        d4000 = data["D4000"]
+        bounds = data["D4000_err"]
+        return {
+            "id": data["ID"],
+            "redshift": data["z"],
+            "d4000": d4000,
+            "d4000_err_low": d4000 - bounds[:, 0],
+            "d4000_err_high": bounds[:, 1] - d4000,
+            "h_minus_bump": data["Hbump"],
+            "h_minus_bump_err": data["Hbump_err"],
+        }
+
+
+def figure_jwst_plane(tables, tracks_by_template, jwst, out_dir, stem=FINAL_STEMS["jwst"]):
+    """The D4000 versus H-minus bump plane for AGB off (left) and AGB on (right), same
+    layers as Figure 1, on one shared bump axis, with the JWST galaxies overplotted."""
+    figure, axes = plt.subplots(
+        1, 2, figsize=(DOUBLE_COLUMN_IN, 3.4), layout="constrained", sharey=True
+    )
+    plane = ("d4000", "h_minus_bump")
+    indices_by_config = {
+        key: plane_columns(tables[key][0], AGB_CONFIGS[key]["agb"]) for key in CONFIG_ORDER
+    }
+    ranges = _plane_ranges(list(indices_by_config.values()))
+    low = min(ranges["h_minus_bump"][0] - 0.006, float(jwst["h_minus_bump"].min()) - 0.006)
+    high = max(ranges["h_minus_bump"][1], float(jwst["h_minus_bump"].max()) + 0.006)
+    ranges["h_minus_bump"] = (low, high)
+    summary = {
+        "n_jwst": int(jwst["d4000"].size),
+        "redshift_range": [float(jwst["redshift"].min()), float(jwst["redshift"].max())],
+    }
+    for axis, config_key in zip(axes, CONFIG_ORDER, strict=True):
+        config = AGB_CONFIGS[config_key]
+        table, codes = tables[config_key]
+        indices = indices_by_config[config_key]
+        rapid = codes == RAPID_QUENCHING
+        draw_population_contours(
+            axis, indices["d4000"], indices["h_minus_bump"], ranges["d4000"], ranges["h_minus_bump"]
+        )
+        draw_class_contours(
+            axis,
+            indices["d4000"][rapid],
+            indices["h_minus_bump"][rapid],
+            ranges["d4000"],
+            ranges["h_minus_bump"],
+            RAPID_QUENCHING_COLOR,
+        )
+        summary[config_key] = {"metallicity_tracks": {}}
+        _draw_metallicity_tracks(
+            [axis],
+            tracks_by_template[config["template"]],
+            config["agb"],
+            summary[config_key]["metallicity_tracks"],
+            planes=(plane,),
+        )
+        axis.errorbar(
+            jwst["d4000"],
+            jwst["h_minus_bump"],
+            xerr=[jwst["d4000_err_low"], jwst["d4000_err_high"]],
+            yerr=jwst["h_minus_bump_err"],
+            fmt="o",
+            ms=3.8,
+            mfc="black",
+            mec="white",
+            mew=0.5,
+            ecolor="0.2",
+            elinewidth=0.6,
+            capsize=0,
+            zorder=12,
+        )
+        set_plane_axes(axis, "d4000", "h_minus_bump", ranges, ylabel=config_key == "agb_off")
+        row_title(axis, config["short_label"], fontsize=12)
+    panel_label(axes[0], "(a)", x=0.04, y=0.96)
+    panel_label(axes[1], "(b)", x=0.04, y=0.96)
+    z_low, z_high = summary["redshift_range"]
+    handles = _plane_legend_handles() + [
+        Line2D(
+            [],
+            [],
+            marker="o",
+            ms=3.8,
+            mfc="black",
+            mec="white",
+            mew=0.5,
+            color="0.2",
+            lw=0.6,
+            label=(
+                rf"JWST quiescent galaxies, $z = {z_low:.1f}$--${z_high:.1f}$ "
+                rf"($N = {summary['n_jwst']}$)"
+            ),
+        )
+    ]
+    figure.legend(
+        handles=handles,
+        loc="outside lower center",
+        ncol=3,
+        fontsize=8,
+        handlelength=1.6,
+        columnspacing=1.4,
+        title=FIDUCIAL_SFH_CAPTION,
+        title_fontsize=8,
+    )
+    save_figure(figure, out_dir, stem)
+    return summary
+
+
+# ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
 
@@ -1793,6 +1910,12 @@ def main():
         cached = cached_gains(summary, "exponential")
         gains = cached or compute_gains("exponential", stride=stride, seeds=seeds, with_log_z=True)
         final_summary[FINAL_STEMS["combined"]] = figure_combined(clock_tracks, gains, final_dir)
+        if JWST_DATA_PATH.exists():
+            final_summary[FINAL_STEMS["jwst"]] = figure_jwst_plane(
+                tables, tracks_by_template, load_jwst_indices(), final_dir
+            )
+        else:
+            print(f"no JWST table at {JWST_DATA_PATH}, skipping {FINAL_STEMS['jwst']}")
         (final_dir / "final_summary.json").write_text(
             json.dumps(_to_native(final_summary), indent=2) + "\n"
         )

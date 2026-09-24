@@ -19,6 +19,7 @@ content, with their numbers in `final/final_summary.json`:
 | `index_planes_agb_on_off` | Figure 1 below, main text | identical to `fig1_index_planes` |
 | `index_planes_sfh_families` | Figure 5 below, appendix | identical to `fig5_robustness_planes` |
 | `age_sensitivity_and_classifier_gain` | new two-part figure | Figure 3 (a, b) and Figure 4 (a, b) recombined |
+| `d4000_hminus_plane_with_jwst_data` | the D4000 versus H-minus bump plane, AGB off and on, with the JWST z ~ 1 quiescent sample | Figure 1 panels (b) and (e) plus `final/JWST_QG_indices.npz` |
 
 The combined figure: (a-c) one panel per tau_q = 0.3, 1, 3 Gyr at t_q = 3 Gyr, AGB on,
 solar metallicity, sharing the log10(t - t_q) axis, with HdeltaA (blue), the H-minus
@@ -33,6 +34,17 @@ its fold standard error as a band. No significance labels: the gain is consisten
 across folds but moderate in absolute terms, which is the honest reading for a
 three-feature test. Figures 2, 6 and 7 and the recovery panels of Figure 4 are kept as
 candidates only.
+
+The JWST figure: the same layers as Figure 1 (population contours, rapid-quenching class,
+fiducial-SFH metallicity tracks) in the D4000 versus H-minus bump plane, AGB off on the
+left and AGB on on the right, on one shared bump axis, with the 19 quiescent galaxies at
+z = 1.0 to 2.0 from `JWST_QG_indices.npz` overplotted (D4000 bars are the 16th to 84th
+percentile bounds stored in the file, bump bars the stored symmetric error, mostly
+smaller than the marker). The data occupy D4000 = 1.35 to 1.94 and bump = -0.037 to
+-0.073 mag (median -0.059 mag). Over that D4000 range the AGB-on population spans
+-0.081 to -0.041 mag (1st to 99th percentile) and the AGB-off population -0.021 to
++0.003 mag, so every galaxy lies inside the AGB-on locus and 0.02 to 0.05 mag outside
+the AGB-off one.
 
 ## Conventions
 
