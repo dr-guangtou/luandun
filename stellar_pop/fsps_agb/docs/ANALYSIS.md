@@ -464,15 +464,23 @@ one nature uses.
 
 ## Sensitivity to the star formation history model (Phase 5)
 
-**Answer: the Phase 3 Q2 and Phase 4 Conclusion 2 findings survive across all four SFH
-families tested — the LW02 bump gain is positive and multi-sigma and the C3K gain is
-small and sign-inconsistent, in every family — but the base rates and absolute numbers
-they operate on change a lot with the assumed post-quench SFH shape (rapid-quenching
-base rate 0.84-6.38 percent across families). Phase 3 Q1 and Phase 4 Conclusion 1 were
-not retested here: both need an agb0-versus-agb2 comparison per family, and only agb2
-was run for the three new families, so nothing in this section repeats them. Because
-every family/template combination below is agb2 only, the specific attribution "the
-gain is TP-AGB light, not any third noisy feature" still rests on the one agb0 control
+**Answer: all four earlier conclusions survive across all four SFH families, with one
+remaining gap. Every population run already carries `agb0`, `agb1` and `agb2` bump
+columns (`run_population.py` always computes all three), so Phase 3 Q1 and Phase 4
+Conclusion 1 (the population TP-AGB offset separates templates, not weight) can be, and
+are, retested per family (Figure S6): in the [1.5, 1.7) D4000 slice the median
+agb2-agb0 bump offset is -0.0059 to -0.0107 mag for C3K (1-3 times the per-model
+scatter) and -0.0460 to -0.0670 mag for LW02 (4-12 times the scatter) in every family,
+and the C3K-versus-LW02 template separation is 0.049-0.061 mag, several times any
+weight-only step, in every family too. Phase 3 Q2 and Phase 4 Conclusion 2 also
+survive: the LW02 bump gain in the classifier and SFH-recovery regression is positive
+and multi-sigma, and the C3K gain is small and sign-inconsistent, in every family — but
+the base rates and absolute numbers they operate on change a lot with the assumed
+post-quench SFH shape (rapid-quenching base rate 0.84-6.38 percent across families).
+What remains genuinely untested per family is narrower than "Q1/Conclusion 1": only the
+`agb0` control of the classifier (S4) and SFH-recovery (S5) gains was run at `agb2`
+only for the three new families, so the specific attribution "the gain is TP-AGB light,
+not any third noisy feature" for Q2/Conclusion 2 still rests on the one `agb0` control
 run in Phase 3/4, for the `exponential` family alone.**
 
 ### FSPS-native SFH forms, and which were used
@@ -567,19 +575,62 @@ instead moves mass out of `star_forming` into `transitional` (21.18 percent down
 often larger `tau`, are still rising or have only just finished rising at the 1 Gyr
 floor.
 
+### The population TP-AGB offset per family (Figure S6)
+
+Phase 3 Q1 and Phase 4 Conclusion 1 both rest on the paired per-epoch offset
+bump(agb2) - bump(agb0) at fixed D4000, compared against the per-model 16-84 RMS
+scatter. Every population table this project writes already carries `agb0`, `agb1`
+and `agb2` bump columns for every SFH family (`run_population.py` computes all three
+unconditionally), so this offset can be measured per family with no additional
+population run: `compute_s6`/`compute_s6_summary` in `analysis_sfh_sensitivity.py` do
+so directly from the existing tables, reusing S2's D4000 binning
+(`s6_tpagb_offset_by_family`, Figure `s6_tpagb_offset_by_family.png`).
+
+At the same three D4000 slices used throughout this document
+(`s6_tpagb_offset_by_family.offset_by_family.<family>.<template>.d4000_slices`), the
+[1.5, 1.7) slice's median offset, pooled per-model scatter and offset-over-scatter are
+(`...d4000_1.5_1.7.{median_offset_mag,pooled_scatter_mag,offset_over_scatter}`):
+
+| family | C3K median offset [mag] | C3K offset/scatter | LW02 median offset [mag] | LW02 offset/scatter |
+| --- | ---: | ---: | ---: | ---: |
+| exponential | -0.0059 | -1.48 | -0.0460 | -6.58 |
+| linear | -0.0093 | -2.15 | -0.0595 | -7.01 |
+| truncation | -0.0107 | -2.17 | -0.0670 | -7.06 |
+| decoupled | -0.0061 | -1.55 | -0.0460 | -7.08 |
+
+Across all three D4000 slices ([1.3, 1.5), [1.5, 1.7), [1.7, 1.9)), the C3K offset is
+1-3 times the per-model scatter in every family (`offset_over_scatter` -1.2 to -2.8),
+and the LW02 offset is 4-12 times the scatter (`offset_over_scatter` -4.1 to -11.9) —
+the same template split Phase 3 Q1 reported for the original `exponential` family
+(0.90-2.20 for C3K, 6.07-16.31 for LW02, both measured on the pooled rather than the
+per-model scatter there, so not numerically identical to the S6 values above, but the
+same qualitative split) now holds for `linear`, `truncation` and `decoupled` too.
+
+The C3K-versus-LW02 band-median separation (agb2, LW02 minus C3K, interpolated onto
+C3K's D4000 bin centers since the two templates' bins are not bit-identical —
+`s6_tpagb_offset_by_family.c3k_lw02_separation_by_family.<family>.separation_mag`)
+peaks at `max_abs_separation_mag` = 0.0485 (exponential), 0.0533 (linear), 0.0613
+(truncation), 0.0495 (decoupled) mag in every family — several times the weight-only
+step reported in Phase 4 Conclusion 1 (C3K agb0 -> agb1, -0.0026 to -0.0051 mag) —
+confirming that the population locus mainly tests which TP-AGB *template* is right,
+not how much TP-AGB light there is, regardless of the assumed post-quench SFH shape.
+
 ### Does each earlier conclusion survive?
 
-**Phase 3 Q1 (agb0 versus agb2 separability): not retested.** Q1's central comparison
-is a paired agb0-versus-agb2 offset in bins of D4000/HdeltaA; S1-S5 fix `agb = 2` in
-every family and never build an `agb0` population for `linear`, `truncation` or
-`decoupled` (task-2-report.md, Concerns), so nothing here repeats it. The only
-indirectly relevant fact is that S1's fiducial track (all four families, `agb = 2`,
-both templates) converges to nearly the same D4000/HdeltaA/bump curve beyond about 1
-Gyr after quenching regardless of family (`s1_fiducial_families.png`) — i.e. there is
-no sign the SFH shape alone would move the *absolute* index values enough to flip which
-template gives a detectable offset — but this is an inference from a same-`agb`
-comparison, not a re-measurement of Q1's statistic, and should not be read as a
-confirmation.
+**Phase 3 Q1 (agb0 versus agb2 separability): survives, and is directly retested by
+S6.** Q1's central comparison is a paired agb0-versus-agb2 offset in bins of D4000,
+against the per-model scatter; the population TP-AGB offset section above (Figure S6)
+measures exactly this per family, from the `agb0`/`agb2` columns every population
+table already carries. The result reproduces Q1's template-conditional answer in every
+family: the C3K offset is 1-3 times the per-model scatter (below Q1's "clearly"
+threshold everywhere it was checked) and the LW02 offset is 4-12 times the scatter
+(well above it), matching the original `exponential`-family finding qualitatively in
+`linear`, `truncation` and `decoupled` too. S1's fiducial track (all four families,
+`agb = 2`, both templates) is consistent with this: it converges to nearly the same
+D4000/HdeltaA/bump curve beyond about 1 Gyr after quenching regardless of family
+(`s1_fiducial_families.png`), so the SFH shape alone was not expected to flip which
+template gives a detectable offset, and S6 now confirms it directly rather than by
+inference.
 
 **Phase 3 Q2 (isolating rapid quenching): survives, and is directly retested by S4.**
 At the 0.010 mag bump precision (`agb2`, unbalanced;
@@ -603,10 +654,16 @@ because a sharper quench (fewer, more separable rapid-quenching epochs) or a slo
 (more confusable ones) changes how well D4000 and HdeltaA alone already separate the
 class before the bump is even added.
 
-**Phase 4 Conclusion 1 (population locus tests template, not weight): not retested.**
-Like Q1, this needs multiple `agb` weights (`agb0`, `agb1`, `agb2`) per family, and
-only `agb2` was run for `linear`, `truncation` and `decoupled`
-(task-2-report.md, Concerns). Untested here.
+**Phase 4 Conclusion 1 (population locus tests template, not weight): survives, and is
+directly retested by S6.** Like Q1, this needs the `agb0`/`agb1`/`agb2` columns, which
+every population run already has. The population TP-AGB offset section above reports
+the C3K-versus-LW02 band-median separation per family: 0.049-0.061 mag
+(`max_abs_separation_mag`, `linear` largest at 0.0533, `truncation` largest overall at
+0.0613), several times the weight-only step Phase 4 originally measured within C3K
+(agb0 -> agb1, -0.0026 to -0.0051 mag) for the `exponential` family. The template step
+dominates the weight step in every family tested, so Conclusion 1's "the locus mainly
+tests which template is right, not how much TP-AGB light there is" is not specific to
+the `exponential` family's SFH assumption.
 
 **Phase 4 Conclusion 2 (combining indices adds SFH-recovery information): survives, and
 is the most directly retested of the four.** S5 reruns the same k-nearest-neighbour
@@ -632,8 +689,8 @@ Phase 4 single-family (`exponential`) test. `exponential`, `linear` and `decoupl
 (whose post-quench SFR does depend on `tau_q`) all show a real, LW02-only `tau_q` gain:
 -0.0129 +/- 0.0002 (exponential), -0.0043 +/- 0.0003 (linear), -0.0098 +/- 0.0006
 (decoupled) dex, versus C3K gains of -0.0002 to -0.0004 dex that are each consistent
-with zero (per-seed gain-over-SE -0.3 to -4.4 sigma for exponential, -0.8 to -1.5 for
-linear, -1.3 to -1.7 for decoupled).
+with zero (per-seed gain-over-SE -4.4 to +0.1 sigma for exponential, i.e. -0.33, +0.08,
+-4.37 across the three seeds; -0.8 to -1.5 for linear, -1.3 to -1.7 for decoupled).
 
 **The caveat that applies to both Q2 and Conclusion 2 above: S4 and S5 carry no `agb0`
 control per family.** The Phase 3/4 finding that the small C3K gain is *not*
@@ -660,20 +717,22 @@ for **C3K** everywhere: the spread across the four families' 20-bin band medians
 most 0.0028 mag at any D4000 (`sfh_sensitivity_summary.json`,
 `s2_population_bands.c3k.<family>.band_median_mag`). For **LW02** the same statement
 needs a qualification, not the unqualified "nearly family-invariant" used for C3K: the
-four families' band medians agree closely below D4000 ~ 1.4 and above D4000 ~ 1.9
-(spread < 0.001 mag in the lowest two and highest four of the 20 bins,
-`s2_population_bands.lw02.<family>.band_median_mag`), but in the D4000 ~ 1.5-1.8 range
+four families' band medians are nearly identical only in the single lowest bin (D4000 =
+1.185, spread 0.0004 mag); the spread already reaches 0.0017-0.0028 mag in the next two
+bins (D4000 = 1.257, 1.329) and keeps growing, peaking at 0.0178 mag at the D4000 =
+1.543 bin (exponential -0.0568, linear -0.0672, truncation -0.0746, decoupled -0.0569
+mag), before falling back to 0.0002-0.0012 mag from D4000 ~ 1.83 onward
+(`s2_population_bands.lw02.<family>.band_median_mag`). In this D4000 ~ 1.5-1.8 range
 `truncation` and `linear` sit systematically stronger (more negative) than
-`exponential` and `decoupled`: the spread across families peaks at 0.0178 mag at the
-D4000 = 1.543 bin (exponential -0.0568, linear -0.0672, truncation -0.0746, decoupled
--0.0569 mag). Using the same three D4000 slices as Q1/Conclusion 1
+`exponential` and `decoupled`. Using the same three D4000 slices as Q1/Conclusion 1
 (`s2_population_bands.lw02.<family>.d4000_slices`), the [1.5, 1.7) slice shows the same
 pattern: exponential -0.0558, linear -0.0657, truncation -0.0713, decoupled -0.0557 mag
 (`...d4000_1.5_1.7.median_mag`) — linear about 0.010 mag and truncation about 0.016 mag
 stronger than exponential/decoupled. This tracks the class-fraction shift above: the
 rapid-quenching *locus* itself — where the density of rapid-quenching epochs peaks —
-sits at essentially the same place for all four families (D4000 1.625-1.654, bump
--0.0739 to -0.0756 mag, `s2_population_bands.lw02.<family>.rq_locus_centroid`, and
+sits at essentially the same place for all four families (D4000 1.625-1.646, per-family
+`d4000_median` 1.6297/1.6463/1.6247/1.6310 for exponential/linear/truncation/decoupled;
+bump -0.0739 to -0.0756 mag, `s2_population_bands.lw02.<family>.rq_locus_centroid`, and
 visually the same in `s2_population_bands.png`'s dotted density contours), but
 `truncation` and `linear` have 3-5x more rapid-quenching epochs overall (S3, above) to
 pull the local median down through that same locus.
@@ -698,6 +757,9 @@ shape of the population bump-vs-D4000/HdeltaA locus itself.
   minus optical-only) per family, C3K versus LW02.
 - `s5_recovery_by_family.png`: SFH-recovery RMS gain (bump minus no-bump) per family, at
   0.005 and 0.010 mag, for `log10(time since quenching)` and `log10(tau_q)`.
+- `s6_tpagb_offset_by_family.png`: the population's bump(agb2) - bump(agb0) offset
+  versus D4000 per family and template, plus the C3K-versus-LW02 band-median
+  separation per family.
 
 ## Caveats
 
@@ -712,11 +774,14 @@ shape of the population bump-vs-D4000/HdeltaA locus itself.
   SFH-recovery gain from adding the bump (Conclusion 2 above) is real for LW02 and not
   clearly distinguishable from a no-TP-AGB control for C3K. This C3K-versus-LW02 split
   is not an artifact of the one delayed-tau-plus-exponential-quench SFH assumed
-  everywhere else: it replicates in the rapid-quenching classifier and the SFH-recovery
-  regression for three alternative post-quench SFH shapes too ("Sensitivity to the star
-  formation history model" above), though the no-TP-AGB (agb0) control that makes the
-  C3K non-detection precise was itself only rerun for the original `exponential`
-  family, not the three new ones.
+  everywhere else: the population TP-AGB offset itself (Q1/Conclusion 1) was directly
+  retested per family, since every population run already carries `agb0`/`agb1`/`agb2`
+  columns, and the split holds in every family ("Sensitivity to the star formation
+  history model" above, "The population TP-AGB offset per family"); it also replicates
+  in the rapid-quenching classifier and the SFH-recovery regression (Q2/Conclusion 2)
+  for three alternative post-quench SFH shapes. The one part not rerun per family is
+  the no-TP-AGB (`agb0`) *control* of that classifier/regression gain, which was
+  measured once, for the original `exponential` family only.
 - The LW02 signal sits in the H2O bands next to the index side bands. Its strength
   depends on the pulsation phase of the observed stars and on how the telluric H2O was
   corrected in the empirical spectra, which also have gaps at about 1.34-1.42 and

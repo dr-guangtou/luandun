@@ -341,9 +341,12 @@ template configurations:
 {exponential,linear,truncation,decoupled}` (default `exponential`, unchanged behavior
 and output path). `cross_check_fsps_families.py` validates `linear` and `truncation`
 against FSPS's own `sfh = 5`/`sfh = 4` (`output/single_csp/fsps_family_cross_check.json`).
-`analysis_sfh_sensitivity.py` (`--out-dir output/analysis`, `--pilot`) compares all
-four families' fiducial tracks, population bump bands, class fractions, rapid-quenching
-classifier and SFH-recovery regression (`output/analysis/sfh_sensitivity_summary.json`).
+`analysis_sfh_sensitivity.py` (`--out-dir output/analysis`, `--pilot`, `--only` for a
+subset of figures S1-S6) compares all four families' fiducial tracks, population bump
+bands, class fractions, rapid-quenching classifier, SFH-recovery regression, and the
+population TP-AGB (`agb2` - `agb0`) bump offset — every population run already carries
+`agb0`/`agb1`/`agb2` columns, so the last of these needs no rerun
+(`output/analysis/sfh_sensitivity_summary.json`).
 
 Run order (after the Phase 2/3 steps above; six population runs, 2000 histories x 260
 epochs each, 456.5-488.0 s (about 7.6-8.2 min) per run on this laptop):
@@ -360,6 +363,7 @@ epochs each, 456.5-488.0 s (about 7.6-8.2 min) per run on this laptop):
     uv run python cross_check_fsps_families.py
     uv run python analysis_sfh_sensitivity.py --pilot
     uv run python analysis_sfh_sensitivity.py        # 953.4 s (about 15.9 min), mostly the S4 classifier sweep
+    uv run python analysis_sfh_sensitivity.py --only s6   # 2.1 s, from the existing agb0/agb2 columns
 
 Headline numbers (full derivation and JSON keys in `docs/ANALYSIS.md`, "Sensitivity to
 the star formation history model"; sources `output/analysis/sfh_sensitivity_summary.json`
@@ -369,14 +373,22 @@ and `output/single_csp/fsps_family_cross_check.json`):
 | -------- | --------: | ----------: | -----: | ---------: |
 | Rapid-quenching base rate | 0.84% | 1.23% | 3.58% | 6.38% |
 | FSPS-native cross-check, max relative flux difference | n/a | 0.312% (tabular, Phase 2) | 0.023% | 0.027% |
+| Population TP-AGB offset (agb2-agb0), D4000 [1.5,1.7), C3K / LW02 [mag] | -0.0061 / -0.0460 | -0.0059 / -0.0460 | -0.0093 / -0.0595 | -0.0107 / -0.0670 |
+| C3K-versus-LW02 template separation, max over D4000 [mag] | 0.0495 | 0.0485 | 0.0533 | 0.0613 |
 | kNN completeness gain, +bump 0.010 mag, C3K / LW02 (agb2, unbalanced) | -0.017 / +0.053 | -0.014 / +0.047 | +0.004 / +0.038 | +0.004 / +0.026 |
 | SFH-recovery gain, log10(time since quenching), 0.005 mag, C3K / LW02 [dex] | -0.0029 / -0.0105 | -0.0039 / -0.0183 | -0.0052 / -0.0171 | -0.0103 / -0.0313 |
 | SFH-recovery gain, log10(tau_q), 0.005 mag, C3K / LW02 [dex] | -0.0004 / -0.0098 | -0.0002 / -0.0129 | -0.0003 / -0.0043 | +0.0002 / +0.0002 |
 
-The Phase 3 Q2 and Phase 4 Conclusion 2 template split (LW02 real and multi-sigma, C3K
-small and sign-inconsistent) survives in every family; `truncation`'s `log10(tau_q)`
-gain is consistent with zero in both templates, since a hard cutoff's post-quench SFR
-carries no `tau_q` information. Phase 3 Q1 and Phase 4 Conclusion 1 were not retested
-(no `agb0` population was run for the three new families), and S4/S5 carry no `agb0`
-control per family, so the TP-AGB attribution (versus any third noisy feature) still
-rests on the Phase 4 `agb0` control measured for the `exponential` family alone.
+All four earlier conclusions survive in every family. Phase 3 Q1 and Phase 4
+Conclusion 1 (the population TP-AGB offset separates templates, not weight) are
+directly retested per family (Figure S6) from the `agb0`/`agb1`/`agb2` columns every
+population run already carries: the C3K offset is 1-3x the per-model scatter and the
+LW02 offset is 4-12x it in every family. The Phase 3 Q2 and Phase 4 Conclusion 2
+template split (LW02 real and multi-sigma, C3K small and sign-inconsistent) also
+survives in every family; `truncation`'s `log10(tau_q)` gain is consistent with zero in
+both templates, since a hard cutoff's post-quench SFR carries no `tau_q` information.
+What remains genuinely untested per family is narrower: only the `agb0` *control* of
+the classifier (S4) and SFH-recovery (S5) gains was run at `agb2` only for the three
+new families, so the TP-AGB attribution for those two gains (versus any third noisy
+feature) still rests on the Phase 4 `agb0` control measured for the `exponential`
+family alone.

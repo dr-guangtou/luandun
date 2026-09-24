@@ -374,3 +374,22 @@
   classifier/regression similarly") still rests on the single Phase 4 `agb0` control,
   for the `exponential` family only — worth flagging explicitly in the write-up rather
   than letting the four-family replication read as a stronger result than it is.
+- Docs-review fix round 1: the first write-up wrongly said Phase 3 Q1 and Phase 4
+  Conclusion 1 "could not be retested" per family because "no `agb0` population was
+  built" for `linear`/`truncation`/`decoupled`. False — `run_population.py` always
+  writes `agb0`, `agb1` and `agb2` bump columns, for every family; only the S4/S5
+  classifier/regression *configuration* was run at `agb2` only, not the population
+  itself. Fixed by adding Figure S6 (`s6_tpagb_offset_by_family.png`,
+  `s6_tpagb_offset_by_family` in the summary JSON, commit `778ad2d`), which measures
+  the paired `agb2 - agb0` bump offset per family directly from the existing tables (no
+  rerun: 2.1 s via `--only s6`) and confirms the Phase 3/4 template split holds in
+  every family. Lesson: before writing "X was not retested," check what columns the
+  existing output already has, not just what the previous report's Concerns section
+  says was run.
+- Two other numbers needed correcting on the same review pass: the LW02
+  rapid-quenching locus D4000 range is 1.625-1.646 (per-family `d4000_median`
+  1.6297/1.6463/1.6247/1.6310), not 1.625-1.654 — always take the range from the four
+  actual per-family values, not a remembered approximation; and a "spread < 0.001 mag"
+  claim about the lowest two D4000 bins was wrong for the second bin (0.0017 mag) —
+  print every bin's spread before asserting a threshold holds for "the lowest N," don't
+  extrapolate from the first bin alone.

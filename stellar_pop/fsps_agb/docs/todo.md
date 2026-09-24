@@ -13,14 +13,23 @@
       class fractions, classifier and SFH-recovery gain, per family and template).
 - [x] Task 3: write-up (`docs/ANALYSIS.md` new section, `docs/SPEC.md` Phase 5
       subsection, this Review, `README.md`, `docs/lessons.md`).
+- [x] Task 3 fix round 1: Figure S6 (`s6_tpagb_offset_by_family.png`), the per-family
+      `agb0`/`agb2` bump offset (every population run already carries all three `agb`
+      columns), and three corrected ranges (docs review).
 
 ### Review
-- The Phase 3 Q2 and Phase 4 Conclusion 2 findings survive across all four SFH
-  families: the LW02 bump gain is positive and multi-sigma, and the C3K gain is small
+- All four earlier conclusions survive across all four SFH families. Phase 3 Q1 and
+  Phase 4 Conclusion 1 (the population TP-AGB offset separates templates, not weight)
+  are directly retested per family by Figure S6, since every population run already
+  carries `agb0`/`agb1`/`agb2` columns (no rerun needed): the C3K offset is 1-3 times
+  the per-model scatter and the LW02 offset is 4-12 times it in every family, and the
+  C3K-versus-LW02 template separation (0.049-0.061 mag) is several times any
+  weight-only step, in every family too. Phase 3 Q2 and Phase 4 Conclusion 2 also
+  survive: the LW02 bump gain is positive and multi-sigma, and the C3K gain is small
   and sign-inconsistent, in every family (docs/ANALYSIS.md, "Sensitivity to the star
-  formation history model"). Phase 3 Q1 and Phase 4 Conclusion 1 were not retested —
-  both need an `agb0` (or `agb0`/`agb1`/`agb2`) comparison per family, and only `agb2`
-  was run for the three new families.
+  formation history model"). What remains genuinely untested per family is narrower:
+  only the `agb0` *control* of the classifier (S4) and SFH-recovery (S5) gains was run
+  at `agb2` only for the three new families.
 - The rapid-quenching base rate is highly SFH-shape-dependent even though the
   `(t_q, tau_q, log_z)` prior and the sample size are identical: 0.84 percent
   (`decoupled`) to 6.38 percent (`truncation`), driven by how long a family's post-quench

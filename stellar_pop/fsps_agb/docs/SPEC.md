@@ -373,8 +373,12 @@ cross-check, only the internal `scipy.integrate.quad` and continuity checks in
 - `output/single_csp/fsps_family_cross_check.json`: the `linear`/`truncation`
   cross-check and the `sf_slope` sign check.
 - `output/analysis/{s1_fiducial_families,s2_population_bands,s3_class_fractions,
-  s4_classifier_by_family,s5_recovery_by_family}.png`, `sfh_sensitivity_summary.json`:
-  the family-comparison figures and their numbers (`analysis_sfh_sensitivity.py`).
+  s4_classifier_by_family,s5_recovery_by_family,s6_tpagb_offset_by_family}.png`,
+  `sfh_sensitivity_summary.json`: the family-comparison figures and their numbers
+  (`analysis_sfh_sensitivity.py`). S6 (the per-family `agb2 - agb0` bump offset and the
+  C3K-versus-LW02 band-median separation) needs no additional population run: every
+  `run_population.py` output already carries `agb0`, `agb1` and `agb2` bump columns for
+  every family, so S6 reuses the same tables S1-S5 load.
 
 ### Code layout additions
 
@@ -382,7 +386,7 @@ cross-check, only the internal `scipy.integrate.quad` and continuity checks in
 | ---- | ------- |
 | `sfh_model.py` | generalized cumulative-mass/SFR (rise `tau` separate from `t_q`), the four-family dispatch, `linear`/`truncation` closed forms, `draw_decoupled_tau`. |
 | `cross_check_fsps_families.py` | cross-check `linear`/`truncation` against FSPS's own `sfh = 5`/`sfh = 4`, and the `sf_slope` sign check. |
-| `analysis_sfh_sensitivity.py` | S1-S5: fiducial tracks, population bump bands, class fractions, classifier and SFH-recovery gain, per family and template. |
+| `analysis_sfh_sensitivity.py` | S1-S6: fiducial tracks, population bump bands, class fractions, classifier and SFH-recovery gain, the per-family TP-AGB (`agb2`-`agb0`) offset, per family and template; `--only` regenerates a subset. |
 
 Answers, with every number traced to a JSON key, are in docs/ANALYSIS.md, "Sensitivity
 to the star formation history model".
