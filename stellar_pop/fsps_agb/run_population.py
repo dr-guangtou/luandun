@@ -25,7 +25,15 @@ from csp_integrate import (
 )
 from index_planes import new_plane_figure, plot_population
 from run_single_csp import FIDUCIAL, compute_track_indices
-from sfh_model import bin_masses, draw_population, star_formation_rate, time_bin_edges
+from sfh_model import (
+    FAMILIES,
+    bin_masses,
+    draw_decoupled_tau,
+    draw_population,
+    sfh_family_cumulative,
+    star_formation_rate,
+    time_bin_edges,
+)
 from spectral_indices import d4000, h_minus_bump, hdelta_a
 from ssp_grid import DEFAULT_GRID_DIR, load_ssp_grid
 
@@ -100,14 +108,34 @@ def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr, cumulative_mas
     return out
 
 
-def population_indices(grids, draws, edges_gyr):
+def population_indices(grids, draws, edges_gyr, family="exponential"):
+    """Trace every drawn history through `_history_indices`. For `family ==
+    "exponential"` this is the original default-path call, byte-identical to
+    before; the other families go through the generic `cumulative_mass_fn` path
+    (`sfh_family_cumulative`), whose `sfr` column is the finite-difference bin
+    mean of the family's cumulative mass rather than an analytic point value
+    (see `_history_indices`)."""
     n_epochs = edges_gyr.size - 1
     n_draws = draws["t_q_gyr"].size
     columns = {}
     for i in range(n_draws):
-        entry = _history_indices(
-            grids, draws["t_q_gyr"][i], draws["tau_q_gyr"][i], draws["log_z"][i], edges_gyr
-        )
+        if family == "exponential":
+            entry = _history_indices(
+                grids, draws["t_q_gyr"][i], draws["tau_q_gyr"][i], draws["log_z"][i], edges_gyr
+            )
+        else:
+            tau_gyr = draws["tau_gyr"][i] if family == "decoupled" else None
+            cumulative_mass_fn = sfh_family_cumulative(
+                family, draws["t_q_gyr"][i], draws["tau_q_gyr"][i], tau_gyr=tau_gyr
+            )
+            entry = _history_indices(
+                grids,
+                None,
+                None,
+                draws["log_z"][i],
+                edges_gyr,
+                cumulative_mass_fn=cumulative_mass_fn,
+            )
         entry["history_id"] = np.full(n_epochs, i)
         entry["t_q_gyr"] = np.full(n_epochs, draws["t_q_gyr"][i])
         entry["tau_q_gyr"] = np.full(n_epochs, draws["tau_q_gyr"][i])
@@ -159,10 +187,19 @@ def _figure_planes(
     plt.close(figure)
 
 
+def _default_out_dir(family):
+    """`output/population` for the original `exponential` family (unchanged);
+    `output/population_<family>` for the new ones."""
+    if family == "exponential":
+        return OUTPUT_DIR
+    return OUTPUT_DIR.parent / f"population_{family}"
+
+
 def main():
     parser = argparse.ArgumentParser(description="Step 2: population of quenching histories.")
     parser.add_argument("--grid-dir", default=str(DEFAULT_GRID_DIR))
-    parser.add_argument("--out-dir", default=str(OUTPUT_DIR))
+    parser.add_argument("--out-dir", default=None, help="default: derived from --sfh-family")
+    parser.add_argument("--sfh-family", default="exponential", choices=FAMILIES)
     parser.add_argument("--n-draws", type=int, default=N_DRAWS)
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--pilot", action="store_true", help="10 histories, 10 epochs, timing only")
@@ -172,7 +209,7 @@ def main():
         help="redraw figures from the existing indices.npz/draws.npz, no table recomputation",
     )
     args = parser.parse_args()
-    out_dir = Path(args.out_dir)
+    out_dir = Path(args.out_dir) if args.out_dir is not None else _default_out_dir(args.sfh_family)
     if args.figures_only:
         start = time.perf_counter()
         with np.load(out_dir / "indices.npz") as data:
@@ -198,7 +235,9 @@ def main():
     if args.pilot:
         edges, n_draws = edges[:11], 10
     draws = draw_population(n_draws, args.seed)
-    table = population_indices(grids, draws, edges)
+    if args.sfh_family == "decoupled":
+        draws["tau_gyr"] = draw_decoupled_tau(n_draws)
+    table = population_indices(grids, draws, edges, family=args.sfh_family)
     elapsed = time.perf_counter() - start
     print(f"{n_draws} histories x {edges.size - 1} epochs in {elapsed:.1f} s")
     if args.pilot:
@@ -223,6 +262,7 @@ def main():
         "seed": args.seed,
         "n_epochs": int(edges.size - 1),
         "elapsed_s": elapsed,
+        "sfh_family": args.sfh_family,
         "grid_provenance": {product: grid.provenance for product, grid in grids.items()},
     }
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")

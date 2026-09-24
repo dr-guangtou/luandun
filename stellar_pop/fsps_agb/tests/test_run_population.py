@@ -3,8 +3,14 @@ from functools import partial
 import numpy as np
 import pytest
 
-from run_population import _history_indices, population_indices, specific_sfr_windows
-from sfh_model import cumulative_mass, draw_population, time_bin_edges
+from run_population import (
+    OUTPUT_DIR,
+    _default_out_dir,
+    _history_indices,
+    population_indices,
+    specific_sfr_windows,
+)
+from sfh_model import FAMILIES, cumulative_mass, draw_decoupled_tau, draw_population, time_bin_edges
 from ssp_grid import SspGrid, load_ssp_grid, load_surviving_mass, save_ssp_grid, save_surviving_mass
 
 LOG_AGE = np.round(np.arange(5.0, 10.3001, 0.05), 3)
@@ -138,3 +144,47 @@ def test_history_indices_cumulative_mass_fn_matches_default_path(tmp_path):
             assert np.array_equal(generic[key], default[key]), key
     bin_mean_sfr = np.diff(cumulative_mass(edges, 1.5, 0.3)) / np.diff(edges)
     assert np.allclose(generic["sfr"], bin_mean_sfr, rtol=1e-12)
+
+
+def test_population_indices_exponential_family_is_bit_identical_to_default(tmp_path):
+    draws = draw_population(3, seed=2)
+    edges = time_bin_edges()[:21]
+    grids = _toy_grids(tmp_path)
+    default = population_indices(grids, draws, edges)
+    explicit = population_indices(grids, draws, edges, family="exponential")
+    assert set(explicit) == set(default)
+    for key in default:
+        assert np.array_equal(explicit[key], default[key]), key
+
+
+def test_population_indices_every_family_runs_and_matches_the_dedicated_cumulative(tmp_path):
+    draws = draw_population(3, seed=2)
+    edges = time_bin_edges()[:41]
+    for family in FAMILIES:
+        grids = _toy_grids(tmp_path / family)
+        if family == "decoupled":
+            draws = dict(draws, tau_gyr=draw_decoupled_tau(3))
+        table = population_indices(grids, draws, edges, family=family)
+        assert table["history_id"].shape == (3 * 40,)
+        assert np.all(np.isfinite(table["sfr"]))
+        assert np.all(table["sfr"] >= -1e-12)
+
+
+def test_population_indices_truncation_family_has_zero_mass_growth_after_t_q(tmp_path):
+    draws = draw_population(3, seed=2)
+    edges = time_bin_edges()[:101]
+    grids = _toy_grids(tmp_path)
+    table = population_indices(grids, draws, edges, family="truncation")
+    # surviving_mass_fraction * formed mass up to t_obs stays flat once t_obs > t_q, so the
+    # per-epoch sSFR windows must be exactly zero there (no new mass forms after t_q).
+    after_t_q = table["epoch_gyr"] > table["t_q_gyr"] + 1.0
+    assert np.any(after_t_q)
+    assert np.allclose(table["ssfr_0_100_myr"][after_t_q], 0.0, atol=1e-12)
+    assert np.allclose(table["ssfr_100_1000_myr"][after_t_q], 0.0, atol=1e-12)
+
+
+def test_default_out_dir_derives_from_family():
+    assert _default_out_dir("exponential") == OUTPUT_DIR
+    assert _default_out_dir("linear") == OUTPUT_DIR.parent / "population_linear"
+    assert _default_out_dir("truncation") == OUTPUT_DIR.parent / "population_truncation"
+    assert _default_out_dir("decoupled") == OUTPUT_DIR.parent / "population_decoupled"
