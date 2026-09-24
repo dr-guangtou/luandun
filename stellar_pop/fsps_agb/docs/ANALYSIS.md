@@ -357,8 +357,11 @@ templates with little shift across the tau_q/t_q family
 within the +6 Gyr window in either template — every track's `at_window_boundary` flag
 is true (`c2_age_clocks.{c3k,lw02}.d4000.*.at_window_boundary`) — so alone it only says
 "quenched," not "how long ago," beyond the coarse rising trend. The raw H-minus bump
-(as opposed to the agb0-to-agb2 delta) has an interior minimum only for LW02, 0.65-0.8
-Gyr after quenching depending on tau_q and t_q
+(as opposed to the agb0-to-agb2 delta) has an interior minimum only for LW02, 0.5-1.5
+Gyr after quenching depending on tau_q and t_q, and the delay grows with tau_q: 0.5 Gyr
+at tau_q = 0.1 Gyr, 0.8 Gyr at tau_q = 0.3 Gyr, 1.25 Gyr at tau_q = 1 Gyr, 1.5 Gyr at
+tau_q = 3 Gyr (fixed t_q = 3 Gyr); the t_q family is nearly flat at 0.8-0.9 Gyr (0.9
+Gyr at t_q = 1.5 Gyr, 0.8 Gyr at t_q = 3 and 4.5 Gyr, fixed tau_q = 0.3 Gyr)
 (`c2_age_clocks.lw02.h_minus_bump.*.delay_gyr`, `at_window_boundary: false` in every
 track); **for C3K the raw bump has no interior minimum in the +6 Gyr window at all** —
 every C3K `h_minus_bump` track's `at_window_boundary` is true
@@ -403,12 +406,15 @@ paired_gain_standard_error_dex,paired_gain_over_standard_error}` (seeds 20260924
 -33.5 to -99.8 for log10(t - t_q) and -19.3 to -27.5 for log10(tau_q) across the three
 seeds; at 0.010 mag (`bump_0.010.paired_gain_per_seed`) it is -19.9 to -38.1 and -13.5
 to -20.8. Combined, the LW02 gains are 13.5-99.8, i.e. of order **13-100 fold-based
-standard errors from zero, in every seed, at both precisions**. For **C3K agb2** the
-log10(t - t_q) gain is a consistent
--7.5 to -11.7 standard errors from zero (real but far smaller than LW02); the
-log10(tau_q) gain is **below 1 standard error from zero in 2 of the 3 seeds** (-0.33
-in seed 20260924, +0.08 in seed 20260925) and only -4.4 in the third (seed 20260926) —
-not a consistent detection. The second yardstick, the across-seed standard deviation of
+standard errors from zero, in every seed, at both precisions**. For **C3K agb2** at
+0.005 mag, `paired_gain_over_standard_error` is -7.5 to -11.7 for log10(t - t_q)
+(real but far smaller than LW02) and -0.33, +0.08, -4.4 per seed for log10(tau_q) —
+**below 1 standard error from zero in 2 of the 3 seeds** (seeds 20260924 and 20260925)
+and only -4.4 in the third (seed 20260926), not a consistent detection. At 0.010 mag it
+is -4.5 to -6.4 for log10(t - t_q) (still real, weaker than at 0.005 mag) and +2.0,
++0.21, -8.1 per seed for log10(tau_q) — inconsistent even in sign across seeds, so
+still not a consistent detection at this precision either. The second yardstick, the
+across-seed standard deviation of
 the gain itself (`paired_gain_std_over_seeds_dex`, which excludes population sampling
 variance since all three seeds share the same 2000 histories), agrees: for LW02 it is
 3-14 times smaller than the gain, so the gain is robust seed to seed; for C3K's

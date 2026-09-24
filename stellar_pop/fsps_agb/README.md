@@ -315,7 +315,7 @@ figures for the two conclusions"; source `output/analysis/conclusion_summary.jso
 | Population bump step, TP-AGB weight only, LW02 (agb1 -> agb2) | n/a | -0.0236 mag |
 | SFH-recovery gain from the bump at 0.005 mag, log10(time since quenching) | -0.0039 +/- 0.0003 dex | -0.0183 +/- 0.0001 dex |
 | SFH-recovery gain, C3K agb0 control (no TP-AGB light) | -0.0063 +/- 0.0004 dex | n/a |
-| C3K raw bump: interior minimum within +6 Gyr of quenching | none (window-edge marker) | 0.65-0.8 Gyr post-quench |
+| Raw bump: interior minimum within +6 Gyr of quenching | none (window-edge marker) | 0.5-1.5 Gyr post-quench, grows with tau_q |
 | Bump metallicity spread vs. TP-AGB (agb0-to-agb2) delta, same post-quench epochs | comparable (0.008-0.015 vs. 0.004-0.011 mag) | delta 2-4x the spread (0.033-0.067 vs. 0.014-0.029 mag) |
 
 The population locus mainly tests which TP-AGB *template* is right, not how much
