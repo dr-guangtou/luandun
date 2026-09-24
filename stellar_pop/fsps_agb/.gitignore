@@ -5,9 +5,11 @@ wheels/
 .ruff_cache/
 .pytest_cache/
 output/ssp_grid/*.npz
+!output/ssp_grid/surviving_mass.npz
 output/single_csp/spectra_*.npz
 output/population/indices.*
 output/ssp_grid_lw02/*.npz
+!output/ssp_grid_lw02/surviving_mass.npz
 output/single_csp_lw02/spectra_*.npz
 output/population_lw02/indices.*
 output/population/alternative_sfh_indices.npz

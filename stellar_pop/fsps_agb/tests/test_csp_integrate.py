@@ -7,6 +7,7 @@ from csp_integrate import (
     csp_track,
     epoch_weight_matrix,
     interpolate_log_z,
+    surviving_mass_per_epoch,
 )
 from sfh_model import cumulative_mass, time_bin_edges
 from ssp_grid import SspGrid
@@ -77,3 +78,9 @@ def test_csp_track_of_constant_ssps_is_constant():
 
 def test_agb_two_spectra_is_linear_extrapolation():
     assert np.allclose(agb_two_spectra(np.array([1.0]), np.array([3.0])), 5.0)
+
+
+def test_surviving_mass_per_epoch_weights_fraction_by_mass_at_each_age():
+    weights = np.array([[1.0, 3.0, 0.0], [2.0, 2.0, 4.0]])
+    fraction = np.array([1.0, 0.5, 0.25])
+    assert np.allclose(surviving_mass_per_epoch(weights, fraction), [2.5, 4.0])

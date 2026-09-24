@@ -153,14 +153,14 @@ for the implementation plan.
 | File | Purpose |
 | ---- | ------- |
 | `sfh_model.py` | Delayed-tau plus exponential quench SFH, bin edges, analytic bin masses, prior draws. |
-| `ssp_grid.py` | Build SSPs with FSPS, cache to `output/ssp_grid/`, load as `SspGrid`. |
+| `ssp_grid.py` | Build SSPs with FSPS, cache to `output/ssp_grid/`, load as `SspGrid`; `--surviving-mass` stores the FSPS surviving stellar mass fraction per age and Z (`surviving_mass.npz`). |
 | `broadening.py` | Log-wavelength grid, resampling, quadrature-corrected Gaussian smoothing, resolution products. |
 | `csp_integrate.py` | Age-interpolation weights (log-spaced lookback sub-grid), log-Z interpolation, CSP matrix product. |
 | `spectral_indices.py` | Air-to-vacuum conversion, band means, D4000, HdeltaA, H-minus bump. |
 | `cross_check_fsps_tabular.py` | Cross-check the integrator against FSPS's own tabular SFH (`sfh=3`) at a handful of epochs. |
 | `index_planes.py` | Shared figure helpers for the three 2-D index planes. |
 | `run_single_csp.py` | Step 1 driver: fiducial CSP track, index table, FSPS cross-check, figures. |
-| `run_population.py` | Step 2 driver: population of quenching histories, index table (sSFR normalized by mass formed by `t_obs`, not surviving stellar mass — no return fraction), figures. |
+| `run_population.py` | Step 2 driver: population of quenching histories, index table (agb0, agb1 and agb2 indices; sSFR normalized by the surviving stellar mass at `t_obs`, living stars plus remnants), figures. |
 | `tests/test_*.py` | Unit tests per module; FSPS-dependent tests marked `slow`. |
 
 ### Running
@@ -168,6 +168,7 @@ for the implementation plan.
     uv sync
     export SPS_HOME=/Users/shuang/code/fsps
     uv run python ssp_grid.py
+    uv run python ssp_grid.py --surviving-mass
     uv run python broadening.py
     uv run python cross_check_fsps_tabular.py
     uv run python run_single_csp.py --pilot
@@ -249,6 +250,7 @@ Run order, empirical Lancon & Mouhcine TP-AGB templates (`use_lw_tpagb = 1`), ou
 prefixed `lw02_`:
 
     uv run python ssp_grid.py --out-dir output/ssp_grid_lw02 --use-lw-tpagb
+    uv run python ssp_grid.py --out-dir output/ssp_grid_lw02 --use-lw-tpagb --surviving-mass
     uv run python broadening.py --grid-dir output/ssp_grid_lw02
     uv run python run_single_csp.py --grid-dir output/ssp_grid_lw02 --out-dir output/single_csp_lw02
     uv run python run_population.py --grid-dir output/ssp_grid_lw02 --out-dir output/population_lw02
@@ -260,7 +262,8 @@ prefixed `lw02_`:
 
 `analysis_alternative_sfh.py` caches its traced table as
 `<population-dir>/alternative_sfh_indices.npz` (git-ignored); `--reuse` redraws from it in
-about 13 s instead of tracing again (about 95 s).
+about 13 s instead of tracing again (about 120 s; about 130 s wall run alongside the
+other configuration).
 
 Headline numbers (details and JSON keys in `docs/ANALYSIS.md`):
 
@@ -270,8 +273,8 @@ Headline numbers (details and JSON keys in `docs/ANALYSIS.md`):
 | Fiducial-track bump delta (sigma300) | -0.011 mag at 3.45 Gyr | -0.074 mag at 3.65 Gyr |
 | Population bump offset at fixed D4000/HdeltaA | 0.003-0.009 mag | 0.032-0.059 mag |
 | Offset / per-model RMS 16-84 half-width | 0.90-2.20 | 6.07-16.31 |
-| Rapid-quenching isolable fraction, D4000-HdeltaA (agb2, noise-free, full-range grid) | 0.782 | 0.792 |
-| Best bump-plane isolable fraction (agb2, noise-free, full-range grid) | 0.081 | 0.291 |
-| kNN completeness / purity, no bump (agb2, mean of 3 noise seeds) | 0.412 / 0.605 | 0.412 / 0.607 |
-| kNN completeness / purity, + bump at 0.01 mag (mean of 3 noise seeds) | 0.401 / 0.619 | 0.452 / 0.634 |
+| Rapid-quenching isolable fraction, D4000-HdeltaA (agb2, noise-free, full-range grid) | 0.839 | 0.843 |
+| Best bump-plane isolable fraction (agb2, noise-free, full-range grid) | 0.084 | 0.319 |
+| kNN completeness / purity, no bump (agb2, mean of 3 noise seeds) | 0.402 / 0.612 | 0.398 / 0.610 |
+| kNN completeness / purity, + bump at 0.01 mag (mean of 3 noise seeds) | 0.388 / 0.623 | 0.446 / 0.632 |
 | Contaminant epochs in previously pure cells | 0 of 144,600 | 0 of 144,600 |

@@ -161,11 +161,22 @@ F_nu c / lambda^2.
 - `output/population/`: the drawn parameters, the index table (one row per
   history and epoch, wide-format columns for both `agb` settings: `t_q`,
   `tau_q`, `log_z`, `t_obs`, D4000 / HdeltaA / H-minus bump (`sigma300` and
-  `r100`) for `agb0` and `agb2`, SFR, sSFR over the last 100 Myr and
-  100–1000 Myr for later classification; git-ignored, ~163 MB as CSV), and
+  `r100`) for `agb0`, `agb1` and `agb2`, SFR, sSFR over the last 100 Myr and
+  100–1000 Myr for later classification, and `surviving_mass_fraction`;
+  git-ignored), and
   figures: the three planes as density plus scatter, fiducial track
   overlaid, one panel per `agb` setting. Spectra are not stored for the
   population.
+- sSFR normalization (Phase 4 change): both sSFR windows divide by the
+  surviving stellar mass at `t_obs`, living stars plus remnants. `ssp_grid.py
+  --surviving-mass` stores FSPS `StellarPopulation.stellar_mass` (`tage = 0`,
+  agb = 1, `add_stellar_remnants` at its default of on) per solar mass formed
+  for the 4 metallicities x 107 ages in `<grid-dir>/surviving_mass.npz`;
+  `load_ssp_grid` attaches it to the grid, and the surviving mass per epoch
+  is the epoch weight matrix times this fraction (interpolated in log Z).
+  agb = 1 because FSPS rescales the TP-AGB IMF weights by `agb` before
+  summing the mass. The ratio R of the two windows is unchanged; the absolute
+  thresholds move.
 
 ### Validation (all measured, thresholds fixed before running)
 

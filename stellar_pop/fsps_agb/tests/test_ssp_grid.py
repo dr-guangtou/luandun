@@ -12,6 +12,7 @@ from ssp_grid import (
     build_ssp,
     load_ssp_grid,
     save_ssp_grid,
+    surviving_mass_fraction,
 )
 
 
@@ -44,6 +45,21 @@ def test_agb_weight_is_exactly_linear(use_lw_tpagb):
     predicted = 2.0 * flux_1 - flux_0
     scale = np.max(flux_2)
     assert np.max(np.abs(flux_2 - predicted)) / scale < 1e-10
+
+
+@pytest.mark.slow
+def test_solar_surviving_mass_fraction():
+    log_age_yr, fraction, provenance = surviving_mass_fraction(log_z=0.0)
+    assert fraction.shape == log_age_yr.shape == (107,)
+    assert provenance["params"]["agb"] == 1.0
+    assert provenance["add_stellar_remnants"] is True
+    # The youngest MIST isochrones lack low-mass stars (lowest initial mass 2.6 Msun at
+    # 1e5 yr), yet their IMF-weighted mass sums to 4.5 Msun per Msun formed; it falls
+    # below 1 from 10^6.35 yr on.
+    assert fraction[0] > 4.0
+    assert np.all(fraction[log_age_yr >= 6.35] <= 1.0)
+    assert np.isclose(fraction[np.isclose(log_age_yr, 9.0)][0], 0.6712, atol=1e-3)
+    assert 0.5 < fraction[np.isclose(log_age_yr, 10.0)][0] < 0.7
 
 
 def test_build_ssp_extra_params_recorded():

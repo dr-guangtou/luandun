@@ -23,6 +23,8 @@ ZMET_BY_LOG_Z = {-0.5: 9, -0.25: 10, 0.0: 11, 0.25: 12}
 AGB_WEIGHTS = (0.0, 1.0)
 IMF_TYPE_CHABRIER = 1
 PRODUCTS = ("native", "sigma300", "r100")
+SURVIVING_MASS_AGB = 1.0
+SURVIVING_MASS_FILE = "surviving_mass.npz"
 PARAM_KEYS = (
     "imf_type",
     "zmet",
@@ -51,6 +53,7 @@ class SspGrid:
     native_sigma_km_s: np.ndarray
     product: str
     provenance: dict = field(default_factory=dict)
+    surviving_mass_fraction: np.ndarray | None = None
 
 
 def _git_command(path, *args):
@@ -143,6 +146,68 @@ def build_ssp(log_z, agb, extra_params=None):
     )
 
 
+def surviving_mass_fraction(log_z, extra_params=None):
+    """Surviving stellar mass (living stars plus remnants, the FSPS `add_stellar_remnants`
+    default) per solar mass formed at every SSP age, from `StellarPopulation.stellar_mass`
+    with `tage = 0`. Built at agb = 1: FSPS rescales the TP-AGB IMF weights by `agb`
+    before summing the mass, so agb = 1 is the unmodified isochrone."""
+    import fsps
+
+    population = fsps.StellarPopulation(
+        zcontinuous=0, zmet=ZMET_BY_LOG_Z[log_z], imf_type=IMF_TYPE_CHABRIER, sfh=0
+    )
+    population.params["agb"] = SURVIVING_MASS_AGB
+    for key, value in (extra_params or {}).items():
+        population.params[key] = value
+    population.get_spectrum(tage=0.0, peraa=False)
+    provenance = _provenance_dict(
+        fsps.__version__,
+        [item.decode() for item in population.libraries],
+        population.params,
+        os.environ.get("SPS_HOME"),
+        extra_params,
+    )
+    provenance["add_stellar_remnants"] = bool(population.params["add_stellar_remnants"])
+    return (
+        np.asarray(population.ssp_ages),
+        np.array(population.stellar_mass, dtype=float),
+        provenance,
+    )
+
+
+def build_surviving_mass_fractions(out_dir=DEFAULT_GRID_DIR, extra_params=None):
+    provenance = {
+        "definition": "StellarPopulation.stellar_mass at tage = 0 and agb = 1: surviving "
+        "mass (living stars plus remnants) per solar mass formed, per SSP age",
+        "per_log_z": {},
+        "build_environment": record_build_environment(),
+        "extra_params": dict(extra_params or {}),
+    }
+    rows = []
+    for log_z in LOG_Z_GRID:
+        log_age_yr, row, log_z_provenance = surviving_mass_fraction(log_z, extra_params)
+        rows.append(row)
+        provenance["per_log_z"][f"log_z={log_z:+.2f}"] = log_z_provenance
+    path = save_surviving_mass(out_dir, log_age_yr, np.array(LOG_Z_GRID), np.vstack(rows))
+    (Path(out_dir) / "provenance_surviving_mass.json").write_text(
+        json.dumps(provenance, indent=2, default=str) + "\n"
+    )
+    return path
+
+
+def save_surviving_mass(out_dir, log_age_yr, log_z_grid, fraction):
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / SURVIVING_MASS_FILE
+    np.savez(path, log_age_yr=log_age_yr, log_z_grid=log_z_grid, fraction=fraction)
+    return path
+
+
+def load_surviving_mass(out_dir):
+    with np.load(Path(out_dir) / SURVIVING_MASS_FILE) as data:
+        return data["log_age_yr"], data["log_z_grid"], data["fraction"]
+
+
 def build_and_cache_grid(out_dir=DEFAULT_GRID_DIR, extra_params=None):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -180,7 +245,9 @@ def save_ssp_grid(grid, out_dir):
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{grid.product}.npz"
     arrays = {
-        key: value for key, value in asdict(grid).items() if key not in ("product", "provenance")
+        key: value
+        for key, value in asdict(grid).items()
+        if key not in ("product", "provenance", "surviving_mass_fraction")
     }
     np.savez(path, product=grid.product, **arrays)
     provenance_text = json.dumps(grid.provenance, indent=2, default=str) + "\n"
@@ -198,7 +265,15 @@ def load_ssp_grid(out_dir, product):
     if not provenance_path.exists():
         provenance_path = out_dir / "provenance.json"
     provenance = json.loads(provenance_path.read_text()) if provenance_path.exists() else {}
-    return SspGrid(product=product, provenance=provenance, **arrays)
+    grid = SspGrid(product=product, provenance=provenance, **arrays)
+    if (out_dir / SURVIVING_MASS_FILE).exists():
+        log_age_yr, log_z_grid, fraction = load_surviving_mass(out_dir)
+        if not (
+            np.allclose(log_age_yr, grid.log_age_yr) and np.allclose(log_z_grid, grid.log_z_grid)
+        ):
+            raise ValueError(f"{out_dir / SURVIVING_MASS_FILE} does not match the {product} grid")
+        grid.surviving_mass_fraction = fraction
+    return grid
 
 
 if __name__ == "__main__":
@@ -212,10 +287,17 @@ if __name__ == "__main__":
         action="store_true",
         help="use the Lancon & Mouhcine (2002) empirical O-rich TP-AGB spectra",
     )
+    parser.add_argument(
+        "--surviving-mass",
+        action="store_true",
+        help="build only the surviving stellar mass fractions (surviving_mass.npz)",
+    )
     args = parser.parse_args()
 
     start = time.perf_counter()
-    written = build_and_cache_grid(
-        args.out_dir, extra_params={"use_lw_tpagb": 1} if args.use_lw_tpagb else None
-    )
+    extra_params = {"use_lw_tpagb": 1} if args.use_lw_tpagb else None
+    if args.surviving_mass:
+        written = build_surviving_mass_fractions(args.out_dir, extra_params=extra_params)
+    else:
+        written = build_and_cache_grid(args.out_dir, extra_params=extra_params)
     print(f"wrote {written} in {time.perf_counter() - start:.1f} s")

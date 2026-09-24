@@ -291,3 +291,25 @@
 - With independent noise the default-template bump changes completeness by -0.011 to
   -0.002 and purity by +0.008 to +0.014; the agb0 control shows the same size of change,
   so compare against agb0 before crediting TP-AGB light.
+
+## 2026-09-24 (Phase 4 Task 1: surviving-mass sSFR, agb = 1 columns)
+- FSPS `StellarPopulation.stellar_mass` with `tage = 0` (agb = 1, remnants on): solar Z
+  0.6712 at 1 Gyr and 0.5716 at 10 Gyr per Msun formed, identical in the default and LW02
+  grids (`use_lw_tpagb` changes spectra only; max difference 0). Range over the four Z:
+  0.660-0.676 at 1 Gyr, 0.564-0.576 at 10 Gyr. Read it after `get_spectrum`; `agb`
+  changes it by up to 2e-4 because FSPS rescales the TP-AGB IMF weights before summing.
+- The youngest MIST SSPs have more than 1 Msun per Msun formed (4.51 at 1e5 yr, 1.09 at
+  1 Myr; below 1 from 10^6.35 yr). Those isochrones lack low-mass stars (lowest initial mass
+  2.6 Msun at 1e5 yr). The planned test "fraction = 1 at the youngest age" was wrong;
+  measure before writing a numeric expectation. It does not matter for the population:
+  the per-epoch surviving fraction is 0.559-0.743 at epochs >= 1 Gyr, at most 0.926 at
+  any epoch.
+- Build time: 51 s per grid for the four fractions (`ssp_grid.py --surviving-mass`).
+  Population reruns with agb1 columns: 482 s wall each, run in parallel (was about 6 min).
+- The ratio R is unchanged (max relative change 4e-16) and every index column of agb0 and
+  agb2 is byte-identical to the previous table, but the class counts do move: the
+  absolute thresholds (previous sSFR > 1e-10, recent < 1e-11 per yr) now see sSFRs
+  larger by a factor of 1.35-1.79 (1 / surviving fraction). Default and LW02 (same SFHs):
+  rapid-quenching 4,727 -> 5,907, post-starburst 2,845 -> 3,159, quiescent
+  264,299 -> 247,231, star-forming 102,100 -> 102,100, transitional 110,874 -> 126,762.
+  All moves are out of quiescent (1,180 to rapid-quenching, 15,888 to transitional).

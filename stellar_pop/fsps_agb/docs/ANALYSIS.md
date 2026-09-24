@@ -25,6 +25,13 @@ template configurations run side by side:
   (`use_lw_tpagb = 1`); outputs `output/ssp_grid_lw02`, `output/population_lw02`,
   `output/analysis/lw02_q*`.
 
+Both sSFR windows (0-100 Myr and 100-1000 Myr before `t_obs`) are normalized by the
+surviving stellar mass at `t_obs` (living stars plus remnants, FSPS
+`StellarPopulation.stellar_mass` at agb = 1), not the mass formed; the mass-formed
+convention had no return fraction. R, the ratio of the two windows, is unchanged by
+this (a per-epoch normalizer cancels), but the absolute sSFR thresholds that define the
+classes see values 1.35-1.79 times larger than under the old convention.
+
 ## Q1. Can a model with TP-AGB contribution be told apart from one without?
 
 **Answer: conditional on the TP-AGB templates. With the default C3K templates, no: agb 0
@@ -134,22 +141,27 @@ The fiducial-track figures are `output/single_csp/time_evolution.png` and
 
 **Answer: partially, and only in the optical D4000-HdeltaA plane. With the yardstick
 noise (D4000 +/- 0.05, HdeltaA +/- 0.5 A) a k-nearest-neighbour classifier recovers
-about 41 percent of the rapid-quenching epochs at about 61 percent purity, at a base rate
-of about 1 percent. Noise-free purity maps, an upper bound, put 77-79 percent of them in
+about 40 percent of the rapid-quenching epochs at about 61 percent purity, at a base rate
+of about 1.2 percent. Noise-free purity maps, an upper bound, put 79-84 percent of them in
 cells more than 50 percent pure. The bump adds nothing TP-AGB-specific with the default
-templates: its changes (completeness -0.011 to -0.002, purity +0.008 to +0.014) are the
+templates: its changes (completeness -0.016 to -0.010, purity +0.007 to +0.011) are the
 same size as with agb0, which has no TP-AGB light. With the empirical LW02 templates it
-adds a real but modest gain: at 0.005 mag, completeness +0.081 +/- 0.008 and purity
-+0.039 +/- 0.004; at 0.010 mag, +0.041 +/- 0.004 and +0.028 +/- 0.012 (mean and
+adds a real but modest gain: at 0.005 mag, completeness +0.090 +/- 0.008 and purity
++0.040 +/- 0.003; at 0.010 mag, +0.047 +/- 0.003 and +0.021 +/- 0.008 (mean and
 standard deviation over three noise seeds; 5-10 paired fold standard errors). At 0.020
-mag the gain is at most +0.013. The bump planes alone isolate at most 29 percent even
+mag the gain is at most +0.012. The bump planes alone isolate at most 32 percent even
 without noise.**
 
-Classes follow the manuscript's sSFR rules. They depend only on the SFH, so the counts
-are the same in both configurations: 4,727 rapid-quenching epochs out of 482,000
-(0.98 percent), including 2,845 post-starburst (`analysis/q2_summary.json`,
+Classes follow the manuscript's sSFR rules, now applied to sSFR normalized by the
+surviving stellar mass (see Setup) rather than the mass formed. They depend only on the
+SFH, so the counts are the same in both configurations: 5,907 rapid-quenching epochs out
+of 482,000 (1.23 percent), including 3,159 post-starburst (`analysis/q2_summary.json`,
 `class_summary.counts`, `class_summary.post_starburst_count`; identical in
-`lw02_q2_summary.json`).
+`lw02_q2_summary.json`). Under the previous mass-formed normalization the counts were
+4,727 rapid-quenching and 2,845 post-starburst; every move is out of quiescent
+(264,299 -> 247,231), split between rapid-quenching (+1,180) and transitional
+(110,874 -> 126,762, +15,888); star-forming is unchanged (102,100)
+(`docs/lessons.md`, 2026-09-24 Phase 4 Task 1 entry).
 
 Evidence, purity maps (noise-free upper bounds). A 40 x 40 grid spans the full range of
 each axis over all classes; a cell needs 20 epochs; "isolable" = fraction of
@@ -158,19 +170,19 @@ secondary column uses a grid between the 0.5 and 99.5 percentiles:
 
 | plane | default agb2 full / clipped | LW02 agb2 full / clipped | agb0 (both) full / clipped |
 | --- | ---: | ---: | ---: |
-| D4000-HdeltaA | 0.782 / 0.807 | 0.792 / 0.768 | 0.773 / 0.810 |
-| D4000-bump | 0.079 / 0.077 | 0.291 / 0.134 | 0.194 / 0.182 |
-| HdeltaA-bump | 0.081 / 0.085 | 0.127 / 0.030 | 0.027 / 0.007 |
+| D4000-HdeltaA | 0.839 / 0.822 | 0.843 / 0.803 | 0.816 / 0.788 |
+| D4000-bump | 0.075 / 0.077 | 0.319 / 0.174 | 0.222 / 0.197 |
+| HdeltaA-bump | 0.084 / 0.076 | 0.144 / 0.057 | 0.039 / 0.025 |
 
 (`q2_summary.json` and `lw02_q2_summary.json`,
 `purity_maps.<agb>.<plane>.isolable_fraction` and
 `..._isolable_fraction_percentile_clipped`.) The grid choice moves the optical-plane
-fraction by up to +/- 0.04, so differences of that size between columns or
+fraction by up to +/- 0.03, so differences of that size between columns or
 configurations are not meaningful. It matters for the LW02 bump planes: the deepest bumps
-belong to rapid-quenching epochs, and the clipped grid leaves 29.6 percent of them
+belong to rapid-quenching epochs, and the clipped grid leaves 25.6 percent of them
 outside (`lw02_q2_alternative_summary.json`,
 `purity_maps_percentile_clipped.agb2.d4000_h_minus_bump.rapid_quenching_fraction_outside_grid`),
-so the clipped 0.134 undercounts.
+so the clipped 0.174 undercounts.
 
 Evidence, noise-aware k-nearest-neighbour classifier (k = 25, 5 folds grouped by history,
 D4000 +/- 0.05 and HdeltaA +/- 0.5 A noise, bump at sigma300). Each of three noise seeds
@@ -181,31 +193,31 @@ fold-mean metric, +/- its standard deviation over the seeds
 
 | agb2, unbalanced | default completeness | default purity | LW02 completeness | LW02 purity |
 | --- | --- | --- | --- | --- |
-| D4000, HdeltaA only | 0.412 +/- 0.006 | 0.605 +/- 0.009 | 0.412 +/- 0.005 | 0.607 +/- 0.007 |
-| + bump +/- 0.005 mag | 0.410 +/- 0.012 | 0.618 +/- 0.003 | 0.493 +/- 0.003 | 0.645 +/- 0.006 |
-| + bump +/- 0.010 mag | 0.401 +/- 0.005 | 0.619 +/- 0.002 | 0.452 +/- 0.002 | 0.634 +/- 0.006 |
-| + bump +/- 0.020 mag | 0.404 +/- 0.008 | 0.613 +/- 0.001 | 0.417 +/- 0.004 | 0.619 +/- 0.008 |
+| D4000, HdeltaA only | 0.402 +/- 0.006 | 0.612 +/- 0.007 | 0.398 +/- 0.004 | 0.610 +/- 0.005 |
+| + bump +/- 0.005 mag | 0.393 +/- 0.009 | 0.622 +/- 0.006 | 0.488 +/- 0.005 | 0.651 +/- 0.007 |
+| + bump +/- 0.010 mag | 0.388 +/- 0.005 | 0.623 +/- 0.001 | 0.446 +/- 0.001 | 0.632 +/- 0.008 |
+| + bump +/- 0.020 mag | 0.387 +/- 0.009 | 0.619 +/- 0.002 | 0.405 +/- 0.010 | 0.621 +/- 0.006 |
 
 The gain of each bump set over the optical-only set is measured per fold on the same
 folds (`classifier.paired_difference_definition`; per seed in
 `classifier.results_by_seed.<seed>.<agb>.<set>.<balance>.paired_difference_vs_no_bump`,
 per-fold values in `completeness_per_fold`, `purity_per_fold`):
 
-- LW02, agb2, unbalanced: completeness gain +0.081 +/- 0.008 (0.005 mag), +0.041 +/-
-  0.004 (0.010 mag), +0.005 +/- 0.003 (0.020 mag); purity gain +0.039 +/- 0.004, +0.028
-  +/- 0.012, +0.013 +/- 0.003 (seed mean +/- seed std,
+- LW02, agb2, unbalanced: completeness gain +0.090 +/- 0.008 (0.005 mag), +0.047 +/-
+  0.003 (0.010 mag), +0.007 +/- 0.006 (0.020 mag); purity gain +0.040 +/- 0.003, +0.021
+  +/- 0.008, +0.011 +/- 0.003 (seed mean +/- seed std,
   `across_seeds.agb2.bump_sigma300_<p>.unbalanced.{completeness,purity}_gain_mean_*`).
-  In units of the paired fold standard error the 0.005 and 0.010 mag gains are 4.8-10.3
+  In units of the paired fold standard error the 0.005 and 0.010 mag gains are 5.9-11.3
   on average over seeds (`..._gain_over_standard_error_mean_over_seeds`); with only 5
-  folds these ratios vary strongly between seeds (standard deviation 1.1-6.6), so the
-  seed-to-seed spread of the gain itself is the more robust yardstick, and it is 2-10
+  folds these ratios vary strongly between seeds (standard deviation 0.8-3.4), so the
+  seed-to-seed spread of the gain itself is the more robust yardstick, and it is 3-14
   times smaller than the gain. All three seeds share the same population realization
   (the same 2000 histories), so the seed spread excludes population sampling variance. Class-balanced training shows the same pattern: purity
-  0.204 rises to 0.238 at 0.010 mag and 0.262 at 0.005 mag
+  0.207 rises to 0.242 at 0.010 mag and 0.272 at 0.005 mag
   (`across_seeds.agb2.<set>.balanced.purity_mean_mean_over_seeds`).
-- Default, agb2: completeness changes by -0.011 to -0.002 and purity by +0.008 to +0.014
+- Default, agb2: completeness changes by -0.016 to -0.010 and purity by +0.007 to +0.011
   across the three precisions (sigma300). The agb0 control, which has no TP-AGB light,
-  shows changes of the same size (completeness -0.012 to +0.013, purity +0.003 to +0.026
+  shows changes of the same size (completeness -0.014 to +0.012, purity +0.004 to +0.021
   over both products, `across_seeds.agb0`), so these presumably reflect the metallicity and
   age information that any bump carries, not TP-AGB light.
 - The two bump products (sigma300, r100) give nearly identical classifier results
@@ -232,14 +244,14 @@ Results:
   fading), far above the R < 0.1 rule
   (`q2_alternative_summary.json`,
   `contaminant_classes.<family>.min_ssfr_ratio_recent_over_previous`). Counts: bursty
-  22,346 star-forming, 49,954 transitional; slowly fading 15,368 star-forming, 56,281
-  transitional, 651 quiescent (`contaminant_classes.<family>.counts`; identical for
+  22,346 star-forming, 49,954 transitional; slowly fading 15,368 star-forming, 56,927
+  transitional, 5 quiescent (`contaminant_classes.<family>.counts`; identical for
   LW02). This makes the test a weak one: it only checks whether the contaminants land
   in the rapid-quenching region of the index planes.
 - Purity maps (noise-free upper bounds): 0 contaminant epochs fall in any cell that had
   purity > 0.5, in every plane, for agb2 and agb0, in both configurations and on both
   grids. Pooled purity and isolable fractions are therefore unchanged: D4000-HdeltaA
-  agb2 pooled purity is 0.870 (default) and 0.875 (LW02) before and after
+  agb2 pooled purity is 0.843 (default) and 0.840 (LW02) before and after
   (`purity_maps.<agb>.<plane>.n_contaminant_epochs_in_pure_before_cells`,
   `pooled_purity_before`, `pooled_purity_after` in `q2_alternative_summary.json` and
   `lw02_q2_alternative_summary.json`; same result in `purity_maps_percentile_clipped`).
@@ -248,15 +260,15 @@ Results:
   The pooled purity combines the cross-validated delayed-tau confusion matrix of the same
   seed (true and false positives among delayed-tau epochs) with the contaminant false
   positives of this full-sample model:
-  - Unbalanced training labels at most 16 contaminant epochs as rapid-quenching in
+  - Unbalanced training labels at most 20 contaminant epochs as rapid-quenching in
     either configuration (`n_contaminant_false_rapid_quenching`; a rate of at most
-    0.011 percent).
-  - Class-balanced training (optical only, agb2) mislabels 1,605 (default) and 1,675
-    (LW02) epochs, about 1.1 percent, mostly slowly fading. This lowers the pooled
-    purity from 0.207 to 0.192 in both configurations
+    0.014 percent).
+  - Class-balanced training (optical only, agb2) mislabels 1,912 (default) and 2,003
+    (LW02) epochs, about 1.3-1.4 percent, mostly slowly fading. This lowers the pooled
+    purity from 0.208 to about 0.193 in both configurations
     (`pooled_purity_delayed_tau_only`, `pooled_purity_with_contaminants`).
-  - With the LW02 bump at 0.005 mag, the balanced mislabel count drops to 301 (0.21
-    percent), and pooled purity goes from 0.267 to 0.262
+  - With the LW02 bump at 0.005 mag, the balanced mislabel count drops to 424 (0.29
+    percent), and pooled purity goes from 0.277 to 0.271
     (`lw02_q2_alternative_summary.json`,
     `classifier.results.agb2.bump_sigma300_0.005.balanced`).
   - These counts scale with the arbitrary 600 : 2000 mix of contaminant to delayed-tau
@@ -300,7 +312,7 @@ Figures (`output/analysis/`):
   D4000 the population bump scatter is mostly metallicity (Phase 2 review), so a
   metallicity spread within galaxies would widen the bump planes.
 - The population weights every epoch of every history equally, from 1 Gyr to 13 Gyr.
-  Class fractions (0.98 percent rapid-quenching) are not those of a real sample, and
+  Class fractions (1.23 percent rapid-quenching) are not those of a real sample, and
   purities scale with the class mix.
 - The bump index removes a tilted continuum. Most of the TP-AGB NIR flux excess (84
   percent in F_nu(1.6 micron)/F_nu(4200 A) at 1 Gyr) is invisible to it. A
@@ -324,5 +336,5 @@ needs resolved spectroscopy of intermediate-age clusters or post-starburst galax
 
 For Q2, the partial isolation of fast quenching rests on D4000 and HdeltaA and would
 survive any TP-AGB model. The bump would matter only with LW02-like templates and a
-precision of 0.01 mag or better, and even then it would add 4-8 points of completeness
-and 3-4 points of purity.
+precision of 0.01 mag or better, and even then it would add 5-9 points of completeness
+and 2-4 points of purity.

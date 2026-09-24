@@ -86,6 +86,10 @@ def csp_spectra(weight_matrix, ssp_flux):
     return (weight_matrix @ ssp_flux) / mass_formed[:, None]
 
 
+def surviving_mass_per_epoch(weight_matrix, fraction_by_age):
+    return weight_matrix @ fraction_by_age
+
+
 def agb_two_spectra(flux_agb0, flux_agb1):
     return 2.0 * flux_agb1 - flux_agb0
 

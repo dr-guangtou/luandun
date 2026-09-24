@@ -21,6 +21,7 @@ from csp_integrate import (
     epoch_weight_matrix,
     epoch_weight_matrix_from_cumulative,
     interpolate_log_z,
+    surviving_mass_per_epoch,
 )
 from index_planes import new_plane_figure, plot_population
 from run_single_csp import FIDUCIAL, compute_track_indices
@@ -33,17 +34,15 @@ SEED = 20260924
 OUTPUT_DIR = Path(__file__).resolve().parent / "output" / "population"
 
 
-def specific_sfr_windows(edges_gyr, masses, epoch_index):
+def specific_sfr_windows(edges_gyr, masses, epoch_index, surviving_mass):
     """sSFR over the last 100 Myr and over 100 to 1000 Myr before the epoch, per Gyr,
-    normalized by the mass formed by t_obs (no return fraction), not the surviving
-    stellar mass."""
+    normalized by the surviving stellar mass (living stars plus remnants) at t_obs."""
     t_obs = edges_gyr[epoch_index + 1]
     centers = 0.5 * (edges_gyr[:-1] + edges_gyr[1:])
-    formed = masses[centers < t_obs].sum()
     lookback = t_obs - centers
     recent = masses[(lookback > 0) & (lookback <= 0.1)].sum() / 0.1
     previous = masses[(lookback > 0.1) & (lookback <= 1.0)].sum() / 0.9
-    return recent / formed, previous / formed
+    return recent / surviving_mass, previous / surviving_mass
 
 
 def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr, cumulative_mass_fn=None):
@@ -51,8 +50,15 @@ def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr, cumulative_mas
     the delayed-tau-plus-quenching SFH of (t_q_gyr, tau_q_gyr); when `cumulative_mass_fn`
     (cumulative mass formed versus time in Gyr) is given it replaces that SFH, t_q_gyr and
     tau_q_gyr are ignored, and `sfr` is the mean SFR over the 0.05 Gyr bin ending at each
-    epoch."""
-    log_age_yr = next(iter(grids.values())).log_age_yr
+    epoch. sSFRs are normalized by the surviving stellar mass from the grids'
+    `surviving_mass_fraction` (see `ssp_grid.load_surviving_mass`)."""
+    first_grid = next(iter(grids.values()))
+    if first_grid.surviving_mass_fraction is None:
+        raise ValueError(
+            "grid has no surviving_mass_fraction: build surviving_mass.npz with "
+            "`ssp_grid.py --surviving-mass`"
+        )
+    log_age_yr = first_grid.log_age_yr
     if cumulative_mass_fn is None:
         masses = bin_masses(edges_gyr, t_q_gyr, tau_q_gyr)
         weights = epoch_weight_matrix(edges_gyr, t_q_gyr, tau_q_gyr, log_age_yr)
@@ -61,6 +67,11 @@ def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr, cumulative_mas
         masses = np.diff(cumulative_mass_fn(edges_gyr))
         weights = epoch_weight_matrix_from_cumulative(edges_gyr, cumulative_mass_fn, log_age_yr)
         sfr = masses / np.diff(edges_gyr)
+    formed_mass = weights.sum(axis=1)
+    surviving_mass = surviving_mass_per_epoch(
+        weights,
+        interpolate_log_z(first_grid.surviving_mass_fraction, first_grid.log_z_grid, log_z),
+    )
     out = {}
     for product, grid in grids.items():
         flux_agb0 = csp_spectra(
@@ -69,15 +80,22 @@ def _history_indices(grids, t_q_gyr, tau_q_gyr, log_z, edges_gyr, cumulative_mas
         flux_agb1 = csp_spectra(
             weights, interpolate_log_z(grid.flux_nu[:, 1], grid.log_z_grid, log_z)
         )
-        for agb_key, flux in (("agb0", flux_agb0), ("agb2", agb_two_spectra(flux_agb0, flux_agb1))):
+        for agb_key, flux in (
+            ("agb0", flux_agb0),
+            ("agb1", flux_agb1),
+            ("agb2", agb_two_spectra(flux_agb0, flux_agb1)),
+        ):
             if product == "sigma300":
                 out[f"d4000_{agb_key}"] = d4000(grid.wave_a, flux)
                 out[f"hdelta_a_{agb_key}"] = hdelta_a(grid.wave_a, flux)
             out[f"h_minus_bump_{product}_{agb_key}"] = h_minus_bump(grid.wave_a, flux)
     n_epochs = edges_gyr.size - 1
-    ssfr = np.array([specific_sfr_windows(edges_gyr, masses, k) for k in range(n_epochs)])
+    ssfr = np.array(
+        [specific_sfr_windows(edges_gyr, masses, k, surviving_mass[k]) for k in range(n_epochs)]
+    )
     out["ssfr_0_100_myr"] = ssfr[:, 0]
     out["ssfr_100_1000_myr"] = ssfr[:, 1]
+    out["surviving_mass_fraction"] = surviving_mass / formed_mass
     out["sfr"] = sfr
     return out
 

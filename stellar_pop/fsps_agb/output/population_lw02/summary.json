@@ -2,7 +2,7 @@
   "n_draws": 2000,
   "seed": 20260924,
   "n_epochs": 260,
-  "elapsed_s": 307.0415699169971,
+  "elapsed_s": 438.62309583299793,
   "grid_provenance": {
     "sigma300": {
       "per_ssp": {
