@@ -20,6 +20,7 @@ content, with their numbers in `final/final_summary.json`:
 | `index_planes_sfh_families` | Figure 5 below, appendix | identical to `fig5_robustness_planes` |
 | `age_sensitivity_and_classifier_gain` | new two-part figure | Figure 3 (a, b) and Figure 4 (a, b) recombined |
 | `d4000_hminus_plane_with_jwst_data` | the D4000 versus H-minus bump plane, AGB off and on, with the JWST z ~ 1 quiescent sample | Figure 1 panels (b) and (e) plus `final/JWST_QG_indices.npz` |
+| `observed_stack_vs_fsps_mocks` | the S/N-weighted stack of the 19 JWST spectra against the envelope of solar-metallicity, R = 100 mock spectra for 12 quenching histories, AGB off and on | `jwst_spectrum_comparison.py`, `final/qg_spec/` |
 
 The combined figure: (a-c) one panel per tau_q = 0.3, 1, 3 Gyr at t_q = 3 Gyr, AGB on,
 solar metallicity, sharing the log10(t - t_q) axis, with HdeltaA (blue), the H-minus

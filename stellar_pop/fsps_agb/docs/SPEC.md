@@ -422,6 +422,7 @@ as a caveat and as an advantage.
 | File | Purpose |
 | ---- | ------- |
 | `publication_figures.py` | all seven figures; `--only` for a subset, `--pilot` for a stride-50, one-seed, two-fold dry run into `output/publication/pilot/`. Classifier and recovery gains are recomputed with the R = 100 bump. |
+| `jwst_spectrum_comparison.py` | the observed JWST stack (S/N-weighted mean of the pseudo-continuum-normalised spectra in `output/publication/final/qg_spec/`) against solar-metallicity R = 100 mock spectra for a grid of quenching histories, AGB off and on. |
 
 The write-up, including the FSPS TP-AGB template facts, is `docs/PUBLICATION.md`.
 

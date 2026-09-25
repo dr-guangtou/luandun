@@ -63,6 +63,7 @@ The four final figures are in this folder:
 | `age_sensitivity_and_classifier_gain.{pdf,png}` | key figure 2, main text | 8.2 |
 | `index_planes_sfh_families.{pdf,png}` | appendix | 8.3 |
 | `d4000_hminus_plane_with_jwst_data.{pdf,png}` | data comparison | 8.4 |
+| `observed_stack_vs_fsps_mocks.{pdf,png}` | spectral-shape comparison (replaces the draft's Figure 8) | 8.5 |
 
 Captions are in the `.tex` files of the same names. The numbers drawn in the figures are
 in `final_summary.json` (this folder) and, for the classifier and recovery sweeps and
@@ -558,6 +559,38 @@ inside the AGB-on locus, several near its rapid-quenching region, and 0.02 to 0.
 deeper than anything the AGB-off model produces at the same D4000. The comparison does
 not test the TP-AGB weight (Section 2.3): it tests the template.
 
+### 8.5 Spectral-shape comparison: `observed_stack_vs_fsps_mocks`
+
+Built by `jwst_spectrum_comparison.py` (10 s), numbers in
+`observed_stack_vs_fsps_mocks.json`. Observed side: the 19 galaxies of the index table
+(the 8 other files in `qg_spec/` have no redshift there and are not used), shifted to
+the rest frame with the table redshifts, each divided by a straight line fitted to all
+pixels in the two side windows (the pyphot degree-1 convention of the draft), and
+combined on a 30 A rest-frame grid as an S/N-weighted mean (weights (F/sigma)^2 per
+pixel). Recomputing the bump index from these normalised spectra reproduces the table
+values to 0.001 to 0.002 mag for 18 galaxies; galaxy 20150 gives -0.050 against the
+stored -0.059 (`observed.per_galaxy`), worth checking with the data owner. The stack
+peaks at 1.080 in the feature band and has a bump index of -0.058 mag.
+
+Model side: composite spectra assembled from the cached SSP grids on the `r100`
+product at solar metallicity for 12 histories (t_q in {1.5, 3, 4.5} Gyr, tau_q in
+{0.1, 0.3, 1, 3} Gyr), every epoch from 1 Gyr with 0 to 6 Gyr after quenching (1452
+spectra per configuration), normalised the same way. The figure shows the full
+envelope per configuration and the t_q = 3, tau_q = 0.3 Gyr history at 0.5, 1, 2 and 5
+Gyr after quenching, with the observed-to-model ratio below.
+
+| | AGB off | AGB on |
+| --- | ---: | ---: |
+| mock bump index range | +0.008 to -0.017 mag | -0.041 to -0.088 mag |
+| envelope peak in the feature band | 1.005 to 1.032 | 1.054 to 1.105 |
+| observed over model, feature-band median (0.5 to 5 Gyr after t_q) | 1.057 to 1.037 | 0.984 to 1.004 |
+
+No AGB-off history reaches the observed bump; the AGB-on envelope brackets it and the
+ratio stays inside the galaxy-to-galaxy scatter across the feature band. The models are
+not fitted (fixed metallicity, fixed R = 100, no per-galaxy matching), and the model
+H2O absorption outside the side windows (below 1.45 and above 1.8 micron), where the
+AGB-on models sit 5 to 8 per cent above the data, is not tested by the normalisation.
+
 ---
 
 ## 9. Metallicity: the FSPS facts, the caveat and the advantage
@@ -657,6 +690,7 @@ All paths relative to `stellar_pop/fsps_agb/`.
 | `analysis_conclusion_figures.py` | Phase 4 (C1 to C3: prescription test, age clocks, recovery regression, metallicity tracks) |
 | `analysis_sfh_sensitivity.py` | Phase 5 (S1 to S6, per family) |
 | `publication_figures.py` | Phase 6: the seven candidate figures and the final set |
+| `jwst_spectrum_comparison.py` | the observed JWST stack against FSPS mock spectra in the bump region (final figure 8.5) |
 | `tests/` | 75 fast unit tests (`uv run pytest`); `-m slow` adds the FSPS-dependent ones |
 
 ### 11.2 Data products
@@ -704,6 +738,7 @@ The LW02 grid and populations are built with `--grid-dir output/ssp_grid_lw02` a
 | clock extrema and lag grid | `publication_summary.json`, `fig3_quenching_clocks` |
 | metallicity decomposition, slice statistics, known-Z gains | `publication_summary.json`, `fig7_metallicity` |
 | JWST sample statistics | `final/final_summary.json`, `d4000_hminus_plane_with_jwst_data` |
+| observed stack and mock envelope statistics | `final/observed_stack_vs_fsps_mocks.json` |
 | class counts per family, S6 offsets | `output/analysis/sfh_sensitivity_summary.json` |
 | Phase 3 SSP deltas, component bumps, purity maps | `output/analysis/{q1,lw02_q1,q2,lw02_q2}_summary.json` |
 | FSPS cross-checks | `output/single_csp/fsps_cross_check.json`, `fsps_family_cross_check.json` |

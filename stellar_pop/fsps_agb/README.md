@@ -408,6 +408,7 @@ bump at R = 100.
     uv run python publication_figures.py --only fig1,fig3
     uv run python publication_figures.py --only fig4,fig6,fig7 --reuse-gains   # seconds
     uv run python publication_figures.py --final     # output/publication/final/, seconds
+    uv run python jwst_spectrum_comparison.py        # observed stack vs FSPS mocks, 10 s
 
 The figure descriptions, every quoted number, the FSPS TP-AGB template facts and the
 metallicity discussion are in `docs/PUBLICATION.md`.

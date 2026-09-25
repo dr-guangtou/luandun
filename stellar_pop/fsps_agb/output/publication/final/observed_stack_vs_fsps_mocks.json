@@ -1,0 +1,243 @@
+{
+  "observed": {
+    "n_galaxies": 19,
+    "redshift_range": [
+      1.016,
+      1.955
+    ],
+    "stack_grid_step_a": 30.0,
+    "stack_bump_index_mag": -0.0576088731261808,
+    "stack_peak_normalised_flux": 1.0797073457149577,
+    "per_galaxy": {
+      "10894": {
+        "file": "10894_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.357,
+        "table_bump_mag": -0.04525341737231087,
+        "own_bump_mag": -0.04443784320840691
+      },
+      "12809": {
+        "file": "12809_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.541,
+        "table_bump_mag": -0.06575874194081202,
+        "own_bump_mag": -0.06474740085583888
+      },
+      "13095": {
+        "file": "13095_flamb_optext_x1d_linear_errxsqrt2.txt",
+        "redshift": 1.016,
+        "table_bump_mag": -0.05587888960647308,
+        "own_bump_mag": -0.053706979117964654
+      },
+      "13896": {
+        "file": "13896_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.18,
+        "table_bump_mag": -0.07252957618160896,
+        "own_bump_mag": -0.07071998423514829
+      },
+      "15675": {
+        "file": "15675_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.483,
+        "table_bump_mag": -0.06546005497132074,
+        "own_bump_mag": -0.06397758641123347
+      },
+      "17635": {
+        "file": "17635_flamb_optext_x1d_linear_errxsqrt2.txt",
+        "redshift": 1.202,
+        "table_bump_mag": -0.06270490101087307,
+        "own_bump_mag": -0.060590488603299464
+      },
+      "20150": {
+        "file": "20150_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.532,
+        "table_bump_mag": -0.05879832954900137,
+        "own_bump_mag": -0.05018357031740833
+      },
+      "21384": {
+        "file": "21384_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.525,
+        "table_bump_mag": -0.061387946426168086,
+        "own_bump_mag": -0.060940403962506724
+      },
+      "21754": {
+        "file": "21754_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.536,
+        "table_bump_mag": -0.06203434266135131,
+        "own_bump_mag": -0.0615298386673971
+      },
+      "21909": {
+        "file": "21909_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.065,
+        "table_bump_mag": -0.05305766071237877,
+        "own_bump_mag": -0.05103282995864661
+      },
+      "22897": {
+        "file": "22897_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.065,
+        "table_bump_mag": -0.04070600641941735,
+        "own_bump_mag": -0.03999245072423692
+      },
+      "25021": {
+        "file": "25021_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.356,
+        "table_bump_mag": -0.0597808085387455,
+        "own_bump_mag": -0.05904453086414774
+      },
+      "6283": {
+        "file": "6283_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2_rm_em.txt",
+        "redshift": 1.955,
+        "table_bump_mag": -0.07305668721165795,
+        "own_bump_mag": -0.0712605447904832
+      },
+      "9234": {
+        "file": "9234_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.38,
+        "table_bump_mag": -0.04241533868156287,
+        "own_bump_mag": -0.041934241277905834
+      },
+      "24686": {
+        "file": "Spec_MPTID_24686_apr_bkg_flamb_linear_errxsqrt2_rm_em.txt",
+        "redshift": 1.175,
+        "table_bump_mag": -0.045402002683761065,
+        "own_bump_mag": -0.04340357075645337
+      },
+      "26746": {
+        "file": "Spec_MPTID_26746_apr_bkg_flamb_linear_errxsqrt2.txt",
+        "redshift": 1.168,
+        "table_bump_mag": -0.05476362065727486,
+        "own_bump_mag": -0.05347983200453401
+      },
+      "2962": {
+        "file": "Spec_MPTID_2962_apr_bkg_flamb_linear_errxsqrt2_rm_em.txt",
+        "redshift": 1.269,
+        "table_bump_mag": -0.040322899591444625,
+        "own_bump_mag": -0.04200389133725477
+      },
+      "4458": {
+        "file": "Spec_MPTID_4458_apr_bkg_flamb_linear_errxsqrt2.txt",
+        "redshift": 1.576,
+        "table_bump_mag": -0.03691671715691296,
+        "own_bump_mag": -0.03403098656841436
+      },
+      "5195": {
+        "file": "Spec_MPTID_5195_apr_bkg_flamb_linear_errxsqrt2.txt",
+        "redshift": 1.648,
+        "table_bump_mag": -0.07024895547647012,
+        "own_bump_mag": -0.06930606645357398
+      }
+    }
+  },
+  "mocks": {
+    "agb_off": {
+      "n_mock_spectra": 1452,
+      "t_q_gyr": [
+        1.5,
+        3.0,
+        4.5
+      ],
+      "tau_q_gyr": [
+        0.1,
+        0.3,
+        1.0,
+        3.0
+      ],
+      "post_quench_window_gyr": [
+        0.0,
+        6.0
+      ],
+      "mock_bump_index_range_mag": [
+        -0.017431054622888995,
+        0.008237041834246617
+      ],
+      "mock_envelope_peak_normalised_flux_range": [
+        1.0053194806267982,
+        1.0321040253160834
+      ],
+      "representative": {
+        "delay_0.5_gyr": {
+          "t_q_gyr": 3.0,
+          "tau_q_gyr": 0.3,
+          "delay_gyr": 0.5,
+          "bump_index_mag": 0.0008125845734831327,
+          "median_observed_over_model_in_feature": 1.0568819251701194
+        },
+        "delay_1_gyr": {
+          "t_q_gyr": 3.0,
+          "tau_q_gyr": 0.3,
+          "delay_gyr": 1.0,
+          "bump_index_mag": -0.004141675253647695,
+          "median_observed_over_model_in_feature": 1.0501736993220128
+        },
+        "delay_2_gyr": {
+          "t_q_gyr": 3.0,
+          "tau_q_gyr": 0.3,
+          "delay_gyr": 2.0,
+          "bump_index_mag": -0.009974953422534634,
+          "median_observed_over_model_in_feature": 1.0425816036594924
+        },
+        "delay_5_gyr": {
+          "t_q_gyr": 3.0,
+          "tau_q_gyr": 0.3,
+          "delay_gyr": 5.0,
+          "bump_index_mag": -0.015481124615478443,
+          "median_observed_over_model_in_feature": 1.0371332781883946
+        }
+      }
+    },
+    "agb_on": {
+      "n_mock_spectra": 1452,
+      "t_q_gyr": [
+        1.5,
+        3.0,
+        4.5
+      ],
+      "tau_q_gyr": [
+        0.1,
+        0.3,
+        1.0,
+        3.0
+      ],
+      "post_quench_window_gyr": [
+        0.0,
+        6.0
+      ],
+      "mock_bump_index_range_mag": [
+        -0.0875811636556764,
+        -0.04083667305078969
+      ],
+      "mock_envelope_peak_normalised_flux_range": [
+        1.054105772225131,
+        1.1050816799711245
+      ],
+      "representative": {
+        "delay_0.5_gyr": {
+          "t_q_gyr": 3.0,
+          "tau_q_gyr": 0.3,
+          "delay_gyr": 0.5,
+          "bump_index_mag": -0.07146711051982617,
+          "median_observed_over_model_in_feature": 0.9864607155619585
+        },
+        "delay_1_gyr": {
+          "t_q_gyr": 3.0,
+          "tau_q_gyr": 0.3,
+          "delay_gyr": 1.0,
+          "bump_index_mag": -0.07386749251732261,
+          "median_observed_over_model_in_feature": 0.9843626976336555
+        },
+        "delay_2_gyr": {
+          "t_q_gyr": 3.0,
+          "tau_q_gyr": 0.3,
+          "delay_gyr": 2.0,
+          "bump_index_mag": -0.06033136711487755,
+          "median_observed_over_model_in_feature": 0.997194429449961
+        },
+        "delay_5_gyr": {
+          "t_q_gyr": 3.0,
+          "tau_q_gyr": 0.3,
+          "delay_gyr": 5.0,
+          "bump_index_mag": -0.0527040899318006,
+          "median_observed_over_model_in_feature": 1.0041486713529955
+        }
+      }
+    }
+  },
+  "normalisation": "straight line fitted to all pixels in the blue (1.494-1.539 um) and red (1.746-1.791 um) windows, observed and model alike; bump index = -2.5 log10(mean normalised flux over 1.570-1.734 um)"
+}
