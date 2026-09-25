@@ -580,11 +580,11 @@ Recomputing the bump index from the normalised spectra reproduces the table valu
 Model side: one epoch, the cosmic age at the median redshift z = 1.357 (4.57 Gyr for a
 flat LCDM cosmology with H0 = 70 and Omega_m = 0.3, star formation from t = 0; grid
 epoch 4.55 Gyr), on the `r100` product, normalised the same way and binned to the 45 A
-grid. Two layers per configuration:
+grid, displayed over 1.46 to 1.83 micron. Two layers:
 
 - The panel curves: solar metallicity, t - t_q fixed at 1 Gyr (t_q = 3.55 Gyr), tau_q in
   {0.1, 0.3, 1, 3} Gyr.
-- The closest model in a grid search over log Z from -0.5 to +0.25 in 0.05 dex steps
+- For AGB on only (an AGB-off search is not meaningful and is not drawn): the closest model in a grid search over log Z from -0.5 to +0.25 in 0.05 dex steps
   (interpolated between the four grid metallicities), t_q from 1 Gyr to the epoch in
   0.1 Gyr steps and 13 log-spaced tau_q values (7280 models per configuration), ranked
   by the RMS of (model minus stack) divided by the galaxy-to-galaxy scatter over 1.494
@@ -594,8 +594,8 @@ grid. Two layers per configuration:
 | --- | ---: | ---: |
 | panel bump index, tau_q = 0.1 / 0.3 / 1 / 3 Gyr [mag] | -0.007 / -0.005 / -0.001 / +0.001 | -0.072 / -0.072 / -0.064 / -0.058 |
 | panel mismatch, tau_q = 0.1 / 0.3 / 1 / 3 Gyr | 2.41 / 2.49 / 2.65 / 2.73 | 0.74 / 0.74 / 0.45 / 0.39 |
-| best match | log Z = -0.25, t_q = 1.0, tau_q = 0.10 Gyr (delay 3.55 Gyr), index -0.016 mag | log Z = +0.15, t_q = 1.2, tau_q = 0.41 Gyr (delay 3.35 Gyr), index -0.059 mag |
-| best mismatch (range over the search) | 2.03 (2.03 to 3.06) | 0.36 (0.36 to 1.39) |
+| best match | not drawn; a one-off search gave log Z = -0.25, t_q = 1.0, tau_q = 0.10 Gyr, mismatch 2.03 (search floor 2.03 to 3.06) | log Z = +0.15, t_q = 1.2, tau_q = 0.41 Gyr (delay 3.35 Gyr), index -0.059 mag |
+| best mismatch (range over the search) | 2.03 | 0.36 (0.36 to 1.39) |
 | median observed over best model in the feature band | 1.038 | 0.999 |
 
 Reading: no AGB-off model comes within two scatters of the stack; the best one is the

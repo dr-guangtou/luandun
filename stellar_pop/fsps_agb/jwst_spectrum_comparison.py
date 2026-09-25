@@ -62,6 +62,8 @@ JWST_SPECTRA_DIR = FINAL_DIR / "qg_spec"
 STEM = "observed_stack_vs_fsps_mocks"
 
 PLOT_RANGE_A = (13500.0, 19500.0)
+COMPARISON_RANGE_A = (14600.0, 18300.0)
+SEARCH_CONFIGS = ("agb_on",)
 FIT_RANGE_A = (H_MINUS_BANDS_A["blue"][0], H_MINUS_BANDS_A["red"][1])
 STACK_STEP_A = 45.0
 HUBBLE_CONSTANT = 70.0
@@ -282,7 +284,7 @@ def figure_observed_spectra(spectra, grid_a, stack, scatter, out_dir):
         plt.cm.ScalarMappable(cmap=cmap, norm=norm), ax=axes[0], label="redshift", pad=0.01
     )
     axes[0].set_ylim(0.72, 1.28)
-    axes[0].set_ylabel(r"$F_\lambda$ / straight-line pseudo-continuum")
+    axes[0].set_ylabel(r"Normalised $F_\lambda$")
     axes[0].set_title(
         f"{len(spectra)} JWST PRISM quiescent galaxies (Lu+2026), rest frame", fontsize=9
     )
@@ -303,8 +305,8 @@ def figure_observed_spectra(spectra, grid_a, stack, scatter, out_dir):
         label="S/N-weighted mean of the normalised spectra",
     )
     axes[1].set_ylim(0.86, 1.14)
-    axes[1].set_xlabel(r"rest-frame wavelength [$\mu$m]")
-    axes[1].set_ylabel("normalised flux")
+    axes[1].set_xlabel(r"Rest-frame wavelength [$\mu$m]")
+    axes[1].set_ylabel(r"Normalised $F_\lambda$")
     axes[1].legend(loc="lower left", fontsize=7)
     save_figure(figure, out_dir, "jwst_spectra_bump_region")
 
@@ -316,9 +318,9 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_di
     figure, axes = plt.subplots(
         2,
         2,
-        figsize=(DOUBLE_COLUMN_IN, 4.9),
+        figsize=(DOUBLE_COLUMN_IN, 3.9),
         sharex=True,
-        height_ratios=(2.6, 1.0),
+        height_ratios=(2.4, 1.0),
         layout="constrained",
     )
     summary = {}
@@ -326,7 +328,7 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_di
     feature = (grid_a > H_MINUS_BANDS_A["feature"][0]) & (grid_a < H_MINUS_BANDS_A["feature"][1])
     for col, config_key in enumerate(CONFIG_ORDER):
         library = libraries[config_key]
-        best = matches[config_key]
+        best = matches.get(config_key)
         top, bottom = axes[0, col], axes[1, col]
         for axis in (top, bottom):
             _shade_bands(axis)
@@ -343,26 +345,42 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_di
                 "mismatch": mismatch(library.wave_a, model, grid_a, stack, scatter),
                 "median_observed_over_model_in_feature": float(np.median(ratio[feature])),
             }
-        best_binned = bin_to_grid(library.wave_a, best["spectrum"], grid_a)
-        top.plot(
-            x_stack,
-            best_binned,
-            color=CONFIG_COLORS[config_key],
-            lw=1.1,
-            ls="--",
-            zorder=4,
-            **STEP_STYLE,
-        )
-        best_ratio = stack / best_binned
-        bottom.plot(
-            x_stack,
-            best_ratio,
-            color=CONFIG_COLORS[config_key],
-            lw=1.1,
-            ls="--",
-            zorder=4,
-            **STEP_STYLE,
-        )
+        best_ratio = None
+        if best is not None:
+            best_binned = bin_to_grid(library.wave_a, best["spectrum"], grid_a)
+            top.plot(
+                x_stack,
+                best_binned,
+                color=CONFIG_COLORS[config_key],
+                lw=1.1,
+                ls="--",
+                zorder=4,
+                **STEP_STYLE,
+            )
+            best_ratio = stack / best_binned
+            bottom.plot(
+                x_stack,
+                best_ratio,
+                color=CONFIG_COLORS[config_key],
+                lw=1.1,
+                ls="--",
+                zorder=4,
+                **STEP_STYLE,
+            )
+            top.text(
+                0.97,
+                0.05,
+                (
+                    rf"Closest model: $\log Z/Z_\odot = {best['log_z']:+.2f}$, "
+                    rf"$t_q = {best['t_q_gyr']:.1f}$, $\tau_q = {best['tau_q_gyr']:.2f}$ Gyr"
+                ),
+                transform=top.transAxes,
+                ha="right",
+                va="bottom",
+                fontsize=6.5,
+                color=CONFIG_COLORS[config_key],
+                zorder=20,
+            )
         top.fill_between(
             x_stack,
             stack - scatter,
@@ -395,27 +413,13 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_di
             fontsize=12,
             zorder=20,
         )
-        top.text(
-            0.97,
-            0.05,
-            (
-                rf"best match: $\log Z/Z_\odot = {best['log_z']:+.2f}$, "
-                rf"$t_q = {best['t_q_gyr']:.1f}$, $\tau_q = {best['tau_q_gyr']:.2f}$ Gyr"
-            ),
-            transform=top.transAxes,
-            ha="right",
-            va="bottom",
-            fontsize=6.5,
-            color=CONFIG_COLORS[config_key],
-            zorder=20,
-        )
-        top.set_ylim(0.84, 1.16)
-        bottom.set_ylim(0.9, 1.16)
-        bottom.set_xlabel(r"rest-frame wavelength [$\mu$m]")
+        top.set_ylim(0.93, 1.12)
+        bottom.set_ylim(0.95, 1.1)
+        bottom.set_xlabel(r"Rest-frame wavelength [$\mu$m]")
         if col == 0:
-            top.set_ylabel(r"$F_\lambda$ / straight-line pseudo-continuum")
-            bottom.set_ylabel("observed / model")
-        top.set_xlim(PLOT_RANGE_A[0] / 1e4, PLOT_RANGE_A[1] / 1e4)
+            top.set_ylabel(r"Normalised $F_\lambda$")
+            bottom.set_ylabel("Observed / model")
+        top.set_xlim(COMPARISON_RANGE_A[0] / 1e4, COMPARISON_RANGE_A[1] / 1e4)
         panel_label(top, f"({'ab'[col]})", x=0.03, y=0.95)
         panel_label(bottom, f"({'cd'[col]})", x=0.03, y=0.93)
         summary[config_key] = {
@@ -426,9 +430,13 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_di
                 "delay_gyr": PANEL_DELAY_GYR,
                 "by_tau_q": panel_summary,
             },
-            "best_match": {key: value for key, value in best.items() if key != "spectrum"},
-            "best_match_median_observed_over_model_in_feature": float(
-                np.median(best_ratio[feature])
+            "best_match": (
+                {key: value for key, value in best.items() if key != "spectrum"}
+                if best is not None
+                else None
+            ),
+            "best_match_median_observed_over_model_in_feature": (
+                float(np.median(best_ratio[feature])) if best_ratio is not None else None
             ),
         }
     handles = [
@@ -448,12 +456,12 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_di
             ls="--",
             label=f"{AGB_CONFIGS[key]['short_label']}: closest model in the search",
         )
-        for key in CONFIG_ORDER
+        for key in matches
     ]
     figure.legend(
         handles=handles,
         loc="outside lower center",
-        ncol=3,
+        ncol=4,
         fontsize=7.5,
         columnspacing=1.4,
     )
@@ -484,8 +492,8 @@ def main():
     epoch = mock_epoch_gyr(median_redshift, edges)
     libraries = {key: MockLibrary(key, epoch, edges) for key in CONFIG_ORDER}
     matches, tables = {}, {}
-    for key, library in libraries.items():
-        matches[key], tables[key] = search_best_match(library, grid_a, stack, scatter)
+    for key in SEARCH_CONFIGS:
+        matches[key], tables[key] = search_best_match(libraries[key], grid_a, stack, scatter)
         print(
             f"{key}: best match log Z {matches[key]['log_z']:+.2f}, "
             f"t_q {matches[key]['t_q_gyr']:.1f}, tau_q {matches[key]['tau_q_gyr']:.2f} Gyr, "
@@ -520,10 +528,11 @@ def main():
             "tau_q_grid_gyr": list(SEARCH_TAU_Q_GYR),
             "mismatch_definition": "RMS of (model - stack) / scatter over 1.494-1.791 um on "
             "the 30 A stack grid",
-            "n_models_per_configuration": int(tables[CONFIG_ORDER[0]].shape[0]),
+            "configurations_searched": list(SEARCH_CONFIGS),
+            "n_models_per_configuration": int(tables[SEARCH_CONFIGS[0]].shape[0]),
             "mismatch_range": {
                 key: [float(tables[key][:, 3].min()), float(tables[key][:, 3].max())]
-                for key in CONFIG_ORDER
+                for key in SEARCH_CONFIGS
             },
         },
         "mocks": figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_dir),
@@ -531,7 +540,7 @@ def main():
         "and red (1.746-1.791 um) windows, observed and model alike; bump index = "
         "-2.5 log10(mean normalised flux over 1.570-1.734 um)",
     }
-    for key in CONFIG_ORDER:
+    for key in SEARCH_CONFIGS:
         np.save(out_dir / f"{STEM}_search_{key}.npy", tables[key])
     (out_dir / f"{STEM}.json").write_text(json.dumps(_to_native(summary), indent=2) + "\n")
     print(f"wrote {out_dir / STEM}.{{pdf,png,json}}")

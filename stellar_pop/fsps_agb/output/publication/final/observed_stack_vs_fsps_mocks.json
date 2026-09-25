@@ -164,12 +164,11 @@
       3.0
     ],
     "mismatch_definition": "RMS of (model - stack) / scatter over 1.494-1.791 um on the 30 A stack grid",
+    "configurations_searched": [
+      "agb_on"
+    ],
     "n_models_per_configuration": 7280,
     "mismatch_range": {
-      "agb_off": [
-        2.0334543257843123,
-        3.0566447130032968
-      ],
       "agb_on": [
         0.35970330944055606,
         1.3907966909039833
@@ -206,15 +205,8 @@
           }
         }
       },
-      "best_match": {
-        "log_z": -0.25,
-        "t_q_gyr": 1.0,
-        "tau_q_gyr": 0.1,
-        "delay_gyr": 3.55,
-        "mismatch": 2.0334543257843123,
-        "bump_index_mag": -0.01557097517697755
-      },
-      "best_match_median_observed_over_model_in_feature": 1.0379128622679072
+      "best_match": null,
+      "best_match_median_observed_over_model_in_feature": null
     },
     "agb_on": {
       "epoch_gyr": 4.55,
