@@ -5,9 +5,12 @@
       1.016,
       1.955
     ],
-    "stack_grid_step_a": 30.0,
-    "stack_bump_index_mag": -0.0576088731261808,
-    "stack_peak_normalised_flux": 1.0797073457149577,
+    "median_redshift": 1.357,
+    "cosmic_age_at_median_redshift_gyr": 4.5691035598927945,
+    "mock_epoch_gyr": 4.55,
+    "stack_grid_step_a": 45.0,
+    "stack_bump_index_mag": -0.05685786274518934,
+    "stack_peak_normalised_flux": 1.079679484912177,
     "per_galaxy": {
       "10894": {
         "file": "10894_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
@@ -125,118 +128,132 @@
       }
     }
   },
+  "search": {
+    "log_z_grid": [
+      -0.5,
+      -0.45,
+      -0.4,
+      -0.35,
+      -0.3,
+      -0.25,
+      -0.2,
+      -0.15,
+      -0.1,
+      -0.05,
+      -0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25
+    ],
+    "t_q_step_gyr": 0.1,
+    "tau_q_grid_gyr": [
+      0.1,
+      0.133,
+      0.176,
+      0.234,
+      0.311,
+      0.413,
+      0.548,
+      0.727,
+      0.965,
+      1.282,
+      1.702,
+      2.26,
+      3.0
+    ],
+    "mismatch_definition": "RMS of (model - stack) / scatter over 1.494-1.791 um on the 30 A stack grid",
+    "n_models_per_configuration": 7280,
+    "mismatch_range": {
+      "agb_off": [
+        2.0334543257843123,
+        3.0566447130032968
+      ],
+      "agb_on": [
+        0.35970330944055606,
+        1.3907966909039833
+      ]
+    }
+  },
   "mocks": {
     "agb_off": {
-      "n_mock_spectra": 1452,
-      "t_q_gyr": [
-        1.5,
-        3.0,
-        4.5
-      ],
-      "tau_q_gyr": [
-        0.1,
-        0.3,
-        1.0,
-        3.0
-      ],
-      "post_quench_window_gyr": [
-        0.0,
-        6.0
-      ],
-      "mock_bump_index_range_mag": [
-        -0.017431054622888995,
-        0.008237041834246617
-      ],
-      "mock_envelope_peak_normalised_flux_range": [
-        1.0053194806267982,
-        1.0321040253160834
-      ],
-      "representative": {
-        "delay_0.5_gyr": {
-          "t_q_gyr": 3.0,
-          "tau_q_gyr": 0.3,
-          "delay_gyr": 0.5,
-          "bump_index_mag": 0.0008125845734831327,
-          "median_observed_over_model_in_feature": 1.0568819251701194
-        },
-        "delay_1_gyr": {
-          "t_q_gyr": 3.0,
-          "tau_q_gyr": 0.3,
-          "delay_gyr": 1.0,
-          "bump_index_mag": -0.004141675253647695,
-          "median_observed_over_model_in_feature": 1.0501736993220128
-        },
-        "delay_2_gyr": {
-          "t_q_gyr": 3.0,
-          "tau_q_gyr": 0.3,
-          "delay_gyr": 2.0,
-          "bump_index_mag": -0.009974953422534634,
-          "median_observed_over_model_in_feature": 1.0425816036594924
-        },
-        "delay_5_gyr": {
-          "t_q_gyr": 3.0,
-          "tau_q_gyr": 0.3,
-          "delay_gyr": 5.0,
-          "bump_index_mag": -0.015481124615478443,
-          "median_observed_over_model_in_feature": 1.0371332781883946
+      "epoch_gyr": 4.55,
+      "panel": {
+        "log_z": 0.0,
+        "t_q_gyr": 3.55,
+        "delay_gyr": 1.0,
+        "by_tau_q": {
+          "tau_q_0.1": {
+            "bump_index_mag": -0.006646348992129909,
+            "mismatch": 2.406682746349901,
+            "median_observed_over_model_in_feature": 1.0460153971326225
+          },
+          "tau_q_0.3": {
+            "bump_index_mag": -0.0049069961585274675,
+            "mismatch": 2.4851089869167655,
+            "median_observed_over_model_in_feature": 1.0480083792985362
+          },
+          "tau_q_1": {
+            "bump_index_mag": -0.001078377042560821,
+            "mismatch": 2.652790857410599,
+            "median_observed_over_model_in_feature": 1.052595508149714
+          },
+          "tau_q_3": {
+            "bump_index_mag": 0.000798215682112712,
+            "mismatch": 2.7338632528298157,
+            "median_observed_over_model_in_feature": 1.0548913762239183
+          }
         }
-      }
+      },
+      "best_match": {
+        "log_z": -0.25,
+        "t_q_gyr": 1.0,
+        "tau_q_gyr": 0.1,
+        "delay_gyr": 3.55,
+        "mismatch": 2.0334543257843123,
+        "bump_index_mag": -0.01557097517697755
+      },
+      "best_match_median_observed_over_model_in_feature": 1.0379128622679072
     },
     "agb_on": {
-      "n_mock_spectra": 1452,
-      "t_q_gyr": [
-        1.5,
-        3.0,
-        4.5
-      ],
-      "tau_q_gyr": [
-        0.1,
-        0.3,
-        1.0,
-        3.0
-      ],
-      "post_quench_window_gyr": [
-        0.0,
-        6.0
-      ],
-      "mock_bump_index_range_mag": [
-        -0.0875811636556764,
-        -0.04083667305078969
-      ],
-      "mock_envelope_peak_normalised_flux_range": [
-        1.054105772225131,
-        1.1050816799711245
-      ],
-      "representative": {
-        "delay_0.5_gyr": {
-          "t_q_gyr": 3.0,
-          "tau_q_gyr": 0.3,
-          "delay_gyr": 0.5,
-          "bump_index_mag": -0.07146711051982617,
-          "median_observed_over_model_in_feature": 0.9864607155619585
-        },
-        "delay_1_gyr": {
-          "t_q_gyr": 3.0,
-          "tau_q_gyr": 0.3,
-          "delay_gyr": 1.0,
-          "bump_index_mag": -0.07386749251732261,
-          "median_observed_over_model_in_feature": 0.9843626976336555
-        },
-        "delay_2_gyr": {
-          "t_q_gyr": 3.0,
-          "tau_q_gyr": 0.3,
-          "delay_gyr": 2.0,
-          "bump_index_mag": -0.06033136711487755,
-          "median_observed_over_model_in_feature": 0.997194429449961
-        },
-        "delay_5_gyr": {
-          "t_q_gyr": 3.0,
-          "tau_q_gyr": 0.3,
-          "delay_gyr": 5.0,
-          "bump_index_mag": -0.0527040899318006,
-          "median_observed_over_model_in_feature": 1.0041486713529955
+      "epoch_gyr": 4.55,
+      "panel": {
+        "log_z": 0.0,
+        "t_q_gyr": 3.55,
+        "delay_gyr": 1.0,
+        "by_tau_q": {
+          "tau_q_0.1": {
+            "bump_index_mag": -0.07210869469243526,
+            "mismatch": 0.7384143358760388,
+            "median_observed_over_model_in_feature": 0.986010343549424
+          },
+          "tau_q_0.3": {
+            "bump_index_mag": -0.0722260212412816,
+            "mismatch": 0.7444477797054802,
+            "median_observed_over_model_in_feature": 0.9855502208696876
+          },
+          "tau_q_1": {
+            "bump_index_mag": -0.06380841331455223,
+            "mismatch": 0.4532490741592579,
+            "median_observed_over_model_in_feature": 0.9932328233555728
+          },
+          "tau_q_3": {
+            "bump_index_mag": -0.05755756759964762,
+            "mismatch": 0.3863584913579301,
+            "median_observed_over_model_in_feature": 0.9985422175824483
+          }
         }
-      }
+      },
+      "best_match": {
+        "log_z": 0.15,
+        "t_q_gyr": 1.2,
+        "tau_q_gyr": 0.413,
+        "delay_gyr": 3.3499999999999996,
+        "mismatch": 0.35970330944055606,
+        "bump_index_mag": -0.05853454401811294
+      },
+      "best_match_median_observed_over_model_in_feature": 0.9991759435215728
     }
   },
   "normalisation": "straight line fitted to all pixels in the blue (1.494-1.539 um) and red (1.746-1.791 um) windows, observed and model alike; bump index = -2.5 log10(mean normalised flux over 1.570-1.734 um)"

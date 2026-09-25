@@ -5,12 +5,13 @@ Observed side: the 19 NIRSpec PRISM quiescent galaxies of Lu+2026 (rest-frame,
 pixels in the blue and red pseudo-continuum windows of the H-minus bump, then combined
 on a common rest-frame grid as an S/N-weighted mean.
 
-Model side: composite spectra from the cached FSPS SSP grids on the R = 100 product,
-solar metallicity, for a grid of quenching histories (delayed-tau rise with tau = t_q,
-exponential quench), normalised the same way. Two configurations: AGB off (C3K, agb = 0)
-and AGB on (LW02, agb = 2). The figure shows, per configuration, the envelope of all
-post-quench mock spectra, a few representative epochs after quenching, and the observed
-stack, with the observed-to-model ratio below.
+Model side: composite spectra from the cached FSPS SSP grids on the R = 100 product at
+a single epoch, the cosmic age at the sample's median redshift (flat LCDM, H0 = 70,
+Omega_m = 0.3, star formation starting at t = 0). The panel curves keep t - t_q fixed
+and vary the quenching timescale tau_q at solar metallicity; a separate search over
+metallicity, t_q and tau_q at the same epoch finds the model closest to the observed
+stack for each configuration (AGB off = C3K agb 0, AGB on = LW02 agb 2). All spectra
+are normalised the same way and drawn as steps.
 
 Outputs go to `output/publication/final/`: the figure (`observed_stack_vs_fsps_mocks`),
 `observed_stack_vs_fsps_mocks.json`, and an exploration figure of the individual observed
@@ -31,8 +32,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
+from scipy.integrate import quad
 
-from csp_integrate import agb_two_spectra, csp_track
+from csp_integrate import (
+    agb_two_spectra,
+    csp_spectra,
+    epoch_weight_matrix,
+    interpolate_log_z,
+)
 from publication_figures import (
     AGB_CONFIGS,
     CONFIG_COLORS,
@@ -55,16 +62,19 @@ JWST_SPECTRA_DIR = FINAL_DIR / "qg_spec"
 STEM = "observed_stack_vs_fsps_mocks"
 
 PLOT_RANGE_A = (13500.0, 19500.0)
-STACK_STEP_A = 30.0
-LOG_Z = 0.0
-MOCK_T_Q_GYR = (1.5, 3.0, 4.5)
-MOCK_TAU_Q_GYR = (0.1, 0.3, 1.0, 3.0)
-MOCK_POST_QUENCH_WINDOW_GYR = (0.0, 6.0)
-MOCK_MIN_EPOCH_GYR = 1.0
-REPRESENTATIVE_T_Q_GYR = 3.0
-REPRESENTATIVE_TAU_Q_GYR = 0.3
-REPRESENTATIVE_DELAYS_GYR = (0.5, 1.0, 2.0, 5.0)
-REPRESENTATIVE_COLORS = tuple(plt.get_cmap("viridis")(level) for level in (0.0, 0.33, 0.66, 0.95))
+FIT_RANGE_A = (H_MINUS_BANDS_A["blue"][0], H_MINUS_BANDS_A["red"][1])
+STACK_STEP_A = 45.0
+HUBBLE_CONSTANT = 70.0
+OMEGA_MATTER = 0.3
+PANEL_LOG_Z = 0.0
+PANEL_DELAY_GYR = 1.0
+PANEL_TAU_Q_GYR = (0.1, 0.3, 1.0, 3.0)
+PANEL_COLORS = tuple(plt.get_cmap("viridis")(level) for level in (0.0, 0.33, 0.66, 0.95))
+SEARCH_LOG_Z = tuple(np.round(np.arange(-0.5, 0.2501, 0.05), 2))
+SEARCH_T_Q_STEP_GYR = 0.1
+SEARCH_TAU_Q_GYR = tuple(np.round(np.logspace(np.log10(0.1), np.log10(3.0), 13), 3))
+MIN_T_Q_GYR = 1.0
+STEP_STYLE = {"drawstyle": "steps-mid"}
 BAND_COLORS = {"blue": "#0072B2", "feature": "#E69F00", "red": "#D55E00"}
 
 
@@ -138,50 +148,101 @@ def stack_observed(spectra, grid_a):
 
 
 # ---------------------------------------------------------------------------
-# Mock spectra
+# Mock spectra at one epoch
 # ---------------------------------------------------------------------------
 
 
-def mock_spectra(config_key, edges_gyr, t_q_values=MOCK_T_Q_GYR, tau_q_values=MOCK_TAU_Q_GYR):
-    """Normalised post-quench composite spectra on the R = 100 grid for one configuration,
-    for every (t_q, tau_q) and every epoch with t >= MOCK_MIN_EPOCH_GYR and
-    0 <= t - t_q <= 6 Gyr. Returns the wavelength grid, an array (n_spectra, n_pix) of
-    normalised spectra and a record of (t_q, tau_q, delay) per row."""
-    config = AGB_CONFIGS[config_key]
-    grid = load_ssp_grid(GRID_DIRS[config["template"]], "r100")
-    wave_a = grid.wave_a
-    rows, records = [], []
-    for t_q in t_q_values:
-        for tau_q in tau_q_values:
-            epochs, flux_agb0, _ = csp_track(grid, LOG_Z, 0, t_q, tau_q, edges_gyr)
-            if config["agb"] == "agb0":
-                flux_nu = flux_agb0
-            else:
-                _, flux_agb1, _ = csp_track(grid, LOG_Z, 1, t_q, tau_q, edges_gyr)
-                flux_nu = agb_two_spectra(flux_agb0, flux_agb1)
-            delay = epochs - t_q
-            keep = (
-                (epochs >= MOCK_MIN_EPOCH_GYR)
-                & (delay >= MOCK_POST_QUENCH_WINDOW_GYR[0] - 1e-9)
-                & (delay <= MOCK_POST_QUENCH_WINDOW_GYR[1] + 1e-9)
+def cosmic_age_gyr(redshift, hubble_constant=HUBBLE_CONSTANT, omega_matter=OMEGA_MATTER):
+    """Age of a flat LCDM universe at `redshift`, in Gyr."""
+
+    def integrand(x):
+        return 1.0 / ((1.0 + x) * np.sqrt(omega_matter * (1.0 + x) ** 3 + 1.0 - omega_matter))
+
+    return (977.8 / hubble_constant) * quad(integrand, redshift, np.inf)[0]
+
+
+def mock_epoch_gyr(redshift, edges_gyr):
+    """The time-grid edge closest to the cosmic age at `redshift` (star formation is
+    assumed to start at t = 0)."""
+    age = cosmic_age_gyr(redshift)
+    return float(edges_gyr[1:][np.argmin(np.abs(edges_gyr[1:] - age))])
+
+
+class MockLibrary:
+    """Normalised R = 100 composite spectra at one epoch for one AGB configuration."""
+
+    def __init__(self, config_key, epoch_gyr, edges_gyr):
+        self.config = AGB_CONFIGS[config_key]
+        self.epoch_gyr = epoch_gyr
+        self.edges_gyr = edges_gyr[: int(np.argmin(np.abs(edges_gyr - epoch_gyr))) + 1]
+        self.grid = load_ssp_grid(GRID_DIRS[self.config["template"]], "r100")
+        self.wave_a = self.grid.wave_a
+        self._ssp_cache = {}
+
+    def _ssp_flux(self, log_z, agb_index):
+        key = (round(float(log_z), 4), agb_index)
+        if key not in self._ssp_cache:
+            self._ssp_cache[key] = interpolate_log_z(
+                self.grid.flux_nu[:, agb_index], self.grid.log_z_grid, log_z
             )
-            for index in np.flatnonzero(keep):
-                flux_lambda = flux_nu_to_flux_lambda(wave_a, flux_nu[index])
-                rows.append(flux_lambda / pseudo_continuum_line(wave_a, flux_lambda))
-                records.append((t_q, tau_q, float(delay[index])))
-    return wave_a, np.array(rows), records
+        return self._ssp_cache[key]
+
+    def spectrum(self, log_z, t_q_gyr, tau_q_gyr):
+        """Normalised composite spectrum at the library epoch."""
+        weights = epoch_weight_matrix(self.edges_gyr, t_q_gyr, tau_q_gyr, self.grid.log_age_yr)[-1:]
+        flux_nu = csp_spectra(weights, self._ssp_flux(log_z, 0))[0]
+        if self.config["agb"] != "agb0":
+            flux_nu = agb_two_spectra(flux_nu, csp_spectra(weights, self._ssp_flux(log_z, 1))[0])
+        flux_lambda = flux_nu_to_flux_lambda(self.wave_a, flux_nu)
+        return flux_lambda / pseudo_continuum_line(self.wave_a, flux_lambda)
 
 
-def representative_rows(records, t_q=REPRESENTATIVE_T_Q_GYR, tau_q=REPRESENTATIVE_TAU_Q_GYR):
-    rows = {}
-    for delay in REPRESENTATIVE_DELAYS_GYR:
-        candidates = [
-            (abs(record[2] - delay), i)
-            for i, record in enumerate(records)
-            if record[0] == t_q and record[1] == tau_q
-        ]
-        rows[delay] = min(candidates)[1]
-    return rows
+def mismatch(wave_a, model, grid_a, stack, scatter):
+    """RMS of (model - stack) / scatter over the H-minus window span, model interpolated
+    onto the stack grid."""
+    inside = (grid_a >= FIT_RANGE_A[0]) & (grid_a <= FIT_RANGE_A[1])
+    residual = (np.interp(grid_a[inside], wave_a, model) - stack[inside]) / scatter[inside]
+    return float(np.sqrt(np.mean(residual**2)))
+
+
+def bin_to_grid(wave_a, model, grid_a):
+    """Mean of the model pixels inside each cell of the (uniform) stack grid, so that a
+    model on the fine R = 100 grid is drawn at the observed pixel scale."""
+    edges = np.concatenate([[grid_a[0] - STACK_STEP_A / 2], grid_a + STACK_STEP_A / 2])
+    counts, _ = np.histogram(wave_a, bins=edges)
+    sums, _ = np.histogram(wave_a, bins=edges, weights=model)
+    binned = np.where(counts > 0, sums / np.maximum(counts, 1), np.nan)
+    empty = counts == 0
+    if empty.any():
+        binned[empty] = np.interp(grid_a[empty], wave_a, model)
+    return binned
+
+
+def search_best_match(library, grid_a, stack, scatter):
+    """Grid search over metallicity, t_q and tau_q at the library epoch; returns the
+    best model and the full table of mismatches."""
+    t_q_values = np.round(
+        np.arange(MIN_T_Q_GYR, library.epoch_gyr - SEARCH_T_Q_STEP_GYR / 2, SEARCH_T_Q_STEP_GYR), 3
+    )
+    table = []
+    best = None
+    for log_z in SEARCH_LOG_Z:
+        for t_q in t_q_values:
+            for tau_q in SEARCH_TAU_Q_GYR:
+                model = library.spectrum(log_z, t_q, tau_q)
+                value = mismatch(library.wave_a, model, grid_a, stack, scatter)
+                table.append((float(log_z), float(t_q), float(tau_q), value))
+                if best is None or value < best["mismatch"]:
+                    best = {
+                        "log_z": float(log_z),
+                        "t_q_gyr": float(t_q),
+                        "tau_q_gyr": float(tau_q),
+                        "delay_gyr": float(library.epoch_gyr - t_q),
+                        "mismatch": value,
+                        "bump_index_mag": bump_index_from_normalised(library.wave_a, model),
+                        "spectrum": model,
+                    }
+    return best, np.array(table)
 
 
 # ---------------------------------------------------------------------------
@@ -206,7 +267,12 @@ def figure_observed_spectra(spectra, grid_a, stack, scatter, out_dir):
     norm = plt.Normalize(redshifts.min(), redshifts.max())
     for s in spectra.values():
         axes[0].plot(
-            s["wave_a"] / 1e4, s["normalised"], color=cmap(norm(s["redshift"])), lw=0.7, alpha=0.85
+            s["wave_a"] / 1e4,
+            s["normalised"],
+            color=cmap(norm(s["redshift"])),
+            lw=0.7,
+            alpha=0.85,
+            **STEP_STYLE,
         )
     for axis in axes:
         _shade_bands(axis)
@@ -243,9 +309,10 @@ def figure_observed_spectra(spectra, grid_a, stack, scatter, out_dir):
     save_figure(figure, out_dir, "jwst_spectra_bump_region")
 
 
-def figure_stack_versus_mocks(grid_a, stack, scatter, mocks, out_dir, stem=STEM):
-    """Two columns (AGB off, AGB on): top, the observed stack against the post-quench mock
-    envelope and four representative epochs after quenching; bottom, observed over model."""
+def figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_dir, stem=STEM):
+    """Two columns (AGB off, AGB on): top, the observed stack against mock spectra at the
+    sample epoch with tau_q varied at fixed t - t_q and solar metallicity, plus the
+    best-matching model of the search; bottom, observed over model."""
     figure, axes = plt.subplots(
         2,
         2,
@@ -256,32 +323,57 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, mocks, out_dir, stem=STEM)
     )
     summary = {}
     x_stack = grid_a / 1e4
+    feature = (grid_a > H_MINUS_BANDS_A["feature"][0]) & (grid_a < H_MINUS_BANDS_A["feature"][1])
     for col, config_key in enumerate(CONFIG_ORDER):
-        config = AGB_CONFIGS[config_key]
-        wave_a, rows, records = mocks[config_key]
-        x_mock = wave_a / 1e4
+        library = libraries[config_key]
+        best = matches[config_key]
         top, bottom = axes[0, col], axes[1, col]
         for axis in (top, bottom):
             _shade_bands(axis)
-        envelope_low, envelope_high = rows.min(axis=0), rows.max(axis=0)
-        top.fill_between(
-            x_mock,
-            envelope_low,
-            envelope_high,
+        t_q_panel = library.epoch_gyr - PANEL_DELAY_GYR
+        panel_summary = {}
+        for tau_q, color in zip(PANEL_TAU_Q_GYR, PANEL_COLORS, strict=True):
+            model = library.spectrum(PANEL_LOG_Z, t_q_panel, tau_q)
+            binned = bin_to_grid(library.wave_a, model, grid_a)
+            top.plot(x_stack, binned, color=color, lw=1.0, zorder=3, **STEP_STYLE)
+            ratio = stack / binned
+            bottom.plot(x_stack, ratio, color=color, lw=1.0, zorder=3, **STEP_STYLE)
+            panel_summary[f"tau_q_{tau_q:g}"] = {
+                "bump_index_mag": bump_index_from_normalised(library.wave_a, model),
+                "mismatch": mismatch(library.wave_a, model, grid_a, stack, scatter),
+                "median_observed_over_model_in_feature": float(np.median(ratio[feature])),
+            }
+        best_binned = bin_to_grid(library.wave_a, best["spectrum"], grid_a)
+        top.plot(
+            x_stack,
+            best_binned,
             color=CONFIG_COLORS[config_key],
-            alpha=0.22,
-            lw=0,
-            zorder=2,
+            lw=1.1,
+            ls="--",
+            zorder=4,
+            **STEP_STYLE,
         )
-        chosen = representative_rows(records)
-        for row_index, color in zip(chosen.values(), REPRESENTATIVE_COLORS, strict=True):
-            top.plot(x_mock, rows[row_index], color=color, lw=1.0, zorder=3)
-            ratio = stack / np.interp(grid_a, wave_a, rows[row_index])
-            bottom.plot(x_stack, ratio, color=color, lw=1.0, zorder=3)
+        best_ratio = stack / best_binned
+        bottom.plot(
+            x_stack,
+            best_ratio,
+            color=CONFIG_COLORS[config_key],
+            lw=1.1,
+            ls="--",
+            zorder=4,
+            **STEP_STYLE,
+        )
         top.fill_between(
-            x_stack, stack - scatter, stack + scatter, color="0.55", alpha=0.35, lw=0, zorder=4
+            x_stack,
+            stack - scatter,
+            stack + scatter,
+            color="0.55",
+            alpha=0.35,
+            lw=0,
+            step="mid",
+            zorder=5,
         )
-        top.plot(x_stack, stack, color="black", lw=1.3, zorder=5)
+        top.plot(x_stack, stack, color="black", lw=1.3, zorder=6, **STEP_STYLE)
         bottom.fill_between(
             x_stack,
             1.0 - scatter / stack,
@@ -289,17 +381,32 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, mocks, out_dir, stem=STEM)
             color="0.55",
             alpha=0.35,
             lw=0,
+            step="mid",
             zorder=1,
         )
         bottom.axhline(1.0, color="black", lw=0.7, ls="--", zorder=2)
         top.text(
             0.97,
             0.95,
-            config["short_label"],
+            library.config["short_label"],
             transform=top.transAxes,
             ha="right",
             va="top",
             fontsize=12,
+            zorder=20,
+        )
+        top.text(
+            0.97,
+            0.05,
+            (
+                rf"best match: $\log Z/Z_\odot = {best['log_z']:+.2f}$, "
+                rf"$t_q = {best['t_q_gyr']:.1f}$, $\tau_q = {best['tau_q_gyr']:.2f}$ Gyr"
+            ),
+            transform=top.transAxes,
+            ha="right",
+            va="bottom",
+            fontsize=6.5,
+            color=CONFIG_COLORS[config_key],
             zorder=20,
         )
         top.set_ylim(0.84, 1.16)
@@ -311,53 +418,37 @@ def figure_stack_versus_mocks(grid_a, stack, scatter, mocks, out_dir, stem=STEM)
         top.set_xlim(PLOT_RANGE_A[0] / 1e4, PLOT_RANGE_A[1] / 1e4)
         panel_label(top, f"({'ab'[col]})", x=0.03, y=0.95)
         panel_label(bottom, f"({'cd'[col]})", x=0.03, y=0.93)
-        mock_bumps = np.array([bump_index_from_normalised(wave_a, row) for row in rows])
-        feature = (wave_a > H_MINUS_BANDS_A["feature"][0]) & (
-            wave_a < H_MINUS_BANDS_A["feature"][1]
-        )
         summary[config_key] = {
-            "n_mock_spectra": int(rows.shape[0]),
-            "t_q_gyr": list(MOCK_T_Q_GYR),
-            "tau_q_gyr": list(MOCK_TAU_Q_GYR),
-            "post_quench_window_gyr": list(MOCK_POST_QUENCH_WINDOW_GYR),
-            "mock_bump_index_range_mag": [float(mock_bumps.min()), float(mock_bumps.max())],
-            "mock_envelope_peak_normalised_flux_range": [
-                float(envelope_low[feature].max()),
-                float(envelope_high[feature].max()),
-            ],
-            "representative": {
-                f"delay_{delay:g}_gyr": {
-                    "t_q_gyr": records[row_index][0],
-                    "tau_q_gyr": records[row_index][1],
-                    "delay_gyr": records[row_index][2],
-                    "bump_index_mag": float(mock_bumps[row_index]),
-                    "median_observed_over_model_in_feature": float(
-                        np.median(
-                            (stack / np.interp(grid_a, wave_a, rows[row_index]))[
-                                (grid_a > H_MINUS_BANDS_A["feature"][0])
-                                & (grid_a < H_MINUS_BANDS_A["feature"][1])
-                            ]
-                        )
-                    ),
-                }
-                for delay, row_index in chosen.items()
+            "epoch_gyr": library.epoch_gyr,
+            "panel": {
+                "log_z": PANEL_LOG_Z,
+                "t_q_gyr": t_q_panel,
+                "delay_gyr": PANEL_DELAY_GYR,
+                "by_tau_q": panel_summary,
             },
+            "best_match": {key: value for key, value in best.items() if key != "spectrum"},
+            "best_match_median_observed_over_model_in_feature": float(
+                np.median(best_ratio[feature])
+            ),
         }
     handles = [
         Line2D([], [], color="black", lw=1.3, label="observed stack (Lu+2026, 19 galaxies)"),
         Patch(facecolor="0.55", alpha=0.35, label="galaxy-to-galaxy scatter of the stack"),
     ]
     handles += [
-        Patch(
-            facecolor=CONFIG_COLORS[key],
-            alpha=0.22,
-            label=f"{AGB_CONFIGS[key]['short_label']}: all post-quench mock spectra",
-        )
-        for key in CONFIG_ORDER
+        Line2D([], [], color=color, lw=1.0, label=rf"$\tau_q = {tau_q:g}$ Gyr")
+        for tau_q, color in zip(PANEL_TAU_Q_GYR, PANEL_COLORS, strict=True)
     ]
     handles += [
-        Line2D([], [], color=color, lw=1.0, label=rf"$t - t_q = {delay:g}$ Gyr")
-        for delay, color in zip(REPRESENTATIVE_DELAYS_GYR, REPRESENTATIVE_COLORS, strict=True)
+        Line2D(
+            [],
+            [],
+            color=CONFIG_COLORS[key],
+            lw=1.1,
+            ls="--",
+            label=f"{AGB_CONFIGS[key]['short_label']}: closest model in the search",
+        )
+        for key in CONFIG_ORDER
     ]
     figure.legend(
         handles=handles,
@@ -389,7 +480,17 @@ def main():
     figure_observed_spectra(spectra, grid_a, stack, scatter, OUTPUT_DIR)
 
     edges = time_bin_edges()
-    mocks = {key: mock_spectra(key, edges) for key in CONFIG_ORDER}
+    median_redshift = float(np.median([s["redshift"] for s in spectra.values()]))
+    epoch = mock_epoch_gyr(median_redshift, edges)
+    libraries = {key: MockLibrary(key, epoch, edges) for key in CONFIG_ORDER}
+    matches, tables = {}, {}
+    for key, library in libraries.items():
+        matches[key], tables[key] = search_best_match(library, grid_a, stack, scatter)
+        print(
+            f"{key}: best match log Z {matches[key]['log_z']:+.2f}, "
+            f"t_q {matches[key]['t_q_gyr']:.1f}, tau_q {matches[key]['tau_q_gyr']:.2f} Gyr, "
+            f"mismatch {matches[key]['mismatch']:.2f}"
+        )
     summary = {
         "observed": {
             "n_galaxies": len(spectra),
@@ -397,6 +498,9 @@ def main():
                 min(s["redshift"] for s in spectra.values()),
                 max(s["redshift"] for s in spectra.values()),
             ],
+            "median_redshift": median_redshift,
+            "cosmic_age_at_median_redshift_gyr": cosmic_age_gyr(median_redshift),
+            "mock_epoch_gyr": epoch,
             "stack_grid_step_a": STACK_STEP_A,
             "stack_bump_index_mag": bump_index_from_normalised(grid_a, stack),
             "stack_peak_normalised_flux": float(np.max(stack[(grid_a > 15700) & (grid_a < 17340)])),
@@ -410,11 +514,25 @@ def main():
                 for galaxy_id, s in spectra.items()
             },
         },
-        "mocks": figure_stack_versus_mocks(grid_a, stack, scatter, mocks, out_dir),
+        "search": {
+            "log_z_grid": list(SEARCH_LOG_Z),
+            "t_q_step_gyr": SEARCH_T_Q_STEP_GYR,
+            "tau_q_grid_gyr": list(SEARCH_TAU_Q_GYR),
+            "mismatch_definition": "RMS of (model - stack) / scatter over 1.494-1.791 um on "
+            "the 30 A stack grid",
+            "n_models_per_configuration": int(tables[CONFIG_ORDER[0]].shape[0]),
+            "mismatch_range": {
+                key: [float(tables[key][:, 3].min()), float(tables[key][:, 3].max())]
+                for key in CONFIG_ORDER
+            },
+        },
+        "mocks": figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_dir),
         "normalisation": "straight line fitted to all pixels in the blue (1.494-1.539 um) "
         "and red (1.746-1.791 um) windows, observed and model alike; bump index = "
         "-2.5 log10(mean normalised flux over 1.570-1.734 um)",
     }
+    for key in CONFIG_ORDER:
+        np.save(out_dir / f"{STEM}_search_{key}.npy", tables[key])
     (out_dir / f"{STEM}.json").write_text(json.dumps(_to_native(summary), indent=2) + "\n")
     print(f"wrote {out_dir / STEM}.{{pdf,png,json}}")
 

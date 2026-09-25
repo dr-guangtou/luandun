@@ -561,35 +561,54 @@ not test the TP-AGB weight (Section 2.3): it tests the template.
 
 ### 8.5 Spectral-shape comparison: `observed_stack_vs_fsps_mocks`
 
-Built by `jwst_spectrum_comparison.py` (10 s), numbers in
-`observed_stack_vs_fsps_mocks.json`. Observed side: the 19 galaxies of the index table
-(the 8 other files in `qg_spec/` have no redshift there and are not used), shifted to
-the rest frame with the table redshifts, each divided by a straight line fitted to all
-pixels in the two side windows (the pyphot degree-1 convention of the draft), and
-combined on a 30 A rest-frame grid as an S/N-weighted mean (weights (F/sigma)^2 per
-pixel). Recomputing the bump index from these normalised spectra reproduces the table
-values to 0.001 to 0.002 mag for 18 galaxies; galaxy 20150 gives -0.050 against the
-stored -0.059 (`observed.per_galaxy`), worth checking with the data owner. The stack
-peaks at 1.080 in the feature band and has a bump index of -0.058 mag.
+Built by `jwst_spectrum_comparison.py` (about 2 minutes, most of it the search),
+numbers in `observed_stack_vs_fsps_mocks.json`, the full search tables in
+`observed_stack_vs_fsps_mocks_search_{agb_off,agb_on}.npy` (columns log Z, t_q,
+tau_q, mismatch).
 
-Model side: composite spectra assembled from the cached SSP grids on the `r100`
-product at solar metallicity for 12 histories (t_q in {1.5, 3, 4.5} Gyr, tau_q in
-{0.1, 0.3, 1, 3} Gyr), every epoch from 1 Gyr with 0 to 6 Gyr after quenching (1452
-spectra per configuration), normalised the same way. The figure shows the full
-envelope per configuration and the t_q = 3, tau_q = 0.3 Gyr history at 0.5, 1, 2 and 5
-Gyr after quenching, with the observed-to-model ratio below.
+Observed side: the 19 galaxies of the index table (the 8 other files in `qg_spec/`
+have no redshift there and are not used), shifted to the rest frame with the table
+redshifts, each divided by a straight line fitted to all pixels in the two side
+windows (the pyphot degree-1 convention of the draft), and combined as an S/N-weighted
+mean (weights (F/sigma)^2 per pixel) on a 45 A rest-frame grid, the median pixel width
+of the spectra in this region (27 to 60 A). All spectra are drawn as steps.
+Recomputing the bump index from the normalised spectra reproduces the table values to
+0.001 to 0.002 mag for 18 galaxies; galaxy 20150 gives -0.050 against the stored
+-0.059 (`observed.per_galaxy`), worth checking with the data owner. The stack peaks at
+1.080 in the feature band and has a bump index of -0.057 mag.
+
+Model side: one epoch, the cosmic age at the median redshift z = 1.357 (4.57 Gyr for a
+flat LCDM cosmology with H0 = 70 and Omega_m = 0.3, star formation from t = 0; grid
+epoch 4.55 Gyr), on the `r100` product, normalised the same way and binned to the 45 A
+grid. Two layers per configuration:
+
+- The panel curves: solar metallicity, t - t_q fixed at 1 Gyr (t_q = 3.55 Gyr), tau_q in
+  {0.1, 0.3, 1, 3} Gyr.
+- The closest model in a grid search over log Z from -0.5 to +0.25 in 0.05 dex steps
+  (interpolated between the four grid metallicities), t_q from 1 Gyr to the epoch in
+  0.1 Gyr steps and 13 log-spaced tau_q values (7280 models per configuration), ranked
+  by the RMS of (model minus stack) divided by the galaxy-to-galaxy scatter over 1.494
+  to 1.791 micron ("mismatch"; 1 means the model deviates by one scatter on average).
 
 | | AGB off | AGB on |
 | --- | ---: | ---: |
-| mock bump index range | +0.008 to -0.017 mag | -0.041 to -0.088 mag |
-| envelope peak in the feature band | 1.005 to 1.032 | 1.054 to 1.105 |
-| observed over model, feature-band median (0.5 to 5 Gyr after t_q) | 1.057 to 1.037 | 0.984 to 1.004 |
+| panel bump index, tau_q = 0.1 / 0.3 / 1 / 3 Gyr [mag] | -0.007 / -0.005 / -0.001 / +0.001 | -0.072 / -0.072 / -0.064 / -0.058 |
+| panel mismatch, tau_q = 0.1 / 0.3 / 1 / 3 Gyr | 2.41 / 2.49 / 2.65 / 2.73 | 0.74 / 0.74 / 0.45 / 0.39 |
+| best match | log Z = -0.25, t_q = 1.0, tau_q = 0.10 Gyr (delay 3.55 Gyr), index -0.016 mag | log Z = +0.15, t_q = 1.2, tau_q = 0.41 Gyr (delay 3.35 Gyr), index -0.059 mag |
+| best mismatch (range over the search) | 2.03 (2.03 to 3.06) | 0.36 (0.36 to 1.39) |
+| median observed over best model in the feature band | 1.038 | 0.999 |
 
-No AGB-off history reaches the observed bump; the AGB-on envelope brackets it and the
-ratio stays inside the galaxy-to-galaxy scatter across the feature band. The models are
-not fitted (fixed metallicity, fixed R = 100, no per-galaxy matching), and the model
-H2O absorption outside the side windows (below 1.45 and above 1.8 micron), where the
-AGB-on models sit 5 to 8 per cent above the data, is not tested by the normalisation.
+Reading: no AGB-off model comes within two scatters of the stack; the best one is the
+oldest, most abruptly quenched, sub-solar population the search allows, and it still
+leaves a 4 per cent excess across the feature band. With AGB on the tau_q = 3 Gyr
+solar-metallicity curve at t - t_q = 1 Gyr is already within the scatter, and the
+search finds a model that matches to 0.36 scatters, but the solution is degenerate:
+the eight best AGB-on models all have mismatch 0.36 and span t_q = 1.1 to 1.8 Gyr with
+tau_q from 0.10 to 0.41 Gyr at log Z = +0.15, so the stack constrains the template and
+roughly the metallicity, not the quenching history. Outside the side windows (below
+1.45 and above 1.8 micron) the AGB-on models sit 5 to 8 per cent above the data; that
+region is not part of the normalisation or the search metric and reflects the H2O
+absorption in the LW02 templates.
 
 ---
 
@@ -690,7 +709,7 @@ All paths relative to `stellar_pop/fsps_agb/`.
 | `analysis_conclusion_figures.py` | Phase 4 (C1 to C3: prescription test, age clocks, recovery regression, metallicity tracks) |
 | `analysis_sfh_sensitivity.py` | Phase 5 (S1 to S6, per family) |
 | `publication_figures.py` | Phase 6: the seven candidate figures and the final set |
-| `jwst_spectrum_comparison.py` | the observed JWST stack against FSPS mock spectra in the bump region (final figure 8.5) |
+| `jwst_spectrum_comparison.py` | the observed JWST stack against FSPS mock spectra at the sample epoch, with the best-match search (final figure 8.5) |
 | `tests/` | 75 fast unit tests (`uv run pytest`); `-m slow` adds the FSPS-dependent ones |
 
 ### 11.2 Data products
