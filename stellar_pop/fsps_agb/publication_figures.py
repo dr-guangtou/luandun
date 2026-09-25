@@ -3,20 +3,20 @@
 Two take-home messages, each with a qualitative and a quantitative figure, plus
 robustness and caveat figures:
 
-- Figure 1 (index planes): the H-minus bump plane separates the AGB-on and
-  AGB-off models, and inside the AGB-on model the fast-quenching epochs occupy
+- Figure 1 (index planes): the H-minus bump plane separates the TP-AGB-on and
+  TP-AGB-off models, and inside the TP-AGB-on model the fast-quenching epochs occupy
   their own locus, ordered by the quenching timescale.
 - Figure 2 (prescription offsets): the population bump locus versus the
   optical indices for four TP-AGB prescriptions, with the 0.01 mag yardstick.
 - Figure 3 (quenching clocks): HdeltaA and the bump peak at different delays
   after quenching, and the lag between them grows with the quenching timescale.
 - Figure 4 (information gain): rapid-quenching completeness and purity and the
-  SFH-recovery RMS, optical only versus optical plus bump, AGB on versus off.
+  SFH-recovery RMS, optical only versus optical plus bump, TP-AGB on versus off.
 - Figures 5 and 6: the same planes and gains for the other three SFH families.
 - Figure 7 (metallicity): how much of the bump's metallicity trend comes from
   the non-AGB stars, and whether knowing the metallicity sharpens the bump.
 
-Conventions: AGB on = LW02 empirical O-rich TP-AGB templates at agb = 2; AGB
+Conventions: TP-AGB on = LW02 empirical O-rich TP-AGB templates at agb = 2; AGB
 off = default C3K templates at agb = 0 (the no-TP-AGB control). Optical indices
 at sigma = 300 km/s, the bump at R = 100. The default SFH is the tau = t_q
 exponential-quench family; the other families appear only in Figures 5 and 6.
@@ -79,14 +79,14 @@ AGB_CONFIGS = {
     "agb_off": {
         "template": "c3k",
         "agb": "agb0",
-        "label": "AGB off (C3K, agb = 0)",
-        "short_label": "AGB off",
+        "label": "TP-AGB off (C3K, agb = 0)",
+        "short_label": "TP-AGB off",
     },
     "agb_on": {
         "template": "lw02",
         "agb": "agb2",
-        "label": "AGB on (LW02, agb = 2)",
-        "short_label": "AGB on",
+        "label": "TP-AGB on (LW02, agb = 2)",
+        "short_label": "TP-AGB on",
     },
 }
 CONFIG_COLORS = {"agb_off": "#0072B2", "agb_on": "#D55E00"}
@@ -380,7 +380,7 @@ def set_plane_axes(axis, x_key, y_key, ranges, xlabel=True, ylabel=True):
 
 
 # ---------------------------------------------------------------------------
-# Figure 1: index planes, AGB off versus on
+# Figure 1: index planes, TP-AGB off versus on
 # ---------------------------------------------------------------------------
 
 
@@ -729,14 +729,14 @@ def figure_3(clock_tracks, out_dir):
     axes[0, 0].legend(loc="upper right", title=f"$t_q$ = {t_q_fiducial:g} Gyr", title_fontsize=7)
     axes[0, 1].legend(
         handles=[
-            Line2D([], [], color="0.3", lw=1.2, label="AGB on"),
-            Line2D([], [], color="0.3", lw=0.8, ls=":", label="AGB off"),
+            Line2D([], [], color="0.3", lw=1.2, label="TP-AGB on"),
+            Line2D([], [], color="0.3", lw=0.8, ls=":", label="TP-AGB off"),
             Line2D([], [], marker="*", ms=7, color="0.5", mec="black", ls="none", label="extremum"),
         ],
         loc="center right",
     )
 
-    # (c) HdeltaA-bump plane, AGB on, tau_q family with time markers.
+    # (c) HdeltaA-bump plane, TP-AGB on, tau_q family with time markers.
     axis = axes[1, 0]
     marker_delays = np.arange(0.0, CLOCK_MARKER_MAX_GYR + 1e-9, CLOCK_MARKER_STEP_GYR)
     for tau_q, color in zip(CLOCK_TAU_Q_GYR, CLOCK_TAU_Q_COLORS, strict=True):
@@ -799,7 +799,7 @@ def figure_3(clock_tracks, out_dir):
         title_fontsize=6.5,
     )
 
-    # (d) delay of each extremum versus tau_q, three t_q values, AGB on.
+    # (d) delay of each extremum versus tau_q, three t_q values, TP-AGB on.
     axis = axes[1, 1]
     for t_q, linestyle in zip(CLOCK_T_Q_GYR, CLOCK_T_Q_STYLES, strict=True):
         hdelta_delays, bump_delays, lags, edge_flags = [], [], [], []
@@ -856,7 +856,7 @@ def figure_3(clock_tracks, out_dir):
                 color=CONFIG_COLORS["agb_on"],
                 marker="o",
                 ms=3,
-                label="H$^-$ bump minimum (AGB on)",
+                label="H$^-$ bump minimum (TP-AGB on)",
             ),
             Line2D([], [], color="0.25", marker="s", ms=3, label=r"H$\delta_{\rm A}$ maximum"),
             Line2D(
@@ -1028,7 +1028,7 @@ def _significance_text(gain, standard_error):
 
 def figure_4(gains, out_dir):
     """Gains for the exponential family: classifier (a, b) and recovery (c, d) versus bump
-    precision, AGB on and off, optical-only baseline as horizontal bands."""
+    precision, TP-AGB on and off, optical-only baseline as horizontal bands."""
     figure, axes = plt.subplots(1, 4, figsize=(DOUBLE_COLUMN_IN, 2.6), layout="constrained")
     precisions = np.array(BUMP_PRECISIONS)
     x_shift = {"agb_off": 0.985, "agb_on": 1.015}
@@ -1154,7 +1154,7 @@ def figure_4(gains, out_dir):
 
 def figure_6(gains_by_family, out_dir):
     """Per SFH family: the bump's paired gain in completeness and purity (0.010 mag) and in
-    the recovery RMS of both targets (0.005 mag), AGB on versus off. Error bars are the
+    the recovery RMS of both targets (0.005 mag), TP-AGB on versus off. Error bars are the
     fold standard error of the paired gain, averaged over the noise seeds."""
     figure, axes = plt.subplots(1, 4, figsize=(DOUBLE_COLUMN_IN, 2.8), layout="constrained")
     width = 0.36
@@ -1227,7 +1227,7 @@ def figure_6(gains_by_family, out_dir):
 
 
 # ---------------------------------------------------------------------------
-# Figure 5: planes for the other SFH families, AGB on
+# Figure 5: planes for the other SFH families, TP-AGB on
 # ---------------------------------------------------------------------------
 
 
@@ -1313,11 +1313,11 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
     log_z = np.array(LOG_Z_TRACKS)
 
     # (a) bump versus log Z at two post-quench delays: the non-AGB stars alone (C3K, agb = 0),
-    # the full AGB-on model (LW02, agb = 2) and the TP-AGB increment of each template.
+    # the full TP-AGB-on model (LW02, agb = 2) and the TP-AGB increment of each template.
     axis = axes[0]
     components = {
         "non_agb_stars": ("c3k", "agb0", None, "#0072B2", "non-AGB stars (C3K, agb 0)"),
-        "agb_on_total": ("lw02", "agb2", None, "#D55E00", "AGB on (LW02, agb 2)"),
+        "agb_on_total": ("lw02", "agb2", None, "#D55E00", "TP-AGB on (LW02, agb 2)"),
         "lw02_increment": ("lw02", "agb2", "agb0", "#E69F00", "TP-AGB part, LW02"),
         "c3k_increment": ("c3k", "agb2", "agb0", "#56B4E9", "TP-AGB part, C3K"),
     }
@@ -1357,7 +1357,7 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
         borderaxespad=0.3,
     )
 
-    # (b) population: bump versus log Z inside one D4000 slice, AGB on, rapid quenching vs all.
+    # (b) population: bump versus log Z inside one D4000 slice, TP-AGB on, rapid quenching vs all.
     axis = axes[1]
     table, codes = tables["agb_on"]
     agb_key = AGB_CONFIGS["agb_on"]["agb"]
@@ -1383,7 +1383,7 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
     axis.set_ylim(b_range[1], b_range[0])
     axis.set_xlabel(r"$\log Z/Z_\odot$")
     axis.set_ylabel(AXIS_LABELS["h_minus_bump"])
-    axis.set_title(rf"AGB on, D4000 $\in$ [{low:.1f}, {high:.1f})", fontsize=8)
+    axis.set_title(rf"TP-AGB on, D4000 $\in$ [{low:.1f}, {high:.1f})", fontsize=8)
     for name, mask in (
         ("all", in_slice),
         ("rapid_quenching", in_slice & rapid),
@@ -1411,7 +1411,7 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
         fontsize=6,
     )
 
-    # (c) does a known metallicity change the bump's gains? Exponential family, AGB on.
+    # (c) does a known metallicity change the bump's gains? Exponential family, TP-AGB on.
     axis = axes[2]
     entries = _relative_gain_entries(gains_with_z)
     positions = np.arange(len(entries))
@@ -1428,7 +1428,7 @@ def figure_7(tracks_by_template, tables, gains_with_z, out_dir):
     axis.invert_yaxis()
     axis.axvline(0.0, color="0.3", lw=0.6)
     axis.set_xlabel(r"bump gain [\% of baseline]")
-    axis.set_title("AGB on", fontsize=8)
+    axis.set_title("TP-AGB on", fontsize=8)
     axis.set_xlim(right=1.3 * max(100.0 * entry[1] for entry in entries))
     axis.minorticks_off()
     figure.legend(
@@ -1472,10 +1472,10 @@ def scaled_post_quench_tracks(result, agb_key, t_q, window=CLOCK_LOG_WINDOW_GYR)
 
 
 def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
-    """Left: one panel per tau_q with the three indices against log10(t - t_q), AGB on,
+    """Left: one panel per tau_q with the three indices against log10(t - t_q), TP-AGB on,
     each index scaled to its own post-quench range, with the HdeltaA and H-minus bump peaks
     marked. Right: rapid-quenching completeness and purity against H-minus bump precision,
-    AGB on, with the optical-only baseline."""
+    TP-AGB on, with the optical-only baseline."""
     figure = plt.figure(figsize=(DOUBLE_COLUMN_IN, 4.2), layout="constrained")
     grid = figure.add_gridspec(len(COMBINED_TAU_Q_GYR), 4, width_ratios=(1, 1, 1, 1))
     axes_clock = [figure.add_subplot(grid[0, :2])]
@@ -1604,7 +1604,7 @@ def figure_combined(clock_tracks, gains, out_dir, stem=FINAL_STEMS["combined"]):
         ncol=3,
         fontsize=7.5,
         title=(
-            rf"AGB on; (a--c) tracks at $t_q = {t_q:g}$ Gyr, solar metallicity, "
+            rf"TP-AGB on; (a--c) tracks at $t_q = {t_q:g}$ Gyr, solar metallicity, "
             r"delayed-$\tau$ rise with $\tau = t_q$"
         ),
         title_fontsize=7.5,
@@ -1641,7 +1641,7 @@ def load_jwst_indices(path=JWST_DATA_PATH):
 
 
 def figure_jwst_plane(tables, tracks_by_template, jwst, out_dir, stem=FINAL_STEMS["jwst"]):
-    """The D4000 versus H-minus bump plane for AGB off (left) and AGB on (right), same
+    """The D4000 versus H-minus bump plane for TP-AGB off (left) and TP-AGB on (right), same
     layers as Figure 1, on one shared bump axis, with the JWST galaxies overplotted."""
     figure, axes = plt.subplots(
         1, 2, figsize=(DOUBLE_COLUMN_IN, 3.4), layout="constrained", sharey=True

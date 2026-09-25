@@ -56,54 +56,54 @@ TP-AGB templates the models bracket it.
   isochrones, C3K high-resolution library, Chabrier IMF) on the R = 100 product, with
   the paper's delayed-tau rise (tau = t_q) and exponential decline after t_q, then
   divided by the same straight-line pseudo-continuum and averaged into the same 45 A
-  bins as the data. AGB off is the C3K configuration with `agb = 0`; AGB on is the
+  bins as the data. TP-AGB off is the C3K configuration with `agb = 0`; TP-AGB on is the
   empirical Lancon and Mouhcine (2002) O-rich templates (`use_lw_tpagb = 1`) with
   `agb = 2`, as everywhere else in the paper.
 - **The coloured histograms (both panels).** Solar metallicity, time since quenching
   fixed at t - t_q = 1 Gyr (so t_q = 3.55 Gyr), quenching timescale tau_q = 0.1, 0.3, 1
   and 3 Gyr. They show how much the quenching timescale alone can move the model at
-  this epoch: very little for AGB off, a few hundredths in normalised flux for AGB on.
-- **The dashed histogram (AGB on only).** The closest model in a grid search at the same
+  this epoch: very little for TP-AGB off, a few hundredths in normalised flux for TP-AGB on.
+- **The dashed histogram (TP-AGB on only).** The closest model in a grid search at the same
   epoch over log Z/Zsun from -0.5 to +0.25 in 0.05 dex steps (interpolated in log Z
   between the four grid metallicities), t_q from 1.0 Gyr to the epoch in 0.1 Gyr steps
   (36 values) and 13 log-spaced tau_q values from 0.1 to 3 Gyr: 7280 models. The
   ranking statistic ("mismatch") is the RMS over 1.494 to 1.791 micron of (model minus
   stack) divided by the galaxy-to-galaxy scatter, so 1 means the model deviates by one
-  scatter on average. No AGB-off search is drawn: it is not meaningful, because no
-  AGB-off model comes close (see below).
+  scatter on average. No TP-AGB-off search is drawn: it is not meaningful, because no
+  TP-AGB-off model comes close (see below).
 - **Ratio panels (c, d).** The observed stack divided by each model, with the scatter
   band divided by the stack.
 
 ## Results to quote
 
-| | AGB off | AGB on |
+| | TP-AGB off | TP-AGB on |
 | --- | ---: | ---: |
 | Bump index of the tau_q = 0.1 / 0.3 / 1 / 3 Gyr models [mag] | -0.007 / -0.005 / -0.001 / +0.001 | -0.072 / -0.072 / -0.064 / -0.058 |
 | Peak normalised flux in the feature band | at most 1.03 (all four) | 1.07 to 1.09 |
 | Mismatch of the tau_q = 0.1 / 0.3 / 1 / 3 Gyr models | 2.41 / 2.49 / 2.65 / 2.73 | 0.74 / 0.74 / 0.45 / 0.39 |
 | Median observed / model over the feature band | 1.046 to 1.055 | 0.986 to 0.999 |
-| Closest model in the search | not drawn (a one-off search gave log Z = -0.25, t_q = 1.0, tau_q = 0.10 Gyr at mismatch 2.03; nothing in the AGB-off grid is below 2.03) | log Z = +0.15, t_q = 1.2 Gyr, tau_q = 0.41 Gyr (t - t_q = 3.35 Gyr), bump index -0.059 mag, mismatch 0.36 |
+| Closest model in the search | not drawn (a one-off search gave log Z = -0.25, t_q = 1.0, tau_q = 0.10 Gyr at mismatch 2.03; nothing in the TP-AGB-off grid is below 2.03) | log Z = +0.15, t_q = 1.2 Gyr, tau_q = 0.41 Gyr (t - t_q = 3.35 Gyr), bump index -0.059 mag, mismatch 0.36 |
 
 The observed stack: bump index -0.057 mag, peak normalised flux 1.080.
 
 Interpretation for the text:
 
-- **AGB off cannot reproduce the observed bump for any quenching history.** At the
+- **TP-AGB off cannot reproduce the observed bump for any quenching history.** At the
   sample epoch the four quenching timescales span 0.008 mag in index and all stay
   below 1.03 in the feature band, 5 per cent under the data across the whole band
   (panel c). Even the extreme corner of the search (oldest, most abruptly quenched,
   sub-solar) remains two scatters away. This is the key message of the left column.
-- **AGB on brackets the observation.** The tau_q = 1 and 3 Gyr models at solar
+- **TP-AGB on brackets the observation.** The tau_q = 1 and 3 Gyr models at solar
   metallicity are already within the scatter across the feature band, and the closest
   model matches to 0.36 scatters with a residual that stays inside the grey band
   everywhere between the side windows (panel d).
-- **The match does not constrain the quenching history.** The eight best AGB-on models
+- **The match does not constrain the quenching history.** The eight best TP-AGB-on models
   all have mismatch 0.36 and span t_q = 1.1 to 1.8 Gyr with tau_q from 0.10 to 0.41
   Gyr at log Z = +0.15: the stack constrains the template and, loosely, the
   metallicity, not (t_q, tau_q). The caption states the degeneracy; the text should
   not quote the closest model as a fit.
-- **Metallicity.** The preferred AGB-on metallicity is mildly super-solar (+0.15 dex).
-  This is consistent with the AGB-on bump deepening with metallicity (Section 9 of the
+- **Metallicity.** The preferred TP-AGB-on metallicity is mildly super-solar (+0.15 dex).
+  This is consistent with the TP-AGB-on bump deepening with metallicity (Section 9 of the
   reference note), but it is a one-parameter preference from a stack, not a
   measurement.
 
@@ -111,7 +111,7 @@ Interpretation for the text:
 
 - The straight-line normalisation removes the continuum slope and the side-window
   levels, so the spectral shape outside 1.494 to 1.791 micron is not compared. In the
-  earlier wide-range version the AGB-on models sat 5 to 8 per cent above the data
+  earlier wide-range version the TP-AGB-on models sat 5 to 8 per cent above the data
   below 1.45 and above 1.8 micron, where the empirical templates carry H2O absorption;
   that region is now outside the displayed range and outside the search metric. Say so
   if the text discusses the templates' H2O bands.
@@ -127,7 +127,7 @@ Interpretation for the text:
 
 ## Figure design
 
-Two columns, AGB off left and AGB on right, each with a spectrum panel and a ratio
+Two columns, TP-AGB off left and TP-AGB on right, each with a spectrum panel and a ratio
 panel (height ratio 2.4 to 1), 7.1 inches wide by 3.9 inches tall for a full page
 width. Display range 1.46 to 1.83 micron. All spectra drawn as steps on the 45 A grid.
 Blue, yellow and red shading mark the blue pseudo-continuum, feature and red

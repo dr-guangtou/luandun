@@ -33,10 +33,10 @@ evolution, alongside D4000 and HdeltaA. The model section has two messages, and 
 study was built to test them with FSPS models rather than assume them:
 
 - **Message 1.** The bump diagnoses the thermally pulsing asymptotic giant branch
-  (TP-AGB) contribution. With TP-AGB light in the model ("AGB on"), the population of
+  (TP-AGB) contribution. With TP-AGB light in the model ("TP-AGB on"), the population of
   quenching galaxies sits 0.04 to 0.08 mag deeper in the bump than without it ("AGB
   off"), far beyond the 0.005 to 0.02 mag measurement precisions considered.
-- **Message 2.** With AGB on, the bump adds information about the star formation
+- **Message 2.** With TP-AGB on, the bump adds information about the star formation
   history (SFH) that D4000 and HdeltaA do not carry. HdeltaA peaks 0.2 to 0.3 Gyr
   after quenching, the bump peaks 0.5 to 1.5 Gyr after quenching with a delay that
   grows with the quenching timescale, and D4000 only rises. In a nearest-neighbour
@@ -48,11 +48,11 @@ Two qualifications matter for the drafting:
 - The size of the bump signal depends on which TP-AGB spectral templates FSPS uses.
   With the default C3K hydrostatic model atmospheres the TP-AGB signal in the bump is
   0.01 to 0.02 mag; with the empirical Lancon and Mouhcine (2002) O-rich templates it
-  is 0.05 to 0.13 mag. The paper's "AGB on" is the empirical-template configuration;
+  is 0.05 to 0.13 mag. The paper's "TP-AGB on" is the empirical-template configuration;
   the paper must say so. Section 3 explains why this happens.
 - The 19 z ~ 1 quiescent galaxies of Lu+2026 have bump values of -0.037 to -0.073 mag,
-  inside the AGB-on locus and 0.02 to 0.05 mag deeper than anything the AGB-off model
-  produces at the same D4000. That is an empirical argument for the AGB-on
+  inside the TP-AGB-on locus and 0.02 to 0.05 mag deeper than anything the TP-AGB-off model
+  produces at the same D4000. That is an empirical argument for the TP-AGB-on
   configuration, shown in the fourth final figure.
 
 The four final figures are in this folder:
@@ -104,11 +104,17 @@ parameter.
 | Post-AGB weight `pagb` | 1 (default); post-AGB stars contribute under 0.5 per cent anywhere in the range and are negligible in the NIR |
 | AGB circumstellar dust | on (default, `add_agb_dust_model = 1`, `agb_dust = 1`); changes the 1.4 to 1.8 micron flux by 0.4 per cent |
 | TP-AGB weight `agb` | 0 and 1 built, 2 derived (Section 2.3) |
-| TP-AGB template switch `use_lw_tpagb` | 0 (C3K) for the AGB-off grid, 1 (LW02) for the AGB-on grid |
+| TP-AGB template switch `use_lw_tpagb` | 0 (C3K) for the TP-AGB-off grid, 1 (LW02) for the TP-AGB-on grid |
 
 Wavelength window kept: 3400 A to 2.2 micron (7263 native pixels).
 
 ### 2.3 The two AGB configurations and the `agb` weight
+
+Naming: both knobs below act on the thermally pulsing AGB phase only (MIST `phase ==
+5`); the early AGB (`phase == 4`, 5 to 7 per cent of the bolometric light at every age)
+is never varied and keeps its C3K spectra in both configurations. The configurations
+are therefore called "TP-AGB on" and "TP-AGB off", never "AGB on/off" (see
+`naming_tp_agb_note.md`).
 
 FSPS multiplies the IMF weight of every TP-AGB star (MIST phase 5) by `agb`
 (`mod_gb.f90`); it does not change the stars' luminosities or temperatures. The SSP
@@ -119,8 +125,8 @@ The two configurations used throughout the paper's figures:
 
 | Name in figures | Template switch | `agb` | Meaning |
 | --- | --- | --- | --- |
-| AGB off | `use_lw_tpagb = 0` (C3K) | 0 | no TP-AGB light at all; the clean control |
-| AGB on | `use_lw_tpagb = 1` (LW02) | 2 | empirical O-rich TP-AGB spectra at twice the fiducial weight |
+| TP-AGB off | `use_lw_tpagb = 0` (C3K) | 0 | no TP-AGB light at all; the clean control |
+| TP-AGB on | `use_lw_tpagb = 1` (LW02) | 2 | empirical O-rich TP-AGB spectra at twice the fiducial weight |
 
 Two intermediate prescriptions exist in the outputs and in the candidate figure
 `fig2_bump_offsets`: C3K at `agb = 1` (the FSPS default) and LW02 at `agb = 1`. In the
@@ -432,7 +438,7 @@ which is why that class cannot be coloured by quenching timescale.
 
 ### 8.1 Key figure 1: `index_planes_agb_on_off` (main text)
 
-Two rows (AGB off, AGB on) of three panels: D4000 against HdeltaA, D4000 against the
+Two rows (TP-AGB off, TP-AGB on) of three panels: D4000 against HdeltaA, D4000 against the
 bump, HdeltaA against the bump, exponential family, epochs later than 1 Gyr. Layers:
 
 - grey filled contours enclosing 68, 95 and 99.5 per cent of all 482,000 epochs
@@ -440,15 +446,15 @@ bump, HdeltaA against the bump, exponential family, epochs later than 1 Gyr. Lay
 - a red filled contour for the rapid-quenching class (68 and 95 per cent);
 - light-blue tracks of the fiducial history at log Z = -0.5, -0.25, 0, +0.25 from t_q
   to t_q + 5 Gyr with markers at t_q and 0.5, 1, 2, 5 Gyr later;
-- "AGB off" and "AGB on" in the empty top-right corner of the D4000-HdeltaA panels.
+- "TP-AGB off" and "TP-AGB on" in the empty top-right corner of the D4000-HdeltaA panels.
 
 What it shows:
 
 - The D4000-HdeltaA plane is identical in the two rows; the optical indices do not know
   about the TP-AGB stars.
-- In the bump planes the AGB-on population sits 0.04 to 0.08 mag deeper than the
-  AGB-off one and its rapid-quenching class occupies the deepest part of the plane:
-  median -0.075 mag, 16-84 range -0.083 to -0.066 mag. With AGB off the class is
+- In the bump planes the TP-AGB-on population sits 0.04 to 0.08 mag deeper than the
+  TP-AGB-off one and its rapid-quenching class occupies the deepest part of the plane:
+  median -0.075 mag, 16-84 range -0.083 to -0.066 mag. With TP-AGB off the class is
   confined to a 0.007 mag wide band near zero, median -0.004 mag
   (`final_summary.json`, `index_planes_agb_on_off.<config>.rapid_quenching`).
 - The metallicity dependence reverses sign between the rows (Section 9).
@@ -458,12 +464,12 @@ What it shows:
   crowded the panels.
 
 Numbers for the text (exponential family, LW02 population, D4000 = [1.3, 1.5)): the
-AGB-on bump is -0.059 mag (16-84: -0.065 to -0.053) against -0.004 mag (-0.008 to
-+0.001) with AGB off (`../publication_summary.json`, `fig2_bump_offsets.slice`).
+TP-AGB-on bump is -0.059 mag (16-84: -0.065 to -0.053) against -0.004 mag (-0.008 to
++0.001) with TP-AGB off (`../publication_summary.json`, `fig2_bump_offsets.slice`).
 
 ### 8.2 Key figure 2: `age_sensitivity_and_classifier_gain` (main text)
 
-Left, panels (a) to (c): one panel per tau_q = 0.3, 1 and 3 Gyr at t_q = 3 Gyr, AGB on,
+Left, panels (a) to (c): one panel per tau_q = 0.3, 1 and 3 Gyr at t_q = 3 Gyr, TP-AGB on,
 solar metallicity, sharing the log10(t - t_q) axis from 0.05 to 6 Gyr. Each panel shows
 HdeltaA (blue), the bump strength (vermilion, minus the index) and D4000 (green), each
 track scaled to [0, 1] over its own post-quench range so the three indices share one
@@ -479,7 +485,7 @@ after quenching. The unscaled ranges are in `final_summary.json`
 | 3 Gyr | 2.33 to 5.90 | 0.052 to 0.059 | 1.25 to 1.53 | window edge | 1.5 Gyr |
 
 The candidate figure `fig3_quenching_clocks` adds tau_q = 0.1 Gyr (HdeltaA peak 0.2
-Gyr, bump peak 0.5 Gyr), a finer tau_q grid at three t_q values, and the AGB-off bump,
+Gyr, bump peak 0.5 Gyr), a finer tau_q grid at three t_q values, and the TP-AGB-off bump,
 which has no interior extremum for any tau_q (`../publication_summary.json`,
 `fig3_quenching_clocks`). The delay of the bump minimum grows monotonically with tau_q
 (0.5 Gyr at 0.1 Gyr to 1.5 Gyr at 3 Gyr for t_q = 3 Gyr) and shifts by at most 0.3 Gyr
@@ -487,7 +493,7 @@ between t_q = 1.5 and 4.5 Gyr, so the pair (HdeltaA, bump) constrains the quench
 timescale.
 
 Right, panels (d) and (e): rapid-quenching completeness and purity against bump
-precision, AGB on, with the D4000-plus-HdeltaA baseline as a dashed line and its fold
+precision, TP-AGB on, with the D4000-plus-HdeltaA baseline as a dashed line and its fold
 standard error as a band (`final_summary.json`,
 `age_sensitivity_and_classifier_gain.classifier`):
 
@@ -499,7 +505,7 @@ standard error as a band (`final_summary.json`,
 Paired gains and their fold standard errors (`../publication_summary.json`,
 `fig4_information_gain.agb_on.classifier`): completeness +0.090 +/- 0.008, +0.047 +/-
 0.008, +0.006 +/- 0.005; purity +0.039 +/- 0.005, +0.021 +/- 0.003, +0.010 +/- 0.006.
-For AGB off (not in the final figure) the completeness changes are +0.006, -0.010,
+For TP-AGB off (not in the final figure) the completeness changes are +0.006, -0.010,
 -0.013 and the purity changes +0.012, +0.008, +0.006: the bump adds essentially
 nothing without TP-AGB light.
 
@@ -509,24 +515,24 @@ these parameters from three indices, but useful for the text
 
 | RMS error [dex] | Optical only | + bump 0.005 mag | + bump 0.010 mag | + bump 0.020 mag |
 | --- | ---: | ---: | ---: | ---: |
-| log10(t - t_q), AGB on | 0.240 | 0.222 | 0.231 | 0.237 |
-| log10(tau_q), AGB on | 0.311 | 0.298 | 0.305 | 0.309 |
-| log10(t - t_q), AGB off | 0.240 | 0.234 | 0.238 | 0.240 |
-| log10(tau_q), AGB off | 0.311 | 0.310 | 0.311 | 0.311 |
+| log10(t - t_q), TP-AGB on | 0.240 | 0.222 | 0.231 | 0.237 |
+| log10(tau_q), TP-AGB on | 0.311 | 0.298 | 0.305 | 0.309 |
+| log10(t - t_q), TP-AGB off | 0.240 | 0.234 | 0.238 | 0.240 |
+| log10(tau_q), TP-AGB off | 0.311 | 0.310 | 0.311 | 0.311 |
 
-The tau_q gain (0.013 dex at 0.005 mag) exists only with AGB on; the small AGB-off age
+The tau_q gain (0.013 dex at 0.005 mag) exists only with TP-AGB on; the small TP-AGB-off age
 gain is the age information any 1.6 micron continuum index carries.
 
 ### 8.3 Appendix figure: `index_planes_sfh_families`
 
-Key figure 1's AGB-on row for the linear, truncation and decoupled families (three rows,
+Key figure 1's TP-AGB-on row for the linear, truncation and decoupled families (three rows,
 population and rapid-quenching contours only, family named in the top-right corner of
 the first panel). The rapid-quenching class lands in the deep-bump region in every
 family: its median bump is -0.074 (linear), -0.076 (truncation) and -0.075 (decoupled)
 mag against -0.075 mag for the exponential family (`final_summary.json`,
 `index_planes_sfh_families.<family>.rapid_quenching`).
 
-Per-family gains, AGB on, from the candidate figure `fig6_robustness_gains`
+Per-family gains, TP-AGB on, from the candidate figure `fig6_robustness_gains`
 (`../publication_summary.json`, `fig6_robustness_gains`):
 
 | Family | Delta completeness (bump at 0.010 mag) | Delta purity (0.010 mag) | RMS gain log10(t - t_q) (0.005 mag) [dex] | RMS gain log10(tau_q) (0.005 mag) [dex] |
@@ -536,7 +542,7 @@ Per-family gains, AGB on, from the candidate figure `fig6_robustness_gains`
 | truncation | +0.026 +/- 0.003 | +0.010 +/- 0.002 | 0.031 | none (no tau_q) |
 | decoupled | +0.052 +/- 0.010 | +0.036 +/- 0.006 | 0.010 | 0.010 |
 
-The AGB-off completeness gain is within two standard errors of zero or negative in
+The TP-AGB-off completeness gain is within two standard errors of zero or negative in
 every family. The optical-only baselines differ a lot between families (completeness
 0.32 to 0.85) because the class base rate does (0.84 to 6.4 per cent), so the deltas,
 not the absolute values, are comparable across families.
@@ -548,15 +554,15 @@ family: C3K -0.006 to -0.011 mag (1 to 3 times the per-model scatter), LW02 -0.0
 
 ### 8.4 Data comparison: `d4000_hminus_plane_with_jwst_data`
 
-The D4000 versus bump panels of key figure 1, AGB off left and AGB on right, on one
+The D4000 versus bump panels of key figure 1, TP-AGB off left and TP-AGB on right, on one
 shared bump axis, with the 19 quiescent galaxies of Lu+2026 (`JWST_QG_indices.npz`:
 `ID`, `z`, `D4000`, `D4000_err` as 16th and 84th percentile bounds, `Hbump`,
 `Hbump_err` symmetric) overplotted. Sample: z = 1.016 to 1.955; D4000 = 1.353 to 1.940;
 bump = -0.0369 to -0.0731 mag, median -0.0588 mag; bump errors 0.0002 to 0.0025 mag.
-Over D4000 = 1.35 to 1.95 the AGB-on population spans -0.081 to -0.041 mag (1st to
-99th percentile) and the AGB-off population -0.021 to +0.003 mag. Every galaxy lies
-inside the AGB-on locus, several near its rapid-quenching region, and 0.02 to 0.05 mag
-deeper than anything the AGB-off model produces at the same D4000. The comparison does
+Over D4000 = 1.35 to 1.95 the TP-AGB-on population spans -0.081 to -0.041 mag (1st to
+99th percentile) and the TP-AGB-off population -0.021 to +0.003 mag. Every galaxy lies
+inside the TP-AGB-on locus, several near its rapid-quenching region, and 0.02 to 0.05 mag
+deeper than anything the TP-AGB-off model produces at the same D4000. The comparison does
 not test the TP-AGB weight (Section 2.3): it tests the template.
 
 ### 8.5 Spectral-shape comparison: `observed_stack_vs_fsps_mocks`
@@ -584,13 +590,13 @@ grid, displayed over 1.46 to 1.83 micron. Two layers:
 
 - The panel curves: solar metallicity, t - t_q fixed at 1 Gyr (t_q = 3.55 Gyr), tau_q in
   {0.1, 0.3, 1, 3} Gyr.
-- For AGB on only (an AGB-off search is not meaningful and is not drawn): the closest model in a grid search over log Z from -0.5 to +0.25 in 0.05 dex steps
+- For TP-AGB on only (an TP-AGB-off search is not meaningful and is not drawn): the closest model in a grid search over log Z from -0.5 to +0.25 in 0.05 dex steps
   (interpolated between the four grid metallicities), t_q from 1 Gyr to the epoch in
   0.1 Gyr steps and 13 log-spaced tau_q values (7280 models per configuration), ranked
   by the RMS of (model minus stack) divided by the galaxy-to-galaxy scatter over 1.494
   to 1.791 micron ("mismatch"; 1 means the model deviates by one scatter on average).
 
-| | AGB off | AGB on |
+| | TP-AGB off | TP-AGB on |
 | --- | ---: | ---: |
 | panel bump index, tau_q = 0.1 / 0.3 / 1 / 3 Gyr [mag] | -0.007 / -0.005 / -0.001 / +0.001 | -0.072 / -0.072 / -0.064 / -0.058 |
 | panel mismatch, tau_q = 0.1 / 0.3 / 1 / 3 Gyr | 2.41 / 2.49 / 2.65 / 2.73 | 0.74 / 0.74 / 0.45 / 0.39 |
@@ -598,15 +604,15 @@ grid, displayed over 1.46 to 1.83 micron. Two layers:
 | best mismatch (range over the search) | 2.03 | 0.36 (0.36 to 1.39) |
 | median observed over best model in the feature band | 1.038 | 0.999 |
 
-Reading: no AGB-off model comes within two scatters of the stack; the best one is the
+Reading: no TP-AGB-off model comes within two scatters of the stack; the best one is the
 oldest, most abruptly quenched, sub-solar population the search allows, and it still
-leaves a 4 per cent excess across the feature band. With AGB on the tau_q = 3 Gyr
+leaves a 4 per cent excess across the feature band. With TP-AGB on the tau_q = 3 Gyr
 solar-metallicity curve at t - t_q = 1 Gyr is already within the scatter, and the
 search finds a model that matches to 0.36 scatters, but the solution is degenerate:
-the eight best AGB-on models all have mismatch 0.36 and span t_q = 1.1 to 1.8 Gyr with
+the eight best TP-AGB-on models all have mismatch 0.36 and span t_q = 1.1 to 1.8 Gyr with
 tau_q from 0.10 to 0.41 Gyr at log Z = +0.15, so the stack constrains the template and
 roughly the metallicity, not the quenching history. Outside the side windows (below
-1.45 and above 1.8 micron) the AGB-on models sit 5 to 8 per cent above the data; that
+1.45 and above 1.8 micron) the TP-AGB-on models sit 5 to 8 per cent above the data; that
 region is not part of the normalisation or the search metric and reflects the H2O
 absorption in the LW02 templates.
 
@@ -622,10 +628,10 @@ The bump at 1 Gyr after t_q for the fiducial history against log Z, decomposed
 | Non-AGB stars (C3K, agb 0) | -0.0075 | -0.0044 | +0.0004 | +0.011 |
 | TP-AGB increment, C3K (agb 2 minus agb 0) | -0.0105 | -0.0096 | -0.0088 | +0.003 |
 | TP-AGB increment, LW02 | -0.0478 | -0.0698 | -0.0844 | -0.049 |
-| AGB on total (LW02 agb 2) | -0.0552 | -0.0742 | -0.0840 | -0.038 |
+| TP-AGB on total (LW02 agb 2) | -0.0552 | -0.0742 | -0.0840 | -0.038 |
 
-Reading: the AGB-off bump weakens slowly with metallicity, driven by the non-AGB stars
-(the C3K TP-AGB increment is flat in Z). The AGB-on bump deepens with metallicity four
+Reading: the TP-AGB-off bump weakens slowly with metallicity, driven by the non-AGB stars
+(the C3K TP-AGB increment is flat in Z). The TP-AGB-on bump deepens with metallicity four
 times faster and in the opposite direction, and that trend is entirely the LW02
 increment. Since the LW02 spectra carry no metallicity dependence (Section 3), the
 trend is an isochrone plus Teff-cut effect: at higher Z more TP-AGB stars are cool
@@ -635,7 +641,7 @@ good as the MIST TP-AGB Teff distribution and the hard log Teff = 3.6 switch, an
 changes sign between the two template configurations, so no template-agnostic
 correction exists. The paper must state this.
 
-In the AGB-on population, inside D4000 = [1.4, 1.7) (`fig7_metallicity.population_slice`):
+In the TP-AGB-on population, inside D4000 = [1.4, 1.7) (`fig7_metallicity.population_slice`):
 the bump follows log Z with slope -0.031 mag per dex (all epochs) and -0.047 mag per
 dex (rapid quenching); removing the linear trend shrinks the rapid-quenching 16-84 half
 width from 0.0085 to 0.0049 mag, so 40 per cent of the class's bump scatter at fixed
@@ -654,8 +660,8 @@ baseline and the bump set) does not dilute the bump's information but sharpens i
 | RMS log10(t - t_q) | 7.6 +/- 0.2 per cent | 8.7 +/- 0.2 per cent |
 | RMS log10(tau_q) | 4.1 +/- 0.2 per cent | 7.0 +/- 0.2 per cent |
 
-With AGB off, the same known metallicity makes the bump's completeness gain negative.
-The metallicity dependence of the AGB-on bump is thus a second handle on the TP-AGB
+With TP-AGB off, the same known metallicity makes the bump's completeness gain negative.
+The metallicity dependence of the TP-AGB-on bump is thus a second handle on the TP-AGB
 template: a sample with known metallicities tests the sign and slope of the table
 above directly.
 
@@ -664,7 +670,7 @@ above directly.
 ## 10. Caveats and model omissions
 
 - The bump signal is template dependent: C3K gives a 0.02 mag SSP delta, LW02 0.11 mag.
-  "AGB on" in the paper means the LW02 empirical O-rich templates at agb = 2.
+  "TP-AGB on" in the paper means the LW02 empirical O-rich templates at agb = 2.
 - No carbon-rich TP-AGB stars exist in the MIST tables above [Fe/H] = -2, so the model
   has no C-star spectra; real intermediate-age populations do.
 - No nebular emission, no dust attenuation, no IGM; pure stellar continuum.
@@ -675,7 +681,7 @@ above directly.
   post-quench SFR form.
 - The classifier and regression share the noise realisation between training and
   test and use only three features; they measure information content, not a method.
-- The AGB-off control at agb = 0 rather than the FSPS default agb = 1; the two differ
+- The TP-AGB-off control at agb = 0 rather than the FSPS default agb = 1; the two differ
   by 0.005 mag in the bump. An agb = 1 variant of the figures is a one-constant change
   (`AGB_CONFIGS["agb_off"]["agb"] = "agb1"` in `publication_figures.py`).
 - Two alternative contaminant families (bursty star forming with a 10 per cent late
@@ -765,8 +771,8 @@ The LW02 grid and populations are built with `--grid-dir output/ssp_grid_lw02` a
 ### 11.5 Figure conventions used in the final set
 
 Computer Modern text through usetex; 7.1 inch double-column width; four major ticks per
-axis, no minor ticks; the bump axis inverted so a stronger bump is up; AGB off in blue
-and AGB on in vermilion where both appear; the rapid-quenching class in red; legends
+axis, no minor ticks; the bump axis inverted so a stronger bump is up; TP-AGB off in blue
+and TP-AGB on in vermilion where both appear; the rapid-quenching class in red; legends
 below the panels with entries written as sentences; the fiducial SFH parameters in the
 legend title.
 
@@ -778,15 +784,15 @@ legend title.
 | --- | --- |
 | Population per family and template | 2000 histories x 260 epochs; 482,000 epochs later than 1 Gyr |
 | Rapid-quenching epochs, exponential family | 5,907 (1.23 per cent), all with tau_q < 0.27 Gyr |
-| AGB-on bump of the rapid-quenching class | median -0.075 mag (16-84: -0.083 to -0.066) |
-| AGB-off bump of the rapid-quenching class | median -0.004 mag (-0.007 to -0.000) |
+| TP-AGB-on bump of the rapid-quenching class | median -0.075 mag (16-84: -0.083 to -0.066) |
+| TP-AGB-off bump of the rapid-quenching class | median -0.004 mag (-0.007 to -0.000) |
 | Template step C3K to LW02 at agb = 1, D4000 = [1.3, 1.5) | -0.027 mag (6.4 half widths) |
 | Weight step agb 0 to 1 inside C3K | -0.005 mag (1.1 half widths) |
 | HdeltaA peak after quenching | 0.2 to 0.3 Gyr, none for tau_q above about 0.6 Gyr |
-| AGB-on bump peak after quenching | 0.5 (tau_q 0.1) to 1.5 Gyr (tau_q 3) at t_q = 3 Gyr |
+| TP-AGB-on bump peak after quenching | 0.5 (tau_q 0.1) to 1.5 Gyr (tau_q 3) at t_q = 3 Gyr |
 | Completeness, optical only to + bump at 0.005 mag | 0.398 to 0.488 (+0.090 +/- 0.008) |
 | Purity, optical only to + bump at 0.005 mag | 0.610 to 0.649 (+0.039 +/- 0.005) |
-| tau_q recovery RMS, AGB on, + bump at 0.005 mag | 0.311 to 0.298 dex |
-| AGB-on bump slope with metallicity at t_q + 1 Gyr | -0.038 mag per dex (AGB off: +0.011) |
+| tau_q recovery RMS, TP-AGB on, + bump at 0.005 mag | 0.311 to 0.298 dex |
+| TP-AGB-on bump slope with metallicity at t_q + 1 Gyr | -0.038 mag per dex (TP-AGB off: +0.011) |
 | Lu+2026 sample | 19 galaxies, z = 1.0 to 2.0, bump -0.037 to -0.073 mag |
 | Integrator against FSPS | at most 0.31 per cent flux difference in any index window |

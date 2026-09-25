@@ -10,7 +10,7 @@ a single epoch, the cosmic age at the sample's median redshift (flat LCDM, H0 = 
 Omega_m = 0.3, star formation starting at t = 0). The panel curves keep t - t_q fixed
 and vary the quenching timescale tau_q at solar metallicity; a separate search over
 metallicity, t_q and tau_q at the same epoch finds the model closest to the observed
-stack for each configuration (AGB off = C3K agb 0, AGB on = LW02 agb 2). All spectra
+stack for each configuration (TP-AGB off = C3K agb 0, TP-AGB on = LW02 agb 2). All spectra
 are normalised the same way and drawn as steps.
 
 Outputs go to `output/publication/final/`: the figure (`observed_stack_vs_fsps_mocks`),
@@ -312,7 +312,7 @@ def figure_observed_spectra(spectra, grid_a, stack, scatter, out_dir):
 
 
 def figure_stack_versus_mocks(grid_a, stack, scatter, libraries, matches, out_dir, stem=STEM):
-    """Two columns (AGB off, AGB on): top, the observed stack against mock spectra at the
+    """Two columns (TP-AGB off, TP-AGB on): top, the observed stack against mock spectra at the
     sample epoch with tau_q varied at fixed t - t_q and solar metallicity, plus the
     best-matching model of the search; bottom, observed over model."""
     figure, axes = plt.subplots(

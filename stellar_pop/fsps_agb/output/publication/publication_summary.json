@@ -4,14 +4,14 @@
       "agb_off": {
         "template": "c3k",
         "agb": "agb0",
-        "label": "AGB off (C3K, agb = 0)",
-        "short_label": "AGB off"
+        "label": "TP-AGB off (C3K, agb = 0)",
+        "short_label": "TP-AGB off"
       },
       "agb_on": {
         "template": "lw02",
         "agb": "agb2",
-        "label": "AGB on (LW02, agb = 2)",
-        "short_label": "AGB on"
+        "label": "TP-AGB on (LW02, agb = 2)",
+        "short_label": "TP-AGB on"
       }
     },
     "bump_product": "r100",
@@ -4670,15 +4670,15 @@
     }
   },
   "timing_s": {
-    "metallicity_tracks_s": 2.3420861669583246,
-    "fig1_s": 1.725623167003505,
-    "fig2_s": 0.49753087502904236,
-    "fig3_s": 19.916142417001538,
-    "gains_exponential_s": 9.73331043496728e-05,
-    "fig5_s": 1.1135678329737857,
-    "fig6_s": 0.594275625073351,
-    "fig7_s": 1.6353733749128878,
-    "total_s": 7.360990540939383,
-    "final_s": 7.271873459103517
+    "metallicity_tracks_s": 2.1171485419999954,
+    "fig1_s": 1.0229410840001947,
+    "fig2_s": 0.4999283339984686,
+    "fig3_s": 18.49735425000108,
+    "gains_exponential_s": 9.424999916518573e-05,
+    "fig5_s": 0.9760359590000007,
+    "fig6_s": 0.4299595420015976,
+    "fig7_s": 1.1918766250000772,
+    "total_s": 25.67176925000058,
+    "final_s": 7.847200500000326
   }
 }

@@ -412,3 +412,15 @@
   delete scratch output directories with Python (`shutil.rmtree`) instead.
 - The pilot mode (`--pilot`, stride 50, one seed, two folds, 35 s) caught a `zip`
   length bug and three legend collisions before the 10-minute full run; keep it.
+
+## 2026-09-25 (naming: TP-AGB, not AGB)
+- The two FSPS knobs this project varies act on the thermally pulsing AGB phase only:
+  `agb` rescales the IMF weight where MIST `phase == 5` (`mod_gb.f90`), and
+  `use_lw_tpagb` reassigns spectra only for `phase == 5` stars with log Teff < 3.6
+  (`getspec.f90`). Early-AGB stars (`phase == 4`, 5 to 7 per cent of the bolometric light
+  at every age, more than the TP-AGB light after 3 Gyr) keep their C3K spectra and full
+  weight in both configurations. The figure labels "AGB on / AGB off" were therefore
+  wrong for a day and are now "TP-AGB on / TP-AGB off". Lesson: name a configuration
+  after the phase the knob actually touches, check the `phase` condition in the Fortran
+  before choosing a label, and flag a loose label to the user even when the user
+  proposed it.
