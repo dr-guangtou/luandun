@@ -40,7 +40,16 @@
 - JWST comparison (2026-09-25): `d4000_hminus_plane_with_jwst_data` overplots the 19
   z ~ 1 quiescent galaxies on the D4000 versus H-minus bump plane for both AGB
   configurations; all 19 sit inside the AGB-on locus and outside the AGB-off one.
-- Not done: no agb = 1 "AGB off" variant of Figures 1 and 6 (Figure 2 shows it differs
+- Observed-stack figure (2026-09-25): `jwst_spectrum_comparison.py` stacks the 19 Lu+2026
+  PRISM spectra (straight-line pseudo-continuum, S/N weights, 45 A steps) against R = 100
+  mocks at the cosmic age of the median redshift (4.55 Gyr) with tau_q varied at fixed
+  t - t_q = 1 Gyr, plus a TP-AGB-on search over metallicity, t_q and tau_q (7280 models):
+  no TP-AGB-off model comes within two galaxy-to-galaxy scatters, the closest TP-AGB-on
+  model (log Z = +0.15, t_q = 1.2, tau_q = 0.41 Gyr) matches to 0.36 scatters.
+- Naming fix (2026-09-25): "AGB on/off" became "TP-AGB on/off" everywhere, since both
+  FSPS knobs act on MIST phase 5 only and the early AGB stays in the model
+  (`output/publication/final/naming_tp_agb_note.md`).
+- Not done: no agb = 1 "TP-AGB off" variant of Figures 1 and 6 (Figure 2 shows it differs
   from agb = 0 by 0.005 mag); figures are candidates, not final captions.
 
 ## Phase 5 — SFH-family sensitivity (2026-09-24)
