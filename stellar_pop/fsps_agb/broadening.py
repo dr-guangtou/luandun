@@ -16,6 +16,8 @@ VELOCITY_STEP_KM_S = 30.0
 SIGMA_GALAXY_KM_S = 300.0
 R100_FWHM = 100.0
 R100_RANGE_A = (12500.0, 21000.0)
+R50_FWHM = 50.0
+R50_RANGE_A = (3400.0, 5000.0)
 SPLICE_A = 10000.0
 FWHM_PER_SIGMA = 2.0 * np.sqrt(2.0 * np.log(2.0))
 
@@ -56,6 +58,9 @@ def target_sigma_km_s(product):
     if product == "r100":
         instrument = SPEED_OF_LIGHT_KM_S / (FWHM_PER_SIGMA * R100_FWHM)
         return float(np.hypot(instrument, SIGMA_GALAXY_KM_S))
+    if product == "r50":
+        instrument = SPEED_OF_LIGHT_KM_S / (FWHM_PER_SIGMA * R50_FWHM)
+        return float(np.hypot(instrument, SIGMA_GALAXY_KM_S))
     raise ValueError(f"unknown product {product!r}")
 
 
@@ -76,6 +81,8 @@ def make_resolution_product(grid, product):
     sigma_target = target_sigma_km_s(product)
     if product == "sigma300":
         segments = [(grid.wave_a[0], SPLICE_A), (SPLICE_A, grid.wave_a[-1])]
+    elif product == "r50":
+        segments = [R50_RANGE_A]
     else:
         segments = [R100_RANGE_A]
     waves, fluxes, natives = [], [], []
@@ -110,10 +117,16 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Build resolution products from a cached grid.")
     parser.add_argument("--grid-dir", default=str(DEFAULT_GRID_DIR))
+    parser.add_argument(
+        "--products",
+        default="sigma300,r100",
+        help="comma-separated subset of sigma300, r100, r50 (the R = 50 optical product used "
+        "only for the JWST D4000 comparison)",
+    )
     args = parser.parse_args()
 
     native_grid = load_ssp_grid(args.grid_dir, "native")
-    for name in ("sigma300", "r100"):
+    for name in args.products.split(","):
         start = time.perf_counter()
         path = save_ssp_grid(make_resolution_product(native_grid, name), args.grid_dir)
         print(f"wrote {path} in {time.perf_counter() - start:.1f} s")

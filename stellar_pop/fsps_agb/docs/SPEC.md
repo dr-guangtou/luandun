@@ -125,6 +125,7 @@ window is within 800 A of the 10000 A splice.
 | `native` | 3400 A – 2.2 micron | none (reference only) |
 | `sigma300` | 3400 A – 2.2 micron | sqrt(300^2 - sigma_lib^2): 297 km/s optical, 159 km/s NIR |
 | `r100` | 1.25 – 2.1 micron | sqrt(sigma_R100^2 + 300^2 - 254.6^2), with sigma_R100 = c / (2.3548 x 100) = 1273 km/s (R = 100 defined as FWHM) |
+| `r50` | 3400 – 5000 A | sqrt(sigma_R50^2 + 300^2 - 42.4^2), sigma_R50 = c / (2.3548 x 50) = 2546 km/s; D4000 for the JWST comparison figure only (`d4000_r50.py`, Phase 6, 2026-09-26) |
 
 D4000 and HdeltaA are measured on `sigma300` only. The H-minus bump is
 measured on `sigma300` and `r100`. Note that in the NIR the `sigma300`
@@ -390,6 +391,41 @@ cross-check, only the internal `scipy.integrate.quad` and continuity checks in
 
 Answers, with every number traced to a JSON key, are in docs/ANALYSIS.md, "Sensitivity
 to the star formation history model".
+
+---
+
+## Phase 6 — Publication figure candidates (2026-09-24)
+
+### Goal
+
+Publication-ready candidates for the model section, backing two messages: (1) the
+H-minus bump diagnoses the TP-AGB contribution, AGB on (LW02 templates, `agb = 2`)
+against AGB off (default C3K templates, `agb = 0`); (2) with AGB on, the bump adds
+multi-sigma classification and SFH-recovery gains over D4000 and HdeltaA, and with
+HdeltaA constrains the quenching timescale. Optical indices at sigma = 300 km/s, the
+bump at R = 100, the exponential family by default and the other three families as
+robustness figures. The metallicity behaviour is traced to the FSPS code and discussed
+as a caveat and as an advantage.
+
+### Figures (`output/publication/`, PDF and PNG, numbers in `publication_summary.json`)
+
+| Figure | Content |
+| ------ | ------- |
+| `fig1_index_planes` | three planes, AGB off and on rows: population contours, rapid-quenching class, tau_q contours of the recently quenched epochs, metallicity tracks of the fiducial SFH |
+| `fig2_bump_offsets` | bump bands versus D4000 and HdeltaA for C3K agb 0/1 and LW02 agb 1/2, slice histogram |
+| `fig3_quenching_clocks` | HdeltaA and bump versus time since quenching, the HdeltaA-bump plane, extremum delay against tau_q |
+| `fig4_information_gain` | rapid-quenching completeness and purity and recovery RMS versus bump precision, AGB on and off |
+| `fig5_robustness_planes`, `fig6_robustness_gains` | Figures 1 and 4 repeated for the linear, truncation and decoupled families |
+| `fig7_metallicity` | bump against log Z decomposed into non-AGB and TP-AGB parts, population slice, gains with a known metallicity |
+
+### Code layout additions
+
+| File | Purpose |
+| ---- | ------- |
+| `publication_figures.py` | all seven figures; `--only` for a subset, `--pilot` for a stride-50, one-seed, two-fold dry run into `output/publication/pilot/`. Classifier and recovery gains are recomputed with the R = 100 bump. |
+| `jwst_spectrum_comparison.py` | the observed JWST stack (S/N-weighted mean of the pseudo-continuum-normalised spectra in `output/publication/final/qg_spec/`) against solar-metallicity R = 100 mock spectra for a grid of quenching histories, AGB off and on. |
+
+The write-up, including the FSPS TP-AGB template facts, is `docs/PUBLICATION.md`.
 
 ---
 

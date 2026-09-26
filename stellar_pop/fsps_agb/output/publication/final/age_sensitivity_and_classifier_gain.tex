@@ -1,0 +1,28 @@
+% Caption for output/publication/final/age_sensitivity_and_classifier_gain.{pdf,png}
+\caption{%
+Age sensitivity of the three indices after quenching, and the classification gain
+from the H$^-$ bump, both for the TP-AGB-on model. Panels (a)--(c): H$\delta_{\rm A}$
+(blue), the H$^-$ bump strength (vermilion; minus the index, so that a deeper bump is
+upward) and D4000 (green) against $\log_{10}(t - t_q)$ for the fiducial history
+($t_q = 3$~Gyr, solar metallicity, delayed-$\tau$ rise with $\tau = t_q$) quenched with
+$\tau_q = 0.3$, 1 and 3~Gyr. Each track is scaled linearly to $[0, 1]$ over its own
+range between 0.05 and 6~Gyr after $t_q$ so that the three indices share one axis;
+stars mark the maxima of H$\delta_{\rm A}$ and of the bump strength, open when the
+maximum sits at the edge of the window. H$\delta_{\rm A}$ peaks 0.2 to 0.3~Gyr after
+quenching and has no post-quench maximum at all for $\tau_q = 3$~Gyr, whereas the bump
+peaks 0.8, 1.25 and 1.5~Gyr after quenching for $\tau_q = 0.3$, 1 and 3~Gyr, and D4000
+only rises: the two Balmer-sensitive indices and the bump are clocks with different
+delays, and the lag between them measures $\tau_q$. Panels (d) and (e): completeness
+and purity of the rapid-quenching class recovered by a $k = 25$ nearest-neighbour
+classifier from D4000, H$\delta_{\rm A}$ and the bump (points), against the bump
+measurement precision, compared with D4000 and H$\delta_{\rm A}$ alone (dashed line).
+The classifier is trained and evaluated with five-fold cross-validation grouped by
+history on the population of Fig.~\ref{fig:index_planes_agb_on_off}, with Gaussian
+noise of 0.05 in D4000, 0.5~\AA\ in H$\delta_{\rm A}$ and 0.005, 0.010 or 0.020~mag in
+the bump; features are scaled by their noise before distances are computed.
+Completeness is the fraction of true rapid-quenching epochs recovered and purity the
+fraction of recovered epochs that are truly rapid quenching; error bars and the shaded
+band give the fold-to-fold standard error, averaged over three noise realisations.
+At 0.005~mag the bump raises the completeness from 0.40 to 0.49 and the purity from
+0.61 to 0.65; without TP-AGB light in the model (not shown) the bump adds nothing.%
+}

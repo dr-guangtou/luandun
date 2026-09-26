@@ -20,3 +20,4 @@ output/population_truncation/indices.*
 output/population_truncation_lw02/indices.*
 output/population_decoupled/indices.*
 output/population_decoupled_lw02/indices.*
+output/population*/d4000_r50.npz

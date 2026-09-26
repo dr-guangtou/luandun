@@ -1,0 +1,252 @@
+{
+  "observed": {
+    "n_galaxies": 19,
+    "redshift_range": [
+      1.016,
+      1.955
+    ],
+    "median_redshift": 1.357,
+    "cosmic_age_at_median_redshift_gyr": 4.5691035598927945,
+    "mock_epoch_gyr": 4.55,
+    "stack_grid_step_a": 45.0,
+    "stack_bump_index_mag": -0.05685786274518934,
+    "stack_peak_normalised_flux": 1.079679484912177,
+    "per_galaxy": {
+      "10894": {
+        "file": "10894_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.357,
+        "table_bump_mag": -0.04525341737231087,
+        "own_bump_mag": -0.04443784320840691
+      },
+      "12809": {
+        "file": "12809_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.541,
+        "table_bump_mag": -0.06575874194081202,
+        "own_bump_mag": -0.06474740085583888
+      },
+      "13095": {
+        "file": "13095_flamb_optext_x1d_linear_errxsqrt2.txt",
+        "redshift": 1.016,
+        "table_bump_mag": -0.05587888960647308,
+        "own_bump_mag": -0.053706979117964654
+      },
+      "13896": {
+        "file": "13896_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.18,
+        "table_bump_mag": -0.07252957618160896,
+        "own_bump_mag": -0.07071998423514829
+      },
+      "15675": {
+        "file": "15675_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.483,
+        "table_bump_mag": -0.06546005497132074,
+        "own_bump_mag": -0.06397758641123347
+      },
+      "17635": {
+        "file": "17635_flamb_optext_x1d_linear_errxsqrt2.txt",
+        "redshift": 1.202,
+        "table_bump_mag": -0.06270490101087307,
+        "own_bump_mag": -0.060590488603299464
+      },
+      "20150": {
+        "file": "20150_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.532,
+        "table_bump_mag": -0.05879832954900137,
+        "own_bump_mag": -0.05018357031740833
+      },
+      "21384": {
+        "file": "21384_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.525,
+        "table_bump_mag": -0.061387946426168086,
+        "own_bump_mag": -0.060940403962506724
+      },
+      "21754": {
+        "file": "21754_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.536,
+        "table_bump_mag": -0.06203434266135131,
+        "own_bump_mag": -0.0615298386673971
+      },
+      "21909": {
+        "file": "21909_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.065,
+        "table_bump_mag": -0.05305766071237877,
+        "own_bump_mag": -0.05103282995864661
+      },
+      "22897": {
+        "file": "22897_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.065,
+        "table_bump_mag": -0.04070600641941735,
+        "own_bump_mag": -0.03999245072423692
+      },
+      "25021": {
+        "file": "25021_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.356,
+        "table_bump_mag": -0.0597808085387455,
+        "own_bump_mag": -0.05904453086414774
+      },
+      "6283": {
+        "file": "6283_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2_rm_em.txt",
+        "redshift": 1.955,
+        "table_bump_mag": -0.07305668721165795,
+        "own_bump_mag": -0.0712605447904832
+      },
+      "9234": {
+        "file": "9234_flamb_optext_x1d_CEERSDRv1_linear_errxsqrt2.txt",
+        "redshift": 1.38,
+        "table_bump_mag": -0.04241533868156287,
+        "own_bump_mag": -0.041934241277905834
+      },
+      "24686": {
+        "file": "Spec_MPTID_24686_apr_bkg_flamb_linear_errxsqrt2_rm_em.txt",
+        "redshift": 1.175,
+        "table_bump_mag": -0.045402002683761065,
+        "own_bump_mag": -0.04340357075645337
+      },
+      "26746": {
+        "file": "Spec_MPTID_26746_apr_bkg_flamb_linear_errxsqrt2.txt",
+        "redshift": 1.168,
+        "table_bump_mag": -0.05476362065727486,
+        "own_bump_mag": -0.05347983200453401
+      },
+      "2962": {
+        "file": "Spec_MPTID_2962_apr_bkg_flamb_linear_errxsqrt2_rm_em.txt",
+        "redshift": 1.269,
+        "table_bump_mag": -0.040322899591444625,
+        "own_bump_mag": -0.04200389133725477
+      },
+      "4458": {
+        "file": "Spec_MPTID_4458_apr_bkg_flamb_linear_errxsqrt2.txt",
+        "redshift": 1.576,
+        "table_bump_mag": -0.03691671715691296,
+        "own_bump_mag": -0.03403098656841436
+      },
+      "5195": {
+        "file": "Spec_MPTID_5195_apr_bkg_flamb_linear_errxsqrt2.txt",
+        "redshift": 1.648,
+        "table_bump_mag": -0.07024895547647012,
+        "own_bump_mag": -0.06930606645357398
+      }
+    }
+  },
+  "search": {
+    "log_z_grid": [
+      -0.5,
+      -0.45,
+      -0.4,
+      -0.35,
+      -0.3,
+      -0.25,
+      -0.2,
+      -0.15,
+      -0.1,
+      -0.05,
+      -0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25
+    ],
+    "t_q_step_gyr": 0.1,
+    "tau_q_grid_gyr": [
+      0.1,
+      0.133,
+      0.176,
+      0.234,
+      0.311,
+      0.413,
+      0.548,
+      0.727,
+      0.965,
+      1.282,
+      1.702,
+      2.26,
+      3.0
+    ],
+    "mismatch_definition": "RMS of (model - stack) / scatter over 1.494-1.791 um on the 30 A stack grid",
+    "configurations_searched": [
+      "agb_on"
+    ],
+    "n_models_per_configuration": 7280,
+    "mismatch_range": {
+      "agb_on": [
+        0.35970330944055606,
+        1.3907966909039833
+      ]
+    }
+  },
+  "mocks": {
+    "agb_off": {
+      "epoch_gyr": 4.55,
+      "panel": {
+        "log_z": 0.0,
+        "t_q_gyr": 3.55,
+        "delay_gyr": 1.0,
+        "by_tau_q": {
+          "tau_q_0.1": {
+            "bump_index_mag": -0.006646348992129909,
+            "mismatch": 2.406682746349901,
+            "median_observed_over_model_in_feature": 1.0460153971326225
+          },
+          "tau_q_0.3": {
+            "bump_index_mag": -0.0049069961585274675,
+            "mismatch": 2.4851089869167655,
+            "median_observed_over_model_in_feature": 1.0480083792985362
+          },
+          "tau_q_1": {
+            "bump_index_mag": -0.001078377042560821,
+            "mismatch": 2.652790857410599,
+            "median_observed_over_model_in_feature": 1.052595508149714
+          },
+          "tau_q_3": {
+            "bump_index_mag": 0.000798215682112712,
+            "mismatch": 2.7338632528298157,
+            "median_observed_over_model_in_feature": 1.0548913762239183
+          }
+        }
+      },
+      "best_match": null,
+      "best_match_median_observed_over_model_in_feature": null
+    },
+    "agb_on": {
+      "epoch_gyr": 4.55,
+      "panel": {
+        "log_z": 0.0,
+        "t_q_gyr": 3.55,
+        "delay_gyr": 1.0,
+        "by_tau_q": {
+          "tau_q_0.1": {
+            "bump_index_mag": -0.07210869469243526,
+            "mismatch": 0.7384143358760388,
+            "median_observed_over_model_in_feature": 0.986010343549424
+          },
+          "tau_q_0.3": {
+            "bump_index_mag": -0.0722260212412816,
+            "mismatch": 0.7444477797054802,
+            "median_observed_over_model_in_feature": 0.9855502208696876
+          },
+          "tau_q_1": {
+            "bump_index_mag": -0.06380841331455223,
+            "mismatch": 0.4532490741592579,
+            "median_observed_over_model_in_feature": 0.9932328233555728
+          },
+          "tau_q_3": {
+            "bump_index_mag": -0.05755756759964762,
+            "mismatch": 0.3863584913579301,
+            "median_observed_over_model_in_feature": 0.9985422175824483
+          }
+        }
+      },
+      "best_match": {
+        "log_z": 0.15,
+        "t_q_gyr": 1.2,
+        "tau_q_gyr": 0.413,
+        "delay_gyr": 3.3499999999999996,
+        "mismatch": 0.35970330944055606,
+        "bump_index_mag": -0.05853454401811294
+      },
+      "best_match_median_observed_over_model_in_feature": 0.9991759435215728
+    }
+  },
+  "normalisation": "straight line fitted to all pixels in the blue (1.494-1.539 um) and red (1.746-1.791 um) windows, observed and model alike; bump index = -2.5 log10(mean normalised flux over 1.570-1.734 um)"
+}

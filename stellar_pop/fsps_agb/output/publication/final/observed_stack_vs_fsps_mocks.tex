@@ -1,0 +1,37 @@
+% Caption for output/publication/final/observed_stack_vs_fsps_mocks.{pdf,png}
+% Replace \citet{Lu2026} with the bibliography key of the Lu et al. (2026) sample paper.
+\caption{%
+The stacked JWST spectrum of the quiescent sample compared with FSPS mock spectra
+without (left, ``TP-AGB off'') and with (right, ``TP-AGB on'') TP-AGB light in the
+H$^-$ bump region. Every spectrum, observed and model, is divided by a straight line
+fitted to all pixels in the blue (1.494--1.539~$\mu$m) and red (1.746--1.791~$\mu$m)
+pseudo-continuum windows (shaded blue and red; the feature band, 1.570--1.734~$\mu$m,
+is shaded yellow), and all spectra are drawn as steps on a 45~\AA\ rest-frame grid, the
+median pixel width of the observations in this region. The black histogram in panels
+(a) and (b) is the S/N-weighted mean of the 19 normalised rest-frame NIRSpec PRISM
+spectra of \citet{Lu2026} ($z = 1.0$--2.0, median 1.36) and the grey band the weighted
+scatter between galaxies. The models are evaluated at a single epoch, the cosmic age
+at the median redshift (4.55~Gyr for a flat $\Lambda$CDM cosmology with $H_0 = 70$
+km\,s$^{-1}$\,Mpc$^{-1}$ and $\Omega_{\rm m} = 0.3$, star formation starting at
+$t = 0$), at solar metallicity and smoothed to $R = 100$. The coloured histograms keep
+the time since quenching fixed at $t - t_q = 1$~Gyr and vary the quenching timescale
+$\tau_q$ from 0.1 to 3~Gyr (delayed-$\tau$ rise with $\tau = t_q$, exponential
+decline). The dashed histogram in panel (b) is the closest TP-AGB-on model to the observed stack
+in a grid search at the same epoch over $\log Z/Z_\odot$ from $-0.5$ to $+0.25$ in
+0.05~dex steps, $t_q$ from 1~Gyr to the epoch in 0.1~Gyr steps and 13 values of
+$\tau_q$ from 0.1 to 3~Gyr (7280 models), ranked by the RMS of the
+residual in units of the galaxy-to-galaxy scatter over 1.494--1.791~$\mu$m. Panels (c)
+and (d) show the observed stack divided by each model with the same grey band. Without
+TP-AGB light no quenching timescale raises the normalised flux in the feature band
+above 1.03, whereas the observed stack reaches 1.08 (an H$^-$ bump index of
+$-0.057$~mag against model values between $+0.001$ and $-0.007$~mag); the same
+search applied to the TP-AGB-off models (not shown) never comes within two scatters of
+the stack. With the empirical TP-AGB templates the
+$\tau_q = 1$ and 3~Gyr models already lie within the scatter across the feature band,
+and the closest model ($\log Z/Z_\odot = +0.15$, $t_q = 1.2$~Gyr, $\tau_q = 0.41$~Gyr,
+index $-0.059$~mag) matches the stack to 0.36 times the scatter, although this
+solution is degenerate along a family of ($t_q$, $\tau_q$) pairs of similar quality.
+The models are not fitted to individual galaxies, and the spectral shape outside the
+side windows, where the empirical templates carry H$_2$O absorption, is not tested by
+this normalisation.%
+}
