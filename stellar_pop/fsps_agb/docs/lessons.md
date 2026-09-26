@@ -433,3 +433,14 @@
   population rerun, and caching it per population directory keeps `--final` fast.
 - `--final` regenerates every final figure; when only one figure changes, restore the
   unrelated PDFs (timestamps change) before committing so the diff stays scoped.
+
+## 2026-09-26 (collaborator data in a public repo)
+- `git add <directory>` on an output folder swept the collaborators' JWST spectra
+  (`qg_spec/`) and index table into the public `luandun` history two days before anyone
+  noticed; a later `.gitignore` does not untrack files already committed. The history
+  was rewritten with `git filter-repo --invert-paths` (installed with `uv tool install
+  git-filter-repo`) and force-pushed; every commit from the branch start changed hash.
+  Lesson: add data directories to `.gitignore` before the first `git add`, add output
+  folders by explicit file list, and run `git ls-files <dir>` before assuming an ignore
+  rule protects something. Old commits may stay fetchable on GitHub by hash until its
+  garbage collection runs; ask GitHub support to purge them if that matters.
