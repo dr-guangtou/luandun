@@ -125,6 +125,7 @@ window is within 800 A of the 10000 A splice.
 | `native` | 3400 A – 2.2 micron | none (reference only) |
 | `sigma300` | 3400 A – 2.2 micron | sqrt(300^2 - sigma_lib^2): 297 km/s optical, 159 km/s NIR |
 | `r100` | 1.25 – 2.1 micron | sqrt(sigma_R100^2 + 300^2 - 254.6^2), with sigma_R100 = c / (2.3548 x 100) = 1273 km/s (R = 100 defined as FWHM) |
+| `r50` | 3400 – 5000 A | sqrt(sigma_R50^2 + 300^2 - 42.4^2), sigma_R50 = c / (2.3548 x 50) = 2546 km/s; D4000 for the JWST comparison figure only (`d4000_r50.py`, Phase 6, 2026-09-26) |
 
 D4000 and HdeltaA are measured on `sigma300` only. The H-minus bump is
 measured on `sigma300` and `r100`. Note that in the NIR the `sigma300`

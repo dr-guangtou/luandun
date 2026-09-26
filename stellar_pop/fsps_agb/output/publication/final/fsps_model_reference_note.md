@@ -238,6 +238,7 @@ index window lies within 800 A of the 10000 A splice.
 | `native` | 3400 A to 2.2 micron | none | reference |
 | `sigma300` | 3400 A to 2.2 micron | sqrt(300^2 - sigma_lib^2): 297 km/s optical, 159 km/s NIR | D4000, HdeltaA (and a bump variant) |
 | `r100` | 1.25 to 2.1 micron | sqrt(sigma_R100^2 + 300^2 - 254.6^2) with sigma_R100 = c / (2.3548 x 100) = 1273 km/s (R defined as FWHM) | the bump in every final figure |
+| `r50` | 3400 to 5000 A | sqrt(sigma_R50^2 + 300^2 - 42.4^2) with sigma_R50 = c / (2.3548 x 50) = 2546 km/s (total 2564 km/s) | D4000 in the JWST index-plane figure only (Section 8.4), added 2026-09-26 |
 
 The `sigma300` and `r100` bumps differ by at most 0.001 mag, almost all of it a constant
 offset (epoch-to-epoch scatter 0.0001 mag), so results at the two products are not
@@ -555,7 +556,15 @@ family: C3K -0.006 to -0.011 mag (1 to 3 times the per-model scatter), LW02 -0.0
 ### 8.4 Data comparison: `d4000_hminus_plane_with_jwst_data`
 
 The D4000 versus bump panels of key figure 1, TP-AGB off left and TP-AGB on right, on one
-shared bump axis, with the 19 quiescent galaxies of Lu+2026 (`JWST_QG_indices.npz`:
+shared bump axis, with the model D4000 remeasured on the `r50` product because the
+NIRSpec PRISM resolving power near the observed-frame 4000 A break of this sample is
+about 50 (the observed pixels sample the break at lambda / delta lambda of 70 to 90).
+`d4000_r50.py` recomputes D4000 on that product for the exponential population of both
+configurations and for the metallicity tracks, cached in
+`output/population[_lw02]/d4000_r50.npz`; the bump stays at R = 100. The shift from the
+sigma300 D4000 is a median of -0.0006 with a 5th to 95th percentile range of -0.024 to
++0.021, and every number quoted below is unchanged to the precision given. The other
+final figures keep the sigma300 optical product, with the 19 quiescent galaxies of Lu+2026 (`JWST_QG_indices.npz`:
 `ID`, `z`, `D4000`, `D4000_err` as 16th and 84th percentile bounds, `Hbump`,
 `Hbump_err` symmetric) overplotted. Sample: z = 1.016 to 1.955; D4000 = 1.353 to 1.940;
 bump = -0.0369 to -0.0731 mag, median -0.0588 mag; bump errors 0.0002 to 0.0025 mag.

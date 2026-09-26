@@ -1640,6 +1640,36 @@ def load_jwst_indices(path=JWST_DATA_PATH):
         }
 
 
+def jwst_inputs_at_r50(tables, tracks_by_template, edges_gyr):
+    """The population tables and metallicity tracks with their D4000 replaced by the
+    R = 50 measurement (`d4000_r50.py`), for the JWST comparison figure only."""
+    from d4000_r50 import (
+        population_d4000_r50,
+        substitute_population_d4000,
+        substitute_track_d4000,
+    )
+
+    new_tables = {}
+    for config_key, (table, codes) in tables.items():
+        template = AGB_CONFIGS[config_key]["template"]
+        r50 = population_d4000_r50(GRID_DIRS[template], population_dir("exponential", template))
+        new_tables[config_key] = (substitute_population_d4000(table, r50), codes)
+    new_tracks = {}
+    for template, tracks in tracks_by_template.items():
+        new_tracks[template] = {
+            log_z: substitute_track_d4000(
+                result,
+                GRID_DIRS[template],
+                log_z,
+                FIDUCIAL["t_q_gyr"],
+                FIDUCIAL["tau_q_gyr"],
+                edges_gyr,
+            )
+            for log_z, result in tracks.items()
+        }
+    return new_tables, new_tracks
+
+
 def figure_jwst_plane(tables, tracks_by_template, jwst, out_dir, stem=FINAL_STEMS["jwst"]):
     """The D4000 versus H-minus bump plane for TP-AGB off (left) and TP-AGB on (right), same
     layers as Figure 1, on one shared bump axis, with the JWST galaxies overplotted."""
@@ -1698,6 +1728,7 @@ def figure_jwst_plane(tables, tracks_by_template, jwst, out_dir, stem=FINAL_STEM
             zorder=12,
         )
         set_plane_axes(axis, "d4000", "h_minus_bump", ranges, ylabel=config_key == "agb_off")
+        axis.set_xlabel(r"D4000 ($R = 50$)")
         row_title(axis, config["short_label"], fontsize=12)
     panel_label(axes[0], "(a)", x=0.04, y=0.96)
     panel_label(axes[1], "(b)", x=0.04, y=0.96)
@@ -1941,8 +1972,13 @@ def main():
         gains = cached or compute_gains("exponential", stride=stride, seeds=seeds, with_log_z=True)
         final_summary[FINAL_STEMS["combined"]] = figure_combined(clock_tracks, gains, final_dir)
         if JWST_DATA_PATH.exists():
+            jwst_tables, jwst_tracks = jwst_inputs_at_r50(tables, tracks_by_template, edges)
             final_summary[FINAL_STEMS["jwst"]] = figure_jwst_plane(
-                tables, tracks_by_template, load_jwst_indices(), final_dir
+                jwst_tables, jwst_tracks, load_jwst_indices(), final_dir
+            )
+            final_summary[FINAL_STEMS["jwst"]]["d4000_product"] = (
+                "r50: R = 50 (FWHM) instrument plus 300 km/s dispersion, D4000 only; "
+                "the bump stays at r100"
             )
         else:
             print(f"no JWST table at {JWST_DATA_PATH}, skipping {FINAL_STEMS['jwst']}")
