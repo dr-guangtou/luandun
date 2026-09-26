@@ -424,3 +424,12 @@
   after the phase the knob actually touches, check the `phase` condition in the Fortran
   before choosing a label, and flag a loose label to the user even when the user
   proposed it.
+
+## 2026-09-26 (JWST figure: D4000 at R = 50)
+- A resolution product can be added to `broadening.py` as one segment plus a target
+  sigma; `r50` (3400 to 5000 A, R = 50 FWHM plus 300 km/s, total 2564 km/s) builds in
+  1.6 s per grid. Recomputing one index for a 2000 x 260 population from the cached grid
+  costs about 2 minutes per configuration (`d4000_r50.py`), far cheaper than a
+  population rerun, and caching it per population directory keeps `--final` fast.
+- `--final` regenerates every final figure; when only one figure changes, restore the
+  unrelated PDFs (timestamps change) before committing so the diff stays scoped.
