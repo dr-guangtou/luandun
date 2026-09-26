@@ -17,7 +17,13 @@ the R = 50 D4000 differs from the sigma300 value by a median of -0.0006 (5th to 
 percentile -0.024 to +0.021). Over the observed D4000 range (1.35 to 1.94) the deepest
 TP-AGB-off epoch is still -0.023 mag and the TP-AGB-on population still spans -0.081 to
 -0.041 mag (1st to 99th percentile). The caption now states the product and the size of
-the shift. Update Section 4.2 and the Figure 7 caption in the draft accordingly, and
+the shift, and adds that five galaxies (IDs 12809, 13896, 15675, 21384, 5195) fall
+inside the 95 per cent contour of the TP-AGB-on rapid-quenching class, one (15675)
+inside the 68 per cent contour, all near the boundary; with the sigma300 D4000 the count
+was four (21384 sat just outside). This is a qualitative overlap of index-plane
+contours, not a classification of those galaxies: the contours are noise-free model
+densities over all epochs to 13 Gyr, and a galaxy at the edge of the 95 per cent
+contour is as consistent with the transitional and quiescent classes that surround it. Update Section 4.2 and the Figure 7 caption in the draft accordingly, and
 remove the pending-replacement comment.
 
 Implementation: `broadening.py --products r50` builds the product (3400 to 5000 A) for

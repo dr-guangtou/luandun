@@ -570,7 +570,10 @@ final figures keep the sigma300 optical product, with the 19 quiescent galaxies 
 bump = -0.0369 to -0.0731 mag, median -0.0588 mag; bump errors 0.0002 to 0.0025 mag.
 Over D4000 = 1.35 to 1.95 the TP-AGB-on population spans -0.081 to -0.041 mag (1st to
 99th percentile) and the TP-AGB-off population -0.021 to +0.003 mag. Every galaxy lies
-inside the TP-AGB-on locus, several near its rapid-quenching region, and 0.02 to 0.05 mag
+inside the TP-AGB-on locus; five (12809, 13896, 15675, 21384, 5195) fall within the 95
+per cent contour of the rapid-quenching class and one (15675) within the 68 per cent
+contour, all near the boundary (four with the sigma300 D4000; the R = 50 remeasurement
+moved 21384 across the edge), and 0.02 to 0.05 mag
 deeper than anything the TP-AGB-off model produces at the same D4000. The comparison does
 not test the TP-AGB weight (Section 2.3): it tests the template.
 
