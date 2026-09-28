@@ -577,6 +577,51 @@ moved 21384 across the edge), and 0.02 to 0.05 mag
 deeper than anything the TP-AGB-off model produces at the same D4000. The comparison does
 not test the TP-AGB weight (Section 2.3): it tests the template.
 
+### 8.4b Epoch-matched variant: `d4000_hminus_plane_with_jwst_data_epoch_matched`
+
+Added 2026-09-28 alongside (not replacing) Section 8.4's figure. The all-epoch
+comparison mixes model epochs up to 13 Gyr with galaxies at z = 1.02 to 1.96, where the
+cosmic age (flat LCDM, H0 = 70, Omega_m = 0.3, star formation from t = 0) is 3.3 to
+5.7 Gyr. The variant keeps only model epochs in that interval (98,000 of 482,000 epochs;
+3017 of 5907 rapid-quenching epochs), draws them filled, and draws the all-epoch
+distributions as dashed open contours. No new models: the same cached tables with D4000
+at R = 50. JWST symbols are 50 per cent larger with white edges. Numbers
+(`final_summary.json`, `d4000_hminus_plane_with_jwst_data_epoch_matched`):
+
+| | TP-AGB off | TP-AGB on |
+| --- | ---: | ---: |
+| bump over the observed D4000 range, 1st / 50th / 99th percentile [mag] | -0.016 / -0.007 / +0.004 | -0.081 / -0.060 / -0.047 |
+| deepest epoch over that range [mag] | -0.017 | -0.090 |
+| JWST galaxies inside the 99.5 per cent population contour | 0 | 14 of 19 |
+| inside the rapid-quenching 95 (68) per cent contour | none | 12809, 13896, 15675 (15675) |
+
+The five TP-AGB-on outliers are 10894, 22897, 4458 and 2962 (bump -0.037 to -0.045 mag,
+D4000 1.6 to 1.9, weaker than the epoch-matched locus, which lost its old, shallow part)
+and 6283 (z = 1.96, D4000 1.35, bump -0.073 mag, the lowest-S/N spectrum). Restricting
+the epochs therefore sharpens the TP-AGB-off rejection and shows that the weakest
+observed bumps need older or lower-weight TP-AGB populations than the window allows.
+
+### 8.4c Epoch-matched variant at agb = 1: `d4000_hminus_plane_with_jwst_data_epoch_matched_agb1`
+
+Added 2026-09-28. Same as 8.4b but with the TP-AGB-on configuration at the default
+weight (LW02 templates, `agb = 1`), from the `agb1` columns already stored in every
+population table and the R = 50 D4000 cache; the fiducial tracks were recomputed at
+`agb = 1` from the cached grids (`add_agb1_tracks`). TP-AGB off is unchanged.
+
+| TP-AGB on, epochs 3.3-5.7 Gyr | agb = 1 | agb = 2 |
+| --- | ---: | ---: |
+| bump over the observed D4000 range, 1st / 50th / 99th percentile [mag] | -0.049 / -0.037 / -0.031 | -0.081 / -0.060 / -0.047 |
+| JWST galaxies inside the 68 / 95 / 99.5 per cent population contours | 1 / 5 / 6 | 4 / 12 / 14 |
+| inside the rapid-quenching 95 per cent contour | 9234, 22897 | 12809, 13896, 15675 |
+
+The observed bumps (median -0.059 mag, 16th to 84th percentile -0.066 to -0.042) sit
+between the two weights: agb = 1 covers only the weak-bump tail that falls outside the
+agb = 2 locus, and misses the 13 stronger ones. Intermediate weights can be built
+without FSPS (the spectrum is linear in agb), but the indices must be remeasured by
+rerunning the population integration, about 5 to 8 minutes per weight. Fitting the
+weight to this sample calibrates weight times template for LW02 under MIST, not the
+TP-AGB light fraction.
+
 ### 8.5 Spectral-shape comparison: `observed_stack_vs_fsps_mocks`
 
 Built by `jwst_spectrum_comparison.py` (about 2 minutes, most of it the search),

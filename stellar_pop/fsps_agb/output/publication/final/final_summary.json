@@ -586,5 +586,175 @@
       }
     },
     "d4000_product": "r50: R = 50 (FWHM) instrument plus 300 km/s dispersion, D4000 only; the bump stays at r100"
+  },
+  "d4000_hminus_plane_with_jwst_data_epoch_matched": {
+    "n_jwst": 19,
+    "redshift_range": [
+      1.016,
+      1.955
+    ],
+    "epoch_window_gyr": [
+      3.298566696519562,
+      5.688768406656863
+    ],
+    "cosmology": {
+      "H0": 70.0,
+      "Omega_m": 0.3
+    },
+    "agb_off": {
+      "agb": "agb0",
+      "n_epochs_in_window": 98000,
+      "n_rapid_quenching_in_window": 3017,
+      "n_rapid_quenching_all_epochs": 5907,
+      "bump_p01_p50_p99_mag_over_observed_d4000": [
+        -0.01571687578861966,
+        -0.007117729572848445,
+        0.0035283230311750954
+      ],
+      "deepest_bump_mag_over_observed_d4000": -0.017374341455752375,
+      "rapid_quenching_bump_median_in_window_mag": -0.0046040102689829734,
+      "jwst_inside_rapid_quenching_68": [],
+      "jwst_inside_rapid_quenching_95": [],
+      "jwst_inside_population_995": 0,
+      "jwst_outside_population_995": [
+        10894,
+        12809,
+        13095,
+        13896,
+        15675,
+        17635,
+        20150,
+        21384,
+        21754,
+        21909,
+        9234,
+        22897,
+        24686,
+        25021,
+        26746,
+        4458,
+        5195,
+        6283,
+        2962
+      ]
+    },
+    "agb_on": {
+      "agb": "agb2",
+      "n_epochs_in_window": 98000,
+      "n_rapid_quenching_in_window": 3017,
+      "n_rapid_quenching_all_epochs": 5907,
+      "bump_p01_p50_p99_mag_over_observed_d4000": [
+        -0.08058295085331728,
+        -0.06015737981143763,
+        -0.04650972921530575
+      ],
+      "deepest_bump_mag_over_observed_d4000": -0.08961488426654181,
+      "rapid_quenching_bump_median_in_window_mag": -0.0737744479827947,
+      "jwst_inside_rapid_quenching_68": [
+        15675
+      ],
+      "jwst_inside_rapid_quenching_95": [
+        12809,
+        13896,
+        15675
+      ],
+      "jwst_inside_population_995": 14,
+      "jwst_outside_population_995": [
+        10894,
+        22897,
+        4458,
+        6283,
+        2962
+      ]
+    }
+  },
+  "d4000_hminus_plane_with_jwst_data_epoch_matched_agb1": {
+    "n_jwst": 19,
+    "redshift_range": [
+      1.016,
+      1.955
+    ],
+    "epoch_window_gyr": [
+      3.298566696519562,
+      5.688768406656863
+    ],
+    "cosmology": {
+      "H0": 70.0,
+      "Omega_m": 0.3
+    },
+    "agb_off": {
+      "agb": "agb0",
+      "n_epochs_in_window": 98000,
+      "n_rapid_quenching_in_window": 3017,
+      "n_rapid_quenching_all_epochs": 5907,
+      "bump_p01_p50_p99_mag_over_observed_d4000": [
+        -0.01571687578861966,
+        -0.007117729572848445,
+        0.0035283230311750954
+      ],
+      "deepest_bump_mag_over_observed_d4000": -0.017374341455752375,
+      "rapid_quenching_bump_median_in_window_mag": -0.0046040102689829734,
+      "jwst_inside_rapid_quenching_68": [],
+      "jwst_inside_rapid_quenching_95": [],
+      "jwst_inside_population_995": 0,
+      "jwst_outside_population_995": [
+        10894,
+        12809,
+        13095,
+        13896,
+        15675,
+        17635,
+        20150,
+        21384,
+        21754,
+        21909,
+        9234,
+        22897,
+        24686,
+        25021,
+        26746,
+        4458,
+        5195,
+        6283,
+        2962
+      ]
+    },
+    "agb_on": {
+      "agb": "agb1",
+      "n_epochs_in_window": 98000,
+      "n_rapid_quenching_in_window": 3017,
+      "n_rapid_quenching_all_epochs": 5907,
+      "bump_p01_p50_p99_mag_over_observed_d4000": [
+        -0.04943179796835822,
+        -0.03730596111013849,
+        -0.03138615925982443
+      ],
+      "deepest_bump_mag_over_observed_d4000": -0.054576480737540733,
+      "rapid_quenching_bump_median_in_window_mag": -0.0463606857257355,
+      "jwst_inside_rapid_quenching_68": [
+        9234,
+        22897
+      ],
+      "jwst_inside_rapid_quenching_95": [
+        9234,
+        22897
+      ],
+      "jwst_inside_population_995": 6,
+      "jwst_outside_population_995": [
+        12809,
+        13095,
+        13896,
+        15675,
+        17635,
+        20150,
+        21384,
+        21754,
+        21909,
+        25021,
+        26746,
+        5195,
+        6283
+      ]
+    }
   }
 }
