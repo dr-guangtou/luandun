@@ -601,6 +601,27 @@ and 6283 (z = 1.96, D4000 1.35, bump -0.073 mag, the lowest-S/N spectrum). Restr
 the epochs therefore sharpens the TP-AGB-off rejection and shows that the weakest
 observed bumps need older or lower-weight TP-AGB populations than the window allows.
 
+### 8.4c Epoch-matched variant at agb = 1: `d4000_hminus_plane_with_jwst_data_epoch_matched_agb1`
+
+Added 2026-09-28. Same as 8.4b but with the TP-AGB-on configuration at the default
+weight (LW02 templates, `agb = 1`), from the `agb1` columns already stored in every
+population table and the R = 50 D4000 cache; the fiducial tracks were recomputed at
+`agb = 1` from the cached grids (`add_agb1_tracks`). TP-AGB off is unchanged.
+
+| TP-AGB on, epochs 3.3-5.7 Gyr | agb = 1 | agb = 2 |
+| --- | ---: | ---: |
+| bump over the observed D4000 range, 1st / 50th / 99th percentile [mag] | -0.049 / -0.037 / -0.031 | -0.081 / -0.060 / -0.047 |
+| JWST galaxies inside the 68 / 95 / 99.5 per cent population contours | 1 / 5 / 6 | 4 / 12 / 14 |
+| inside the rapid-quenching 95 per cent contour | 9234, 22897 | 12809, 13896, 15675 |
+
+The observed bumps (median -0.059 mag, 16th to 84th percentile -0.066 to -0.042) sit
+between the two weights: agb = 1 covers only the weak-bump tail that falls outside the
+agb = 2 locus, and misses the 13 stronger ones. Intermediate weights can be built
+without FSPS (the spectrum is linear in agb), but the indices must be remeasured by
+rerunning the population integration, about 5 to 8 minutes per weight. Fitting the
+weight to this sample calibrates weight times template for LW02 under MIST, not the
+TP-AGB light fraction.
+
 ### 8.5 Spectral-shape comparison: `observed_stack_vs_fsps_mocks`
 
 Built by `jwst_spectrum_comparison.py` (about 2 minutes, most of it the search),

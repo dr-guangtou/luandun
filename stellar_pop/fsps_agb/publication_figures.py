@@ -162,6 +162,7 @@ FINAL_STEMS = {
     "combined": "age_sensitivity_and_classifier_gain",
     "jwst": "d4000_hminus_plane_with_jwst_data",
     "jwst_epoch": "d4000_hminus_plane_with_jwst_data_epoch_matched",
+    "jwst_epoch_agb1": "d4000_hminus_plane_with_jwst_data_epoch_matched_agb1",
 }
 JWST_SYMBOL_SIZE = 3.8 * 1.5
 JWST_HUBBLE_CONSTANT = 70.0
@@ -1800,8 +1801,45 @@ def _fraction_inside(x_points, y_points, x, y, x_range, y_range, fraction):
     return map_coordinates(density, coordinates, order=1, mode="nearest") >= levels[0]
 
 
+def add_agb1_tracks(tracks_by_template, edges_gyr):
+    """Add agb = 1 entries (D4000 at R = 50, HdeltaA at sigma300, bump at R = 100) to the
+    fiducial metallicity tracks, from the cached SSP grids."""
+    from csp_integrate import csp_track
+    from spectral_indices import d4000, h_minus_bump, hdelta_a
+    from ssp_grid import load_ssp_grid
+
+    out = {}
+    for template, tracks in tracks_by_template.items():
+        grids = {
+            name: load_ssp_grid(GRID_DIRS[template], name) for name in ("r50", "sigma300", "r100")
+        }
+        out[template] = {}
+        for log_z, result in tracks.items():
+            flux = {
+                name: csp_track(
+                    grid, log_z, 1, FIDUCIAL["t_q_gyr"], FIDUCIAL["tau_q_gyr"], edges_gyr
+                )[1]
+                for name, grid in grids.items()
+            }
+            entry = dict(result)
+            entry["agb1"] = {
+                "sigma300": {
+                    "d4000": d4000(grids["r50"].wave_a, flux["r50"]),
+                    "hdelta_a": hdelta_a(grids["sigma300"].wave_a, flux["sigma300"]),
+                },
+                "r100": {"h_minus_bump": h_minus_bump(grids["r100"].wave_a, flux["r100"])},
+            }
+            out[template][log_z] = entry
+    return out
+
+
 def figure_jwst_plane_epoch_matched(
-    tables, tracks_by_template, jwst, out_dir, stem=FINAL_STEMS["jwst_epoch"]
+    tables,
+    tracks_by_template,
+    jwst,
+    out_dir,
+    stem=FINAL_STEMS["jwst_epoch"],
+    agb_on_key=None,
 ):
     """Variant of `figure_jwst_plane` restricted to model epochs whose cosmic age matches the
     redshift range of the JWST sample. The all-epoch population and rapid-quenching class
@@ -1813,8 +1851,11 @@ def figure_jwst_plane_epoch_matched(
     figure, axes = plt.subplots(
         1, 2, figsize=(DOUBLE_COLUMN_IN, 3.4), layout="constrained", sharey=True
     )
+    agb_by_config = {key: AGB_CONFIGS[key]["agb"] for key in CONFIG_ORDER}
+    if agb_on_key is not None:
+        agb_by_config["agb_on"] = agb_on_key
     indices_by_config = {
-        key: plane_columns(tables[key][0], AGB_CONFIGS[key]["agb"]) for key in CONFIG_ORDER
+        key: plane_columns(tables[key][0], agb_by_config[key]) for key in CONFIG_ORDER
     }
     ranges = _plane_ranges(list(indices_by_config.values()))
     low = min(ranges["h_minus_bump"][0] - 0.006, float(jwst["h_minus_bump"].min()) - 0.006)
@@ -1852,7 +1893,7 @@ def figure_jwst_plane_epoch_matched(
         for (_log_z, result), color in zip(
             tracks_by_template[config["template"]].items(), LOG_Z_TRACK_COLORS, strict=True
         ):
-            series = track_series(result, config["agb"])
+            series = track_series(result, agb_by_config[config_key])
             in_window = (series["epoch_gyr"] >= age_low - half_step) & (
                 series["epoch_gyr"] <= age_high + half_step
             )
@@ -1897,10 +1938,14 @@ def figure_jwst_plane_epoch_matched(
         )
         set_plane_axes(axis, "d4000", "h_minus_bump", ranges, ylabel=config_key == "agb_off")
         axis.set_xlabel(r"D4000 ($R = 50$)")
-        row_title(axis, config["short_label"], fontsize=12)
+        title = config["short_label"]
+        if config_key == "agb_on" and agb_on_key is not None:
+            title += "\n(agb = " + agb_on_key.removeprefix("agb") + ")"
+        row_title(axis, title, fontsize=12)
 
         in_d4000 = window & (x >= d_low) & (x <= d_high)
         entry = {
+            "agb": agb_by_config[config_key],
             "n_epochs_in_window": int(window.sum()),
             "n_rapid_quenching_in_window": int(rapid_window.sum()),
             "n_rapid_quenching_all_epochs": int(rapid.sum()),
@@ -2227,6 +2272,14 @@ def main():
             )
             final_summary[FINAL_STEMS["jwst_epoch"]] = figure_jwst_plane_epoch_matched(
                 jwst_tables, jwst_tracks, load_jwst_indices(), final_dir
+            )
+            final_summary[FINAL_STEMS["jwst_epoch_agb1"]] = figure_jwst_plane_epoch_matched(
+                jwst_tables,
+                add_agb1_tracks(jwst_tracks, edges),
+                load_jwst_indices(),
+                final_dir,
+                stem=FINAL_STEMS["jwst_epoch_agb1"],
+                agb_on_key="agb1",
             )
             final_summary[FINAL_STEMS["jwst"]]["d4000_product"] = (
                 "r50: R = 50 (FWHM) instrument plus 300 km/s dispersion, D4000 only; "
