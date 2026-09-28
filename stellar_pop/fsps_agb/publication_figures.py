@@ -161,7 +161,11 @@ FINAL_STEMS = {
     "fig5": "index_planes_sfh_families",
     "combined": "age_sensitivity_and_classifier_gain",
     "jwst": "d4000_hminus_plane_with_jwst_data",
+    "jwst_epoch": "d4000_hminus_plane_with_jwst_data_epoch_matched",
 }
+JWST_SYMBOL_SIZE = 3.8 * 1.5
+JWST_HUBBLE_CONSTANT = 70.0
+JWST_OMEGA_MATTER = 0.3
 JWST_DATA_PATH = FINAL_DIR / "JWST_QG_indices.npz"
 CLOCK_LOG_WINDOW_GYR = (0.05, 6.0)
 INDEX_LINESTYLES = {"hdelta_a": "-", "h_minus_bump": "--", "d4000": ":"}
@@ -1761,6 +1765,251 @@ def figure_jwst_plane(tables, tracks_by_template, jwst, out_dir, stem=FINAL_STEM
     return summary
 
 
+def cosmic_age_gyr(redshift, hubble_constant=JWST_HUBBLE_CONSTANT, omega_matter=JWST_OMEGA_MATTER):
+    """Age of a flat LCDM universe at `redshift`, in Gyr."""
+    from scipy.integrate import quad
+
+    def integrand(x):
+        return 1.0 / ((1.0 + x) * np.sqrt(omega_matter * (1.0 + x) ** 3 + 1.0 - omega_matter))
+
+    return (977.8 / hubble_constant) * quad(integrand, redshift, np.inf)[0]
+
+
+def _draw_open_contours(axis, x, y, x_range, y_range, fractions, color, linewidth, zorder):
+    x_centers, y_centers, density, levels = density_levels(x, y, fractions, x_range, y_range)
+    axis.contour(
+        x_centers,
+        y_centers,
+        density,
+        levels=levels,
+        colors=[color],
+        linewidths=linewidth,
+        linestyles="--",
+        zorder=zorder,
+    )
+
+
+def _fraction_inside(x_points, y_points, x, y, x_range, y_range, fraction):
+    """Which points lie inside the smoothed-density contour enclosing `fraction` of (x, y)."""
+    from scipy.ndimage import map_coordinates
+
+    x_centers, y_centers, density, levels = density_levels(x, y, (fraction,), x_range, y_range)
+    step_x = x_centers[1] - x_centers[0]
+    step_y = y_centers[1] - y_centers[0]
+    coordinates = [(y_points - y_centers[0]) / step_y, (x_points - x_centers[0]) / step_x]
+    return map_coordinates(density, coordinates, order=1, mode="nearest") >= levels[0]
+
+
+def figure_jwst_plane_epoch_matched(
+    tables, tracks_by_template, jwst, out_dir, stem=FINAL_STEMS["jwst_epoch"]
+):
+    """Variant of `figure_jwst_plane` restricted to model epochs whose cosmic age matches the
+    redshift range of the JWST sample. The all-epoch population and rapid-quenching class
+    are drawn as dashed open contours; the epoch-matched ones are filled. No new models:
+    the same tables (with D4000 at R = 50) are masked on `epoch_gyr`."""
+    age_low = cosmic_age_gyr(float(jwst["redshift"].max()))
+    age_high = cosmic_age_gyr(float(jwst["redshift"].min()))
+    half_step = 0.5 * (time_bin_edges()[1] - time_bin_edges()[0])
+    figure, axes = plt.subplots(
+        1, 2, figsize=(DOUBLE_COLUMN_IN, 3.4), layout="constrained", sharey=True
+    )
+    indices_by_config = {
+        key: plane_columns(tables[key][0], AGB_CONFIGS[key]["agb"]) for key in CONFIG_ORDER
+    }
+    ranges = _plane_ranges(list(indices_by_config.values()))
+    low = min(ranges["h_minus_bump"][0] - 0.006, float(jwst["h_minus_bump"].min()) - 0.006)
+    high = max(ranges["h_minus_bump"][1], float(jwst["h_minus_bump"].max()) + 0.006)
+    ranges["h_minus_bump"] = (low, high)
+    xr, yr = ranges["d4000"], ranges["h_minus_bump"]
+    d_low, d_high = float(jwst["d4000"].min()), float(jwst["d4000"].max())
+    summary = {
+        "n_jwst": int(jwst["d4000"].size),
+        "redshift_range": [float(jwst["redshift"].min()), float(jwst["redshift"].max())],
+        "epoch_window_gyr": [age_low, age_high],
+        "cosmology": {"H0": JWST_HUBBLE_CONSTANT, "Omega_m": JWST_OMEGA_MATTER},
+    }
+    for axis, config_key in zip(axes, CONFIG_ORDER, strict=True):
+        config = AGB_CONFIGS[config_key]
+        table, codes = tables[config_key]
+        ind = indices_by_config[config_key]
+        x, y = ind["d4000"], ind["h_minus_bump"]
+        rapid = codes == RAPID_QUENCHING
+        epoch = table["epoch_gyr"]
+        window = (epoch >= age_low - half_step) & (epoch <= age_high + half_step)
+        rapid_window = rapid & window
+
+        _draw_open_contours(axis, x, y, xr, yr, POPULATION_LEVELS, "0.45", 0.6, 1)
+        _draw_open_contours(
+            axis, x[rapid], y[rapid], xr, yr, CLASS_LEVELS, RAPID_QUENCHING_COLOR, 0.7, 2
+        )
+        draw_population_contours(axis, x[window], y[window], xr, yr)
+        axis.collections[-1].set_zorder(3)
+        if rapid_window.sum() >= 50:
+            draw_class_contours(
+                axis, x[rapid_window], y[rapid_window], xr, yr, RAPID_QUENCHING_COLOR, zorder=4
+            )
+
+        for (_log_z, result), color in zip(
+            tracks_by_template[config["template"]].items(), LOG_Z_TRACK_COLORS, strict=True
+        ):
+            series = track_series(result, config["agb"])
+            in_window = (series["epoch_gyr"] >= age_low - half_step) & (
+                series["epoch_gyr"] <= age_high + half_step
+            )
+            axis.plot(
+                series["d4000"][in_window],
+                series["h_minus_bump"][in_window],
+                color=color,
+                lw=0.9,
+                zorder=6,
+            )
+            delay = series["epoch_gyr"] - FIDUCIAL["t_q_gyr"]
+            for shape, offset in zip(TRACK_MARKER_SHAPES, TRACK_MARKER_OFFSETS_GYR, strict=True):
+                index = int(np.argmin(np.abs(delay - offset)))
+                if not in_window[index]:
+                    continue
+                axis.plot(
+                    series["d4000"][index],
+                    series["h_minus_bump"][index],
+                    marker=shape,
+                    ms=3.6,
+                    mfc=color,
+                    mec="0.25",
+                    mew=0.35,
+                    ls="none",
+                    zorder=7,
+                )
+
+        axis.errorbar(
+            jwst["d4000"],
+            jwst["h_minus_bump"],
+            xerr=[jwst["d4000_err_low"], jwst["d4000_err_high"]],
+            yerr=jwst["h_minus_bump_err"],
+            fmt="o",
+            ms=JWST_SYMBOL_SIZE,
+            mfc="black",
+            mec="white",
+            mew=0.8,
+            ecolor="0.2",
+            elinewidth=0.6,
+            capsize=0,
+            zorder=12,
+        )
+        set_plane_axes(axis, "d4000", "h_minus_bump", ranges, ylabel=config_key == "agb_off")
+        axis.set_xlabel(r"D4000 ($R = 50$)")
+        row_title(axis, config["short_label"], fontsize=12)
+
+        in_d4000 = window & (x >= d_low) & (x <= d_high)
+        entry = {
+            "n_epochs_in_window": int(window.sum()),
+            "n_rapid_quenching_in_window": int(rapid_window.sum()),
+            "n_rapid_quenching_all_epochs": int(rapid.sum()),
+            "bump_p01_p50_p99_mag_over_observed_d4000": np.percentile(
+                y[in_d4000], [1, 50, 99]
+            ).tolist(),
+            "deepest_bump_mag_over_observed_d4000": float(y[in_d4000].min()),
+            "rapid_quenching_bump_median_in_window_mag": (
+                float(np.median(y[rapid_window])) if rapid_window.any() else None
+            ),
+        }
+        if rapid_window.sum() >= 50:
+            for fraction in CLASS_LEVELS:
+                inside = _fraction_inside(
+                    jwst["d4000"],
+                    jwst["h_minus_bump"],
+                    x[rapid_window],
+                    y[rapid_window],
+                    xr,
+                    yr,
+                    fraction,
+                )
+                entry[f"jwst_inside_rapid_quenching_{int(fraction * 100)}"] = [
+                    int(i) for i in np.asarray(jwst["id"])[inside]
+                ]
+        inside_pop = _fraction_inside(
+            jwst["d4000"], jwst["h_minus_bump"], x[window], y[window], xr, yr, POPULATION_LEVELS[-1]
+        )
+        entry["jwst_inside_population_995"] = int(inside_pop.sum())
+        entry["jwst_outside_population_995"] = [int(i) for i in np.asarray(jwst["id"])[~inside_pop]]
+        summary[config_key] = entry
+
+    panel_label(axes[0], "(a)", x=0.04, y=0.96)
+    panel_label(axes[1], "(b)", x=0.04, y=0.96)
+    handles = [
+        Patch(
+            facecolor="0.85",
+            edgecolor="0.55",
+            lw=0.5,
+            label=rf"Epochs at $t = {age_low:.1f}$--${age_high:.1f}$ Gyr (68, 95, 99.5\%)",
+        ),
+        Patch(
+            facecolor=RAPID_QUENCHING_COLOR,
+            edgecolor=RAPID_QUENCHING_COLOR,
+            alpha=0.6,
+            label=r"Rapid-quenching class in that window (68, 95\%)",
+        ),
+        Line2D([], [], color="0.45", lw=0.6, ls="--", label="All epochs, 1--13 Gyr"),
+        Line2D(
+            [],
+            [],
+            color=RAPID_QUENCHING_COLOR,
+            lw=0.7,
+            ls="--",
+            label="Rapid-quenching class, all epochs",
+        ),
+    ]
+    handles += [
+        Line2D([], [], color=color, lw=0.9, label=rf"$\log Z/Z_\odot = {log_z:+.2f}$")
+        for log_z, color in zip(LOG_Z_TRACKS, LOG_Z_TRACK_COLORS, strict=True)
+    ]
+    handles += [
+        Line2D(
+            [],
+            [],
+            marker=shape,
+            ls="none",
+            mfc="0.6",
+            mec="0.25",
+            mew=0.35,
+            ms=3.6,
+            label=f"$t_q + {offset:g}$ Gyr",
+        )
+        for shape, offset in zip(TRACK_MARKER_SHAPES, TRACK_MARKER_OFFSETS_GYR, strict=True)
+        if age_low - half_step <= FIDUCIAL["t_q_gyr"] + offset <= age_high + half_step
+    ]
+    handles += [
+        Line2D(
+            [],
+            [],
+            marker="o",
+            ms=JWST_SYMBOL_SIZE,
+            mfc="black",
+            mec="white",
+            mew=0.8,
+            color="0.2",
+            lw=0.6,
+            label="Lu+2026",
+        )
+    ]
+    figure.legend(
+        handles=handles,
+        loc="outside lower center",
+        ncol=3,
+        fontsize=8,
+        handlelength=1.6,
+        columnspacing=1.4,
+        title=(
+            rf"Model epochs restricted to the cosmic age at "
+            rf"$z = {summary['redshift_range'][0]:.2f}$--${summary['redshift_range'][1]:.2f}$; "
+            rf"fiducial SFH $t_q = {FIDUCIAL['t_q_gyr']:g}$ Gyr, "
+            rf"$\tau_q = {FIDUCIAL['tau_q_gyr']:g}$ Gyr, drawn within the window"
+        ),
+        title_fontsize=8,
+    )
+    save_figure(figure, out_dir, stem)
+    return summary
+
+
 # ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
@@ -1974,6 +2223,9 @@ def main():
         if JWST_DATA_PATH.exists():
             jwst_tables, jwst_tracks = jwst_inputs_at_r50(tables, tracks_by_template, edges)
             final_summary[FINAL_STEMS["jwst"]] = figure_jwst_plane(
+                jwst_tables, jwst_tracks, load_jwst_indices(), final_dir
+            )
+            final_summary[FINAL_STEMS["jwst_epoch"]] = figure_jwst_plane_epoch_matched(
                 jwst_tables, jwst_tracks, load_jwst_indices(), final_dir
             )
             final_summary[FINAL_STEMS["jwst"]]["d4000_product"] = (
