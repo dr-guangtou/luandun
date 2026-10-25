@@ -1,0 +1,30 @@
+column_name,datatype,size,indexed,principal,unit,description
+subpriority,adql:DOUBLE,1,0,0,,Random subpriority [0-1] to break assignment ties
+id,adql:VARCHAR,39,1,0,,"Arbitrary primary key composed from targetid, survey, tileid. NOTE: this column is stored as a NUMERIC(39,0) datatype."
+targetid,adql:BIGINT,1,1,0,,Unique DESI target ID
+cmx_target,adql:BIGINT,1,0,0,,Target selection bitmask for commissioning
+desi_target,adql:BIGINT,1,0,0,,Dark survey + calibration targeting bits
+sv1_desi_target,adql:BIGINT,1,0,0,,DESI (dark time program) target selection bitmask for SV1
+sv1_mws_target,adql:BIGINT,1,0,0,,MWS (bright time program) target selection bitmask for SV1
+sv2_desi_target,adql:BIGINT,1,0,0,,DESI (dark time program) target selection bitmask for SV2
+sv2_mws_target,adql:BIGINT,1,0,0,,MWS (bright time program) target selection bitmask for SV2
+sv3_desi_target,adql:BIGINT,1,0,0,,DESI (dark time program) target selection bitmask for SV3
+sv3_mws_target,adql:BIGINT,1,0,0,,MWS (bright time program) target selection bitmask for SV3
+scnd_target,adql:BIGINT,1,0,0,,Target selection bitmask for secondary programs
+sv1_scnd_target,adql:BIGINT,1,0,0,,Secondary target selection bitmask for SV1
+sv3_scnd_target,adql:BIGINT,1,0,0,,Secondary target selection bitmask for SV3
+random_id,adql:REAL,1,1,0,,Random ID in the range 0.0 => 100.0 (not unique)
+priority_init,adql:BIGINT,1,0,0,,Target initial priority from target selection bitmasks and OBSCONDITIONS
+hpxpixel,adql:BIGINT,1,1,0,,HEALPixel containing this location at NSIDE=64 in the NESTED scheme
+bgs_target,adql:BIGINT,1,0,0,,BGS (bright time program) target selection bitmask
+sv1_bgs_target,adql:BIGINT,1,0,0,,BGS (bright time program) target selection bitmask for SV1
+sv3_bgs_target,adql:BIGINT,1,0,0,,BGS (bright time program) target selection bitmask for SV3
+tileid,adql:INTEGER,1,1,0,,Unique DESI tile ID
+obsconditions,adql:BIGINT,1,0,0,,Bit-coded of allowed observing conditions
+numobs_init,adql:BIGINT,1,0,0,,Initial number of observations for target calculated across target selection bitmasks and OBSCONDITIONS
+mws_target,adql:BIGINT,1,0,0,,Milky Way Survey targeting bits
+sv2_bgs_target,adql:BIGINT,1,0,0,,BGS (bright time program) target selection bitmask for SV2
+sv2_scnd_target,adql:BIGINT,1,0,0,,Secondary target selection bitmask for SV2
+photsys,adql:CHAR,1,0,0,,"N for the MzLS/BASS photometric system, S for DECaLS"
+program,adql:VARCHAR,6,1,0,,"DESI program type - BRIGHT, DARK, or BACKUP"
+survey,adql:VARCHAR,7,1,0,,Survey name

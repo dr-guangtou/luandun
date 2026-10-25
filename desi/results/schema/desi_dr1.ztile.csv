@@ -1,0 +1,96 @@
+column_name,datatype,size,indexed,principal,unit,description
+z,adql:DOUBLE,1,1,0,,Redshift measured by Redrock
+zerr,adql:DOUBLE,1,0,0,,Redshift error from Redrock
+chi2,adql:DOUBLE,1,0,0,,Best fit chi squared
+coeff_0,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_1,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_2,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_3,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_4,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_5,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_6,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_7,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_8,adql:DOUBLE,1,0,0,,Redrock template coefficients
+coeff_9,adql:DOUBLE,1,0,0,,Redrock template coefficients
+deltachi2,adql:DOUBLE,1,0,0,,Delta-chi-squared for template fit from Redrock
+mean_fiber_ra,adql:DOUBLE,1,1,0,deg,Mean (over exposures) RA of actual fiber position
+mean_fiber_dec,adql:DOUBLE,1,1,0,deg,Mean (over exposures) DEC of actual fiber position
+elon,adql:DOUBLE,1,1,0,deg,Ecliptic longitude
+elat,adql:DOUBLE,1,1,0,deg,Ecliptic latitude
+glon,adql:DOUBLE,1,1,0,deg,Galactic longitude
+glat,adql:DOUBLE,1,1,0,deg,Galactic latitude
+id,adql:VARCHAR,39,1,0,,"Arbitrary primary key composed from targetid, survey, program. NOTE: this column is stored as a NUMERIC(39,0) datatype."
+targetphotid,adql:VARCHAR,39,1,0,,"Foreign key on the target table. NOTE: this column is stored as a NUMERIC(39,0) datatype."
+targetid,adql:BIGINT,1,1,0,,Unique DESI target ID
+coadd_exptime,adql:REAL,1,0,0,seconds,Sum of the exposure times contributing to the coadd for this target
+mean_delta_x,adql:REAL,1,0,0,,Mean (over exposures) fiber difference between measured and requested CS5 X location on focal plane
+rms_delta_x,adql:REAL,1,0,0,,RMS (over exposures) of the fiber difference between measured and requested CS5 X location on focal plane
+mean_delta_y,adql:REAL,1,0,0,,Mean (over exposures) fiber difference between measured and requested CS5 Y location on focal plane
+rms_delta_y,adql:REAL,1,0,0,,RMS (over exposures) of the fiber difference between measured and requested CS5 Y location on focal plane
+std_fiber_ra,adql:REAL,1,0,0,deg,Standard deviation (over exposures) of RA of actual fiber position
+std_fiber_dec,adql:REAL,1,0,0,deg,Standard deviation (over exposures) of DEC of actual fiber position
+mean_psf_to_fiber_specflux,adql:REAL,1,0,0,,Mean of the PSF_TO_FIBER_SPECFLUX values of the spectra used in the coadd
+tsnr2_gpbdark_b,adql:REAL,1,0,0,,GPBDARK B template (S/N)^2
+tsnr2_elg_b,adql:REAL,1,0,0,,ELG B template (S/N)^2
+tsnr2_gpbbright_b,adql:REAL,1,0,0,,GPBBRIGHT B template (S/N)^2
+tsnr2_lya_b,adql:REAL,1,0,0,,LYA B template (S/N)^2
+tsnr2_bgs_b,adql:REAL,1,0,0,,BGS B template (S/N)^2
+tsnr2_gpbbackup_b,adql:REAL,1,0,0,,GPBBACKUP B template (S/N)^2
+tsnr2_qso_b,adql:REAL,1,0,0,,QSO B template (S/N)^2
+tsnr2_lrg_b,adql:REAL,1,0,0,,LRG B template (S/N)^2
+tsnr2_gpbdark_r,adql:REAL,1,0,0,,GPBDARK R template (S/N)^2
+tsnr2_elg_r,adql:REAL,1,0,0,,ELG R template (S/N)^2
+tsnr2_gpbbright_r,adql:REAL,1,0,0,,GPBBRIGHT R template (S/N)^2
+tsnr2_lya_r,adql:REAL,1,0,0,,LYA R template (S/N)^2
+tsnr2_bgs_r,adql:REAL,1,0,0,,BGS R template (S/N)^2
+tsnr2_gpbbackup_r,adql:REAL,1,0,0,,GPBBACKUP R template (S/N)^2
+tsnr2_qso_r,adql:REAL,1,0,0,,QSO R template (S/N)^2
+tsnr2_lrg_r,adql:REAL,1,0,0,,LRG R template (S/N)^2
+tsnr2_gpbdark_z,adql:REAL,1,0,0,,GPBDARK Z template (S/N)^2
+tsnr2_elg_z,adql:REAL,1,0,0,,ELG Z template (S/N)^2
+tsnr2_gpbbright_z,adql:REAL,1,0,0,,GPBBRIGHT Z template (S/N)^2
+tsnr2_lya_z,adql:REAL,1,0,0,,LYA Z template (S/N)^2
+tsnr2_bgs_z,adql:REAL,1,0,0,,BGS Z template (S/N)^2
+tsnr2_gpbbackup_z,adql:REAL,1,0,0,,GPBBACKUP Z template (S/N)^2
+tsnr2_qso_z,adql:REAL,1,0,0,,QSO Z template (S/N)^2
+tsnr2_lrg_z,adql:REAL,1,0,0,,LRG Z template (S/N)^2
+tsnr2_gpbdark,adql:REAL,1,0,0,,"GPBDARK template (S/N)^2 summed over B, R, Z"
+tsnr2_elg,adql:REAL,1,0,0,,"ELG template (S/N)^2 summed over B, R, Z"
+tsnr2_gpbbright,adql:REAL,1,0,0,,"GPBBRIGHT template (S/N)^2 summed over B, R, Z"
+tsnr2_lya,adql:REAL,1,0,0,,"LYA template (S/N)^2 summed over B, R, Z"
+tsnr2_bgs,adql:REAL,1,0,0,,"BGS template (S/N)^2 summed over B, R, Z"
+tsnr2_gpbbackup,adql:REAL,1,0,0,,"GPBBACKUP template (S/N)^2 summed over B, R, Z"
+tsnr2_qso,adql:REAL,1,0,0,,"QSO template (S/N)^2 summed over B, R, Z"
+tsnr2_lrg,adql:REAL,1,0,0,,"LRG template (S/N)^2 summed over B, R, Z"
+random_id,adql:REAL,1,1,0,,Random ID in the range 0.0 => 100.0 (not unique)
+htm9,adql:INTEGER,1,1,0,,Ninth level (~10 arcmin resolution) Hierarchical Triangular Mesh index (Szalay et al. 2007)
+ring256,adql:INTEGER,1,1,0,,Ring-scheme HEALPix (Gorski et al. 2005) index with Nsides=256 (~14 arcmin size)
+nest4096,adql:INTEGER,1,1,0,,Nested-scheme HEALPix (Gorski et al. 2005) index with Nsides=4096 (~52 arcsec size)
+spgrpval,adql:INTEGER,1,1,0,,Value corresponding to the grouping type indicated in the spgrp column. For ztile table this is a night or exposure id
+coadd_fiberstatus,adql:INTEGER,1,1,0,,Bitwise AND of the FIBERSTATUS values of the spectra used in the coadd
+tileid,adql:INTEGER,1,1,0,,Unique DESI tile ID
+zwarn,adql:BIGINT,1,1,0,,Redshift warning bitmask measured by Redrock
+npixels,adql:BIGINT,1,0,0,,Number of unmasked wavelengths that contributed to the redshift fit
+ncoeff,adql:BIGINT,1,0,0,,Number of Redrock template coefficients
+coadd_numexp,adql:SMALLINT,1,0,0,,Number of exposures included in the coadd for this target
+coadd_numnight,adql:SMALLINT,1,0,0,,Number of different nights included in the coadd for this target
+coadd_numtile,adql:SMALLINT,1,0,0,,Number of different tiles included in the coadd for this target
+sv_nspec,adql:SMALLINT,1,0,0,,Number of coadded spectra for this TARGETID in SV (SV1+2+3)
+main_nspec,adql:SMALLINT,1,0,0,,Number of coadded spectra for this TARGETID in Main survey
+zcat_nspec,adql:SMALLINT,1,0,0,,Number of coadded spectra for this TARGETID in this zcatalog
+sv_primary,adql:BOOLEAN,1,0,0,,True/False flag for the primary coadded spectrum in SV (SV1+2+3)
+main_primary,adql:BOOLEAN,1,0,0,,True/False flag for the primary coadded spectrum in Main survey
+zcat_primary,adql:BOOLEAN,1,0,0,,True/False flag for the primary coadded spectrum in this zcatalog
+spgrp,adql:VARCHAR,10,1,0,,"Type of spectral grouping. For ztile table this can be = cumulative, perexp, or pernight"
+subtype,adql:VARCHAR,20,1,0,,Spectral subtype
+program,adql:VARCHAR,6,1,0,,"DESI program type - BRIGHT, DARK, or BACKUP"
+spectype,adql:VARCHAR,6,1,0,,Spectype from Redrock file
+survey,adql:VARCHAR,7,1,0,,Survey name
+lastnight,adql:INTEGER,1,0,0,,KPNO Calendar Date when the last exposure was obtained for the tile
+firstnight,adql:INTEGER,1,0,0,,"KPNO Calendar Date when the first exposure was obtained for the tile, regardless of data quality"
+mean_mjd,adql:DOUBLE,1,1,0,day,Mean value of the Modified Julian Date (when the shutter was open for exposures used in the coadded spectrum)
+max_mjd,adql:DOUBLE,1,1,0,day,Maximum value of the Modified Julian Date (when the shutter was open for the last exposure used in the coadded spectrum)
+min_mjd,adql:DOUBLE,1,1,0,day,Minimum value of the Modified Julian Date (when the shutter was open for the first exposure used in the coadded spectrum)
+mean_fiber_x,adql:REAL,1,0,0,mm,Mean (over exposures) fiber CS5 X location on focal plane
+mean_fiber_y,adql:REAL,1,0,0,mm,Mean (over exposures) fiber CS5 Y location on focal plane
+desiname,adql:VARCHAR,22,1,0,,"Human-readable identifier of a sky location DESI JXXX.XXXX[+/-]YY.YYYY, where X,Y=truncated decimal target_ra, target_dec, precise to 0.36 arcsec"

@@ -1,0 +1,15 @@
+column_name,datatype,size,indexed,principal,unit,description
+ls_id,adql:BIGINT,1,1,0,,Unique LS object ID
+brickid,adql:INTEGER,1,0,0,,"Brick ID [1,662174]"
+objid,adql:INTEGER,1,1,0,,"Catalog object number within this brick; a unique identifier hash is release,brickid,objid; objid spans [0,N-1] and is contiguously enumerated within each brick"
+z_phot_mean,adql:REAL,1,1,0,,photo-z derived from the mean of the photo-z PDF
+z_phot_median,adql:REAL,1,1,0,,photo-z derived from the median of the photo-z PDF
+z_phot_std,adql:REAL,1,0,0,,Standard deviation of the photo-zs derived from the photo-z PDF
+z_phot_l68,adql:REAL,1,0,0,,"Lower bound of the 68% confidence region, derived from the photo-z PDF"
+z_phot_u68,adql:REAL,1,0,0,,"Upper bound of the 68% confidence region, derived from the photo-z PDF"
+z_phot_l95,adql:REAL,1,0,0,,"Lower bound of the 95% confidence region, derived from the photo-z PDF"
+z_phot_u95,adql:REAL,1,0,0,,"Upper bound of the 68% confidence region, derived from the photo-z PDF"
+z_spec,adql:REAL,1,1,0,,"Spectroscopic redshift, if available"
+release,adql:SMALLINT,1,0,0,,Unique integer denoting the camera and filter set used
+training,adql:BOOLEAN,1,0,0,,Whether or not the spectroscopic redshift is used in photometric redshift training
+survey,adql:VARCHAR,10,0,0,,Source of the spectroscopic redshift

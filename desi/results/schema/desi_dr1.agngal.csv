@@ -1,0 +1,100 @@
+column_name,datatype,size,indexed,principal,unit,description
+z,adql:DOUBLE,1,1,0,,Redshift from the FastSpecFit catalog
+zerr,adql:DOUBLE,1,0,0,,Redshift error
+target_ra,adql:DOUBLE,1,1,0,deg,Right Ascension in decimal degrees (J2000)
+target_dec,adql:DOUBLE,1,1,0,deg,Declination in decimal degrees (J2000)
+min_mjd,adql:DOUBLE,1,1,0,d,MJD of the first exposure in coadded spectrum
+mean_mjd,adql:DOUBLE,1,1,0,d,Mean of MJD of exposures in a coadded spectrum
+max_mjd,adql:DOUBLE,1,1,0,d,MJD of the last exposure in coadded spectrum
+elon,adql:DOUBLE,1,1,0,deg,Ecliptic longitude
+elat,adql:DOUBLE,1,1,0,deg,Ecliptic latitude
+glon,adql:DOUBLE,1,1,0,deg,Galactic longitude
+glat,adql:DOUBLE,1,1,0,deg,Galactic latitude
+targetid,adql:BIGINT,1,1,0,,Unique identifier for each object observed by DESI
+zwarn,adql:BIGINT,1,1,0,,Warning flags (0 is good)
+ls_id,adql:BIGINT,1,0,0,,"Legacy Surveys DR9 identifier from RELEASE, OBJID, BRICKID"
+desi_target,adql:BIGINT,1,0,0,,DESI (dark time program) target selection bitmask
+scnd_target,adql:BIGINT,1,0,0,,SCND (secondary program) target selection bitmask
+bgs_target,adql:BIGINT,1,0,0,,BGS (bright time program) target selection bitmask
+cmx_target,adql:BIGINT,1,0,0,,Target selection bitmask for commissioning
+sv1_desi_target,adql:BIGINT,1,0,0,,DESI (dark time program) target selection bitmask for SV1
+sv2_desi_target,adql:BIGINT,1,0,0,,DESI (dark time program) target selection bitmask for SV2
+sv3_desi_target,adql:BIGINT,1,0,0,,DESI (dark time program) target selection bitmask for SV3
+sv1_bgs_target,adql:BIGINT,1,0,0,,BGS (bright time program) target selection bitmask for SV1
+sv2_bgs_target,adql:BIGINT,1,0,0,,BGS (bright time program) target selection bitmask for SV2
+sv3_bgs_target,adql:BIGINT,1,0,0,,BGS (bright time program) target selection bitmask for SV3
+sv1_scnd_target,adql:BIGINT,1,0,0,,Secondary target selection bitmask for SV1
+sv2_scnd_target,adql:BIGINT,1,0,0,,Secondary target selection bitmask for SV2
+sv3_scnd_target,adql:BIGINT,1,0,0,,Secondary target selection bitmask for SV3
+agn_maskbits,adql:BIGINT,1,0,0,,"AGN selection bitmask, see below for more details."
+opt_uv_type,adql:BIGINT,1,0,0,,"AGN detailed optical/ultraviolet type information, see below for more details."
+ir_type,adql:BIGINT,1,0,0,,"AGN detailed infrared type information, see below for more details."
+healpix,adql:INTEGER,1,1,0,,Healpix number
+coadd_fiberstatus,adql:INTEGER,1,1,0,,Bitwise-AND of input FIBERSTATUS
+htm9,adql:INTEGER,1,1,0,,HTM index (order 9 => ~10 arcmin size)
+ring256,adql:INTEGER,1,1,0,,"HEALPIX index (Nsides 256, Ring scheme => ~14 arcmin size)"
+nest4096,adql:INTEGER,1,1,0,,"HEALPIX index (Nsides 4096, Nest scheme => ~52 arcsec size)"
+random_id,adql:REAL,1,1,0,,Random ID in the range 0.0 => 100.0
+coadd_exptime,adql:REAL,1,0,0,s,Summed exposure time for coadd
+logmstar,adql:REAL,1,0,0,log(solMass),"Logarithmic stellar mass (h=1.0, Chabrier+2003 initial mass function)"
+flux_w1,adql:REAL,1,1,0,nanomaggy,WISE flux in W1 (AB)
+flux_w2,adql:REAL,1,1,0,nanomaggy,WISE flux in W2 (AB)
+flux_w3,adql:REAL,1,1,0,nanomaggy,WISE flux in W3 (AB)
+flux_ivar_w1,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_W1 (AB)
+flux_ivar_w2,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_W2 (AB)
+flux_ivar_w3,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_W3 (AB)
+civ_1549_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+civ_1549_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+civ_1549_sigma,adql:REAL,1,0,0,km / s,Gaussian emission-line width
+mgii_2796_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+mgii_2796_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+mgii_2796_sigma,adql:REAL,1,0,0,km / s,Gaussian emission-line width
+mgii_2803_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+mgii_2803_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+mgii_2803_sigma,adql:REAL,1,0,0,km / s,Gaussian emission-line width
+oii_3726_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+oii_3726_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+oii_3726_ew,adql:REAL,1,0,0,Angstrom,Rest-frame emission-line equivalent width
+oii_3726_ew_ivar,adql:REAL,1,0,0,1 / Angstrom2,Inverse variance of equivalent width
+oii_3729_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+oii_3729_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+oii_3729_ew,adql:REAL,1,0,0,Angstrom,Rest-frame emission-line equivalent width
+oii_3729_ew_ivar,adql:REAL,1,0,0,1 / Angstrom2,Inverse variance of equivalent width
+nev_3426_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+nev_3426_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+heii_4686_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+heii_4686_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+hbeta_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+hbeta_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+hbeta_ew,adql:REAL,1,0,0,Angstrom,Rest-frame emission-line equivalent width
+hbeta_ew_ivar,adql:REAL,1,0,0,1 / Angstrom2,Inverse variance of equivalent width
+hbeta_broad_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+hbeta_broad_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+hbeta_broad_sigma,adql:REAL,1,0,0,km / s,Gaussian emission-line width
+hbeta_broad_chi2,adql:REAL,1,0,0,Angstrom,Chi-squared of the line-fit
+oiii_5007_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+oiii_5007_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+oiii_5007_sigma,adql:REAL,1,0,0,km / s,Gaussian emission-line width
+oi_6300_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+oi_6300_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+halpha_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+halpha_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+halpha_ew,adql:REAL,1,0,0,Angstrom,Rest-frame emission-line equivalent width
+halpha_ew_ivar,adql:REAL,1,0,0,1 / Angstrom2,Inverse variance of equivalent width
+halpha_broad_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+halpha_broad_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+halpha_broad_sigma,adql:REAL,1,0,0,km / s,Gaussian emission-line width
+halpha_broad_vshift,adql:REAL,1,0,0,km / s,Velocity shift relative to Z
+nii_6584_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+nii_6584_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+sii_6716_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+sii_6716_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+sii_6731_flux,adql:REAL,1,1,0,10**-17 erg/(s cm2),Gaussian-integrated emission-line flux
+sii_6731_flux_ivar,adql:REAL,1,0,0,10**+34 (s2 cm4) / erg2,Inverse variance of integrated flux
+coadd_numexp,adql:SMALLINT,1,0,0,,Number of exposures in coadd
+main_primary,adql:BOOLEAN,1,0,0,,Boolean flag (True/False) for the primary coadded spectrum in main survey
+sv_primary,adql:BOOLEAN,1,0,0,,Boolean flag (True/False) for the primary coadded spectrum in SV (SV1+2+3)
+zcat_primary,adql:BOOLEAN,1,0,0,,Boolean flag (True/False) for the primary coadded spectrum in the zcatalog
+program,adql:VARCHAR,6,1,0,,"DESI program type - BRIGHT, DARK, BACKUP, OTHER"
+spectype,adql:VARCHAR,6,1,0,,"Spectral type of Redrock best fit template (e.g. GALAXY, QSO, STAR)"
+survey,adql:VARCHAR,7,1,0,,Survey name

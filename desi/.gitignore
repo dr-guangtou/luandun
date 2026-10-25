@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.ruff_cache/
+# Large catalogs belong in /Users/shuang/work/desi/data, never in the repo.
+*.fits
+*.fits.gz
+*.parquet
+*.hdf5
+data/
+# Test-patch catalogs: rebuilt in seconds by scripts/build_cosmos_catalog.py.
+results/cosmos/patch_*.csv

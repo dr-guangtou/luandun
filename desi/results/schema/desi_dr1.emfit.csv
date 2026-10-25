@@ -1,0 +1,314 @@
+column_name,datatype,size,indexed,principal,unit,description
+target_ra,adql:DOUBLE,1,1,0,deg,Target right ascension
+target_dec,adql:DOUBLE,1,1,0,deg,Target declination
+elon,adql:DOUBLE,1,1,0,deg,Ecliptic longitude
+elat,adql:DOUBLE,1,1,0,deg,Ecliptic latitude
+glon,adql:DOUBLE,1,1,0,deg,Galactic longitude
+glat,adql:DOUBLE,1,1,0,deg,Galactic latitude
+z,adql:DOUBLE,1,1,0,,Redshift of the target
+prob_broad,adql:DOUBLE,1,0,0,,Percentage of broad Ha detection in iterations
+hb_n_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Narrow Hb component
+hb_n_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Narrow Hb component
+hb_n_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Narrow Hb component
+hb_n_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Narrow Hb component
+hb_n_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Narrow Hb component
+hb_n_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Narrow Hb component
+hb_n_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Narrow Hb component
+hb_n_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Narrow Hb component
+hb_n_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Narrow Hb component
+hb_n_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Narrow Hb component
+hb_n_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Narrow Hb component
+hb_n_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Narrow Hb component
+hb_n_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Narrow Hb component
+hb_n_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Narrow Hb component
+hb_out_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Outflow Hb component
+hb_out_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Outflow Hb component
+hb_out_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Outflow Hb component
+hb_out_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Outflow Hb component
+hb_out_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Outflow Hb component
+hb_out_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Outflow Hb component
+hb_out_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Outflow Hb component
+hb_out_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Outflow Hb component
+hb_out_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Outflow Hb component
+hb_out_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Outflow Hb component
+hb_out_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Outflow Hb component
+hb_out_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Outflow Hb component
+hb_out_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Outflow Hb component
+hb_out_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Outflow Hb component
+hb_b_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Broad Hb component
+hb_b_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Broad Hb component
+hb_b_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Broad Hb component
+hb_b_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Broad Hb component
+hb_b_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Broad Hb component
+hb_b_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Broad Hb component
+hb_b_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Broad Hb component
+hb_b_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Broad Hb component
+hb_b_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Broad Hb component
+hb_b_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Broad Hb component
+hb_b_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Broad Hb component
+hb_b_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Broad Hb component
+hb_b_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Broad Hb component
+hb_b_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Broad Hb component
+hb_continuum,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Continuum around the Hb components
+hb_continuum_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Continuum around the Hb components
+hb_noise,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),rms of the Continuum around the Hb components
+hb_rchi2,adql:DOUBLE,1,0,0,,"Reduced chi2 associated with the Hb+[OIII]4959,5007 Fit"
+oiii4959_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Narrow [OIII]4959 component
+oiii4959_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Narrow [OIII]4959 component
+oiii4959_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Narrow [OIII]4959 component
+oiii4959_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Narrow [OIII]4959 component
+oiii4959_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Narrow [OIII]4959 component
+oiii4959_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Narrow [OIII]4959 component
+oiii4959_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Narrow [OIII]4959 component
+oiii4959_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Narrow [OIII]4959 component
+oiii4959_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Narrow [OIII]4959 component
+oiii4959_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Narrow [OIII]4959 component
+oiii4959_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Narrow [OIII]4959 component
+oiii4959_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Narrow [OIII]4959 component
+oiii4959_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Narrow [OIII]4959 component
+oiii4959_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Narrow [OIII]4959 component
+oiii4959_out_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Outflow [OIII]4959 component
+oiii4959_out_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Outflow [OIII]4959 component
+oiii4959_out_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Outflow [OIII]4959 component
+oiii4959_out_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Outflow [OIII]4959 component
+oiii4959_out_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Outflow [OIII]4959 component
+oiii4959_out_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Outflow [OIII]4959 component
+oiii4959_out_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Outflow [OIII]4959 component
+oiii4959_out_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Outflow [OIII]4959 component
+oiii4959_out_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Outflow [OIII]4959 component
+oiii4959_out_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Outflow [OIII]4959 component
+oiii4959_out_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Outflow [OIII]4959 component
+oiii4959_out_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Outflow [OIII]4959 component
+oiii4959_out_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Outflow [OIII]4959 component
+oiii4959_out_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Outflow [OIII]4959 component
+oiii5007_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Narrow [OIII]5007 component
+oiii5007_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Narrow [OIII]5007 component
+oiii5007_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Narrow [OIII]5007 component
+oiii5007_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Narrow [OIII]5007 component
+oiii5007_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Narrow [OIII]5007 component
+oiii5007_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Narrow [OIII]5007 component
+oiii5007_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Narrow [OIII]5007 component
+oiii5007_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Narrow [OIII]5007 component
+oiii5007_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Narrow [OIII]5007 component
+oiii5007_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Narrow [OIII]5007 component
+oiii5007_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Narrow [OIII]5007 component
+oiii5007_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Narrow [OIII]5007 component
+oiii5007_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Narrow [OIII]5007 component
+oiii5007_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Narrow [OIII]5007 component
+oiii5007_out_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Outflow [OIII]5007 component
+oiii5007_out_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Outflow [OIII]4959 component
+oiii5007_out_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Outflow [OIII]5007 component
+oiii5007_out_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Outflow [OIII]5007 component
+oiii5007_out_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Outflow [OIII]5007 component
+oiii5007_out_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Outflow [OIII]5007 component
+oiii5007_out_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Outflow [OIII]5007 component
+oiii5007_out_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Outflow [OIII]5007 component
+oiii5007_out_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Outflow [OIII]5007 component
+oiii5007_out_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Outflow [OIII]5007 component
+oiii5007_out_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Outflow [OIII]5007 component
+oiii5007_out_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Outflow [OIII]5007 component
+oiii5007_out_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Outflow [OIII]5007 component
+oiii5007_out_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Outflow [OIII]5007 component
+oiii_continuum,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Continuum around the [OIII] components
+oiii_continuum_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Continuum around the [OIII] components
+oiii_noise,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),rms of the Continuum around the [OIII] components
+oiii_rchi2,adql:DOUBLE,1,0,0,,"Reduced chi2 associated with the [OIII]4959,5007 Fit"
+hb_oiii_rchi2,adql:DOUBLE,1,0,0,,"Reduced chi2 associated with the Hb+[OIII]4959,5007 Fit"
+nii6548_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Narrow [NII]6548 component
+nii6548_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Narrow [NII]6548 component
+nii6548_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Narrow [NII]6548 component
+nii6548_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Narrow [NII]6548 component
+nii6548_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Narrow [NII]6548 component
+nii6548_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Narrow [NII]6548 component
+nii6548_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Narrow [NII]6548 component
+nii6548_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Narrow [NII]6548 component
+nii6548_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Narrow [NII]6548 component
+nii6548_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Narrow [NII]6548 component
+nii6548_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Narrow [NII]6548 component
+nii6548_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Narrow [NII]6548 component
+nii6548_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Narrow [NII]6548 component
+nii6548_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Narrow [NII]6548 component
+nii6548_out_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Outflow [NII]6548 component
+nii6548_out_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Outflow [NII]6548 component
+nii6548_out_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Outflow [NII]6548 component
+nii6548_out_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Outflow [NII]6548 component
+nii6548_out_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Outflow [NII]6548 component
+nii6548_out_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Outflow [NII]6548 component
+nii6548_out_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Outflow [NII]6548 component
+nii6548_out_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Outflow [NII]6548 component
+nii6548_out_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Outflow [NII]6548 component
+nii6548_out_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Outflow [NII]6548 component
+nii6548_out_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Outflow [NII]6548 component
+nii6548_out_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Outflow [NII]6548 component
+nii6548_out_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Outflow [NII]6548 component
+nii6548_out_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Outflow [NII]6548 component
+nii6583_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Narrow [NII]6583 component
+nii6583_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Narrow [NII]6583 component
+nii6583_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Narrow [NII]6583 component
+nii6583_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Narrow [NII]6583 component
+nii6583_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Narrow [NII]6583 component
+nii6583_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Narrow [NII]6583 component
+nii6583_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Narrow [NII]6583 component
+nii6583_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Narrow [NII]6583 component
+nii6583_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Narrow [NII]6583 component
+nii6583_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Narrow [NII]6583 component
+nii6583_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Narrow [NII]6583 component
+nii6583_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Narrow [NII]6583 component
+nii6583_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Narrow [NII]6583 component
+nii6583_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Narrow [NII]6583 component
+nii6583_out_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Outflow [NII]6583 component
+nii6583_out_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Outflow [NII]6583 component
+nii6583_out_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Outflow [NII]6583 component
+nii6583_out_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Outflow [NII]6583 component
+nii6583_out_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Outflow [NII]6583 component
+nii6583_out_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Outflow [NII]6583 component
+nii6583_out_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Outflow [NII]6583 component
+nii6583_out_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Outflow [NII]6583 component
+nii6583_out_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Outflow [NII]6583 component
+nii6583_out_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Outflow [NII]6583 component
+nii6583_out_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Outflow [NII]6583 component
+nii6583_out_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Outflow [NII]6583 component
+nii6583_out_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Outflow [NII]6583 component
+nii6583_out_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Outflow [NII]6583 component
+ha_n_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Narrow Ha component
+ha_n_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Narrow Ha component
+ha_n_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Narrow Ha component
+ha_n_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Narrow Ha component
+ha_n_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Narrow Ha component
+ha_n_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Narrow Ha component
+ha_n_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Narrow Ha component
+ha_n_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Narrow Ha component
+ha_n_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Narrow Ha component
+ha_n_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Narrow Ha component
+ha_n_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Narrow Ha component
+ha_n_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Narrow Ha component
+ha_n_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Narrow Ha component
+ha_n_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Narrow Ha component
+ha_out_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Outflow Ha component
+ha_out_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Outflow Ha component
+ha_out_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Outflow Ha component
+ha_out_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Outflow Ha component
+ha_out_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Outflow Ha component
+ha_out_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Outflow Ha component
+ha_out_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Outflow Ha component
+ha_out_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Outflow Ha component
+ha_out_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Outflow Ha component
+ha_out_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Outflow Ha component
+ha_out_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Outflow Ha component
+ha_out_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Outflow Ha component
+ha_out_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Outflow Ha component
+ha_out_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Outflow Ha component
+ha_b_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Broad Ha component
+ha_b_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Broad Ha component
+ha_b_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Broad Ha component
+ha_b_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Broad Ha component
+ha_b_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Broad Ha component
+ha_b_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Broad Ha component
+ha_b_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Broad Ha component
+ha_b_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Broad Ha component
+ha_b_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Broad Ha component
+ha_b_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Broad Ha component
+ha_b_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Broad Ha component
+ha_b_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Broad Ha component
+ha_b_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Broad Ha component
+ha_b_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Broad Ha component
+nii_ha_continuum,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Continuum around the [NII]+Ha components
+nii_ha_continuum_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Continuum around the [NII]+Ha components
+nii_ha_noise,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),rms of the Continuum around the [NII]+Ha components
+nii_ha_rchi2,adql:DOUBLE,1,0,0,,"Reduced chi2 associated with the [NII]6548,6583+Ha Fit"
+sii6716_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Narrow [SII]6716 component
+sii6716_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Narrow [SII]6716 component
+sii6716_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Narrow [SII]6716 component
+sii6716_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Narrow [SII]6716 component
+sii6716_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Narrow [SII]6716 component
+sii6716_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Narrow [SII]6716 component
+sii6716_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Narrow [SII]6716 component
+sii6716_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Narrow [SII]6716 component
+sii6716_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Narrow [SII]6716 component
+sii6716_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Narrow [SII]6716 component
+sii6716_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Narrow [SII]6716 component
+sii6716_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Narrow [SII]6716 component
+sii6716_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Narrow [SII]6716 component
+sii6716_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Narrow [SII]6716 component
+sii6716_out_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Outflow [SII]6716 component
+sii6716_out_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Outflow [SII]6716 component
+sii6716_out_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Outflow [SII]6716 component
+sii6716_out_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Outflow [SII]6716 component
+sii6716_out_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Outflow [SII]6716 component
+sii6716_out_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Outflow [SII]6716 component
+sii6716_out_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Outflow [SII]6716 component
+sii6716_out_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Outflow [SII]6716 component
+sii6716_out_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Outflow [SII]6716 component
+sii6716_out_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Outflow [SII]6716 component
+sii6716_out_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Outflow [SII]6716 component
+sii6716_out_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Outflow [SII]6716 component
+sii6716_out_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Outflow [SII]6716 component
+sii6716_out_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Outflow [SII]6716 component
+sii6731_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Narrow [SII]6731 component
+sii6731_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Narrow [SII]6731 component
+sii6731_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Narrow [SII]6731 component
+sii6731_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Narrow [SII]6731 component
+sii6731_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Narrow [SII]6731 component
+sii6731_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Narrow [SII]6731 component
+sii6731_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Narrow [SII]6731 component
+sii6731_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Narrow [SII]6731 component
+sii6731_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Narrow [SII]6731 component
+sii6731_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Narrow [SII]6731 component
+sii6731_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Narrow [SII]6731 component
+sii6731_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Narrow [SII]6731 component
+sii6731_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Narrow [SII]6731 component
+sii6731_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Narrow [SII]6731 component
+sii6731_out_amplitude,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Amplitude of the Outflow [SII]6731 component
+sii6731_out_amplitude_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Amplitude of the Outflow [SII]6731 component
+sii6731_out_mean,adql:DOUBLE,1,0,0,Angstrom,Mean of the Outflow [SII]6731 component
+sii6731_out_mean_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Mean of the Outflow [SII]6731 component
+sii6731_out_std,adql:DOUBLE,1,0,0,Angstrom,Standard Deviation of the Outflow [SII]6731 component
+sii6731_out_std_err,adql:DOUBLE,1,0,0,Angstrom,Uncertainty in Standard Deviation of the Outflow [SII]6731 component
+sii6731_out_flux,adql:DOUBLE,1,1,0,1e17 erg/(cm2 s),Flux from the Outflow [SII]6731 component
+sii6731_out_flux_err,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),Uncertainty in Flux from the Outflow [SII]6731 component
+sii6731_out_flux_lerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),16th percentile Flux from the Outflow [SII]6731 component
+sii6731_out_flux_uerr,adql:DOUBLE,1,0,0,1e17 erg/(cm2 s),84th percentile Flux from the Outflow [SII]6731 component
+sii6731_out_sigma,adql:DOUBLE,1,0,0,km/s,Width (in km/s) of the Outflow [SII]6731 component
+sii6731_out_sigma_err,adql:DOUBLE,1,0,0,km/s,Uncertainty in the Width of the Outflow [SII]6731 component
+sii6731_out_sigma_lerr,adql:DOUBLE,1,0,0,km/s,16th percentile width of the Outflow [SII]6731 component
+sii6731_out_sigma_uerr,adql:DOUBLE,1,0,0,km/s,84th percentile width of the Outflow [SII]6731 component
+sii_continuum,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Continuum around the [SII] components
+sii_continuum_err,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),Uncertainty in Continuum around the [SII] components
+sii_noise,adql:DOUBLE,1,0,0,1e17 erg/(Angstrom cm2 s),rms of the Continuum around the [SII] components
+sii_rchi2,adql:DOUBLE,1,0,0,,"Reduced chi2 associated with the [SII]6717,6731 Fit"
+nii_ha_sii_rchi2,adql:DOUBLE,1,0,0,,"Reduced chi2 associated with the [NII]6548,6583+Ha+[SII]6717,6731 Fit"
+targetid,adql:BIGINT,1,1,0,,Unique identifier of the DESI target
+hb_n_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Narrow Hb
+hb_out_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Outflow Hb
+hb_b_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Broad Hb
+hb_ndof,adql:BIGINT,1,0,0,,Number of Degrees of Freedom associated with the Hb Fit
+oiii4959_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Narrow [OIII]4959
+oiii4959_out_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Outflow [OIII]4959
+oiii5007_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Narrow [OIII]5007
+oiii5007_out_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Outflow [OIII]5007
+oiii_ndof,adql:BIGINT,1,0,0,,"Number of Degrees of Freedom associated with the [OIII]4959,5007 Fit"
+hb_oiii_ndof,adql:BIGINT,1,0,0,,"Number of Degrees of Freedom associated with the Hb+[OIII]4959,5007 Fit"
+nii6548_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Narrow [NII]6548
+nii6548_out_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Outflow [NII]6548
+nii6583_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Narrow [NII]6583
+nii6583_out_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Outflow [NII]6583
+ha_n_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Narrow Ha
+ha_out_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Outflow Ha
+ha_b_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Broad Ha
+nii_ha_ndof,adql:BIGINT,1,0,0,,"Number of Degrees of Freedom associated with the [NII]6548,6583+Ha Fit"
+sii6716_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Narrow [SII]6716
+sii6716_out_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Outflow [SII]6716
+sii6731_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Narrow [SII]6731
+sii6731_out_sigma_flag,adql:BIGINT,1,0,0,,Flag regarding instrumental resolution correction for Outflow [SII]6731
+sii_ndof,adql:BIGINT,1,0,0,,"Number of Degrees of Freedom associated with the [SII]6716,6731 Fit"
+nii_ha_sii_ndof,adql:BIGINT,1,0,0,,"Number of Degrees of Freedom associated with the [NII]6548,6583 + Ha + [SII]6717,6731 Fit"
+healpix,adql:INTEGER,1,1,0,,Healpix number of the target
+htm9,adql:INTEGER,1,1,0,,Ninth level (~10 arcmin resolution) Hierarchical Triangular Mesh index (Szalay et al. 2007)
+ring256,adql:INTEGER,1,1,0,,Ring-scheme HEALPix (Gorski et al. 2005) index with Nsides=256 (~14 arcmin size)
+nest4096,adql:INTEGER,1,1,0,,Nested-scheme HEALPix (Gorski et al. 2005) index with Nsides=4096 (~52 arcsec size)
+random_id,adql:REAL,1,1,0,,Random ID in the range 0.0 => 100.0 (not unique)
+oiii_dbl_flag,adql:BOOLEAN,1,0,0,,Flag regarding whether the [OIII] emission has double narrow-peak Gaussian components
+sii_dbl_flag,adql:BOOLEAN,1,0,0,,"Flag regarding whether the [SII] (and therefore [NII], HA, and HB) emission has double narrow-peak Gaussian components"
+program,adql:VARCHAR,6,1,0,,Observing Program dark or bright or backup or other
+survey,adql:VARCHAR,7,1,0,,DESI Survey of the spectra main or special or sv1 or sv2 or sv3 or cmx
+specprod,adql:VARCHAR,9,0,0,,Spectral Production Pipeline fuji
