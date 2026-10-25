@@ -1,0 +1,7 @@
+spectype,zwarn_zero,n_objects,n_with_stellar_mass_emline,n_several_targetid,median_z
+GALAXY,False,1393,0,37,0.9328
+GALAXY,True,18133,18133,1209,0.5291
+QSO,False,21,0,0,1.5169
+QSO,True,635,0,80,1.7737
+STAR,False,38,0,0,0.0002
+STAR,True,3449,0,1349,0.0001

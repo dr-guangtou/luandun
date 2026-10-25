@@ -1,0 +1,188 @@
+column_name,datatype,size,indexed,principal,unit,description
+ls_id,adql:BIGINT,1,1,0,,Unique LS object ID
+dec,adql:DOUBLE,1,1,0,,Declination at equinox J2000
+ra,adql:DOUBLE,1,1,0,,Right ascension at equinox J2000
+elat,adql:DOUBLE,1,1,0,,Ecliptic Latitude
+elon,adql:DOUBLE,1,1,0,,Ecliptic Longitude
+glat,adql:DOUBLE,1,1,0,,Galactic Latitude
+glon,adql:DOUBLE,1,1,0,,Galactic Longitude
+mjd_max,adql:DOUBLE,1,0,0,,Maximum Modified Julian Date of observations used to construct the model of this object
+mjd_min,adql:DOUBLE,1,0,0,,Minimum Modified Julian Date of observations used to construct the model of this object
+ref_id,adql:BIGINT,1,0,0,,"Reference catalog identifier for this star; Tyc1*1,000,000+Tyc2*10+Tyc3 for Tycho2; sourceid for Gaia DR2 and SGA"
+brickid,adql:INTEGER,1,1,0,,"Brick ID [1,662174]"
+blob_nea_g,adql:REAL,1,0,0,,Blob-masked noise equivalent area in g.
+blob_nea_r,adql:REAL,1,0,0,,Blob-masked noise equivalent area in r.
+blob_nea_z,adql:REAL,1,0,0,,Blob-masked noise equivalent area in z.
+bx,adql:REAL,1,0,0,,X position (0-indexed) of coordinates in the brick image stack (i.e. in the e.g. legacysurvey-<brick>-image-g.fits.fz coadd file)
+by,adql:REAL,1,0,0,,Y position (0-indexed) of coordinates in the brick image stack (i.e. in the e.g. legacysurvey-<brick>-image-g.fits.fz coadd file)
+dchisq_1,adql:REAL,1,0,0,,"Difference in chi^2 between successively more-complex model fits: PSF, REX, DEV, EXP, SER. The difference is versus no source."
+dchisq_2,adql:REAL,1,0,0,,"Difference in chi^2 between successively more-complex model fits: PSF, REX, DEV, EXP, SER. The difference is versus no source."
+dchisq_3,adql:REAL,1,0,0,,"Difference in chi^2 between successively more-complex model fits: PSF, REX, DEV, EXP, SER. The difference is versus no source."
+dchisq_4,adql:REAL,1,0,0,,"Difference in chi^2 between successively more-complex model fits: PSF, REX, DEV, EXP, SER. The difference is versus no source."
+dchisq_5,adql:REAL,1,0,0,,"Difference in chi^2 between successively more-complex model fits: PSF, REX, DEV, EXP, SER. The difference is versus no source."
+dec_ivar,adql:REAL,1,0,0,,"Inverse variance of DEC, excluding astrometric calibration errors"
+dered_flux_g,adql:REAL,1,0,0,,Dereddened g band flux
+dered_flux_r,adql:REAL,1,0,0,,Dereddened r band flux
+dered_flux_w1,adql:REAL,1,0,0,,Dereddened w1 band flux
+dered_flux_w2,adql:REAL,1,0,0,,Dereddened w2 band flux
+dered_flux_w3,adql:REAL,1,0,0,,Dereddened w3 band flux
+dered_flux_w4,adql:REAL,1,0,0,,Dereddened w4 band flux
+dered_flux_z,adql:REAL,1,0,0,,Dereddened z band flux
+dered_mag_g,adql:REAL,1,1,0,,Dereddened g-band magnitude
+dered_mag_r,adql:REAL,1,1,0,,Dereddened r-band magnitude
+dered_mag_w1,adql:REAL,1,0,0,,Dereddened w1-band magnitude
+dered_mag_w2,adql:REAL,1,0,0,,Dereddened w2-band magnitude
+dered_mag_w3,adql:REAL,1,0,0,,Dereddened w3-band magnitude
+dered_mag_w4,adql:REAL,1,0,0,,Dereddened w4-band magnitude
+dered_mag_z,adql:REAL,1,1,0,,Dereddened z-band magnitude
+ebv,adql:REAL,1,0,0,,"Galactic extinction E(B-V) reddening from SFD98, used to compute the mw_transmission_ columns"
+fiberflux_g,adql:REAL,1,0,0,,Predicted g-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+fiberflux_r,adql:REAL,1,0,0,,Predicted g-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+fiberflux_z,adql:REAL,1,0,0,,Predicted g-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+fibertotflux_g,adql:REAL,1,0,0,,Predicted g-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+fibertotflux_r,adql:REAL,1,0,0,,Predicted r-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+fibertotflux_z,adql:REAL,1,0,0,,Predicted z-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+flux_g,adql:REAL,1,0,0,,Model flux in g
+flux_ivar_g,adql:REAL,1,0,0,,Inverse variance of flux_g
+flux_ivar_r,adql:REAL,1,0,0,,Inverse variance of flux_r
+flux_ivar_w1,adql:REAL,1,0,0,,Inverse variance of flux_w1 (AB system)
+flux_ivar_w2,adql:REAL,1,0,0,,Inverse variance of flux_w2 (AB system)
+flux_ivar_w3,adql:REAL,1,0,0,,Inverse variance of flux_w3 (AB system)
+flux_ivar_w4,adql:REAL,1,0,0,,Inverse variance of flux_w4 (AB system)
+flux_ivar_z,adql:REAL,1,0,0,,Inverse variance of flux_z
+flux_r,adql:REAL,1,0,0,,Model flux in r
+flux_w1,adql:REAL,1,0,0,,WISE model flux in W1 (AB system)
+flux_w2,adql:REAL,1,0,0,,WISE model flux in W2 (AB system)
+flux_w3,adql:REAL,1,0,0,,WISE model flux in W3 (AB system)
+flux_w4,adql:REAL,1,0,0,,WISE model flux in W4 (AB system)
+flux_z,adql:REAL,1,0,0,,Model flux in z
+fracflux_g,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in g (typically [0,1])"
+fracflux_r,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in r (typically [0,1])"
+fracflux_w1,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in W1 (typically [0,1])"
+fracflux_w2,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in W2 (typically [0,1])"
+fracflux_w3,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in W3 (typically [0,1])"
+fracflux_w4,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in W4 (typically [0,1])"
+fracflux_z,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in z (typically [0,1])"
+fracin_g,adql:REAL,1,0,0,,"Fraction of a sources flux within the blob in g, near unity for real sources"
+fracin_r,adql:REAL,1,0,0,,"Fraction of a sources flux within the blob in r, near unity for real sources"
+fracin_z,adql:REAL,1,0,0,,"Fraction of a sources flux within the blob in z, near unity for real sources"
+fracmasked_g,adql:REAL,1,0,0,,"Profile-weighted fraction of pixels masked from all observations of this object in g, strictly between [0,1]"
+fracmasked_r,adql:REAL,1,0,0,,"Profile-weighted fraction of pixels masked from all observations of this object in g, strictly between [0,1]"
+fracmasked_z,adql:REAL,1,0,0,,"Profile-weighted fraction of pixels masked from all observations of this object in g, strictly between [0,1]"
+gaia_a_g_val,adql:REAL,1,0,0,,Gaia line-of-sight extinction in the G band
+gaia_astrometric_excess_noise,adql:REAL,1,0,0,,Gaia astrometric excess noise
+gaia_astrometric_excess_noise_sig,adql:REAL,1,0,0,,Gaia astrometric excess noise uncertainty
+gaia_astrometric_sigma5d_max,adql:REAL,1,0,0,,Gaia longest semi-major axis of the 5-d error ellipsoid
+gaia_astrometric_weight_al,adql:REAL,1,0,0,,Gaia astrometric weight along scan direction
+gaia_e_bp_min_rp_val,adql:REAL,1,0,0,,Gaia line-of-sight reddening E(BP-RP)
+gaia_phot_bp_mean_flux_over_error,adql:REAL,1,0,0,,Gaia BP signal-to-noise
+gaia_phot_bp_mean_mag,adql:REAL,1,0,0,,Gaia BP mag
+gaia_phot_bp_rp_excess_factor,adql:REAL,1,0,0,,Gaia BP/RP excess factor
+gaia_phot_g_mean_flux_over_error,adql:REAL,1,0,0,,Gaia G band signal-to-noise
+gaia_phot_g_mean_mag,adql:REAL,1,0,0,,Gaia G band mag
+gaia_phot_rp_mean_flux_over_error,adql:REAL,1,0,0,,Gaia RP band signal-to-noise
+gaia_phot_rp_mean_mag,adql:REAL,1,0,0,,Gaia RP mag
+galdepth_g,adql:REAL,1,0,0,,"As for psfdepth_g but for a galaxy (0.45 arcsec exp, round) detection sensitivity"
+galdepth_r,adql:REAL,1,0,0,,"As for psfdepth_r but for a galaxy (0.45 arcsec exp, round) detection sensitivity"
+galdepth_z,adql:REAL,1,0,0,,"As for psfdepth_z but for a galaxy (0.45 arcsec exp, round) detection sensitivity"
+g_r,adql:REAL,1,0,0,,Computed (g-r) color
+htm9,adql:INTEGER,1,1,0,,HTM index (order 9 => ~10 arcmin size)
+mag_g,adql:REAL,1,1,0,,Converted g magnitude
+mag_r,adql:REAL,1,1,0,,Converted r magnitude
+mag_w1,adql:REAL,1,1,0,,Converted W1 magnitude
+mag_w2,adql:REAL,1,1,0,,Converted W2 magnitude
+mag_w3,adql:REAL,1,1,0,,Converted W3 magnitude
+mag_w4,adql:REAL,1,1,0,,Converted W4 magnitude
+mag_z,adql:REAL,1,1,0,,Converted z magnitude
+mw_transmission_g,adql:REAL,1,0,0,,"Galactic transmission in g filter in linear units [0, 1]"
+mw_transmission_r,adql:REAL,1,0,0,,"Galactic transmission in r filter in linear units [0, 1]"
+mw_transmission_w1,adql:REAL,1,0,0,,"Galactic transmission in w1 filter in linear units [0, 1]"
+mw_transmission_w2,adql:REAL,1,0,0,,"Galactic transmission in w2 filter in linear units [0, 1]"
+mw_transmission_w3,adql:REAL,1,0,0,,"Galactic transmission in w3 filter in linear units [0, 1]"
+mw_transmission_w4,adql:REAL,1,0,0,,"Galactic transmission in w4 filter in linear units [0, 1]"
+mw_transmission_z,adql:REAL,1,0,0,,"Galactic transmission in z filter in linear units [0, 1]"
+nea_g,adql:REAL,1,0,0,,Noise equivalent area in  g
+nea_r,adql:REAL,1,0,0,,Noise equivalent area in  r
+nea_z,adql:REAL,1,0,0,,Noise equivalent area in  z
+nest4096,adql:INTEGER,1,1,0,,"HEALPIX index (Nsides 4096, Nest scheme => ~52 arcsec size)"
+objid,adql:INTEGER,1,1,0,,"Catalog object number within this brick; a unique identifier hash is release,brickid,objid; objid spans [0,N-1] and is contiguously enumerated within each brick"
+parallax_ivar,adql:REAL,1,0,0,,Reference catalog inverse-variance on parallax
+parallax,adql:REAL,1,0,0,,Reference catalog parallax
+pmdec_ivar,adql:REAL,1,0,0,,Reference catalog inverse-variance on pmdec
+pmdec,adql:REAL,1,0,0,,Reference catalog proper motion in the Dec direction
+pmra_ivar,adql:REAL,1,0,0,,Reference catalog inverse-variance on pmra
+pmra,adql:REAL,1,0,0,,Reference catalog proper motion in the RA direction
+psfdepth_g,adql:REAL,1,0,0,,"For a 5 sigma point source detection limit in g, 5/(sqrt psfdepth_g) gives flux in nanomaggies and (-2.5[log10(5/(sqrt psfdepth_g))-9]) gives corresponding AB magnitude"
+psfdepth_r,adql:REAL,1,0,0,,"For a 5 sigma point source detection limit in r, 5/(sqrt psfdepth_r) gives flux in nanomaggies and (-2.5[log10(5/(sqrt psfdepth_r))-9]) gives corresponding AB magnitude"
+psfdepth_w1,adql:REAL,1,0,0,,As for psfdepth_g (and also on the AB system) but for WISE W1
+psfdepth_w2,adql:REAL,1,0,0,,As for psfdepth_g (and also on the AB system) but for WISE W2
+psfdepth_w3,adql:REAL,1,0,0,,As for psfdepth_g (and also on the AB system) but for WISE W3
+psfdepth_w4,adql:REAL,1,0,0,,As for psfdepth_g (and also on the AB system) but for WISE W4
+psfdepth_z,adql:REAL,1,0,0,,"For a 5 sigma point source detection limit in z, 5/(sqrt psfdepth_z) gives flux in nanomaggies and (-2.5[log10(5/(sqrt psfdepth_z))-9]) gives corresponding AB magnitude"
+psfsize_g,adql:REAL,1,0,0,,Weighted average PSF FWHM in the g band
+psfsize_r,adql:REAL,1,0,0,,Weighted average PSF FWHM in the r band
+psfsize_z,adql:REAL,1,0,0,,Weighted average PSF FWHM in the z band
+ra_ivar,adql:REAL,1,0,0,,"Inverse variance of RA (no cosine term!), excluding astrometric calibration errors"
+random_id,adql:REAL,1,1,0,,Random ID in the range 0.0 => 100.0
+rchisq_g,adql:REAL,1,0,0,,Profile-weighted chi^2 of model fit normalized by the number of pixels in g
+rchisq_r,adql:REAL,1,0,0,,Profile-weighted chi^2 of model fit normalized by the number of pixels in r
+rchisq_w1,adql:REAL,1,0,0,,Profile-weighted chi^2 of model fit normalized by the number of pixels in W1
+rchisq_w2,adql:REAL,1,0,0,,Profile-weighted chi^2 of model fit normalized by the number of pixels in W2
+rchisq_w3,adql:REAL,1,0,0,,Profile-weighted chi^2 of model fit normalized by the number of pixels in W3
+rchisq_w4,adql:REAL,1,0,0,,Profile-weighted chi^2 of model fit normalized by the number of pixels in W4
+rchisq_z,adql:REAL,1,0,0,,Profile-weighted chi^2 of model fit normalized by the number of pixels in z
+ref_epoch,adql:REAL,1,0,0,,"Reference catalog reference epoch (eg, 2015.5 for Gaia DR2)"
+ring256,adql:INTEGER,1,1,0,,"HEALPIX index (Nsides 256, Ring scheme => ~14 arcmin size)"
+r_z,adql:REAL,1,0,0,,Computed (r-z) color
+sersic_ivar,adql:REAL,1,0,0,,Inverse variance of sersic
+sersic,adql:REAL,1,0,0,,Power-law index for the Sersic profile model (type=SER)
+shape_e1_ivar,adql:REAL,1,0,0,,Inverse variance of shape_e1
+shape_e1,adql:REAL,1,0,0,,Ellipticity component 1 of galaxy model for galaxy type type
+shape_e2_ivar,adql:REAL,1,0,0,,Inverse variance of shape_e2
+shape_e2,adql:REAL,1,0,0,,Ellipticity component 2 of galaxy model for galaxy type type
+shape_r_ivar,adql:REAL,1,0,0,,Inverse variance of shape_r
+shape_r,adql:REAL,1,0,0,arcsec,Half-light radius of galaxy model for galaxy type type (>0)
+snr_g,adql:REAL,1,1,0,,Signal-to-Noise ratio in g
+snr_r,adql:REAL,1,1,0,,Signal-to-Noise ratio in r
+snr_w1,adql:REAL,1,1,0,,Signal-to-Noise ratio in W1
+snr_w2,adql:REAL,1,1,0,,Signal-to-Noise ratio in W2
+snr_w3,adql:REAL,1,1,0,,Signal-to-Noise ratio in W3
+snr_w4,adql:REAL,1,1,0,,Signal-to-Noise ratio in W4
+snr_z,adql:REAL,1,1,0,,Signal-to-Noise ratio in z
+w1_w2,adql:REAL,1,0,0,,Computed (w1-w2) color
+w2_w3,adql:REAL,1,0,0,,Computed (w2-w3) color
+w3_w4,adql:REAL,1,0,0,,Computed (w3-w4) color
+wise_x,adql:REAL,1,0,0,,X position of coordinates in the brick image stack that corresponds to wise_coadd_id (see the DR9 updates page for transformations between wise_x and bx)
+wise_y,adql:REAL,1,0,0,,Y position of coordinates in the brick image stack that corresponds to wise_coadd_id (see the DR9 updates page for transformations between wise_y and by)
+z_w1,adql:REAL,1,0,0,,Computed (z-w1) color
+allmask_g,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from all images satisfy each condition in g as cataloged on the DR9 bitmasks page
+allmask_r,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from all images satisfy each condition in r as cataloged on the DR9 bitmasks page
+allmask_z,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from all images satisfy each condition in z as cataloged on the DR9 bitmasks page
+anymask_g,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from any image satisfies each condition in g as cataloged on the DR9 bitmasks page
+anymask_r,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from any image satisfies each condition in r as cataloged on the DR9 bitmasks page
+anymask_z,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from any image satisfies each condition in z as cataloged on the DR9 bitmasks page
+brick_primary,adql:SMALLINT,1,1,0,,True if the object is within the brick boundar
+fitbits,adql:SMALLINT,1,0,0,,"Bitwise mask detailing pecularities of how an object was fit, as cataloged on the DR9 bitmasks page"
+gaia_astrometric_n_good_obs_al,adql:SMALLINT,1,0,0,,Gaia number of good astrometric observations along scan direction
+gaia_astrometric_n_obs_al,adql:SMALLINT,1,0,0,,Gaia number of astrometric observations along scan direction
+gaia_astrometric_params_solved,adql:SMALLINT,1,0,0,,Which astrometric parameters were estimated for a Gaia source
+gaia_duplicated_source,adql:SMALLINT,1,0,0,,Gaia duplicated source flag
+gaia_phot_bp_n_obs,adql:SMALLINT,1,0,0,,Gaia BP number of observations
+gaia_phot_g_n_obs,adql:SMALLINT,1,0,0,,Gaia g band number of observations
+gaia_phot_rp_n_obs,adql:SMALLINT,1,0,0,,Gaia RP band number of observations
+gaia_phot_variable_flag,adql:SMALLINT,1,0,0,,Gaia photometric variable flag
+maskbits,adql:SMALLINT,1,1,0,,"Bitwise mask indicating that an object touches a pixel in the coadd/*/*/*maskbits* maps, as cataloged on the DR9 bitmasks page"
+nobs_g,adql:SMALLINT,1,0,0,,Number of images that contribute to the central pixel in g: filter for this object (not profile-weighted)
+nobs_r,adql:SMALLINT,1,0,0,,Number of images that contribute to the central pixel in r: filter for this object (not profile-weighted)
+nobs_w1,adql:SMALLINT,1,0,0,,Number of images that contribute to the central pixel in W1: filter for this object (not profile-weighted)
+nobs_w2,adql:SMALLINT,1,0,0,,Number of images that contribute to the central pixel in W2: filter for this object (not profile-weighted)
+nobs_w3,adql:SMALLINT,1,0,0,,Number of images that contribute to the central pixel in W3: filter for this object (not profile-weighted)
+nobs_w4,adql:SMALLINT,1,0,0,,Number of images that contribute to the central pixel in W4: filter for this object (not profile-weighted)
+nobs_z,adql:SMALLINT,1,0,0,,Number of images that contribute to the central pixel in z: filter for this object (not profile-weighted)
+release,adql:SMALLINT,1,0,0,,"Integer denoting the camera and filter set used, which will be unique for a given processing run of the data, as documented at https://www.legacysurvey.org/dr9/catalogs/"
+wisemask_w1,adql:SMALLINT,1,1,0,,W1 bitmask as cataloged on the DR9 bitmasks page
+wisemask_w2,adql:SMALLINT,1,1,0,,W2 bitmask as cataloged on the DR9 bitmasks page
+brickname,adql:VARCHAR,8,0,0,,"Name of brick, encoding the brick sky position, eg 1126p222 near RA=112.6, Dec=+22.2"
+ref_cat,adql:VARCHAR,2,0,0,,"Reference catalog source for this star: T2 for Tycho-2, G2 for Gaia DR2, L3 for the SGA, empty otherwise"
+type,adql:VARCHAR,4,1,0,,"Morphological model: PSF=stellar, REX=round exponential galaxy, DEV=deVauc, EXP=exponential, SER=Sersic, DUP=Gaia source fit by different model."
+wise_coadd_id,adql:VARCHAR,8,0,0,,"unWISE coadd brick name (corresponding to the, e.g., legacysurvey-<brick>-image-W1.fits.fz coadd file) for the center of each object"

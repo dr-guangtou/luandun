@@ -1,0 +1,429 @@
+column_name,datatype,size,indexed,principal,unit,description
+xj_sl,adql:DOUBLE,45,0,0,,Light-fraction population vector (45-element array) from STARLIGHT output. NOTE: this column is stored as an ARRAY datatype. Each array contains elements of datatype DOUBLE.
+target_ra,adql:DOUBLE,1,1,0,deg,Right Ascension (J2000)
+target_dec,adql:DOUBLE,1,1,0,deg,Declination (J2000)
+z,adql:DOUBLE,1,1,0,,Redshift
+zerr,adql:DOUBLE,1,0,0,,Redshift error
+plate_ra,adql:DOUBLE,1,0,0,deg,Barycentric Right Ascension in ICRS to be used by PlateMaker.
+plate_dec,adql:DOUBLE,1,0,0,deg,Barycentric Declination in ICRS to be used by PlateMaker.
+mgii2796_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the MGII2796 line
+mgii2796_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the MGII2796 line
+mgii2796_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the MGII2796 line
+mgii2796_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the MGII2796 line
+mgii2796_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the MGII2796 line
+mgii2796_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the MGII2796 line
+mgii2796_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the MGII2796 line
+mgii2796_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the MGII2796 line
+mgii2796_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the MGII2796 line
+mgii2796_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the MGII2796 line
+mgii2803_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the MGII2803 line
+mgii2803_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the MGII2803 line
+mgii2803_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the MGII2803 line
+mgii2803_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the MGII2803 line
+mgii2803_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the MGII2803 line
+mgii2803_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the MGII2803 line
+mgii2803_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the MGII2803 line
+mgii2803_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the MGII2803 line
+mgii2803_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the MGII2803 line
+mgii2803_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the MGII2803 line
+nev3346_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the NEV3346 line
+nev3346_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the NEV3346 line
+nev3346_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the NEV3346 line
+nev3346_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the NEV3346 line
+nev3346_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the NEV3346 line
+nev3346_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the NEV3346 line
+nev3346_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the NEV3346 line
+nev3346_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the NEV3346 line
+nev3346_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the NEV3346 line
+nev3346_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the NEV3346 line
+nev3426_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the NEV3426 line
+nev3426_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the NEV3426 line
+nev3426_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the NEV3426 line
+nev3426_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the NEV3426 line
+nev3426_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the NEV3426 line
+nev3426_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the NEV3426 line
+nev3426_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the NEV3426 line
+nev3426_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the NEV3426 line
+nev3426_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the NEV3426 line
+nev3426_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the NEV3426 line
+oii3726_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the OII3726 line
+oii3726_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the OII3726 line
+oii3726_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the OII3726 line
+oii3726_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the OII3726 line
+oii3726_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the OII3726 line
+oii3726_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the OII3726 line
+oii3726_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the OII3726 line
+oii3726_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the OII3726 line
+oii3726_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the OII3726 line
+oii3726_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the OII3726 line
+oii3729_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the OII3729 line
+oii3729_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the OII3729 line
+oii3729_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the OII3729 line
+oii3729_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the OII3729 line
+oii3729_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the OII3729 line
+oii3729_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the OII3729 line
+oii3729_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the OII3729 line
+oii3729_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the OII3729 line
+oii3729_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the OII3729 line
+oii3729_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the OII3729 line
+neiii3869_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the NEIII3869 line
+neiii3869_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the NEIII3869 line
+neiii3869_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the NEIII3869 line
+neiii3869_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the NEIII3869 line
+neiii3869_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the NEIII3869 line
+neiii3869_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the NEIII3869 line
+neiii3869_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the NEIII3869 line
+neiii3869_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the NEIII3869 line
+neiii3869_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the NEIII3869 line
+neiii3869_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the NEIII3869 line
+neiii3967_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the NEIII3967 line
+neiii3967_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the NEIII3967 line
+neiii3967_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the NEIII3967 line
+neiii3967_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the NEIII3967 line
+neiii3967_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the NEIII3967 line
+neiii3967_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the NEIII3967 line
+neiii3967_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the NEIII3967 line
+neiii3967_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the NEIII3967 line
+neiii3967_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the NEIII3967 line
+neiii3967_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the NEIII3967 line
+hepsilon_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HEPSILON line
+hepsilon_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HEPSILON line
+hepsilon_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HEPSILON line
+hepsilon_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HEPSILON line
+hepsilon_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HEPSILON line
+hepsilon_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HEPSILON line
+hepsilon_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HEPSILON line
+hepsilon_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HEPSILON line
+hepsilon_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HEPSILON line
+hepsilon_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HEPSILON line
+hei4026_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HEI4026 line
+hei4026_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HEI4026 line
+hei4026_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HEI4026 line
+hei4026_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HEI4026 line
+hei4026_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HEI4026 line
+hei4026_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HEI4026 line
+hei4026_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HEI4026 line
+hei4026_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HEI4026 line
+hei4026_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HEI4026 line
+hei4026_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HEI4026 line
+hdelta_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HDELTA line
+hdelta_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HDELTA line
+hdelta_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HDELTA line
+hdelta_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HDELTA line
+hdelta_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HDELTA line
+hdelta_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HDELTA line
+hdelta_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HDELTA line
+hdelta_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HDELTA line
+hdelta_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HDELTA line
+hdelta_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HDELTA line
+hgamma_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HGAMMA line
+hgamma_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HGAMMA line
+hgamma_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HGAMMA line
+hgamma_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HGAMMA line
+hgamma_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HGAMMA line
+hgamma_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HGAMMA line
+hgamma_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HGAMMA line
+hgamma_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HGAMMA line
+hgamma_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HGAMMA line
+hgamma_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HGAMMA line
+oiii4363_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the OIII4363 line
+oiii4363_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the OIII4363 line
+oiii4363_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the OIII4363 line
+oiii4363_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the OIII4363 line
+oiii4363_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the OIII4363 line
+oiii4363_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the OIII4363 line
+oiii4363_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the OIII4363 line
+oiii4363_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the OIII4363 line
+oiii4363_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the OIII4363 line
+oiii4363_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the OIII4363 line
+hei4471_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HEI4471 line
+hei4471_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HEI4471 line
+hei4471_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HEI4471 line
+hei4471_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HEI4471 line
+hei4471_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HEI4471 line
+hei4471_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HEI4471 line
+hei4471_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HEI4471 line
+hei4471_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HEI4471 line
+hei4471_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HEI4471 line
+hei4471_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HEI4471 line
+heii4686_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HEII4686 line
+heii4686_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HEII4686 line
+heii4686_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HEII4686 line
+heii4686_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HEII4686 line
+heii4686_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HEII4686 line
+heii4686_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HEII4686 line
+heii4686_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HEII4686 line
+heii4686_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HEII4686 line
+heii4686_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HEII4686 line
+heii4686_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HEII4686 line
+hbeta_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HBETA line
+hbeta_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HBETA line
+hbeta_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HBETA line
+hbeta_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HBETA line
+hbeta_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HBETA line
+hbeta_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HBETA line
+hbeta_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HBETA line
+hbeta_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HBETA line
+hbeta_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HBETA line
+hbeta_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HBETA line
+oiii4959_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the OIII4959 line
+oiii4959_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the OIII4959 line
+oiii4959_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the OIII4959 line
+oiii4959_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the OIII4959 line
+oiii4959_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the OIII4959 line
+oiii4959_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the OIII4959 line
+oiii4959_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the OIII4959 line
+oiii4959_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the OIII4959 line
+oiii4959_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the OIII4959 line
+oiii4959_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the OIII4959 line
+oiii5007_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the OIII5007 line
+oiii5007_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the OIII5007 line
+oiii5007_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the OIII5007 line
+oiii5007_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the OIII5007 line
+oiii5007_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the OIII5007 line
+oiii5007_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the OIII5007 line
+oiii5007_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the OIII5007 line
+oiii5007_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the OIII5007 line
+oiii5007_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the OIII5007 line
+oiii5007_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the OIII5007 line
+nii5755_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the NII5755 line
+nii5755_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the NII5755 line
+nii5755_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the NII5755 line
+nii5755_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the NII5755 line
+nii5755_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the NII5755 line
+nii5755_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the NII5755 line
+nii5755_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the NII5755 line
+nii5755_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the NII5755 line
+nii5755_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the NII5755 line
+nii5755_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the NII5755 line
+hei5876_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HEI5876 line
+hei5876_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HEI5876 line
+hei5876_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HEI5876 line
+hei5876_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HEI5876 line
+hei5876_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HEI5876 line
+hei5876_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HEI5876 line
+hei5876_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HEI5876 line
+hei5876_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HEI5876 line
+hei5876_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HEI5876 line
+hei5876_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HEI5876 line
+oi6300_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the OI6300 line
+oi6300_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the OI6300 line
+oi6300_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the OI6300 line
+oi6300_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the OI6300 line
+oi6300_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the OI6300 line
+oi6300_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the OI6300 line
+oi6300_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the OI6300 line
+oi6300_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the OI6300 line
+oi6300_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the OI6300 line
+oi6300_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the OI6300 line
+siii6312_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the SIII6312 line
+siii6312_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the SIII6312 line
+siii6312_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the SIII6312 line
+siii6312_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the SIII6312 line
+siii6312_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the SIII6312 line
+siii6312_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the SIII6312 line
+siii6312_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the SIII6312 line
+siii6312_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the SIII6312 line
+siii6312_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the SIII6312 line
+siii6312_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the SIII6312 line
+nii6548_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the NII6548 line
+nii6548_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the NII6548 line
+nii6548_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the NII6548 line
+nii6548_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the NII6548 line
+nii6548_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the NII6548 line
+nii6548_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the NII6548 line
+nii6548_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the NII6548 line
+nii6548_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the NII6548 line
+nii6548_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the NII6548 line
+nii6548_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the NII6548 line
+halpha_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HALPHA line
+halpha_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HALPHA line
+halpha_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HALPHA line
+halpha_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HALPHA line
+halpha_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HALPHA line
+halpha_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HALPHA line
+halpha_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HALPHA line
+halpha_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HALPHA line
+halpha_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HALPHA line
+halpha_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HALPHA line
+nii6583_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the NII6583 line
+nii6583_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the NII6583 line
+nii6583_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the NII6583 line
+nii6583_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the NII6583 line
+nii6583_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the NII6583 line
+nii6583_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the NII6583 line
+nii6583_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the NII6583 line
+nii6583_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the NII6583 line
+nii6583_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the NII6583 line
+nii6583_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the NII6583 line
+sii6716_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the SII6716 line
+sii6716_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the SII6716 line
+sii6716_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the SII6716 line
+sii6716_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the SII6716 line
+sii6716_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the SII6716 line
+sii6716_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the SII6716 line
+sii6716_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the SII6716 line
+sii6716_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the SII6716 line
+sii6716_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the SII6716 line
+sii6716_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the SII6716 line
+sii6731_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the SII6731 line
+sii6731_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the SII6731 line
+sii6731_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the SII6731 line
+sii6731_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the SII6731 line
+sii6731_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the SII6731 line
+sii6731_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the SII6731 line
+sii6731_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the SII6731 line
+sii6731_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the SII6731 line
+sii6731_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the SII6731 line
+sii6731_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the SII6731 line
+hei7065_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HEI7065 line
+hei7065_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HEI7065 line
+hei7065_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HEI7065 line
+hei7065_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HEI7065 line
+hei7065_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HEI7065 line
+hei7065_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HEI7065 line
+hei7065_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HEI7065 line
+hei7065_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HEI7065 line
+hei7065_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HEI7065 line
+hei7065_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HEI7065 line
+ariii7136_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the ARIII7136 line
+ariii7136_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the ARIII7136 line
+ariii7136_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the ARIII7136 line
+ariii7136_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the ARIII7136 line
+ariii7136_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the ARIII7136 line
+ariii7136_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the ARIII7136 line
+ariii7136_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the ARIII7136 line
+ariii7136_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the ARIII7136 line
+ariii7136_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the ARIII7136 line
+ariii7136_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the ARIII7136 line
+hei7281_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the HEI7281 line
+hei7281_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the HEI7281 line
+hei7281_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the HEI7281 line
+hei7281_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the HEI7281 line
+hei7281_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the HEI7281 line
+hei7281_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the HEI7281 line
+hei7281_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the HEI7281 line
+hei7281_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the HEI7281 line
+hei7281_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the HEI7281 line
+hei7281_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the HEI7281 line
+oii7320_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the OII7320 line
+oii7320_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the OII7320 line
+oii7320_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the OII7320 line
+oii7320_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the OII7320 line
+oii7320_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the OII7320 line
+oii7320_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the OII7320 line
+oii7320_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the OII7320 line
+oii7320_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the OII7320 line
+oii7320_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the OII7320 line
+oii7320_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the OII7320 line
+oii7331_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the OII7331 line
+oii7331_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the OII7331 line
+oii7331_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the OII7331 line
+oii7331_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the OII7331 line
+oii7331_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the OII7331 line
+oii7331_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the OII7331 line
+oii7331_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the OII7331 line
+oii7331_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the OII7331 line
+oii7331_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the OII7331 line
+oii7331_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the OII7331 line
+ariii7751_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the ARIII7751 line
+ariii7751_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the ARIII7751 line
+ariii7751_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the ARIII7751 line
+ariii7751_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the ARIII7751 line
+ariii7751_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the ARIII7751 line
+ariii7751_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the ARIII7751 line
+ariii7751_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the ARIII7751 line
+ariii7751_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the ARIII7751 line
+ariii7751_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the ARIII7751 line
+ariii7751_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the ARIII7751 line
+siii9071_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the SIII9071 line
+siii9071_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the SIII9071 line
+siii9071_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the SIII9071 line
+siii9071_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the SIII9071 line
+siii9071_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the SIII9071 line
+siii9071_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the SIII9071 line
+siii9071_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the SIII9071 line
+siii9071_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the SIII9071 line
+siii9071_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the SIII9071 line
+siii9071_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the SIII9071 line
+siii9533_center,adql:DOUBLE,1,0,0,Angstrom,Equivalent width error for the SIII9533 line
+siii9533_centererr,adql:DOUBLE,1,0,0,Angstrom,Central wavelength for the SIII9533 line
+siii9533_flux,adql:DOUBLE,1,0,0,Angstrom,Central wavelength error for the SIII9533 line
+siii9533_fluxerr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux for the SIII9533 line
+siii9533_sigma,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Flux error for the SIII9533 line
+siii9533_sigmaerr,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma for the SIII9533 line
+siii9533_cont,adql:DOUBLE,1,0,0,Angstrom,Gaussian sigma error for the SIII9533 line
+siii9533_conterr,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux for the SIII9533 line
+siii9533_ew,adql:DOUBLE,1,0,0,1e-17 erg s-1 cm-2 Angstrom-1,Continuum flux error for the SIII9533 line
+siii9533_ewerr,adql:DOUBLE,1,0,0,Angstrom,Equivalent width for the SIII9533 line
+dn4000,adql:DOUBLE,1,0,0,,Dn(4000) index.
+dn4000_err,adql:DOUBLE,1,0,0,,Error of Dn(4000) index.
+flux_scale,adql:DOUBLE,1,0,0,,Flux scale to scale the spectrum to the broad-band photometry in r band.
+snr_med,adql:DOUBLE,1,0,0,,Median pixel S/N.
+av_cg,adql:DOUBLE,1,0,0,mag,Stellar extinction from CIGALE output.
+averr_cg,adql:DOUBLE,1,0,0,mag,Stellar extinction error from CIGALE output.
+age_cg,adql:DOUBLE,1,0,0,Myr,Stellar population age from CIGALE output.
+ageerr_cg,adql:DOUBLE,1,0,0,Myr,Stellar population age error from CIGALE output.
+tau_cg,adql:DOUBLE,1,0,0,Myr,Star formation timescale from CIGALE output.
+tauerr_cg,adql:DOUBLE,1,0,0,Myr,Star formation timescale error from CIGALE output.
+z_cg,adql:DOUBLE,1,0,0,,Stellar metallicity from CIGALE output.
+zerr_cg,adql:DOUBLE,1,0,0,,Stelllar metallicity error from CIGALE output.
+sfr_cg,adql:DOUBLE,1,0,0,M_sun/yr,Star formation rate from CIGALE output.
+sfrerr_cg,adql:DOUBLE,1,0,0,M_sun/yr,Star formation rate error from CIGALE output.
+mass_cg,adql:DOUBLE,1,1,0,M_sun,Stellar mass from CIGALE output.
+masserr_cg,adql:DOUBLE,1,0,0,M_sun,Stellar mass error from CIGALE output.
+snr_sl,adql:DOUBLE,1,0,0,,S/N in the S/N window from STARLIGHT output.
+snrerr_sl,adql:DOUBLE,1,0,0,,S/N error estimate with the error spectrum from STARLIGHT output.
+massini_sl,adql:DOUBLE,1,0,0,M_sun,"Mini_tot from STARLIGHT output, used for the initial mass that have been processed into stars throughout the galaxy life (refer to the STARLIGHT manual for calculating the total mass)."
+masscor_sl,adql:DOUBLE,1,0,0,M_sun,"Mcor_tot from STARLIGHT output, used to calculate the present mass in stars (refer to the STARLIGHT manual for calculating the total mass)."
+v0_sl,adql:DOUBLE,1,0,0,km/s,Radial velocity offset in the rest frame from STARLIGHT output.
+vd_sl,adql:DOUBLE,1,0,0,km/s,Velocity dispersion in the rest framefrom STARLIGHT output.
+av_sl,adql:DOUBLE,1,0,0,mag,Dust extinction in V band from STARLIGHT output.
+age_sl,adql:DOUBLE,1,0,0,yr,Light-weighted age from STARLIGHT output.
+z_sl,adql:DOUBLE,1,1,0,,Light-weighted metallicity from STARLIGHT output.
+glon,adql:DOUBLE,1,1,0,deg,Galactic longitude [degrees]
+glat,adql:DOUBLE,1,1,0,deg,Galactic latitude [degrees]
+elon,adql:DOUBLE,1,1,0,deg,Ecliptic longitude [degrees]
+elat,adql:DOUBLE,1,1,0,deg,Ecliptic latitude [degrees]
+targetid,adql:BIGINT,1,1,0,,Unique 64-bit identifier for each object observed by DESI
+brickid,adql:INTEGER,1,0,0,,Brick ID.
+brick_objid,adql:INTEGER,1,0,0,,Catalog object number within this brick.
+healpix,adql:INTEGER,1,0,0,,HEALPixel containing this location at NSIDE=64 in the NESTED scheme
+htm9,adql:INTEGER,1,1,0,,HTM index (order 9 => ~10 arcmin size)
+ring256,adql:INTEGER,1,1,0,,"HEALPIX index (Nsides 256, Ring scheme => ~14 arcmin size)"
+nest4096,adql:INTEGER,1,1,0,,"HEALPIX index (Nsides 4096, Nest scheme => ~52 arcsec size)"
+ebv,adql:REAL,1,0,0,mag,Galactic reddening E(B - V)
+flux_g,adql:REAL,1,1,0,nanomaggy,Flux in g-band
+flux_r,adql:REAL,1,1,0,nanomaggy,Flux in r-band
+flux_z,adql:REAL,1,1,0,nanomaggy,Flux in z-band
+flux_w1,adql:REAL,1,1,0,nanomaggy,Flux in W1-band
+flux_w2,adql:REAL,1,1,0,nanomaggy,Flux in W2-band
+flux_ivar_g,adql:REAL,1,0,0,1/nanomaggy^2,Flux inverse variance in g-band
+flux_ivar_r,adql:REAL,1,0,0,1/nanomaggy^2,Flux inverse variance in r-band
+flux_ivar_z,adql:REAL,1,0,0,1/nanomaggy^2,Flux inverse variance in z-band
+flux_ivar_w1,adql:REAL,1,0,0,1/nanomaggy^2,Flux inverse variance in W1-band
+flux_ivar_w2,adql:REAL,1,0,0,1/nanomaggy^2,Flux inverse variance in W2-band
+sersic,adql:REAL,1,0,0,,Power-law index for the Sersic profile mode
+shape_r,adql:REAL,1,0,0,arcsec,Half-light radius of galaxy model for galaxy type
+shape_e1,adql:REAL,1,0,0,,Ellipticity component 1 of galaxy model for galaxy type
+shape_e2,adql:REAL,1,0,0,,Ellipticity component 2 of galaxy model for galaxy type
+shape_r_ivar,adql:REAL,1,0,0,arcsec^-2,Inverse variance of SHAPE_R
+shape_e1_ivar,adql:REAL,1,0,0,,Inverse variance of SHAPE_E1
+shape_e2_ivar,adql:REAL,1,0,0,,Inverse variance of SHAPE_E2
+gaia_phot_g_mean_mag,adql:REAL,1,1,0,mag,Gaia G-band mean magnitude
+gaia_phot_bp_mean_mag,adql:REAL,1,1,0,mag,Gaia BP-band mean magnitude
+gaia_phot_rp_mean_mag,adql:REAL,1,1,0,mag,Gaia RP-band mean magnitude
+depth_g,adql:REAL,1,0,0,mag,5 sigma point source mangitude limit in g band
+depth_r,adql:REAL,1,0,0,mag,5 sigma point source mangitude limit in r band
+depth_z,adql:REAL,1,0,0,mag,5 sigma point source mangitude limit in z band
+depth_w1,adql:REAL,1,0,0,mag,5 sigma point source mangitude limit in W1 band
+depth_w2,adql:REAL,1,0,0,mag,5 sigma point source mangitude limit in W2 band
+random_id,adql:REAL,1,1,0,,Random ID in the range 0.0 => 100.0
+maskbits,adql:SMALLINT,1,0,0,,Bitwise mask
+release,adql:SMALLINT,1,0,0,,"Integer denoting the camera and filter set used, which will be unique for a given processing run of the data"
+coadd_numexp,adql:SMALLINT,1,0,0,,Number of exposures in coadd.
+morphtype,adql:VARCHAR,4,0,0,,Morphological type from Tractor catalog
+survey,adql:VARCHAR,7,0,0,,"Survey name: cmx, sv1, sv2, sv3, main"
+program,adql:VARCHAR,6,0,0,,"DESI program type: BRIGHT, DARK, BACKUP, OTHER."
+objtype,adql:VARCHAR,3,0,0,,"Object type: TGT, SKY, NON, BAD."
+zcat_primary,adql:BOOLEAN,1,0,0,,True/False flag for the primary coadded spectrum in this zcatalog

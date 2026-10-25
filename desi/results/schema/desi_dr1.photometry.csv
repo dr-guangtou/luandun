@@ -1,0 +1,104 @@
+column_name,datatype,size,indexed,principal,unit,description
+ra,adql:DOUBLE,1,1,0,deg,Right ascension
+dec,adql:DOUBLE,1,1,0,deg,Declination
+elon,adql:DOUBLE,1,1,0,deg,Ecliptic longitude
+elat,adql:DOUBLE,1,1,0,deg,Ecliptic latitude
+glon,adql:DOUBLE,1,1,0,deg,Galactic longitude
+glat,adql:DOUBLE,1,1,0,deg,Galactic latitude
+ls_id,adql:BIGINT,1,1,0,,Unique Legacy Survey object ID
+ref_id,adql:BIGINT,1,0,0,,Tyc1*1000000+Tyc2*10+Tyc3 for Tycho-2; sourceid for Gaia DR2
+targetid,adql:BIGINT,1,1,0,,Unique DESI target ID
+ra_ivar,adql:REAL,1,0,0,deg^-2,Right ascension inverse variance
+dec_ivar,adql:REAL,1,0,0,deg^-2,Declination inverse variance
+dchisq_psf,adql:REAL,1,0,0,,Difference in chi-squared between PSF (stellar) Tractor model fits
+dchisq_rex,adql:REAL,1,0,0,,Difference in chi-squared between REX (round exponential galaxy) Tractor model fits
+dchisq_dev,adql:REAL,1,0,0,,Difference in chi-squared between DEV (deVauc) Tractor model fits
+dchisq_exp,adql:REAL,1,0,0,,Difference in chi-squared between EXP (exponential) Tractor model fits
+dchisq_ser,adql:REAL,1,0,0,,Difference in chi-squared between SER (Sersic) Tractor model fits
+ebv,adql:REAL,1,1,0,mag,Galactic extinction E(B-V) reddening from SFD98
+flux_g,adql:REAL,1,1,0,nanomaggy,Flux in the Legacy Survey g-band (AB)
+flux_r,adql:REAL,1,1,0,nanomaggy,Flux in the Legacy Survey r-band (AB)
+flux_z,adql:REAL,1,1,0,nanomaggy,Flux in the Legacy Survey z-band (AB)
+flux_ivar_g,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_G (AB)
+flux_ivar_r,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_R (AB)
+flux_ivar_z,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_Z (AB)
+mw_transmission_g,adql:REAL,1,0,0,,Milky Way dust transmission in LS g-band
+mw_transmission_r,adql:REAL,1,0,0,,Milky Way dust transmission in LS r-band
+mw_transmission_z,adql:REAL,1,0,0,,Milky Way dust transmission in LS z-band
+fracflux_g,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in g (typically [0,1])"
+fracflux_r,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in r (typically [0,1])"
+fracflux_z,adql:REAL,1,0,0,,"Profile-weighted fraction of the flux from other sources divided by the total flux in z (typically [0,1])"
+fracmasked_g,adql:REAL,1,0,0,,"Profile-weighted fraction of pixels masked from all observations of this object in g, strictly between [0,1]"
+fracmasked_r,adql:REAL,1,0,0,,"Profile-weighted fraction of pixels masked from all observations of this object in r, strictly between [0,1]"
+fracmasked_z,adql:REAL,1,0,0,,"Profile-weighted fraction of pixels masked from all observations of this object in z, strictly between [0,1]"
+fracin_g,adql:REAL,1,0,0,,"Fraction of a sources flux within the blob in g, near unity for real sources"
+fracin_r,adql:REAL,1,0,0,,"Fraction of a sources flux within the blob in r, near unity for real sources"
+fracin_z,adql:REAL,1,0,0,,"Fraction of a sources flux within the blob in z, near unity for real sources"
+psfdepth_g,adql:REAL,1,0,0,nanomaggy^-2,PSF-based depth in g-band
+psfdepth_r,adql:REAL,1,0,0,nanomaggy^-2,PSF-based depth in r-band
+psfdepth_z,adql:REAL,1,0,0,nanomaggy^-2,PSF-based depth in z-band
+galdepth_g,adql:REAL,1,0,0,nanomaggy^-2,Galaxy model-based depth in Legacy Survey g-band
+galdepth_r,adql:REAL,1,0,0,nanomaggy^-2,Galaxy model-based depth in Legacy Survey r-band
+galdepth_z,adql:REAL,1,0,0,nanomaggy^-2,Galaxy model-based depth in Legacy Survey z-band
+flux_w1,adql:REAL,1,1,0,nanomaggy,WISE flux in W1 (AB)
+flux_w2,adql:REAL,1,1,0,nanomaggy,WISE flux in W2 (AB)
+flux_w3,adql:REAL,1,1,0,nanomaggy,WISE flux in W3 (AB)
+flux_w4,adql:REAL,1,1,0,nanomaggy,WISE flux in W4 (AB)
+flux_ivar_w1,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_W1 (AB)
+flux_ivar_w2,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_W2 (AB)
+flux_ivar_w3,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_W3 (AB)
+flux_ivar_w4,adql:REAL,1,0,0,nanomaggy^-2,Inverse variance of FLUX_W4 (AB)
+mw_transmission_w1,adql:REAL,1,0,0,,Milky Way dust transmission in WISE W1
+mw_transmission_w2,adql:REAL,1,0,0,,Milky Way dust transmission in WISE W2
+mw_transmission_w3,adql:REAL,1,0,0,,Milky Way dust transmission in WISE W3
+mw_transmission_w4,adql:REAL,1,0,0,,Milky Way dust transmission in WISE W4
+fiberflux_g,adql:REAL,1,0,0,nanomaggy,Predicted g-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+fiberflux_r,adql:REAL,1,0,0,nanomaggy,Predicted r-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+fiberflux_z,adql:REAL,1,0,0,nanomaggy,Predicted z-band flux within a fiber of diameter 1.5 arcsec from this object in 1 arcsec Gaussian seeing
+fibertotflux_g,adql:REAL,1,0,0,nanomaggy,Predicted g-band flux within a fiber of diameter 1.5 arcsec from all sources at this location in 1 arcsec Gaussian seeing
+fibertotflux_r,adql:REAL,1,0,0,nanomaggy,Predicted r-band flux within a fiber of diameter 1.5 arcsec from all sources at this location in 1 arcsec Gaussian seeing
+fibertotflux_z,adql:REAL,1,0,0,nanomaggy,Predicted z-band flux within a fiber of diameter 1.5 arcsec from all sources at this location in 1 arcsec Gaussian seeing
+ref_epoch,adql:REAL,1,0,0,,Reference epoch for Gaia/Tycho astrometry. Typically 2015.5 for Gaia
+shape_r,adql:REAL,1,0,0,arcsec,Half-light radius of galaxy model (>0)
+shape_e1,adql:REAL,1,0,0,,Ellipticity component 1 of galaxy model for galaxy type MORPHTYPE
+shape_e2,adql:REAL,1,0,0,,Ellipticity component 2 of galaxy model for galaxy type MORPHTYPE
+shape_r_ivar,adql:REAL,1,0,0,arcsec^-2,Inverse variance of SHAPE_R
+shape_e1_ivar,adql:REAL,1,0,0,,Inverse variance of SHAPE_E1
+shape_e2_ivar,adql:REAL,1,0,0,,Inverse variance of SHAPE_E2
+sersic,adql:REAL,1,0,0,,Power-law index for the Sersic profile model (MORPHTYPE=SER)
+sersic_ivar,adql:REAL,1,0,0,,Inverse variance of SERSIC
+gaia_phot_g_mean_mag,adql:REAL,1,1,0,mag,Gaia G band magnitude
+gaia_phot_g_mean_flux_over_error,adql:REAL,1,1,0,,Gaia G band signal-to-noise
+gaia_phot_bp_mean_mag,adql:REAL,1,1,0,mag,Gaia BP band magnitude
+gaia_phot_bp_mean_flux_over_error,adql:REAL,1,1,0,,Gaia BP band signal-to-noise
+gaia_phot_rp_mean_mag,adql:REAL,1,1,0,mag,Gaia RP band magnitude
+gaia_phot_rp_mean_flux_over_error,adql:REAL,1,1,0,,Gaia RP band signal-to-noise
+gaia_phot_bp_rp_excess_factor,adql:REAL,1,0,0,,Gaia BP/RP excess factor
+gaia_astrometric_sigma5d_max,adql:REAL,1,0,0,mas,Gaia longest semi-major axis of the 5-d error ellipsoid
+parallax,adql:REAL,1,1,0,mas,Reference catalog parallax
+parallax_ivar,adql:REAL,1,0,0,mas^-2,Inverse variance of PARALLAX
+pmra,adql:REAL,1,1,0,mas yr^-1,Reference catalog proper motion in the RA direction
+pmra_ivar,adql:REAL,1,0,0,yr^2 mas^-2,Inverse variance of PMRA
+pmdec,adql:REAL,1,1,0,mas yr^-1,Reference catalog proper motion in the Dec direction
+pmdec_ivar,adql:REAL,1,0,0,yr^2 mas^-2,Inverse variance of PMDEC
+random_id,adql:REAL,1,1,0,,Random ID in the range 0.0 => 100.0 (not unique)
+brickid,adql:INTEGER,1,0,0,,Brick ID from Tractor input
+brick_objid,adql:INTEGER,1,0,0,,Imaging Surveys OBJID on that brick
+htm9,adql:INTEGER,1,1,0,,Ninth level (~10 arcmin resolution) Hierarchical Triangular Mesh index (Szalay et al. 2007)
+ring256,adql:INTEGER,1,1,0,,Ring-scheme HEALPix (Gorski et al. 2005) index with Nsides=256 (~14 arcmin size)
+nest4096,adql:INTEGER,1,1,0,,Nested-scheme HEALPix (Gorski et al. 2005) index with Nsides=4096 (~52 arcsec size)
+release,adql:SMALLINT,1,0,0,,Imaging Surveys release ID
+nobs_g,adql:SMALLINT,1,0,0,,Number of images for central pixel in g-band
+nobs_r,adql:SMALLINT,1,0,0,,Number of images for central pixel in r-band
+nobs_z,adql:SMALLINT,1,0,0,,Number of images for central pixel in z-band
+allmask_g,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from all images satisfy each condition in g as cataloged on the LS DR9 bitmasks page
+allmask_r,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from all images satisfy each condition in r as cataloged on the LS DR9 bitmasks page
+allmask_z,adql:SMALLINT,1,0,0,,Bitwise mask set if the central pixel from all images satisfy each condition in z as cataloged on the LS DR9 bitmasks page
+wisemask_w1,adql:SMALLINT,1,0,0,,W1 bitmask as cataloged on the DR9 bitmasks page here https://www.legacysurvey.org/dr9/bitmasks
+wisemask_w2,adql:SMALLINT,1,0,0,,W2 bitmask as cataloged on the DR9 bitmasks page here https://www.legacysurvey.org/dr9/bitmasks
+maskbits,adql:SMALLINT,1,0,0,,Bitwise mask from the imaging indicating potential issue or blending
+gaia_astrometric_params_solved,adql:SMALLINT,1,0,0,,Which astrometric parameters were estimated for a Gaia source
+gaia_duplicated_source,adql:BOOLEAN,1,0,0,,Gaia duplicated source flag
+ref_cat,adql:VARCHAR,2,0,0,,"Reference catalog source for star: T2 for Tycho2, G2 for Gaia DR2, L2 for the SGA, empty otherwise"
+morphtype,adql:VARCHAR,4,1,0,,Imaging Surveys morphological type from Tractor
+brickname,adql:VARCHAR,8,1,0,,Brick name from Tractor input

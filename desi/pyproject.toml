@@ -1,0 +1,18 @@
+[project]
+name = "desi-datalab"
+version = "0.1.0"
+description = "Learning to query public DESI DR1 and Legacy Surveys catalogs on NOIRLab Astro Data Lab"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "astro-datalab>=2.24",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.6", "pre-commit>=3"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B"]
